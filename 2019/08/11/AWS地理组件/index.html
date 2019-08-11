@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>AWS地理组件 | 岳阳北寒</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;gt; 前沿：本文主要描述AWS各种服务自身的作用范围（地理），AWS的各种服务所覆盖的地理区域包含全区域、Region、AZ等 优先解释几个概念AWS Regions &amp;amp; Availability Zones  Amazon服务托管在全球多个位置。Amazon提供将资源和数据放置在多个位置的能力，以提高性能、提供容错、高可用性和成本优化  Region  AWS为客户提供了在多个地理区">
+<meta name="keywords" content="AWS，地理组件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS地理组件">
+<meta property="og:url" content="http://sevengarden.club/2019/08/11/AWS地理组件/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="&amp;gt; 前沿：本文主要描述AWS各种服务自身的作用范围（地理），AWS的各种服务所覆盖的地理区域包含全区域、Region、AZ等 优先解释几个概念AWS Regions &amp;amp; Availability Zones  Amazon服务托管在全球多个位置。Amazon提供将资源和数据放置在多个位置的能力，以提高性能、提供容错、高可用性和成本优化  Region  AWS为客户提供了在多个地理区">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2019/08/11/PRfSLEvcx2Fe1h5.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/11/vaZy2ekGKf37jiM.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/11/x1HuiApjYXPF6cR.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/11/MxZpr82NsRJGl9O.jpg">
+<meta property="og:updated_time" content="2019-08-11T03:35:36.644Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWS地理组件">
+<meta name="twitter:description" content="&amp;gt; 前沿：本文主要描述AWS各种服务自身的作用范围（地理），AWS的各种服务所覆盖的地理区域包含全区域、Region、AZ等 优先解释几个概念AWS Regions &amp;amp; Availability Zones  Amazon服务托管在全球多个位置。Amazon提供将资源和数据放置在多个位置的能力，以提高性能、提供容错、高可用性和成本优化  Region  AWS为客户提供了在多个地理区">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/11/PRfSLEvcx2Fe1h5.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="岳阳北寒" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">岳阳北寒</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/about/">about</a>
+        
+          <a class="main-nav-link" href="/tags/">tags</a>
+        
+          <a class="main-nav-link" href="/categories/">categories</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://sevengarden.club"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-AWS地理组件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/11/AWS地理组件/" class="article-date">
+  <time datetime="2019-08-11T02:11:31.000Z" itemprop="datePublished">2019-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AWS地理组件
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><font size="1">&gt; <em>前沿：本文主要描述AWS各种服务自身的作用范围（地理），AWS的各种服务所覆盖的地理区域包含全区域、Region、AZ等</em></font></p>
+<h2 id="优先解释几个概念"><a href="#优先解释几个概念" class="headerlink" title="优先解释几个概念"></a>优先解释几个概念</h2><p><font color="red">AWS Regions &amp; Availability Zones</font></p>
+<ul>
+<li>Amazon服务托管在全球多个位置。Amazon提供将资源和数据放置在多个位置的能力，以提高性能、提供容错、高可用性和成本优化</li>
+</ul>
+<p><font color="red">Region</font></p>
+<ul>
+<li>AWS为客户提供了在多个地理区域(称为区域)中放置实例和存储数据的灵活性。每个区域都是一个定义地理位置上AWS资源的独立集合。</li>
+<li>每个地区都是一个独立的地理区域，是完全独立的。</li>
+<li>每个Amazon区域都被设计成与其他区域完全隔离，并帮助实现尽可能大的容错性和稳定性</li>
+<li>区域间的通信是通过公共互联网进行的，应该采取适当的措施使用加密技术来保护数据</li>
+<li>区域间的数据传输按Internet数据传输速率对发送和接收实例进行收费</li>
+<li>除非显式复制，否则不会跨区域复制资源</li>
+<li>一个地区的选择可以由许多因素驱动<ul>
+<li>延迟—可以选择贴近目标用户群的区域，以减少数据延迟成本</li>
+<li>AWS在所有地区提供相同的服务，但通常情况下，由于亚马逊的成本(由于土地、电力、带宽等)不同，服务的成本也会有所不同，因此在一个地区的服务成本可能会低于另一个地区</li>
+</ul>
+</li>
+<li>法律遵从性——许多国家强制执行数据驻留在区域内的遵从性和法规要求（如欧盟的GDPR）</li>
+<li>特性——由于并非所有区域都提供所有AWS特性和服务，因此区域选择可以依赖于该区域支持的服务</li>
+</ul>
+<p><font color="red"> Availability Zones</font></p>
+<ul>
+<li>每个区域由多个孤立的位置组成，这些位置称为可用性区域，每个可用性区域都运行在其物理上不同的、独立的基础设施上（风火水电完全独立），并且设计得非常可靠。</li>
+<li>每个Region都有多个可用性区域。</li>
+<li>每个AZ在物理上是相互隔离的（距离在KM以上），因此一个不常见的灾难，如火灾、地震，只会影响一个AZ</li>
+<li>AZs在地理上相互分离，位于同一区域内，是一个独立的失效区。</li>
+<li>AZ冗余地连接到多个运营商的链路。<br>区域中的AZ使用低延迟的私有链接连接，而不是通过公共internet。</li>
+<li>多AZ，跨多个可用性区域的资源分布，特性可用于跨多个AZ分布实例，以提供高可用性。</li>
+<li>AWS通过将每个帐户的可用性区域独立映射到标识符，确保资源分布在一个区域的可用性区域之间。例如，us-east-1区域的us-east-1a AZ可能与us-east-1a AZ位于不同的位置。无法协调帐户之间的可用性区域。</li>
+</ul>
+<p><font color="red">Edge Locations</font></p>
+<ul>
+<li>Edge location是AWS Cloud Front (CDN)面向全球提供数据加速访问的节点。</li>
+<li>主要位于世界上大多数主要城市，CloudFront (CDN)使用这些位置向终端用户分发内容，以减少延迟。<h1 id="AWS-地理组件"><a href="#AWS-地理组件" class="headerlink" title="AWS 地理组件"></a>AWS 地理组件</h1></li>
+</ul>
+<ul>
+<li>AWS 提供三种地理性组件：（<a href="https://infrastructure.aws/" target="_blank" rel="noopener">https://infrastructure.aws/</a> 获取最新信息，可查阅这个网站，具体网络连接，region内AZ数量，区域内的PoP节点都可以即时获得。）</li>
+<li><strong>Regions</strong>：区域，即AWS提供云服务的一个区域，其目的是为了用户能就近接入，降低网络延迟。通常是一个城市的若干个AZ组成一个region。2016年，AWS 宣布在其全球region之间建设了100GbE 私有环网。</li>
+<li><strong>Availability Zones</strong>：一个 region 内至少两个通常三个可用区，其用途是为了搭建高可用架构。一个比较常见的看法是一个AZ是一个数据中心。（其实这不尽然，有时候靠得非常近的几个数据中心也可以组成一个AZ。弗吉尼亚有6个AZ。部分AZ 超过30万台服务器。AZ拥有独立的包括电力和网络在内的基础设施等。）AZ 之间利用低延迟光纤网络互联，延迟控制在3ms以内，AZ内低于0.3ms。（目前所有新建区域的AZ都会保持3个及以上，北京区域属于特殊情况。）</li>
+<li><strong>Edge Locations</strong>：指往往部署在大城市，以及主要人口汇聚区域的AWS 站点。它的主要作用是缓存数据，降低延迟。它们独立于region 和 AZ，数量比AZ多很多。它被多个AWS服务利用，比如AWS CloudFront 和 AWS Lambda@Edge。CloudFront 利用它来作为提供给用户分布在全球的接入点，通常称为Edge POP点。</li>
+<li><strong>目前全球有21个区域，66个可用区，180个接入点（2019/07/23）</strong></li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/11/PRfSLEvcx2Fe1h5.jpg" alt="001.jpg"><br><img src="https://i.loli.net/2019/08/11/vaZy2ekGKf37jiM.jpg" alt="003.jpg"></p>
+<h1 id="AWS基础服务与地理组件关系"><a href="#AWS基础服务与地理组件关系" class="headerlink" title="AWS基础服务与地理组件关系"></a>AWS基础服务与地理组件关系</h1><p><img src="https://i.loli.net/2019/08/11/x1HuiApjYXPF6cR.jpg" alt="004.jpg"></p>
+<p>例如：</p>
+<ol>
+<li>AWS 只有极少数全区域性的，不限于特定region，比如IAM、SES、S3 和 CloudFront（特殊区域除外，如AWS USA GOV、中国区域）</li>
+<li>一些服务是覆盖区域的，其作用范围在某个特定区域内，比如经常使用的的S3、AMI</li>
+<li>一些服务是覆盖可用区的，其作用范围在某可用区内，比如最常使用的 EC2和EBS</li>
+</ol>
+<p><img src="https://i.loli.net/2019/08/11/MxZpr82NsRJGl9O.jpg" alt="002.jpg"></p>
+<h1 id="具体覆盖区域"><a href="#具体覆盖区域" class="headerlink" title="具体覆盖区域"></a>具体覆盖区域</h1> <style>
+table {
+    width: 100%; /*表格宽度*/
+    max-width: 65em; /*表格最大宽度，避免表格过宽*/
+    border: 1px solid #dedede; /*表格外边框设置*/
+    margin: 15px auto; /*外边距*/
+    border-collapse: collapse; /*使用单一线条的边框*/
+    empty-cells: show; /*单元格无内容依旧绘制边框*/
+}
+table th,
+
+table td {
+  height: 35px; /*统一每一行的默认高度*/
+  border: 1px solid #dedede; /*内部边框样式*/
+  padding: 0 10px; /*内边距*/
+          }
+table tbody tr:nth-child(2n) {
+    background: rgba(158,188,226,0.12); 
+}
+
+table tr:hover {
+    background: #efefef; 
+}
+
+
+
+
+.table-area {
+    overflow: auto;
+}
+
+  </style>
+
+
+
+
+
+
+<table>
+<thead>
+<tr>
+<th align="center">Service</th>
+<th align="center">Global</th>
+<th align="center">Region</th>
+<th align="center">AZ</th>
+<th align="center">subservices</th>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">IAM</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Users, Groups, Roles, Accounts</td>
+<td align="left">所有区域都可以使用相同的AWS帐户、用户、组和角色</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Key Pairs</td>
+<td align="left">关键对-全球或地区</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Key Pairs</td>
+<td align="left">IAM users 是与 AWS account 绑定的，不受限于某个region。</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Key Pairs</td>
+<td align="left">注：中国/美国 GOV区域除外，其都有自己独立的IAM账户体系，不与全球共用。</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Key Pairs</td>
+<td align="left">Amazon EC2创建的密钥对是特定于该区域的</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">RSA key pair</td>
+<td align="left">RSA密钥对可以创建和上传，可以在所有区域使用。</td>
+</tr>
+<tr>
+<td align="center">KMS</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">存储在创建区域，并且仅在该区域使用。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">VPC</td>
+<td align="left">VPC是在一个区域内创建的</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">VPC 位于一个reigon内，且分布在该region的所有AZ内。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">VPC不能迁移至其它region，而只能新建。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">Subnet</td>
+<td align="left">子网只能率属于AZ。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Security groups</td>
+<td align="left">安全组绑定到一个区域，并且只能分配给同一区域中的实例。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">VPC Endpoints</td>
+<td align="left">您不能在不同区域的VPC和AWS服务之间创建端点。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">VPC Peering</td>
+<td align="left">支持region内和跨region</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">NAT gateway</td>
+<td align="left">NAT网关运行在AZ中</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Virtual private gateway (VGW)</td>
+<td align="left">VGW在Region范围内自身实现冗余度设计。但是，VPN 服务和DX 需要用户自配置其高可用设计。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Internet gateway</td>
+<td align="left">IGW在Region范围内自身实现高可用、冗余度设计，等同于有多条链路到达IGW。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Elastic IP Address</td>
+<td align="left">在区域内创建的弹性IP地址只能分配给区域内的实例。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">每个region有它自己的地址池，EIP 从该池中分配。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Resource Identifiers</td>
+<td align="left">资源标识符属于Region范围内，每个资源标识符(如AMI ID、实例ID、EBS卷ID或EBS快照ID)都绑定到其区域，并且只能在创建资源的区域中使用。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">Instances</td>
+<td align="left">实例绑定到启动它的可用性区域。但是，请注意它的实例ID绑定到该区域。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">EBS Volumes</td>
+<td align="left">Amazon EBS卷绑定到它的可用性区域，并且只能附加到同一可用性区域（AZ）中的实例。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">EBS Snapshot</td>
+<td align="left">EBS快照绑定到它的区域，并且只能用于在同一区域创建卷，如果需要，必须从一个区域复制到另一个区域，可利用 Snapshot Copy 功能将其拷贝至其它region</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">AMIs （Aamzon Machine Images）</td>
+<td align="left">AMI提供了启动EC2实例的模板</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">AMI与Amazon S3中文件所在的区域绑定。对于在不同区域使用AMI，可以将AMI复制到其他区域</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">AWS 提供 AMI Copy 功能来将某AMI 拷贝至其它region。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Auto Scaling</td>
+<td align="left">自动扩展跨越同一区域内的多个可用性区域，但不能跨区域</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">ELB(Elastic Load Balancer)</td>
+<td align="left">弹性负载均衡器在同一区域的多个可用性区域的多个实例之间分配流量</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">无法将 ELB 迁移至其它region，你只能在其它region中新建ELB实例。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">SSH Public Keys</td>
+<td align="left">保存在region内，AWS不跨region复制或同步keys。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">Placement Groups</td>
+<td align="left">集群放置组部署在同一可用性区域内的实例组</td>
+</tr>
+<tr>
+<td align="center">S3</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">S3 bucket  name是全球性，但数据是区域性的</td>
+</tr>
+<tr>
+<td align="center">S3</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">S3桶是在选定的区域内创建的Bucket 中的数据物理地位于一个region内，但是可以从其它region上访问它，此时需要考虑到延时问题。</td>
+</tr>
+<tr>
+<td align="center">S3</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">存储的对象跨可用性区域复制，以提供高持久性，但除非显式地进行跨区域复制，否则不会跨区域复制</td>
+</tr>
+<tr>
+<td align="center">Glacier</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">要迁移 Glacier 中的数据的话，需要经过几个步骤：1. 将 Glacier 中的数据restore到 S3 中。2. 利用 S3 Copy 功能将数据拷贝至另一个region 3. 利用 S3 lifecycle policy 将 S3 中的数据转移到新的region的 Glacier 内 4. 将原region的 Glacier 中的数据删除。</td>
+</tr>
+<tr>
+<td align="center">Glacier</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">注：目前S3可以向S3 Deep Archive 直接归档数据（如北京region到宁夏）</td>
+</tr>
+<tr>
+<td align="center">EFS</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">有两种数据在region间的迁移途径。1. 将EFS中的数据拷贝至 EBS，然后利用 EBS Snapshot Copy 功能将数据拷贝至另一个region内，再将数据从 EBS 拷贝到 EFS 内。 2. 将 EFS 中的数据拷贝到 S3 中，然后将利用 S3 Cross-region Replication 功能将数据拷贝至另一个region，再从S3 拷贝到EFS。</td>
+</tr>
+<tr>
+<td align="center">Route53</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">Route53服务是在AWS的边缘位置提供的，并且是全球性的</td>
+</tr>
+<tr>
+<td align="center">RDS</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="left">RDS 实例有单可用区的，也有跨多AZ 的</td>
+</tr>
+<tr>
+<td align="center">RDS</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">可利用 AWS Database Migration Serivce 进行跨区域迁移</td>
+</tr>
+<tr>
+<td align="center">RDS</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">跨区域的手工数据迁移步骤：1. 停止transactions 2. 在一个临时 EC2 将 DB 中的数据导出为文件 3. 利用工具将文件拷贝至远端region的EC2内 4. 创建RDS实例 5. 导入数据文件</td>
+</tr>
+<tr>
+<td align="center">ElastiCache</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">支持 Redis 和 Memcached</td>
+</tr>
+<tr>
+<td align="center">ElastiCache</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">Redis 迁移方法：1. 给集群手工创建一个 backup 2. 将backup 导入 S3. 4. S3 bucket 复制到另一个region。 5. 在新的region 内从 S3 restore 数据，其过程包括创建一个新的 Redis cluster 然后导入数据。</td>
+</tr>
+<tr>
+<td align="center">ElastiCache</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">Memcached 数据跨region 迁移方法：在新的region 内创建一个 cluster，然后从应用层做数据复制。</td>
+</tr>
+<tr>
+<td align="center">RedShift</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">集群迁移：利用 RedShift cross-region snapshot 功能创建snapshot 并将它拷贝到新的region内，然后将snapshot restore 到集群。</td>
+</tr>
+<tr>
+<td align="center">RedShift</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">表迁移：利用 RedShift Upload 功能将数据导入 S3，再利用 S3 Cross-region Replication 功能将数据复制到另一个region，再在另一个region内创建 RedShift 集群并利用 COPY 功能从S3 中导入数据。</td>
+</tr>
+<tr>
+<td align="center">EMR</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">跨region 迁移 EMR：在新的 region 内新建 EMR Cluster，然后导入数据</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">如果数据在 S3 中，则利用 S3 cross-region replication 功能将数据迁移到新的 region 内</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">如果数据在 HDFS 内，择利用 S3DistCp 命令将HDFS 内的数据拷贝到 S3， 然后再利用 S3DistCp 命令将S3 中的数据拷贝到目标 HDFS 内。</td>
+</tr>
+<tr>
+<td align="center">Elasticsearch</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">为 ES domain 创建一个 snapshot，它会被保存到 S3 内。再利用 S3 做跨region 复制。再在新region内将数据从S3 恢复到 Elasticsearch 中。</td>
+</tr>
+<tr>
+<td align="center">SQS</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">SQS queues 位于region内。需要利用应用，将消息从源region 的 queues 中导入目的 region的 queues 内。</td>
+</tr>
+<tr>
+<td align="center">SNS</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">SNS topics 位于region 内</td>
+</tr>
+<tr>
+<td align="center">Auroa</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">在另一个region 内创建一个 Aurora Cluster 作为 Read Replica。一旦创建后，Amazon RDS 对原 Aurora cluster 做snapshot，然后将 snapshot 发送只 Read Replica。</td>
+</tr>
+<tr>
+<td align="center">DynamoDB</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">所有数据对象都存储在同一区域内，并跨同一区域中的多个可用性区域复制</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">可以使用跨区域复制显式地跨区域复制数据对象</td>
+</tr>
+<tr>
+<td align="center">WAF</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">WAF服务保护Web应用程序免受常见Web攻击，它是在AWS边缘位置提供的，并且是全局的</td>
+</tr>
+<tr>
+<td align="center">CloudFront</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">CloudFront是全球内容交付网络(CDN)服务，</td>
+</tr>
+<tr>
+<td align="center">Storage Gateway</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">AWS存储网关适用范围在Region范围内，提供存储卷、快照和磁带数据的网关。</td>
+</tr>
+<tr>
+<td align="center">SES</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">SES 有 regional endpoint。你的应用既可以使用与它相同region内的 SES服务，也可以利用其它region内的SES服务。当然了，这里面需</td>
+</tr>
+</tbody></table>
+<h3 id="Refer"><a href="#Refer" class="headerlink" title="Refer"></a>Refer</h3><ul>
+<li>《Using Amazon Web Services for Disaster Recovery》</li>
+<li>《Migrating AWS Resources to a New AWS Region》</li>
+<li>《Building Fault-Tolerant Application on AWS》</li>
+<li>刘世民 云计算 博客</li>
+<li><a href="http://jayendrapatil.com/aws-global-vs-regional-vs-az-resources/" target="_blank" rel="noopener">http://jayendrapatil.com/aws-global-vs-regional-vs-az-resources/</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sevengarden.club/2019/08/11/AWS地理组件/" data-id="cjz6f3y5y0002s85t2ab7opxx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AWS，地理组件/">AWS，地理组件</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/08/10/AWS-VPC/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">AWS VPC</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS，地理组件/">AWS，地理组件</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AWS，地理组件/" style="font-size: 10px;">AWS，地理组件</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/11/AWS地理组件/">AWS地理组件</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/10/AWS-VPC/">AWS VPC</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 seven<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/about/" class="mobile-nav-link">about</a>
+  
+    <a href="/tags/" class="mobile-nav-link">tags</a>
+  
+    <a href="/categories/" class="mobile-nav-link">categories</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
