@@ -781,7 +781,7 @@
 </li>
 </ul>
 <p><img src="https://i.loli.net/2019/08/13/kV82oOjNUX6dQzC.png" alt="assets_-LDAOok5ngY4pc1lEDes_-LM_tX5rWaCuzsx7xEcz_-LM_t_Oxw2Twn_BSf7GQ_kube-dns.png"></p>
-<h1 id="资源对象"><a href="#资源对象" class="headerlink" title="资源对象"></a>资源对象</h1>
+
           
         
       
@@ -2448,6 +2448,1832 @@ table tr:hover {
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/09/27/NoSQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/27/NoSQL/" itemprop="url">NoSQL</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-27T19:28:50+08:00">
+                2018-09-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bigdat/" itemprop="url" rel="index">
+                    <span itemprop="name">bigdat</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="NoSQL兴起原因"><a href="#NoSQL兴起原因" class="headerlink" title="NoSQL兴起原因"></a>NoSQL兴起原因</h1><ol>
+<li>关系数据库已经无法满足Web2.0的需求。主要表现在以下几个方面：<ul>
+<li>无法满足海量数据的管理需求</li>
+<li>无法满足数据高并发的需求</li>
+<li>无法满足高可扩展性和高可用性的需求</li>
+</ul>
+</li>
+<li>One size fits all”模式很难适用于截然不同的业务场景<ul>
+<li>关系模型作为统一的数据模型既被用于数据分析，也被用于在线业务。但这两者一个强调高吞吐，一个强调低延时，已经演化出完全不同的架构。用同一套模型来抽象显然是不合适的</li>
+<li>Hadoop就是针对数据分析</li>
+<li>MongoDB、Redis等是针对在线业务，两者都抛弃了关系模型</li>
+</ul>
+</li>
+<li>关系数据库的关键特性包括完善的事务机制和高效的查询机制。但是，关系数据库引以为傲的两个关键特性，到了Web2.0时代却成了鸡肋，主要表现在以下几个方面：<ul>
+<li>Web2.0网站系统通常不要求严格的数据库事务</li>
+<li>Web2.0并不要求严格的读写实时性</li>
+<li>Web2.0通常不包含大量复杂的SQL查询（去结构化，存储空间换取更好的查询性能）<h1 id="NoSQL与关系型数据库的比较"><a href="#NoSQL与关系型数据库的比较" class="headerlink" title="NoSQL与关系型数据库的比较"></a>NoSQL与关系型数据库的比较</h1></li>
+</ul>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="left">比较标准</th>
+<th align="left">RDBMS</th>
+<th align="left">NoSQL</th>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">数据库原理</td>
+<td align="left">完全支持</td>
+<td align="left">部分支持</td>
+<td align="left">RDBMS有关系代数理论作为基础,NoSQL没有统一的理论基础</td>
+</tr>
+<tr>
+<td align="left">数据规模</td>
+<td align="left">大</td>
+<td align="left">超大</td>
+<td align="left">RDBMS很难实现横向扩展，纵向扩展的空间也比较有限，性能会随着数据规模的增大而降低,NoSQL可以很容易通过添加更多设备来支持更大规模的数据</td>
+</tr>
+<tr>
+<td align="left">数据库模式</td>
+<td align="left">固定</td>
+<td align="left">灵活</td>
+<td align="left">RDBMS需要定义数据库模式，严格遵守数据定义和相关约束条件,NoSQL不存在数据库模式，可以自由灵活定义并存储各种不同类型的数据</td>
+</tr>
+<tr>
+<td align="left">查询效率</td>
+<td align="left">快</td>
+<td align="left">可以实现高效的简单查询，但是不具备高度结构化查询等特性，复杂查询的性能不尽人意</td>
+<td align="left">RDBMS借助于索引机制可以实现快速查询（包括记录查询和范围查询）NoSQL数据库没有面向复杂查询的索引，虽然NoSQL可以使用MapReduce来加速查询，但是，在复杂查询方面的性能仍然不如RDBMS</td>
+</tr>
+<tr>
+<td align="left">一致性</td>
+<td align="left">强一致性</td>
+<td align="left">弱一致性</td>
+<td align="left">RDBMS严格遵守事务ACID模型，可以保证事务强一致性,很多NoSQL数据库放松了对事务ACID四性的要求，而是遵守BASE模型，只能保证最终一致性</td>
+</tr>
+<tr>
+<td align="left">数据完整性</td>
+<td align="left">容易实现</td>
+<td align="left">很难实现</td>
+<td align="left">任何一个RDBMS都可以很容易实现数据完整性，比如通过主键或者非空约束来实现实体完整性，通过主键、外键来实现参照完整性，通过约束或者触发器来实现用户自定义完整性,但是，在NoSQL数据库却无法实现</td>
+</tr>
+<tr>
+<td align="left">扩展性</td>
+<td align="left">一般</td>
+<td align="left">好</td>
+<td align="left">RDBMS很难实现横向扩展，纵向扩展的空间也比较有限,NoSQL在设计之初就充分考虑了横向扩展的需求，可以很容易通过添加廉价设备实现扩展</td>
+</tr>
+<tr>
+<td align="left">可用性</td>
+<td align="left">好</td>
+<td align="left">很好</td>
+<td align="left">RDBMS在任何时候都以保证数据一致性为优先目标，其次才是优化系统性能，随着数据规模的增大，RDBMS为了保证严格的一致性，只能提供相对较弱的可用性,大多数NoSQL都能提供较高的可用性</td>
+</tr>
+<tr>
+<td align="left">标准化</td>
+<td align="left">是</td>
+<td align="left">否</td>
+<td align="left">RDBMS已经标准化（SQL）,NoSQL还没有行业标准，不同的NoSQL数据库都有自己的查询语言，很难规范应用程序接口,StoneBraker认为：NoSQL缺乏统一查询语言，将会拖慢NoSQL发展</td>
+</tr>
+<tr>
+<td align="left">技术支持</td>
+<td align="left">高</td>
+<td align="left">低</td>
+<td align="left">RDBMS经过几十年的发展，已经非常成熟，Oracle等大型厂商都可以提供很好的技术支持,NoSQL在技术支持方面仍然处于起步阶段，还不成熟，缺乏有力的技术支持</td>
+</tr>
+<tr>
+<td align="left">可维护性</td>
+<td align="left">复杂</td>
+<td align="left">复杂</td>
+<td align="left">RDBMS需要专门的数据库管理员(DBA)维护 ,NoSQL数据库虽然没有DBMS复杂，也难以维护</td>
+</tr>
+<tr>
+<td align="left"><strong>总结</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">1. 关系数据库</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">优势：以完善的关系代数理论作为基础，有严格的标准，支持事务ACID四性，借助索引机制可以实现高效的查询，技术成熟，有专业公司的技术支持</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">劣势：可扩展性较差，无法较好支持海量数据存储，数据模型过于死板、无法较好支持Web2.0应用，事务机制影响了系统的整体性能等</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">2. NoSQL数据库</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">优势：可以支持超大规模数据存储，灵活的数据模型可以很好地支持Web2.0应用，具有强大的横向扩展能力等</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">劣势：缺乏数学理论基础，复杂查询性能不高，大都不能实现事务强一致性，很难实现数据完整性，技术尚不成熟，缺乏专业团队的技术支持，维护较困难等</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<ul>
+<li>关系数据库应用场景：电信、银行等领域的关键业务系统，需要保证强事务一致性</li>
+<li>NoSQL数据库应用场景：互联网企业、传统企业的非关键业务（比如数据分析）</li>
+<li>采用混合架构</li>
+<li>案例：亚马逊公司就使用不同类型的数据库来支撑它的电子商务应用<ul>
+<li>对于“购物篮”这种临时性数据，采用键值存储会更加高效</li>
+<li>当前的产品和订单信息则适合存放在关系数据库中</li>
+<li>大量的历史订单信息则适合保存在类似MongoDB的文档数据库中</li>
+</ul>
+</li>
+</ul>
+<h1 id="NoSQL的四大类型"><a href="#NoSQL的四大类型" class="headerlink" title="NoSQL的四大类型"></a>NoSQL的四大类型</h1><blockquote>
+<p>NoSQL数据库虽然数量众多，但是，归结起来，典型的NoSQL数据库通常包括键值数据库、列族数据库、文档数据库和图形数据库<br><img src="https://i.loli.net/2019/08/14/kMvYIWtdT8xOosR.png" alt="NoSQL-1.png"><br><img src="https://i.loli.net/2019/08/14/p5rvDxPIwzKhVAa.png" alt="NoSQL-2.png"><br><img src="https://i.loli.net/2019/08/14/OseyBMhXY2QZjl9.jpg" alt="四类数据库.jpg"></p>
+</blockquote>
+<h1 id="NoSQL的三大基石"><a href="#NoSQL的三大基石" class="headerlink" title="NoSQL的三大基石"></a>NoSQL的三大基石</h1>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/09/23/HBase/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/23/HBase/" itemprop="url">HBase</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-23T19:19:04+08:00">
+                2018-09-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
+<p>HBase是一个高可靠、高性能、面向列、可伸缩的分布式数据库，是谷歌BigTable的开源实现，主要用来存储非结构化和半结构化的松散数据。HBase的目标是处理非常庞大的表，可以通过水平扩展的方式，利用廉价计算机集群处理由超过10亿行数据和数百万列元素组成的数据表 </p>
+<ul>
+<li>Hadoop可以很好地解决大规模数据的离线批量处理问题，但是，受限于Hadoop MapReduce编程框架的高延迟数据处理机制，使得Hadoop无法满足大规模数据实时处理应用的需求</li>
+<li>HDFS面向批量访问模式，不是随机访问模式</li>
+<li>传统的通用关系型数据库无法应对在数据规模剧增时导致的系统扩展性和性能问题（分库分表也不能很好解决）</li>
+<li>传统关系数据库在数据结构变化时一般需要停机维护；空列浪费存储空间</li>
+<li>因此，业界出现了一类面向半结构化数据存储和处理的高可扩展、低写入/查询延迟的系统，例如，键值数据库、文档数据库和列族数据库（如BigTable和HBase等）</li>
+<li>HBase已经成功应用于互联网服务领域和传统行业的众多在线式数据分析处理系统中</li>
+</ul>
+</blockquote>
+<h2 id="HBase与传统关系数据库的对比分析"><a href="#HBase与传统关系数据库的对比分析" class="headerlink" title="HBase与传统关系数据库的对比分析"></a>HBase与传统关系数据库的对比分析</h2><ol>
+<li>数据类型：关系数据库采用关系模型，具有丰富的数据类型和存储方式，HBase则采用了更加简单的数据模型，它把数据存储为未经解释的字符串</li>
+<li>数据操作：关系数据库中包含了丰富的操作，其中会涉及复杂的多表连接。HBase操作则不存在复杂的表与表之间的关系，只有简单的插入、查询、删除、清空等，因为HBase在设计上就避免了复杂的表和表之间的关系</li>
+<li>存储模式：关系数据库是基于行模式存储的。HBase是基于列存储的，每个列族都由几个文件保存，不同列族的文件是分离的</li>
+<li>数据索引：关系数据库通常可以针对不同列构建复杂的多个索引，以提高数据访问性能。HBase只有一个索引——行键，通过巧妙的设计，HBase中的所有访问方法，或者通过行键访问，或者通过行键扫描，从而使得整个系统不会慢下来</li>
+<li>数据维护：在关系数据库中，更新操作会用最新的当前值去替换记录中原来的旧值，旧值被覆盖后就不会存在。而在HBase中执行更新操作时，并不会删除数据旧的版本，而是生成一个新的版本，旧有的版本仍然保留</li>
+<li>可伸缩性：关系数据库很难实现横向扩展，纵向扩展的空间也比较有限。相反，HBase和BigTable这些分布式数据库就是为了实现灵活的水平扩展而开发的，能够轻易地通过在集群中增加或者减少硬件数量来实现性能的伸缩</li>
+</ol>
+<h1 id="HBase访问接口"><a href="#HBase访问接口" class="headerlink" title="HBase访问接口"></a>HBase访问接口</h1><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>特点</th>
+<th>场合</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Native Java API</td>
+<td>最常规和高效的访问方式</td>
+<td>适合Hadoop MapReduce作业并行批处理HBase表数据</td>
+</tr>
+<tr>
+<td>HBase Shell</td>
+<td>HBase的命令行工具，最简单的接口</td>
+<td>适合HBase管理使用</td>
+</tr>
+<tr>
+<td>Thrift Gateway</td>
+<td>利用Thrift序列化技术，支持C++、PHP、Python等多种语言</td>
+<td>适合其他异构系统在线访问HBase表数据</td>
+</tr>
+<tr>
+<td>REST Gateway</td>
+<td>解除了语言限制</td>
+<td>支持REST风格的Http API访问HBase</td>
+</tr>
+<tr>
+<td>Pig</td>
+<td>使用Pig Latin流式编程语言来处理HBase中的数据</td>
+<td>适合做数据统计</td>
+</tr>
+<tr>
+<td>Hive</td>
+<td>简单</td>
+<td>当需要以类似SQL语言方式来访问HBase的时候</td>
+</tr>
+</tbody></table>
+<h1 id="Hbase数据模型"><a href="#Hbase数据模型" class="headerlink" title="Hbase数据模型"></a>Hbase数据模型</h1><h2 id="数据模型概述"><a href="#数据模型概述" class="headerlink" title="数据模型概述"></a>数据模型概述</h2><ul>
+<li>HBase是一个稀疏、多维度、排序的映射表，这张表的索引是行键、列族、列限定符和时间戳</li>
+<li>每个值是一个未经解释的字符串，没有数据类型</li>
+<li>用户在表中存储数据，每一行都有一个可排序的行键和任意多的列</li>
+<li>表在水平方向由一个或者多个列族组成，一个列族中可以包含任意多个列，同一个列族里面的数据存储在一起</li>
+<li>列族支持动态扩展，可以很轻松地添加一个列族或列，无需预先定义列的数量以及类型，所有列均以字符串形式存储，用户需要自行进行据类型转换</li>
+<li>HBase中执行更新操作时，并不会删除数据旧的版本，而是生成一个新的版本，旧有的版本仍然保留（这是和HDFS只允许追加不允许修改的特性相关的）<h2 id="数据模型相关概念"><a href="#数据模型相关概念" class="headerlink" title="数据模型相关概念"></a>数据模型相关概念</h2><img src="https://i.loli.net/2019/08/14/N3DW2LA4kxIYuFa.png" alt="HBase数据模型.png"></li>
+<li>表：HBase采用表来组织数据，表由行和列组成，列划分为若干个列族</li>
+<li>行：每个HBase表都由若干行组成，每个行由行键（row key）来标识。</li>
+<li>列族：一个HBase表被分组成许多“列族”（Column Family）的集合，它是基本的访问控制单元</li>
+<li>列限定符：列族里的数据通过列限定符（或列）来定位</li>
+<li>单元格：在HBase表中，通过行、列族和列限定符确定一个“单元格”（cell），单元格中存储的数据没有数据类型，总被视为字节数组byte[]</li>
+<li>时间戳：每个单元格都保存着同一份数据的多个版本，这些版本采用时间戳进行索引</li>
+</ul>
+<h2 id="数据坐标"><a href="#数据坐标" class="headerlink" title="数据坐标"></a>数据坐标</h2><ul>
+<li>HBase中需要根据行键、列族、列限定符和时间戳来确定一个单元格，因此，可以视为一个“四维坐标”，即[行键, 列族, 列限定符, 时间戳]<table>
+<thead>
+<tr>
+<th><strong>键</strong></th>
+<th><strong>值</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>[“201505003”, “Info”, “email”, 1174184619081]</td>
+<td>“xie@qq.com”</td>
+</tr>
+<tr>
+<td>[“201505003”, “Info”, “email”, 1174184620720]</td>
+<td>“you@163.com”</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="概念视图"><a href="#概念视图" class="headerlink" title="概念视图"></a>概念视图</h2><table>
+<thead>
+<tr>
+<th>行键</th>
+<th>时间戳</th>
+<th>列族contents</th>
+<th>列族anchor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“com.cnn.www”</td>
+<td>t5</td>
+<td>anchor:cnnsi.com=”CNN”</td>
+<td></td>
+</tr>
+<tr>
+<td>t4</td>
+<td>anchor:my.look.ca=”CNN.com”</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>t3</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>t2</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>t1</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="物理视图"><a href="#物理视图" class="headerlink" title="物理视图"></a>物理视图</h2><table>
+<thead>
+<tr>
+<th>行键</th>
+<th>时间戳</th>
+<th>列族contents</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“com.cnn.www”</td>
+<td>t3</td>
+<td>contents:html=”<html>...“</html></td>
+</tr>
+<tr>
+<td>t2</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+</tr>
+<tr>
+<td>t1</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>行键</th>
+<th>时间戳</th>
+<th>列族anchor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“com.cnn.www”</td>
+<td>t5</td>
+<td>anchor:cnnsi.com=”CNN”</td>
+</tr>
+<tr>
+<td>t4</td>
+<td>anchor:my.look.ca=”CNN.com”</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="面向列的存储"><a href="#面向列的存储" class="headerlink" title="面向列的存储"></a>面向列的存储</h2><p><img src="https://i.loli.net/2019/08/14/CrtHkdTRqnQeKZ3.png" alt="面向列的存储.png"><br><img src="https://i.loli.net/2019/08/14/296eZVrmyGhSgE8.png" alt="列式存储.png"><br><img src="https://i.loli.net/2019/08/14/Pun632tgqSbTJpM.png" alt="行式存储.png"></p>
+<h1 id="HBase实现原理"><a href="#HBase实现原理" class="headerlink" title="HBase实现原理"></a>HBase实现原理</h1><h2 id="HBase-功能组件"><a href="#HBase-功能组件" class="headerlink" title="HBase 功能组件"></a>HBase 功能组件</h2><ul>
+<li>HBase的实现包括三个主要的功能组件：<ol>
+<li>库函数：链接到每个客户端</li>
+<li>一个Master主服务器</li>
+<li>许多个Region服务器</li>
+</ol>
+</li>
+<li>主服务器Master负责管理和维护HBase表的分区信息，维护Region服务器列表，分配Region，负载均衡</li>
+<li>Region服务器负责存储和维护分配给自己的Region，处理来自客户端的读写请求</li>
+<li>客户端并不是直接从Master主服务器上读取数据，而是在获得Region的存储位置信息后，直接从Region服务器上读取数据</li>
+<li>客户端并不依赖Master，而是通过Zookeeper来获得Region位置信息，大多数客户端甚至从来不和Master通信，这种设计方式使得Master负载很小 </li>
+</ul>
+<h2 id="表和Region"><a href="#表和Region" class="headerlink" title="表和Region"></a>表和Region</h2><ul>
+<li>开始只有一个Region，后来不断分裂</li>
+<li>Region拆分操作非常快，接近瞬间，因为拆分之后的Region读取的仍然是原存储文件，直到“合并”过程把存储文件异步地写到独立的文件之后，才会读取新文件<br><img src="https://i.loli.net/2019/08/14/67qygZGCpdfDHY4.jpg" alt="Region表.jpg"><br><img src="https://i.loli.net/2019/08/14/kKYREnvAGqcCP65.jpg" alt="Region表分裂.jpg"></li>
+<li>每个Region默认大小是100MB到200MB（2006年以前的硬件配置）<ul>
+<li>每个Region的最佳大小取决于单台服务器的有效处理能力</li>
+<li>目前每个Region最佳大小建议1GB-2GB（2013年以后的硬件配置）</li>
+</ul>
+</li>
+<li>同一个Region不会被分拆到多个Region服务器</li>
+<li>每个Region服务器存储10-1000个Region<br><img src="https://i.loli.net/2019/08/14/kDWwbKAnXqZs1xI.jpg" alt="Region表分布.jpg"></li>
+</ul>
+<h2 id="Region-定位"><a href="#Region-定位" class="headerlink" title="Region 定位"></a>Region 定位</h2><ul>
+<li>元数据表，又名.META.表，存储了Region和Region服务器的映射关系</li>
+<li>当HBase表很大时， .META.表也会被分裂成多个Region</li>
+<li>根数据表，又名-ROOT-表，记录所有元数据的具体位置</li>
+<li>-ROOT-表只有唯一一个Region，名字是在程序中被写死的</li>
+<li>Zookeeper文件记录了-ROOT-表的位置<br><img src="https://i.loli.net/2019/08/14/Z3FcJ1iXt7xrKTq.jpg" alt="HBase三层结构1.jpg"></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第一层</td>
+<td>Zookeeper文件</td>
+<td>记录了-ROOT-表的位置信息</td>
+</tr>
+<tr>
+<td>第二层</td>
+<td>-ROOT-表</td>
+<td>记录了.META.表的Region位置信息</td>
+</tr>
+<tr>
+<td>-ROOT-表只能有一个Region。通过-ROOT-表，就可以访问.META.表中的数据</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>第三层</td>
+<td>.META.表</td>
+<td>记录了用户数据表的Region位置信息，.META.表可以有多个Region，保存了HBase中所有用户数据表的Region位置信息</td>
+</tr>
+</tbody></table>
+<ul>
+<li>为了加快访问速度，.META.表的全部Region都会被保存在内存中</li>
+<li>假设.META.表的每行（一个映射条目）在内存中大约占用1KB，并且每个Region限制为128MB，那么，上面的三层结构可以保存的用户数据表的Region数目的计算方法是：</li>
+<li>（-ROOT-表能够寻址的.META.表的Region个数）×（每个.META.表的 Region可以寻址的用户数据表的Region个数）</li>
+<li>一个-ROOT-表最多只能有一个Region，也就是最多只能有128MB，按照每行（一个映射条目）占用1KB内存计算，128MB空间可以容纳128MB/1KB=217行，也就是说，一个-ROOT-表可以寻址217个.META.表的Region。</li>
+<li>同理，每个.META.表的 Region可以寻址的用户数据表的Region个数是128MB/1KB=217。</li>
+<li>最终，三层结构可以保存的Region数目是(128MB/1KB) × (128MB/1KB) = 234个Region</li>
+</ul>
+<h3 id="客户端访问数据时的“三级寻址”"><a href="#客户端访问数据时的“三级寻址”" class="headerlink" title="客户端访问数据时的“三级寻址”"></a>客户端访问数据时的“三级寻址”</h3><ul>
+<li>为了加速寻址，客户端会缓存位置信息，同时，需要解决缓存失效问题</li>
+<li>寻址过程客户端只需要询问Zookeeper服务器，不需要连接Master服务器</li>
+</ul>
+<h1 id="HBase运行机制"><a href="#HBase运行机制" class="headerlink" title="HBase运行机制"></a>HBase运行机制</h1><h2 id="HBase系统架构"><a href="#HBase系统架构" class="headerlink" title="HBase系统架构"></a>HBase系统架构</h2><p><img src="https://i.loli.net/2019/08/14/68D2kyjXOWYxwRQ.jpg" alt="HBase系统架构.jpg"></p>
+<ol>
+<li>客户端</li>
+</ol>
+<ul>
+<li>客户端包含访问HBase的接口，同时在缓存中维护着已经访问过的Region位置信息，用来加快后续数据访问过程</li>
+</ul>
+<ol start="2">
+<li>Zookeeper服务器</li>
+</ol>
+<ul>
+<li>Zookeeper可以帮助选举出一个Master作为集群的总管，并保证在任何时刻总有唯一一个Master在运行，这就避免了Master的“单点失效”问题</li>
+<li>Zookeeper是一个很好的集群管理工具，被大量用于分布式计算，提供配置维护、域名服务、分布式同步、组服务等。</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/14/nd9wWM5jDcLrSGF.jpg" alt="Zookeeper .jpg"></p>
+<ol start="3">
+<li>Master</li>
+</ol>
+<ul>
+<li>主服务器Master主要负责表和Region的管理工作：<ul>
+<li>管理用户对表的增加、删除、修改、查询等操作</li>
+<li>实现不同Region服务器之间的负载均衡</li>
+<li>在Region分裂或合并后，负责重新调整Region的分布</li>
+<li>对发生故障失效的Region服务器上的Region进行迁移</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>Region服务器</li>
+</ol>
+<ul>
+<li>Region服务器是HBase中最核心的模块，负责维护分配给自己的Region，并响应用户的读写请求</li>
+</ul>
+<h2 id="Region服务器工作原理"><a href="#Region服务器工作原理" class="headerlink" title="Region服务器工作原理"></a>Region服务器工作原理</h2><p><img src="https://i.loli.net/2019/08/14/zRVdymofpnXAkY6.jpg" alt="Region服务器向HDFS文件系统中读写数据 .jpg"></p>
+<ol>
+<li>用户读写数据过程<ul>
+<li>用户写入数据时，被分配到相应Region服务器去执行</li>
+<li>用户数据首先被写入到MemStore和Hlog中</li>
+<li>只有当操作写入Hlog之后，commit()调用才会将其返回给客户端</li>
+<li>当用户读取数据时，Region服务器会首先访问MemStore缓存，如果找不到，再去磁盘上面的StoreFile中寻找</li>
+</ul>
+</li>
+<li>缓存的刷新<ul>
+<li>系统会周期性地把MemStore缓存里的内容刷写到磁盘的StoreFile文件中，清空缓存，并在Hlog里面写入一个标记</li>
+<li>每次刷写都生成一个新的StoreFile文件，因此，每个Store包含多个StoreFile文件</li>
+<li>每个Region服务器都有一个自己的HLog 文件，每次启动都检查该文件，确认最近一次执行缓存刷新操作之后是否发生新的写入操作；如果发现更新，则先写入MemStore，再刷写到StoreFile，最后删除旧的Hlog文件，开始为用户提供服务</li>
+</ul>
+</li>
+<li>StoreFile的合并<ul>
+<li>每次刷写都生成一个新的StoreFile，数量太多，影响查找速度</li>
+<li>调用Store.compact()把多个合并成一个</li>
+<li>合并操作比较耗费资源，只有数量达到一个阈值才启动合并</li>
+</ul>
+</li>
+</ol>
+<h2 id="Store工作原理"><a href="#Store工作原理" class="headerlink" title="Store工作原理"></a>Store工作原理</h2><ul>
+<li>Store是Region服务器的核心</li>
+<li>多个StoreFile合并成一个</li>
+<li>单个StoreFile过大时，又触发分裂操作，1个父Region被分裂成两个子Region<br><img src="https://i.loli.net/2019/08/14/8O5SjMrPXwiKYtB.jpg" alt="Store是Region服务器的核心 .jpg"></li>
+</ul>
+<h2 id="HLog工作原理"><a href="#HLog工作原理" class="headerlink" title="HLog工作原理"></a>HLog工作原理</h2><ul>
+<li>分布式环境必须要考虑系统出错。HBase采用HLog保证系统恢复</li>
+<li>HBase系统为每个Region服务器配置了一个HLog文件，它是一种预写式日志（Write Ahead Log）</li>
+<li>用户更新数据必须首先写入日志后，才能写入MemStore缓存，并且，直到MemStore缓存内容对应的日志已经写入磁盘，该缓存内容才能被刷写到磁盘</li>
+<li>Zookeeper会实时监测每个Region服务器的状态，当某个Region服务器发生故障时，Zookeeper会通知Master</li>
+<li>Master首先会处理该故障Region服务器上面遗留的HLog文件，这个遗留的HLog文件中包含了来自多个Region对象的日志记录</li>
+<li>系统会根据每条日志记录所属的Region对象对HLog数据进行拆分，分别放到相应Region对象的目录下，然后，再将失效的Region重新分配到可用的Region服务器中，并把与该Region对象相关的HLog日志记录也发送给相应的Region服务器</li>
+<li>Region服务器领取到分配给自己的Region对象以及与之相关的HLog日志记录以后，会重新做一遍日志记录中的各种操作，把日志记录中的数据写入到MemStore缓存中，然后，刷新到磁盘的StoreFile文件中，完成数据恢复</li>
+<li>共用日志优点：提高对表的写操作性能；缺点：恢复时需要分拆日志</li>
+</ul>
+<h1 id="HBase应用方案"><a href="#HBase应用方案" class="headerlink" title="HBase应用方案"></a>HBase应用方案</h1><h2 id="HBase实际应用中的性能优化方法"><a href="#HBase实际应用中的性能优化方法" class="headerlink" title="HBase实际应用中的性能优化方法"></a>HBase实际应用中的性能优化方法</h2><h3 id="行健（Row-Key）"><a href="#行健（Row-Key）" class="headerlink" title="行健（Row Key）"></a>行健（Row Key）</h3><ul>
+<li>行键是按照字典序存储，因此，设计行键时，要充分利用这个排序特点，将经常一起读取的数据存储到一块，将最近可能会被访问的数据放在一块。</li>
+<li>举个例子：如果最近写入HBase表中的数据是最可能被访问的，可以考虑将时间戳作为行键的一部分，由于是字典序排序，所以可以使用Long.MAX_VALUE - timestamp作为行键，这样能保证新写入的数据在读取时可以被快速命中。<h3 id="Inmemory"><a href="#Inmemory" class="headerlink" title="Inmemory"></a>Inmemory</h3></li>
+<li>创建表的时候，可以通过HColumnDescriptor.setInMemory(true)将表放到Region服务器的缓存中，保证在读取的时候被cache命中。<h3 id="Max-Version"><a href="#Max-Version" class="headerlink" title="Max Version"></a>Max Version</h3></li>
+<li>创建表的时候，可以通过HColumnDescriptor.setMaxVersions(int maxVersions)设置表中数据的最大版本，如果只需要保存最新版本的数据，那么可以设置setMaxVersions(1)。<h3 id="Time-To-Live"><a href="#Time-To-Live" class="headerlink" title="Time To Live"></a>Time To Live</h3></li>
+<li>创建表的时候，可以通过HColumnDescriptor.setTimeToLive(int timeToLive)设置表中数据的存储生命期，过期数据将自动被删除，例如如果只需要存储最近两天的数据，那么可以设置setTimeToLive(2 * 24 * 60 * 60)。<h2 id="HBase性能监视"><a href="#HBase性能监视" class="headerlink" title="HBase性能监视"></a>HBase性能监视</h2></li>
+<li>Master-status(自带)</li>
+<li>Ambari</li>
+<li>OpenTSDB</li>
+<li>Ganglia<h2 id="在HBase之上构建SQL引擎"><a href="#在HBase之上构建SQL引擎" class="headerlink" title="在HBase之上构建SQL引擎"></a>在HBase之上构建SQL引擎</h2></li>
+<li>Hive整合HBase</li>
+<li>Phoenix<h2 id="构建HBase二级索引"><a href="#构建HBase二级索引" class="headerlink" title="构建HBase二级索引"></a>构建HBase二级索引</h2></li>
+<li>HBase只有一个针对行健的索引，访问HBase表中的行，只有三种方式：<ul>
+<li>通过单个行健访问</li>
+<li>通过一个行健的区间来访问</li>
+<li>全表扫描</li>
+</ul>
+</li>
+<li>二级索引延展<ul>
+<li>Hindex二级索引</li>
+<li>HBase+Redis</li>
+<li>HBase+solr</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/09/14/YARN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/14/YARN/" itemprop="url">YARN</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-14T19:14:41+08:00">
+                2018-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="MapReduce-1-0-缺陷"><a href="#MapReduce-1-0-缺陷" class="headerlink" title="MapReduce 1.0 缺陷"></a>MapReduce 1.0 缺陷</h2><ol>
+<li>存在单点故障</li>
+<li>JobTracker“大包大揽”导致任务过重（任务多时内存开销大，上限4000节点）</li>
+<li>容易出现内存溢出（分配资源只考虑MapReduce任务数，不考虑CPU、内存）</li>
+<li>资源划分不合理（强制划分为slot ，包括Map slot和Reduce slot）<br><img src="https://i.loli.net/2019/08/14/N3suO6efTaCHiRJ.png" alt="MapReduce.png"><h2 id="YARN设计思路"><a href="#YARN设计思路" class="headerlink" title="YARN设计思路"></a>YARN设计思路</h2><img src="https://i.loli.net/2019/08/14/a3U6zutpq842PxB.jpg" alt="YARN思想.jpg"></li>
+</ol>
+<ul>
+<li>MapReduce1.0既是一个计算框架，也是一个资源管理调度框架</li>
+<li>到了Hadoop2.0以后，MapReduce1.0中的资源管理调度功能，被单独分离出来形成了YARN，它是一个<strong><font color="red">纯粹的资源管理调度框架</font></strong>，而不是一个计算框架</li>
+<li>被剥离了资源管理调度功能的MapReduce 框架就变成了MapReduce2.0，它是运行在YARN之上的一个纯粹的计算框架，不再自己负责资源调度管理服务，而是由YARN为其提供资源管理调度服务<h2 id="YARN体系结构"><a href="#YARN体系结构" class="headerlink" title="YARN体系结构"></a>YARN体系结构</h2></li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/14/3PfAOUQlqIabNdg.jpg" alt="YARN体系结构.jpg"></p>
+<ul>
+<li>ResourceManager<ul>
+<li>处理客户端请求</li>
+<li>启动/监控ApplicationMaster</li>
+<li>监控NodeManager</li>
+<li>资源分配与调度</li>
+</ul>
+</li>
+<li>ApplicationMaster<ul>
+<li>为应用程序申请资源，并分配给内部任务</li>
+<li>任务调度、监控与容错</li>
+</ul>
+</li>
+<li>NodeManager<ul>
+<li>单个节点上的资源管理</li>
+<li>处理来自ResourceManger的命令</li>
+<li>处理来自ApplicationMaster的命令</li>
+</ul>
+</li>
+</ul>
+<h3 id="ResourceManager"><a href="#ResourceManager" class="headerlink" title="ResourceManager"></a>ResourceManager</h3><ul>
+<li>ResourceManager（RM）是一个全局的资源管理器，负责整个系统的资源管理和分配，主要包括两个组件，即调度器（Scheduler）和应用程序管理器（Applications Manager）</li>
+<li>调度器接收来自ApplicationMaster的应用程序资源请求，把集群中的资源以“容器”的形式分配给提出申请的应用程序，容器的选择通常会考虑应用程序所要处理的数据的位置，进行就近选择，从而实现“计算向数据靠拢”</li>
+<li>容器（Container）作为动态资源分配单位，每个容器中都封装了一定数量的CPU、内存、磁盘等资源，从而限定每个应用程序可以使用的资源量</li>
+<li>调度器被设计成是一个可插拔的组件，YARN不仅自身提供了许多种直接可用的调度器，也允许用户根据自己的需求重新设计调度器</li>
+<li>应用程序管理器（Applications Manager）负责系统中所有应用程序的管理工作，主要包括应用程序提交、与调度器协商资源以启动ApplicationMaster、监控ApplicationMaster运行状态并在失败时重新启动等</li>
+</ul>
+<h3 id="ApplicatonMaster"><a href="#ApplicatonMaster" class="headerlink" title="ApplicatonMaster"></a>ApplicatonMaster</h3><p>ResourceManager接收用户提交的作业，按照作业的上下文信息以及从NodeManager收集来的容器状态信息，启动调度过程，为用户作业启动一个ApplicationMaster</p>
+<ol>
+<li>当用户作业提交时，ApplicationMaster与ResourceManager协商获取资源，ResourceManager会以容器的形式为ApplicationMaster分配资源；</li>
+<li>把获得的资源进一步分配给内部的各个任务（Map任务或Reduce任务），实现资源的“二次分配”；</li>
+<li>与NodeManager保持交互通信进行应用程序的启动、运行、监控和停止，监控申请到的资源的使用情况，对所有任务的执行进度和状态进行监控，并在任务发生失败时执行失败恢复（即重新申请资源重启任务）；</li>
+<li>定时向ResourceManager发送“心跳”消息，报告资源的使用情况和应用的进度信息；</li>
+<li>当作业完成时，ApplicationMaster向ResourceManager注销容器，执行周期完成。</li>
+</ol>
+<h3 id="NodeManager"><a href="#NodeManager" class="headerlink" title="NodeManager"></a>NodeManager</h3><p>NodeManager是驻留在一个YARN集群中的每个节点上的代理，主要负责：</p>
+<ul>
+<li>容器生命周期管理</li>
+<li>监控每个容器的资源（CPU、内存等）使用情况</li>
+<li>跟踪节点健康状况</li>
+<li>以“心跳”的方式与ResourceManager保持通信</li>
+<li>向ResourceManager汇报作业的资源使用情况和每个容器的运行状态</li>
+<li>接收来自ApplicationMaster的启动/停止容器的各种请求<br> 需要说明的是，NodeManager主要负责管理抽象的容器，只处理与容器相关的事情，而不具体负责每个任务（Map任务或Reduce任务）自身状态的管理，因为这些管理工作是由ApplicationMaster完成的，ApplicationMaster会通过不断与NodeManager通信来掌握各个任务的执行状态</li>
+</ul>
+<h3 id="部署方式"><a href="#部署方式" class="headerlink" title="部署方式"></a>部署方式</h3><p>在集群部署方面，YARN的各个组件是和Hadoop集群中的其他组件进行统一部署的<br><img src="https://i.loli.net/2019/08/14/e4LE8oCTpHQXWDa.jpg" alt="YARN部署.jpg"></p>
+<h2 id="YARN工作流程"><a href="#YARN工作流程" class="headerlink" title="YARN工作流程"></a>YARN工作流程</h2><p><img src="https://i.loli.net/2019/08/14/yrhHzDjPWkf64bZ.jpg" alt="YARN工作流程.jpg"></p>
+<ol>
+<li>用户编写客户端应用程序，向YARN提交应用程序，提交的内容包括ApplicationMaster程序、启动ApplicationMaster的命令、用户程序等</li>
+<li>YARN中的ResourceManager负责接收和处理来自客户端的请求，为应用程序分配一个容器，在该容器中启动一个ApplicationMaster</li>
+<li>ApplicationMaster被创建后会首先向ResourceManager注册</li>
+<li>ApplicationMaster采用轮询的方式向ResourceManager申请资源</li>
+<li>ResourceManager以“容器”的形式向提出申请的ApplicationMaster分配资源</li>
+<li>在容器中启动任务（运行环境、脚本）</li>
+<li>各个任务向ApplicationMaster汇报自己的状态和进度</li>
+<li>应用程序运行完成后，ApplicationMaster向ResourceManager的应用程序管理器注销并关闭自己</li>
+</ol>
+<h2 id="YARN框架与MapReduce1-0框架的对比分析"><a href="#YARN框架与MapReduce1-0框架的对比分析" class="headerlink" title="YARN框架与MapReduce1.0框架的对比分析"></a>YARN框架与MapReduce1.0框架的对比分析</h2><ul>
+<li>从MapReduce1.0框架发展到YARN框架，客户端并没有发生变化，其大部分调用API及接口都保持兼容，因此，原来针对Hadoop1.0开发的代码不用做大的改动，就可以直接放到Hadoop2.0平台上运行</li>
+<li>总体而言，YARN相对于MapReduce1.0来说具有以下优势：<ul>
+<li>大大减少了承担中心服务功能的ResourceManager的资源消耗</li>
+<li>ApplicationMaster来完成需要大量资源消耗的任务调度和监控</li>
+<li>多个作业对应多个ApplicationMaster，实现了监控分布化</li>
+</ul>
+</li>
+<li>MapReduce1.0既是一个计算框架，又是一个资源管理调度框架，但是，只能支持MapReduce编程模型。而YARN则是一个纯粹的资源调度管理框架，在它上面可以运行包括MapReduce在内的不同类型的计算框架，只要编程实现相应的ApplicationMaster</li>
+<li>YARN中的资源管理比MapReduce1.0更加高效<ul>
+<li>以容器为单位，而不是以slot为单位<h2 id="YARN的发展目标"><a href="#YARN的发展目标" class="headerlink" title="YARN的发展目标"></a>YARN的发展目标</h2><img src="https://i.loli.net/2019/08/14/wzSyC8bfdBp6iMI.jpg" alt="YARN上各种计算框架.jpg"></li>
+</ul>
+</li>
+<li><strong>YARN的目标就是实现“一个集群多个框架”</strong>即在一个集群上部署一个统一的资源调度管理框架YARN，在YARN之上可以部署其他各种计算框架</li>
+<li>由YARN为这些计算框架提供统一的资源调度管理服务，并且能够根据各种计算框架的负载需求，调整各自占用的资源，实现集群资源共享和资源弹性收缩</li>
+<li>可以实现一个集群上的不同应用负载混搭，有效提高了集群的利用率</li>
+<li>不同计算框架可以共享底层存储，避免了数据集跨集群移动</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/08/13/MapReduce/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/13/MapReduce/" itemprop="url">MapReduce</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-13T19:08:03+08:00">
+                2018-08-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="MapReduce模型"><a href="#MapReduce模型" class="headerlink" title="MapReduce模型"></a>MapReduce模型</h2><ul>
+<li>MapReduce将复杂的、运行于大规模集群上的并行计算过程高度地抽象到了两个函数：Map和Reduce</li>
+<li>编程容易，不需要掌握分布式并行编程细节，也可以很容易把自己的程序运行在分布式系统上，完成海量数据的计算</li>
+<li>MapReduce采用<font color="red"><strong>“分而治之”</strong></font>策略，一个存储在分布式文件系统中的大规模数据集，会被切分成许多独立的分片（split），这些分片可以被多个Map任务并行处理</li>
+<li>MapReduce设计的一个理念就是<font color="red"><strong>“计算向数据靠拢”</strong></font>，而不是“数据向计算靠拢”，因为，移动数据需要大量的网络传输开销</li>
+<li>MapReduce框架采用了Master/Slave架构，包括一个Master和若干个Slave。Master上运行JobTracker，Slave上运行TaskTracker </li>
+<li>Hadoop框架是用Java实现的，但是，MapReduce应用程序则不一定要用Java来写 </li>
+</ul>
+<h2 id="Map和Reduce函数"><a href="#Map和Reduce函数" class="headerlink" title="Map和Reduce函数"></a>Map和Reduce函数</h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>输入</th>
+<th>输出</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Map</td>
+<td>&lt;k1,v1&gt;如：&lt;行号,”a b c”&gt;</td>
+<td>List(&lt;k2,v2&gt;)如：&lt;“a”,1&gt;&lt;“b”,1&gt; &lt;“c”,1&gt;</td>
+<td align="left">1.将小数据集进一步解析成一批&lt;key,value&gt;对，输入Map函数中进行处理 2.每一个输入的&lt;k1,v1&gt;会输出一批&lt;k2,v2&gt;。&lt;k2,v2&gt;是计算的中间结果</td>
+</tr>
+<tr>
+<td>Reduce</td>
+<td>&lt;k2,List(v2)&gt; 如：&lt;“a”,&lt;1,1,1&gt;&gt;</td>
+<td>&lt;k3,v3&gt; &lt;“a”,3&gt;</td>
+<td align="left">输入的中间结果&lt;k2,List(v2)&gt;中的List(v2)表示是一批属于同一个k2的value</td>
+</tr>
+</tbody></table>
+<h2 id="MapReduce的体系结构"><a href="#MapReduce的体系结构" class="headerlink" title="MapReduce的体系结构"></a>MapReduce的体系结构</h2><p>MapReduce体系结构主要由四个部分组成，分别是：Client、JobTracker、TaskTracker以及Task<br><img src="https://i.loli.net/2019/08/14/N3suO6efTaCHiRJ.png" alt="MapReduce.png"></p>
+<h3 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h3><ul>
+<li>用户编写的MapReduce程序通过Client提交到JobTracker端</li>
+<li>用户可通过Client提供的一些接口查看作业运行状态<h3 id="JobTracker"><a href="#JobTracker" class="headerlink" title="JobTracker"></a>JobTracker</h3></li>
+<li>JobTracker负责资源监控和作业调度</li>
+<li>JobTracker 监控所有TaskTracker与Job的健康状况，一旦发现失败，就将相应的任务转移到其他节点</li>
+<li>JobTracker 会跟踪任务的执行进度、资源使用量等信息，并将这些信息告诉任务调度器（TaskScheduler），而调度器会在资源出现空闲时，选择合适的任务去使用这些资源<h3 id="TaskTracker"><a href="#TaskTracker" class="headerlink" title="TaskTracker"></a>TaskTracker</h3></li>
+<li>TaskTracker 会周期性地通过“心跳”将本节点上资源的使用情况和任务的运行进度汇报给JobTracker，同时接收JobTracker 发送过来的命令并执行相应的操作（如启动新任务、杀死任务等）</li>
+<li>TaskTracker 使用“slot”等量划分本节点上的资源量（CPU、内存等）。一个Task 获取到一个slot 后才有机会运行，而Hadoop调度器的作用就是将各个TaskTracker上的空闲slot分配给Task使用。slot 分为Map slot 和Reduce slot 两种，分别供MapTask 和Reduce Task 使用<h3 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h3></li>
+<li>Task 分为Map Task 和Reduce Task 两种，均由TaskTracker 启动</li>
+</ul>
+<h2 id="MapReduce工作流程"><a href="#MapReduce工作流程" class="headerlink" title="MapReduce工作流程"></a>MapReduce工作流程</h2><h3 id="工作流程概述"><a href="#工作流程概述" class="headerlink" title="工作流程概述"></a>工作流程概述</h3><p><img src="https://i.loli.net/2019/08/14/6aMxLNtEWOicV5P.jpg" alt="MapReduce工作流程.jpg"></p>
+<ul>
+<li>不同的Map任务之间不会进行通信</li>
+<li>不同的Reduce任务之间也不会发生任何信息交换</li>
+<li>用户不能显式地从一台机器向另一台机器发送消息</li>
+<li>所有的数据交换都是通过MapReduce框架自身去实现的<h3 id="MapReduce各个执行阶段"><a href="#MapReduce各个执行阶段" class="headerlink" title="MapReduce各个执行阶段"></a>MapReduce各个执行阶段</h3><img src="https://i.loli.net/2019/08/14/7GtfeaTjuilJyAC.jpg" alt="MapReduce各个阶段.jpg"><h4 id="关于Spilt（分片）"><a href="#关于Spilt（分片）" class="headerlink" title="关于Spilt（分片）"></a>关于Spilt（分片）</h4><img src="https://i.loli.net/2019/08/14/iBMRf2n7VOW5c9U.jpg" alt="Spilt分片.jpg"><br>HDFS 以固定大小的block 为基本单位存储数据，而对于MapReduce 而言，其处理单位是split。split 是一个逻辑概念，它只包含一些元数据信息，比如数据起始位置、数据长度、数据所在节点等。它的划分方法完全由用户自己决定。<h4 id="Map任务数量"><a href="#Map任务数量" class="headerlink" title="Map任务数量"></a>Map任务数量</h4></li>
+<li>Hadoop为每个split创建一个Map任务，split 的多少决定了Map任务的数目。大多数情况下，理想的分片大小是一个HDFS块<h4 id="Reduce任务数量"><a href="#Reduce任务数量" class="headerlink" title="Reduce任务数量"></a>Reduce任务数量</h4></li>
+<li>最优的Reduce任务个数取决于集群中可用的reduce任务槽(slot)的数目</li>
+<li>通常设置比reduce任务槽数目稍微小一些的Reduce任务个数（这样可以预留一些系统资源处理可能发生的错误）<h3 id="Shuffle过程详解"><a href="#Shuffle过程详解" class="headerlink" title="Shuffle过程详解"></a>Shuffle过程详解</h3></li>
+</ul>
+<ol>
+<li>Shuffle过程简介<br><img src="https://i.loli.net/2019/08/14/3NpMWh6L41Dz9IQ.jpg" alt="shuffle.jpg"></li>
+<li>Map端的Shuffle过程<br><img src="https://i.loli.net/2019/08/14/5mnoagOvUxbYy19.jpg" alt="Map端shuffle.jpg"></li>
+</ol>
+<ul>
+<li>每个Map任务分配一个缓存</li>
+<li>MapReduce默认100MB缓存</li>
+<li>设置溢写比例0.8</li>
+<li>分区默认采用哈希函数</li>
+<li>排序是默认的操作</li>
+<li>排序后可以合并（Combine）</li>
+<li>合并不能改变最终结果</li>
+<li>在Map任务全部结束之前进行归并</li>
+<li>归并得到一个大的文件，放在本地磁盘</li>
+<li>文件归并时，如果溢写文件数量大于预定值（默认是3）则可以再次启动Combiner，少于3不需要</li>
+<li>JobTracker会一直监测Map任务的执行，并通知Reduce任务来领取数据</li>
+</ul>
+<p>合并（Combine）和归并（Merge）的区别：<br>两个键值对&lt;“a”,1&gt;和&lt;“a”,1&gt;，如果合并，会得到&lt;“a”,2&gt;，如果归并，会得到&lt;“a”,&lt;1,1&gt;&gt;</p>
+<ol start="3">
+<li>Reduce端的shuffle过程</li>
+</ol>
+<ul>
+<li>Reduce任务通过RPC向JobTracker询问Map任务是否已经完成，若完成，则领取数据</li>
+<li>Reduce领取数据先放入缓存，来自不同Map机器，先归并，再合并，写入磁盘</li>
+<li>多个溢写文件归并成一个或多个大文件，文件中的键值对是排序的</li>
+<li>当数据很少时，不需要溢写到磁盘，直接在缓存中归并，然后输出给Reduce<br><img src="https://i.loli.net/2019/08/14/EkQv7xD5a9YtA4F.jpg" alt="Reduce端shuffle.jpg"><h3 id="MapReduce应用程序执行过程"><a href="#MapReduce应用程序执行过程" class="headerlink" title="MapReduce应用程序执行过程"></a>MapReduce应用程序执行过程</h3><img src="https://i.loli.net/2019/08/14/KUiuB7o6pzYZeLg.jpg" alt="MapReduce执行过程.jpg"></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/08/08/HDFS-分布式文件系统/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/08/HDFS-分布式文件系统/" itemprop="url">HDFS-分布式文件系统</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-08T18:55:50+08:00">
+                2018-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Hadoop-分布式文件系统-HDFS"><a href="#Hadoop-分布式文件系统-HDFS" class="headerlink" title="Hadoop 分布式文件系统-HDFS"></a>Hadoop 分布式文件系统-HDFS</h1><p>分布式文件系统在物理结构上是由计算机集群中的多个节点构成的，这些节点分为两类，一类叫“主节点”(Master Node)或者也被称为“名称结点”(NameNode)，另一类叫“从节点”（Slave Node）或者也被称为“数据节点”(DataNode)<br><img src="https://i.loli.net/2019/08/13/tqh4cEsCudyDOPX.jpg" alt="图片1.jpg"></p>
+<h2 id="HDFS要实现的目标如下："><a href="#HDFS要实现的目标如下：" class="headerlink" title="HDFS要实现的目标如下："></a>HDFS要实现的目标如下：</h2><ul>
+<li>兼容廉价的硬件设备</li>
+<li>流数据读写</li>
+<li>大数据集</li>
+<li>简单的文件模型</li>
+<li>强大的跨平台兼容性<br>HDFS在实现以上特性同时，也使得自身有一些局限性，主要包括如下几个方面：</li>
+<li>不适合低延迟数据访问</li>
+<li>无法高效存储大量小文件</li>
+<li>不支持多用户写入及任意修改文件</li>
+</ul>
+<h2 id="块"><a href="#块" class="headerlink" title="块"></a>块</h2><ul>
+<li>HDFS默认一个块64MB，一个文件被分成多个块，以块作为存储单位块的大小远远大于普通文件系统，可以最小化寻址开销</li>
+<li>HDFS采用抽象的块概念可以带来以下几个明显的好处：<ul>
+<li>支持大规模文件存储：文件以块为单位进行存储，一个大规模文件可以被分拆成若干个文件块，不同的文件块可以被分发到不同的节点上，因此，一个文件的大小不会受到单个节点的存储容量的限制，可以远远大于网络中任意节点的存储容量</li>
+<li>简化系统设计：首先，大大简化了存储管理，因为文件块大小是固定的，这样就可以很容易计算出一个节点可以存储多少文件块；其次，方便了元数据的管理，元数据不需要和文件块一起存储，可以由其他系统负责管理元数据</li>
+<li>适合数据备份：每个文件块都可以冗余存储到多个节点上，大大提高了系统的容错性和可用性<h2 id="HDFS主要组件的功能"><a href="#HDFS主要组件的功能" class="headerlink" title="HDFS主要组件的功能"></a>HDFS主要组件的功能</h2></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>NameNode</strong></th>
+<th align="left"><strong>DataNode</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">存储元数据</td>
+<td align="left">存储文件内容</td>
+</tr>
+<tr>
+<td align="left">元数据保存在内存中</td>
+<td align="left">文件内容保存在磁盘上</td>
+</tr>
+<tr>
+<td align="left">保存文件，block，datanode之间的映射关系</td>
+<td align="left">维护了block id 到datanode本地文件的映射关系</td>
+</tr>
+</tbody></table>
+<h3 id="NameNode-数据结构"><a href="#NameNode-数据结构" class="headerlink" title="NameNode 数据结构"></a>NameNode 数据结构</h3><ul>
+<li>在HDFS中，名称节点（NameNode）负责管理分布式文件系统的命名空间（Namespace），保存了两个核心的数据结构，即FsImage和EditLog<ul>
+<li>FsImage用于维护文件系统树以及文件树中所有的文件和文件夹的元数据</li>
+<li>操作日志文件EditLog中记录了所有针对文件的创建、删除、重命名等操作</li>
+</ul>
+</li>
+<li>名称节点记录了每个文件中各个块所在的数据节点的位置信息<br><img src="https://i.loli.net/2019/08/13/m8GYhtLoaIpbq2d.jpg" alt="图片2.jpg"><h4 id="FsImage文件"><a href="#FsImage文件" class="headerlink" title="FsImage文件"></a>FsImage文件</h4><ul>
+<li>FsImage文件包含文件系统中所有目录和文件inode的序列化形式。每个inode是一个文件或目录的元数据的内部表示，并包含此类信息：文件的复制等级、修改和访问时间、访问权限、块大小以及组成文件的块。对于目录，则存储修改时间、权限和配额元数据</li>
+<li>FsImage文件没有记录文件包含哪些块以及每个块存储在哪个数据节点。而是由名称节点把这些映射信息保留在内存中，当数据节点加入HDFS集群时，数据节点会把自己所包含的块列表告知给名称节点，此后会定期执行这种告知操作，以确保名称节点的块映射是最新的<h4 id="名称节点启动"><a href="#名称节点启动" class="headerlink" title="名称节点启动"></a>名称节点启动</h4></li>
+<li>在名称节点启动的时候，它会将FsImage文件中的内容加载到内存中，之后再执行EditLog文件中的各项操作，使得内存中的元数据和实际的同步，存在内存中的元数据支持客户端的读操作。</li>
+<li>一旦在内存中成功建立文件系统元数据的映射，则创建一个新的FsImage文件和一个空的EditLog文件</li>
+<li>名称节点起来之后，HDFS中的更新操作会重新写到EditLog文件中，因为FsImage文件一般都很大（GB级别的很常见），如果所有的更新操作都往FsImage文件中添加，这样会导致系统运行的十分缓慢，但是，如果往EditLog文件里面写就不会这样，因为EditLog 要小很多。每次执行写操作之后，且在向客户端发送成功代码之前，edits文件都需要同步更新<h4 id="名称节点运行期间EditLog不断变大问题"><a href="#名称节点运行期间EditLog不断变大问题" class="headerlink" title="名称节点运行期间EditLog不断变大问题"></a>名称节点运行期间EditLog不断变大问题</h4></li>
+<li>在名称节点运行期间，HDFS的所有更新操作都是直接写到EditLog中，久而久之， EditLog文件将会变得很大</li>
+<li>虽然这对名称节点运行时候是没有什么明显影响的，但是，当名称节点重启的时候，名称节点需要先将FsImage里面的所有内容映像到内存中，然后再一条一条地执行EditLog中的记录，当EditLog文件非常大的时候，会导致名称节点启动操作非常慢，而在这段时间内HDFS系统处于安全模式，一直无法对外提供写操作，影响了用户的使用</li>
+</ul>
+<strong>答案：SecondaryNameNode第二名称节点</strong><h4 id="Secondary-Namenode-工作情况"><a href="#Secondary-Namenode-工作情况" class="headerlink" title="Secondary Namenode 工作情况"></a>Secondary Namenode 工作情况</h4><img src="https://i.loli.net/2019/08/13/c8lQmqSNioyRFxM.png" alt="图片3.png"><ol>
+<li>SecondaryNameNode会定期和NameNode通信，请求其停止使用EditLog文件，暂时将新的写操作写到一个新的文件edit.new上来，这个操作是瞬间完成，上层写日志的函数完全感觉不到差别；</li>
+<li>SecondaryNameNode通过HTTP GET方式从NameNode上获取到FsImage和EditLog文件，并下载到本地的相应目录下；</li>
+<li>SecondaryNameNode将下载下来的FsImage载入到内存，然后一条一条地执行EditLog文件中的各项更新操作，使得内存中的FsImage保持最新；这个过程就是EditLog和FsImage文件合并；</li>
+<li>SecondaryNameNode执行完（3）操作之后，会通过post方式将新的FsImage文件发送到NameNode节点上</li>
+<li>NameNode将从SecondaryNameNode接收到的新的FsImage替换旧的FsImage文件，同时将edit.new替换EditLog文件，通过这个过程EditLog就变小了<h3 id="DataNode"><a href="#DataNode" class="headerlink" title="DataNode"></a>DataNode</h3></li>
+</ol>
+<ul>
+<li>数据节点是分布式文件系统HDFS的工作节点，负责数据的存储和读取，会根据客户端或者名称节点的调度来进行数据的存储和检索，并且向名称节点定期发送自己所存储的快的列表</li>
+<li>每个数据节点中的数据会被保存在各自节点的本地linux文件系统中<h2 id="FDHS体系结构"><a href="#FDHS体系结构" class="headerlink" title="FDHS体系结构"></a>FDHS体系结构</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3>HDFS采用了主从（Master/Slave）结构模型，一个HDFS集群包括一个名称节点（NameNode）和若干个数据节点（DataNode）（如图3-4所示）。名称节点作为中心服务器，负责管理文件系统的命名空间及客户端对文件的访问。集群中的数据节点一般是一个节点运行一个数据节点进程，负责处理文件系统客户端的读/写请求，在名称节点的统一调度下进行数据块的创建、删除和复制等操作。每个数据节点的数据实际上是保存在本地Linux文件系统中的<br><img src="https://i.loli.net/2019/08/13/WG3cMdAf8KLiSHe.jpg" alt="图片4.jpg"><h3 id="命名空间管理"><a href="#命名空间管理" class="headerlink" title="命名空间管理"></a>命名空间管理</h3></li>
+<li>HDFS的命名空间包含目录、文件和块</li>
+<li>在HDFS1.0体系架构中，在整个HDFS集群中只有一个命名空间，并且只有唯一一个名称节点，该节点负责这个命名空间进行管理</li>
+<li>HDFS使用传统的分级文件系统，因此用户可以像使用普通文件系统一样，创建、删除目录和文件，在目录间转移文件，重命名文件等<h3 id="通信协议"><a href="#通信协议" class="headerlink" title="通信协议"></a>通信协议</h3></li>
+<li>HDFS是一个部署在集群上的分布式文件系统，因此，很多数据需要通过网络进行传输</li>
+<li>所有的HDFS通信协议都是构建在TCP/IP协议基础之上的</li>
+<li>客户端通过一个可配置的端口向名称节点主动发起TCP连接，并使用客户端协议与名称节点进行交互</li>
+<li>名称节点和数据节点之间则使用数据节点协议进行交互</li>
+<li>客户端与数据节点的交互是通过RPC（Remote Procedure Call）来实现的。在设计上，名称节点不会主动发起RPC，而是响应来自客户端和数据节点的RPC请求<h3 id="client"><a href="#client" class="headerlink" title="client"></a>client</h3></li>
+<li>客户端是用户操作HDFS最常用的方式，HDFS在部署时都提供了客户端</li>
+<li>HDFS客户端是一个库，暴露了HDFS文件系统接口，这些接口隐藏了HDFS实现中的大部分复杂性</li>
+<li>严格来说，客户端并不算是HDFS的一部分</li>
+<li>客户端可以支持打开、读取、写入等常见的操作，并且提供了类似Shell的命令行方式来访问HDFS中的数据</li>
+<li>此外，HDFS也提供了Java API，作为应用程序访问文件系统的客户端编程接口<h3 id="HDFS体系结构的局限性"><a href="#HDFS体系结构的局限性" class="headerlink" title="HDFS体系结构的局限性"></a>HDFS体系结构的局限性</h3></li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>命名空间的限制：名称节点是保存在内存中的，因此，名称节点能够容纳的对象（文件、块）的个数会受到内存空间大小的限制。</li>
+<li>性能的瓶颈：整个分布式文件系统的吞吐量，受限于单个名称节点的吞吐量。</li>
+<li>隔离问题：由于集群中只有一个名称节点，只有一个命名空间，因此，无法对不同应用程序进行隔离。</li>
+<li>集群的可用性：一旦这个唯一的名称节点发生故障，会导致整个集群变得不可用<h2 id="HDFS存储原理"><a href="#HDFS存储原理" class="headerlink" title="HDFS存储原理"></a>HDFS存储原理</h2><h3 id="冗余数据保存"><a href="#冗余数据保存" class="headerlink" title="冗余数据保存"></a>冗余数据保存</h3>作为一个分布式文件系统，为了保证系统的容错性和可用性，HDFS采用了多副本方式对数据进行冗余存储，通常一个数据块的多个副本会被分布到不同的数据节点上，如图所示，数据块1被分别存放到数据节点A和C上，数据块2被存放在数据节点A和B上。这种多副本方式具有以下几个优点：<br><img src="https://i.loli.net/2019/08/14/o2ztn561hLSlrKw.jpg" alt="数据块副本.jpg"><ol>
+<li>加快数据传输速度</li>
+<li>容易检查数据错误</li>
+<li>保证数据可靠性<h3 id="数据存取策略"><a href="#数据存取策略" class="headerlink" title="数据存取策略"></a>数据存取策略</h3><h4 id="数据存放"><a href="#数据存放" class="headerlink" title="数据存放"></a>数据存放</h4><img src="https://i.loli.net/2019/08/14/aehmCizsqG9dM38.jpg" alt="数据副本放置策略.jpg"></li>
+</ol>
+<ul>
+<li>第一个副本：放置在上传文件的数据节点；如果是集群外提交，则随机挑选一台磁盘不太满、CPU不太忙的节点</li>
+<li>第二个副本：放置在与第一个副本不同的机架的节点上</li>
+<li>第三个副本：与第一个副本相同机架的其他节点上</li>
+<li>更多副本：随机节点<h4 id="数据读取"><a href="#数据读取" class="headerlink" title="数据读取"></a>数据读取</h4></li>
+<li>HDFS提供了一个API可以确定一个数据节点所属的机架ID，客户端也可以调用API获取自己所属的机架ID</li>
+<li>当客户端读取数据时，从名称节点获得数据块不同副本的存放位置列表，列表中包含了副本所在的数据节点，可以调用API来确定客户端和这些数据节点所属的机架ID，当发现某个数据块副本对应的机架ID和客户端对应的机架ID相同时，就优先选择该副本读取数据，如果没有发现，就随机选择一个副本读取数据<h3 id="数据错误与恢复"><a href="#数据错误与恢复" class="headerlink" title="数据错误与恢复"></a>数据错误与恢复</h3>HDFS具有较高的容错性，可以兼容廉价的硬件，它把硬件出错看作一种常态，而不是异常，并设计了相应的机制检测数据错误和进行自动恢复，主要包括以下几种情形：名称节点出错、数据节点出错和数据出错。<h4 id="名称节点出错"><a href="#名称节点出错" class="headerlink" title="名称节点出错"></a>名称节点出错</h4>名称节点保存了所有的元数据信息，其中，最核心的两大数据结构是FsImage和Editlog，如果这两个文件发生损坏，那么整个HDFS实例将失效。因此，HDFS设置了备份机制，把这些核心文件同步复制到备份服务器SecondaryNameNode上。当名称节点出错时，就可以根据备份服务器SecondaryNameNode中的FsImage和Editlog数据进行恢复。<h4 id="数据节点出错"><a href="#数据节点出错" class="headerlink" title="数据节点出错"></a>数据节点出错</h4></li>
+<li>每个数据节点会定期向名称节点发送“心跳”信息，向名称节点报告自己的状态</li>
+<li>当数据节点发生故障，或者网络发生断网时，名称节点就无法收到来自一些数据节点的心跳信息，这时，这些数据节点就会被标记为“机”，节点上面的所有数据都会被标记为“不可读”，名称节点不会再给它们发送任何I/O请求</li>
+<li>这时，有可能出现一种情形，即由于一些数据节点的不可用，会导致一些数据块的副本数量小于冗余因子</li>
+<li>名称节点会定期检查这种情况，一旦发现某个数据块的副本数量小于冗余因子，就会启动数据冗余复制，为它生成新的副本</li>
+<li><strong>HDFS和其它分布式文件系统的最大区别就是可以调整冗余数据的位置</strong><h4 id="数据出错"><a href="#数据出错" class="headerlink" title="数据出错"></a>数据出错</h4></li>
+<li>网络传输和磁盘错误等因素，都会造成数据错误</li>
+<li>客户端在读取到数据后，会采用md5和sha1对数据块进行校验，以确定读取到正确的数据</li>
+<li>在文件被创建时，客户端就会对每一个文件块进行信息摘录，并把这些信息写入到同一个路径的隐藏文件里面</li>
+<li>当客户端读取文件的时候，会先读取该信息文件，然后，利用该信息文件对每个读取的数据块进行校验，如果校验出错，客户端就会请求到另外一个数据节点读取该文件块，并且向名称节点报告这个文件块有错误，名称节点会定期检查并且重新复制这个块<h1 id="Hadoop-HDFS-2-0"><a href="#Hadoop-HDFS-2-0" class="headerlink" title="Hadoop HDFS 2.0"></a>Hadoop HDFS 2.0</h1></li>
+</ul>
+</li>
+</ol>
+<h2 id="Hadoop-1-0-局限与不足"><a href="#Hadoop-1-0-局限与不足" class="headerlink" title="Hadoop 1.0 局限与不足"></a>Hadoop 1.0 局限与不足</h2><p>Hadoop1.0的核心组件（仅指MapReduce和HDFS，不包括Hadoop生态系统内的Pig、Hive、HBase等其他组件），主要存在以下不足：</p>
+<ul>
+<li>抽象层次低，需人工编码</li>
+<li>表达能力有限</li>
+<li>开发者自己管理作业（Job）之间的依赖关系</li>
+<li>难以看到程序整体逻辑</li>
+<li>执行迭代操作效率低</li>
+<li>资源浪费（Map和Reduce分两阶段执行）</li>
+<li>实时性差（适合批处理，不支持实时交互式）</li>
+</ul>
+<h2 id="自身框架改进与提升"><a href="#自身框架改进与提升" class="headerlink" title="自身框架改进与提升"></a>自身框架改进与提升</h2><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>Hadoop1.0的问题</th>
+<th>Hadoop2.0的改进</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HDFS</td>
+<td>单一名称节点，存在单点失效问题</td>
+<td>设计了HDFS HA，提供名称节点热备机制</td>
+</tr>
+<tr>
+<td>HDFS</td>
+<td>单一命名空间，无法实现资源隔离</td>
+<td>设计了HDFS Federation，管理多个命名空间</td>
+</tr>
+<tr>
+<td>MapReduce</td>
+<td>资源管理效率低</td>
+<td>设计了新的资源管理框架YARN</td>
+</tr>
+</tbody></table>
+<h2 id="HDFS2-0的新特性"><a href="#HDFS2-0的新特性" class="headerlink" title="HDFS2.0的新特性"></a>HDFS2.0的新特性</h2><h3 id="HDFS-HA"><a href="#HDFS-HA" class="headerlink" title="HDFS HA"></a>HDFS HA</h3><ul>
+<li>第二名称节点（SecondaryNameNode）无法解决单点故障问题<ul>
+<li>不是热备份</li>
+<li>要是防止日志文件EditLog过大，导致名称节点失败恢复时消耗过多时间</li>
+<li>附带起到冷备份功能</li>
+</ul>
+</li>
+<li>HDFS HA（High Availability）是为了解决单点故障问题</li>
+<li>HA集群设置两个名称节点，“活跃（Active）”和“待命（Standby）”</li>
+<li>两种名称节点的状态同步，可以借助于一个<strong>共享存储系统</strong>来实现</li>
+<li>一旦活跃名称节点出现故障，就可以立即切换到待命名称节点</li>
+<li>Zookeeper确保一个名称节点在对外服务</li>
+<li>名称节点维护映射信息，数据节点同时向两个名称节点汇报信息<br><img src="https://i.loli.net/2019/08/14/PAzmeqEVokFUHgG.jpg" alt="HDFS HA.jpg"></li>
+</ul>
+<h3 id="HDFS-Federation"><a href="#HDFS-Federation" class="headerlink" title="HDFS Federation"></a>HDFS Federation</h3><h4 id="HDFS1-0中存在的问题"><a href="#HDFS1-0中存在的问题" class="headerlink" title="HDFS1.0中存在的问题"></a>HDFS1.0中存在的问题</h4><ul>
+<li>单点故障问题</li>
+<li>不可以水平扩展（是否可以通过纵向扩展来解决？）</li>
+<li>系统整体性能受限于单个名称节点的吞吐量</li>
+<li>单个名称节点难以提供不同程序之间的隔离性</li>
+<li>HDFS HA是热备份，提供高可用性，但是无法解决可扩展性、系统性能和隔离性<h4 id="HDFS-Federation-设计"><a href="#HDFS-Federation-设计" class="headerlink" title="HDFS Federation 设计"></a>HDFS Federation 设计</h4></li>
+<li>在HDFS Federation中，设计了多个相互独立的名称节点，使得HDFS的命名服务能够水平扩展，这些名称节点分别进行各自命名空间和块的管理，相互之间是联盟（Federation）关系，不需要彼此协调。并且向后兼容</li>
+<li>HDFS Federation中，所有名称节点会共享底层的数据节点存储资源，数据节点向所有名称节点汇报</li>
+<li>属于同一个命名空间的块构成一个“块池”<br><img src="https://i.loli.net/2019/08/14/WsQN43FHywPftOu.jpg" alt="HDFS Federation架构.jpg"></li>
+</ul>
+<h4 id="HDFS-Federation访问方式"><a href="#HDFS-Federation访问方式" class="headerlink" title="HDFS Federation访问方式"></a>HDFS Federation访问方式</h4><ul>
+<li>对于Federation中的多个命名空间，可以采用客户端挂载表（Client Side Mount Table）方式进行数据共享和访问</li>
+<li>客户可以访问不同的挂载点来访问不同的子命名空间</li>
+<li>把各个命名空间挂载到全局“挂载表”（mount-table）中，实现数据全局共享</li>
+<li>同样的命名空间挂载到个人的挂载表中，就成为应用程序可见的命名空间<h4 id="HDFS-Federation相对于HDFS1-0的优势"><a href="#HDFS-Federation相对于HDFS1-0的优势" class="headerlink" title="HDFS Federation相对于HDFS1.0的优势"></a>HDFS Federation相对于HDFS1.0的优势</h4></li>
+</ul>
+<ol>
+<li>HDFS集群扩展性。多个名称节点各自分管一部分目录，使得一个集群可以扩展到更多节点，不再像HDFS1.0中那样由于内存的限制制约文件存储数目</li>
+<li>性能更高效。多个名称节点管理不同的数据，且同时对外提供服务，将为用户提供更高的读写吞吐率</li>
+<li>良好的隔离性。用户可根据需要将不同业务数据交由不同名称节点管理，这样不同业务之间影响很小</li>
+</ol>
+<p>需要注意的，HDFS Federation并不能解决单点故障问题，也就是说，每个名称节点都存在在单点故障问题，需要为每个名称节点部署一个后备名称节点，以应对名称节点挂掉对业务产生的影响</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/08/03/大数据/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/03/大数据/" itemprop="url">大数据概述</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-03T22:00:08+08:00">
+                2018-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="大数据概述"><a href="#大数据概述" class="headerlink" title="大数据概述"></a>大数据概述</h1><p>大数据思维导图(点击链可以展开详细)<br><img src="https://i.loli.net/2019/08/13/n7zpOUBKujb4tr1.png" alt="大数据 (1).png"><br>(<a href="https://www.processon.com/view/link/5b9b6867e4b06fc64af4b823" target="_blank" rel="noopener">https://www.processon.com/view/link/5b9b6867e4b06fc64af4b823</a>)</p>
+<ul>
+<li>数据产生方式变革<ul>
+<li>运营式阶段：数据库使得数据管理复杂度降低，数据往往伴随着一定的运营活动产生记录，生产方式是被动的</li>
+<li>用户原创内容阶段：Web2.0时代，用户原创成为标志，智能手机加速内容产生，数据产生方式是主动的</li>
+<li>感知式系统阶段：感知系统广泛使用</li>
+</ul>
+</li>
+<li>大数据发展历程</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>阶段</strong></th>
+<th><strong>时间</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第一阶段：萌芽期</td>
+<td>上世纪90年代至本世纪初</td>
+<td>随着数据挖掘理论和数据库技术的逐步成熟，一批商业智能工具和知识管理技术开始被应用，如数据仓库、专家系统、知识管理系统等。</td>
+</tr>
+<tr>
+<td>第二阶段：成熟期</td>
+<td>本世纪前十年</td>
+<td>Web2.0应用迅猛发展，非结构化数据大量产生，传统处理方法难以应对，带动了大数据技术的快速突破，大数据解决方案逐渐走向成熟，形成了并行计算与分布式系统两大核心技术，谷歌的GFS和MapReduce等大数据技术受到追捧，Hadoop平台开始大行其道</td>
+</tr>
+<tr>
+<td>第三阶段：大规模应用期</td>
+<td>2010年以后</td>
+<td>大数据应用渗透各行各业，数据驱动决策，信息社会智能化程度大幅提高</td>
+</tr>
+</tbody></table>
+<ul>
+<li>大数据概念<ul>
+<li>大量化 Volume</li>
+<li>快速化 Velocity （1秒定律）</li>
+<li>多样化 Variety</li>
+<li>价值化  Value  价值密度低，商业价值高</li>
+</ul>
+</li>
+<li>大数据影响<ul>
+<li>科学研究：先后经历了实验、理论、计算和数据四中范式<br><img src="https://i.loli.net/2019/08/13/aFXqhifzbmRLVGK.png" alt="图片1.png"></li>
+<li>思维方面（摘自《大数据时代》）<ul>
+<li>全样儿非抽样</li>
+<li>效率而非精确</li>
+<li>相关而非因果   </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>大数据应用<ul>
+<li>智能医疗研发</li>
+<li>监控身体情况</li>
+<li>研发智能汽车</li>
+<li>实时掌控交通情况，改善日常生活</li>
+<li>金融交易</li>
+<li>业务流程优化</li>
+</ul>
+</li>
+<li>大数据关键技术</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>技术层面</strong></th>
+<th align="left"><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据采集</td>
+<td align="left">利用ETL工具将分布的、异构数据源中的数据如关系数据、平面数据文件等，抽取到临时中间层后进行清洗、转换、集成，最后加载到数据仓库或数据集市中，成为联机分析处理、数据挖掘的基础；或者也可以把实时采集的数据作为流计算系统的输入，进行实时处理分析</td>
+</tr>
+<tr>
+<td>数据存储和管理</td>
+<td align="left">利用分布式文件系统、数据仓库、关系数据库、NoSQL数据库、云数据库等，实现对结构化、半结构化和非结构化海量数据的存储和管理</td>
+</tr>
+<tr>
+<td>数据处理与分析</td>
+<td align="left">利用分布式并行编程模型和计算框架，结合机器学习和数据挖掘算法，实现对海量数据的处理和分析；对分析结果进行可视化呈现，帮助人们更好地理解数据、分析数据</td>
+</tr>
+<tr>
+<td>数据隐私和安全</td>
+<td align="left">在从大数据中挖掘潜在的巨大商业价值和学术价值的同时，构建隐私数据保护体系和数据安全体系，有效保护个人隐私和数据安全</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>两大核心技术<br><img src="https://i.loli.net/2019/08/13/OYDRiAm1vBK2cjw.png" alt="图片2.png"></p>
+</li>
+<li><p>大数据计算模式</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>大数据计算模式</strong></th>
+<th><strong>解决问题</strong></th>
+<th><strong>代表产品</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>批处理计算</td>
+<td>针对大规模数据的批量处理</td>
+<td>MapReduce、Spark等</td>
+</tr>
+<tr>
+<td>流计算</td>
+<td>针对流数据的实时计算</td>
+<td>Storm、S4、Flume、Streams、Puma、DStream、Super Mario、银河流数据处理平台等</td>
+</tr>
+<tr>
+<td>图计算</td>
+<td>针对大规模图结构数据的处理</td>
+<td>Pregel、GraphX、Giraph、PowerGraph、Hama、GoldenOrb等</td>
+</tr>
+<tr>
+<td>查询分析计算</td>
+<td>大规模数据的存储管理和查询分析</td>
+<td>Dremel、Hive、Cassandra、Impala等</td>
+</tr>
+</tbody></table>
+<ul>
+<li>大数据产业</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>产业链环节</strong></th>
+<th><strong>包含内容</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">IT基础设施层</td>
+<td>包括提供硬件、软件、网络等基础设施以及提供咨询、规划和系统集成服务的企业，比如，提供数据中心解决方案的IBM、惠普和戴尔等，提供存储解决方案的EMC，提供虚拟化管理软件的微软、思杰、SUN、Redhat等</td>
+</tr>
+<tr>
+<td align="center">数据源层</td>
+<td>大数据生态圈里的数据提供者，是生物大数据（生物信息学领域的各类研究机构）、交通大数据（交通主管部门）、医疗大数据（各大医院、体检机构）、政务大数据（政府部门）、电商大数据（淘宝、天猫、苏宁云商、京东等电商）、社交网络大数据（微博、微信、人人网等）、搜索引擎大数据（百度、谷歌等）等各种数据的来源</td>
+</tr>
+<tr>
+<td align="center">数据管理层</td>
+<td>包括数据抽取、转换、存储和管理等服务的各类企业或产品，比如分布式文件系统（如Hadoop的HDFS和谷歌的GFS）、ETL工具（Informatica、Datastage、Kettle等）、数据库和数据仓库（Oracle、MySQL、SQL Server、HBase、GreenPlum等）</td>
+</tr>
+<tr>
+<td align="center">数据分析层</td>
+<td>包括提供分布式计算、数据挖掘、统计分析等服务的各类企业或产品，比如，分布式计算框架MapReduce、统计分析软件SPSS和SAS、数据挖掘工具Weka、数据可视化工具Tableau、BI工具（MicroStrategy、Cognos、BO）等等</td>
+</tr>
+<tr>
+<td align="center">数据平台层</td>
+<td>包括提供数据分享平台、数据分析平台、数据租售平台等服务的企业或产品，比如阿里巴巴、谷歌、中国电信、百度等</td>
+</tr>
+<tr>
+<td align="center">数据应用层</td>
+<td>提供智能交通、智慧医疗、智能物流、智能电网等行业应用的企业、机构或政府部门，比如交通主管部门、各大医疗机构、菜鸟网络、国家电网等</td>
+</tr>
+</tbody></table>
+<ul>
+<li>大数据、云计算、物联网关系</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/13/LNPauHj28IFpZn6.jpg" alt="图片3.jpg"></p>
+<h1 id="Hadoop-概述（Hadoop-2-0）"><a href="#Hadoop-概述（Hadoop-2-0）" class="headerlink" title="Hadoop 概述（Hadoop 2.0）"></a>Hadoop 概述（Hadoop 2.0）</h1><p> Hadoop 是 Apache 基金会下的一个开源分布式计算平台，以 <strong><font color="red">HDFS 分布式文件系统</font></strong> 和 <strong><font color="red">MapReduce</font></strong> 分布式计算框架为核心，为用户提供底层细节透明的分布式基础设施。目前，Hadoop 是分析海量数据的首选工具。Hadoop 是一个可以更容易开发和并行处理大规模数据的分布式计算平台，它的主要特点是扩展能力强、成本低、高效率和可靠。目前，Hadoop 的用户已经从传统的互联网公司，扩展到了各个行业，并且得到越来越广泛的应用。它的优势包括：</p>
+<ol>
+<li>方便：Hadoop 可以运行在商业机器集群上，或者Amazon EC2 等云计算服务商</li>
+<li>弹性：Hadoop 可以方便增加和减少集群节点</li>
+<li>健壮：Hadoop 可以从容处理常见的硬件失效情况</li>
+<li>简单：Hadoop 允许用户快速高效编写并行分布代码<h2 id="Hadoop-项目结构"><a href="#Hadoop-项目结构" class="headerlink" title="Hadoop 项目结构"></a>Hadoop 项目结构</h2><img src="https://i.loli.net/2019/08/13/LEQbCB2q53mphVo.png" alt="hadoop项目结构.png"></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th><strong>组件</strong></th>
+<th><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HDFS</td>
+<td>分布式文件系统</td>
+</tr>
+<tr>
+<td>MapReduce</td>
+<td>分布式并行编程模型</td>
+</tr>
+<tr>
+<td>YARN</td>
+<td>资源管理和调度器</td>
+</tr>
+<tr>
+<td>Tez</td>
+<td>运行在YARN之上的下一代Hadoop查询处理框架</td>
+</tr>
+<tr>
+<td>Hive</td>
+<td>Hadoop上的数据仓库</td>
+</tr>
+<tr>
+<td>HBase</td>
+<td>Hadoop上的非关系型的分布式数据库</td>
+</tr>
+<tr>
+<td>Pig</td>
+<td>一个基于Hadoop的大规模数据分析平台，提供类似SQL的查询语言Pig Latin</td>
+</tr>
+<tr>
+<td>Sqoop</td>
+<td>用于在Hadoop与传统数据库之间进行数据传递</td>
+</tr>
+<tr>
+<td>Oozie</td>
+<td>Hadoop上的工作流管理系统</td>
+</tr>
+<tr>
+<td>Zookeeper</td>
+<td>提供分布式协调一致性服务</td>
+</tr>
+<tr>
+<td>Storm</td>
+<td>流计算框架</td>
+</tr>
+<tr>
+<td>Flume</td>
+<td>一个高可用的，高可靠的，分布式的海量日志采集、聚合和传输的系统</td>
+</tr>
+<tr>
+<td>Ambari</td>
+<td>Hadoop快速部署工具，支持Apache Hadoop集群的供应、管理和监控</td>
+</tr>
+<tr>
+<td>Kafka</td>
+<td>一种高吞吐量的分布式发布订阅消息系统，可以处理消费者规模的网站中的所有动作流数据</td>
+</tr>
+<tr>
+<td>Spark</td>
+<td>类似于Hadoop MapReduce的通用并行框架</td>
+</tr>
+</tbody></table>
+<ul>
+<li>HDFS有着高容错特点，并且设计用来部署在低廉的硬件之上，适合有着超量大数据集的应用程序</li>
+<li>MapReduce：Hadoop编程模型，用于大规模数据及（大于1TB）的并行计算。MR是离线处理框架，由编程模型、运行时环境（JobTracker和TaskTracker）和数据处理引擎（MapTask和ReduceTask）三部分组成</li>
+<li>HBase:基于列存储模型的分布式数据库，专用用于Hadoop档案系统上的资料库系统，采用Column-Oriented设计，不同于传统关系型数据库，没有资料表、Schema等规范，而是采用Key-Value形式的架构，采用多维度的对应关系建立类似于表格效果的资料架构。如此采用分布式存储方式，可以扩充到前台服务器，应付PB级资料处理</li>
+<li>Hive：可用SQL语法存储Hadoop资料的工具。<ul>
+<li>Hive是建置在HDFS上的一套分散式资料仓储系统，可让使用者以惯用的SQL语法，来存取Hadoop档案中的大型资料集，例如可以使用Join、Group by、Order by等，而这个语法称为Hive QL。Hive 提供完整的 SQL 查询功能，可以将 SQL 语句转换为 MR 任务进行运行。不过，Hive QL和SQL并非完全相同，例如Hive就不支援Store Procedure、Trigger等功能。</li>
+<li>Hive会将使用者输入的Hive QL指令编译成Java程序，再来存取HDFS档案系统上的资料，所以，执行效率依指令复杂度和处理的资料量而异，可能有数秒鐘，甚至是数分鐘的延迟。和HBase相比，Hive容易使用且弹性高，但执行速度较慢。不少资料库系统，都是透过先连结到Hive，才能与Hadoop整合。例如微软就是透过Hive ODBC驱动程序，将SQL指令转换成Hive QL，让Excel可以存取Hadoop上的资料。</li>
+<li>在同一个Hadoop集群中，Hive可以存取HBase上的资料，将HBase上的资料对应成Hive内的一个表格</li>
+</ul>
+</li>
+<li>Pig：基于Hadoop分析组件，Pig 为复杂的海量数据并行计算提供一个简易的操作和编程接口。它提供了一个Script语言Pig Latin，语法简单，类似可读性高的高阶Basic语言，可用来撰写MapReduce程序。Pig会自动将这些脚本程序转换，成为能在Hadoop中执行的MapReduce Java程序。因此，使用者即使不懂Java也能撰写出MapReduce。<br>Zookeeper：是一个高效的可扩展的资源协调系统，存储和协调关键共享状态。它监控和协调 Hadoop 分散式运作的集中式服务，可提供各个服务器的配置和运作状态资讯，用於提供不同Hadoop系统角色之间的工作协调。<ul>
+<li>以HBase资料库为例，其中有两种服务器角色：Region服务器角色和Master服务器角色，系统会自动透过ZooKeeper监看Master服务器的状态，一旦Master的运作资讯消失，代表当机或网路断线，HBase就会选出另一台Region服务器成为Mater角色来负责管理工作。<ul>
+<li>可等同于etcd功能</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -2494,7 +4320,7 @@ table tr:hover {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2505,7 +4331,7 @@ table tr:hover {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2516,7 +4342,7 @@ table tr:hover {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

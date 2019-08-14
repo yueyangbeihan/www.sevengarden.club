@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="big data,HBase,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述简介 HBase是一个高可靠、高性能、面向列、可伸缩的分布式数据库，是谷歌BigTable的开源实现，主要用来存储非结构化和半结构化的松散数据。HBase的目标是处理非常庞大的表，可以通过水平扩展的方式，利用廉价计算机集群处理由超过10亿行数据和数百万列元素组成的数据表   Hadoop可以很好地解决大规模数据的离线批量处理问题，但是，受限于Hadoop MapReduce编程框架的高延迟数据">
+<meta name="keywords" content="big data,HBase">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HBase">
+<meta property="og:url" content="http://sevengarden.club/2018/09/23/HBase/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="概述简介 HBase是一个高可靠、高性能、面向列、可伸缩的分布式数据库，是谷歌BigTable的开源实现，主要用来存储非结构化和半结构化的松散数据。HBase的目标是处理非常庞大的表，可以通过水平扩展的方式，利用廉价计算机集群处理由超过10亿行数据和数百万列元素组成的数据表   Hadoop可以很好地解决大规模数据的离线批量处理问题，但是，受限于Hadoop MapReduce编程框架的高延迟数据">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2019/08/14/N3DW2LA4kxIYuFa.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/14/CrtHkdTRqnQeKZ3.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/14/296eZVrmyGhSgE8.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/14/Pun632tgqSbTJpM.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/14/67qygZGCpdfDHY4.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/14/kKYREnvAGqcCP65.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/14/kDWwbKAnXqZs1xI.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/14/Z3FcJ1iXt7xrKTq.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/14/68D2kyjXOWYxwRQ.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/14/nd9wWM5jDcLrSGF.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/14/zRVdymofpnXAkY6.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/14/8O5SjMrPXwiKYtB.jpg">
+<meta property="og:updated_time" content="2019-08-14T11:28:01.151Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HBase">
+<meta name="twitter:description" content="概述简介 HBase是一个高可靠、高性能、面向列、可伸缩的分布式数据库，是谷歌BigTable的开源实现，主要用来存储非结构化和半结构化的松散数据。HBase的目标是处理非常庞大的表，可以通过水平扩展的方式，利用廉价计算机集群处理由超过10亿行数据和数百万列元素组成的数据表   Hadoop可以很好地解决大规模数据的离线批量处理问题，但是，受限于Hadoop MapReduce编程框架的高延迟数据">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/14/N3DW2LA4kxIYuFa.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sevengarden.club/2018/09/23/HBase/">
+
+
+
+
+
+  <title>HBase | 岳阳北寒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">岳阳北寒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-somrthing">
+          <a href="/有料" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            somrthing
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/09/23/HBase/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HBase</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-23T19:19:04+08:00">
+                2018-09-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
+<p>HBase是一个高可靠、高性能、面向列、可伸缩的分布式数据库，是谷歌BigTable的开源实现，主要用来存储非结构化和半结构化的松散数据。HBase的目标是处理非常庞大的表，可以通过水平扩展的方式，利用廉价计算机集群处理由超过10亿行数据和数百万列元素组成的数据表 </p>
+<ul>
+<li>Hadoop可以很好地解决大规模数据的离线批量处理问题，但是，受限于Hadoop MapReduce编程框架的高延迟数据处理机制，使得Hadoop无法满足大规模数据实时处理应用的需求</li>
+<li>HDFS面向批量访问模式，不是随机访问模式</li>
+<li>传统的通用关系型数据库无法应对在数据规模剧增时导致的系统扩展性和性能问题（分库分表也不能很好解决）</li>
+<li>传统关系数据库在数据结构变化时一般需要停机维护；空列浪费存储空间</li>
+<li>因此，业界出现了一类面向半结构化数据存储和处理的高可扩展、低写入/查询延迟的系统，例如，键值数据库、文档数据库和列族数据库（如BigTable和HBase等）</li>
+<li>HBase已经成功应用于互联网服务领域和传统行业的众多在线式数据分析处理系统中</li>
+</ul>
+</blockquote>
+<h2 id="HBase与传统关系数据库的对比分析"><a href="#HBase与传统关系数据库的对比分析" class="headerlink" title="HBase与传统关系数据库的对比分析"></a>HBase与传统关系数据库的对比分析</h2><ol>
+<li>数据类型：关系数据库采用关系模型，具有丰富的数据类型和存储方式，HBase则采用了更加简单的数据模型，它把数据存储为未经解释的字符串</li>
+<li>数据操作：关系数据库中包含了丰富的操作，其中会涉及复杂的多表连接。HBase操作则不存在复杂的表与表之间的关系，只有简单的插入、查询、删除、清空等，因为HBase在设计上就避免了复杂的表和表之间的关系</li>
+<li>存储模式：关系数据库是基于行模式存储的。HBase是基于列存储的，每个列族都由几个文件保存，不同列族的文件是分离的</li>
+<li>数据索引：关系数据库通常可以针对不同列构建复杂的多个索引，以提高数据访问性能。HBase只有一个索引——行键，通过巧妙的设计，HBase中的所有访问方法，或者通过行键访问，或者通过行键扫描，从而使得整个系统不会慢下来</li>
+<li>数据维护：在关系数据库中，更新操作会用最新的当前值去替换记录中原来的旧值，旧值被覆盖后就不会存在。而在HBase中执行更新操作时，并不会删除数据旧的版本，而是生成一个新的版本，旧有的版本仍然保留</li>
+<li>可伸缩性：关系数据库很难实现横向扩展，纵向扩展的空间也比较有限。相反，HBase和BigTable这些分布式数据库就是为了实现灵活的水平扩展而开发的，能够轻易地通过在集群中增加或者减少硬件数量来实现性能的伸缩</li>
+</ol>
+<h1 id="HBase访问接口"><a href="#HBase访问接口" class="headerlink" title="HBase访问接口"></a>HBase访问接口</h1><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>特点</th>
+<th>场合</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Native Java API</td>
+<td>最常规和高效的访问方式</td>
+<td>适合Hadoop MapReduce作业并行批处理HBase表数据</td>
+</tr>
+<tr>
+<td>HBase Shell</td>
+<td>HBase的命令行工具，最简单的接口</td>
+<td>适合HBase管理使用</td>
+</tr>
+<tr>
+<td>Thrift Gateway</td>
+<td>利用Thrift序列化技术，支持C++、PHP、Python等多种语言</td>
+<td>适合其他异构系统在线访问HBase表数据</td>
+</tr>
+<tr>
+<td>REST Gateway</td>
+<td>解除了语言限制</td>
+<td>支持REST风格的Http API访问HBase</td>
+</tr>
+<tr>
+<td>Pig</td>
+<td>使用Pig Latin流式编程语言来处理HBase中的数据</td>
+<td>适合做数据统计</td>
+</tr>
+<tr>
+<td>Hive</td>
+<td>简单</td>
+<td>当需要以类似SQL语言方式来访问HBase的时候</td>
+</tr>
+</tbody></table>
+<h1 id="Hbase数据模型"><a href="#Hbase数据模型" class="headerlink" title="Hbase数据模型"></a>Hbase数据模型</h1><h2 id="数据模型概述"><a href="#数据模型概述" class="headerlink" title="数据模型概述"></a>数据模型概述</h2><ul>
+<li>HBase是一个稀疏、多维度、排序的映射表，这张表的索引是行键、列族、列限定符和时间戳</li>
+<li>每个值是一个未经解释的字符串，没有数据类型</li>
+<li>用户在表中存储数据，每一行都有一个可排序的行键和任意多的列</li>
+<li>表在水平方向由一个或者多个列族组成，一个列族中可以包含任意多个列，同一个列族里面的数据存储在一起</li>
+<li>列族支持动态扩展，可以很轻松地添加一个列族或列，无需预先定义列的数量以及类型，所有列均以字符串形式存储，用户需要自行进行据类型转换</li>
+<li>HBase中执行更新操作时，并不会删除数据旧的版本，而是生成一个新的版本，旧有的版本仍然保留（这是和HDFS只允许追加不允许修改的特性相关的）<h2 id="数据模型相关概念"><a href="#数据模型相关概念" class="headerlink" title="数据模型相关概念"></a>数据模型相关概念</h2><img src="https://i.loli.net/2019/08/14/N3DW2LA4kxIYuFa.png" alt="HBase数据模型.png"></li>
+<li>表：HBase采用表来组织数据，表由行和列组成，列划分为若干个列族</li>
+<li>行：每个HBase表都由若干行组成，每个行由行键（row key）来标识。</li>
+<li>列族：一个HBase表被分组成许多“列族”（Column Family）的集合，它是基本的访问控制单元</li>
+<li>列限定符：列族里的数据通过列限定符（或列）来定位</li>
+<li>单元格：在HBase表中，通过行、列族和列限定符确定一个“单元格”（cell），单元格中存储的数据没有数据类型，总被视为字节数组byte[]</li>
+<li>时间戳：每个单元格都保存着同一份数据的多个版本，这些版本采用时间戳进行索引</li>
+</ul>
+<h2 id="数据坐标"><a href="#数据坐标" class="headerlink" title="数据坐标"></a>数据坐标</h2><ul>
+<li>HBase中需要根据行键、列族、列限定符和时间戳来确定一个单元格，因此，可以视为一个“四维坐标”，即[行键, 列族, 列限定符, 时间戳]<table>
+<thead>
+<tr>
+<th><strong>键</strong></th>
+<th><strong>值</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>[“201505003”, “Info”, “email”, 1174184619081]</td>
+<td>“xie@qq.com”</td>
+</tr>
+<tr>
+<td>[“201505003”, “Info”, “email”, 1174184620720]</td>
+<td>“you@163.com”</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="概念视图"><a href="#概念视图" class="headerlink" title="概念视图"></a>概念视图</h2><table>
+<thead>
+<tr>
+<th>行键</th>
+<th>时间戳</th>
+<th>列族contents</th>
+<th>列族anchor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“com.cnn.www”</td>
+<td>t5</td>
+<td>anchor:cnnsi.com=”CNN”</td>
+<td></td>
+</tr>
+<tr>
+<td>t4</td>
+<td>anchor:my.look.ca=”CNN.com”</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>t3</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>t2</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>t1</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="物理视图"><a href="#物理视图" class="headerlink" title="物理视图"></a>物理视图</h2><table>
+<thead>
+<tr>
+<th>行键</th>
+<th>时间戳</th>
+<th>列族contents</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“com.cnn.www”</td>
+<td>t3</td>
+<td>contents:html=”<html>...“</html></td>
+</tr>
+<tr>
+<td>t2</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+</tr>
+<tr>
+<td>t1</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>行键</th>
+<th>时间戳</th>
+<th>列族anchor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“com.cnn.www”</td>
+<td>t5</td>
+<td>anchor:cnnsi.com=”CNN”</td>
+</tr>
+<tr>
+<td>t4</td>
+<td>anchor:my.look.ca=”CNN.com”</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="面向列的存储"><a href="#面向列的存储" class="headerlink" title="面向列的存储"></a>面向列的存储</h2><p><img src="https://i.loli.net/2019/08/14/CrtHkdTRqnQeKZ3.png" alt="面向列的存储.png"><br><img src="https://i.loli.net/2019/08/14/296eZVrmyGhSgE8.png" alt="列式存储.png"><br><img src="https://i.loli.net/2019/08/14/Pun632tgqSbTJpM.png" alt="行式存储.png"></p>
+<h1 id="HBase实现原理"><a href="#HBase实现原理" class="headerlink" title="HBase实现原理"></a>HBase实现原理</h1><h2 id="HBase-功能组件"><a href="#HBase-功能组件" class="headerlink" title="HBase 功能组件"></a>HBase 功能组件</h2><ul>
+<li>HBase的实现包括三个主要的功能组件：<ol>
+<li>库函数：链接到每个客户端</li>
+<li>一个Master主服务器</li>
+<li>许多个Region服务器</li>
+</ol>
+</li>
+<li>主服务器Master负责管理和维护HBase表的分区信息，维护Region服务器列表，分配Region，负载均衡</li>
+<li>Region服务器负责存储和维护分配给自己的Region，处理来自客户端的读写请求</li>
+<li>客户端并不是直接从Master主服务器上读取数据，而是在获得Region的存储位置信息后，直接从Region服务器上读取数据</li>
+<li>客户端并不依赖Master，而是通过Zookeeper来获得Region位置信息，大多数客户端甚至从来不和Master通信，这种设计方式使得Master负载很小 </li>
+</ul>
+<h2 id="表和Region"><a href="#表和Region" class="headerlink" title="表和Region"></a>表和Region</h2><ul>
+<li>开始只有一个Region，后来不断分裂</li>
+<li>Region拆分操作非常快，接近瞬间，因为拆分之后的Region读取的仍然是原存储文件，直到“合并”过程把存储文件异步地写到独立的文件之后，才会读取新文件<br><img src="https://i.loli.net/2019/08/14/67qygZGCpdfDHY4.jpg" alt="Region表.jpg"><br><img src="https://i.loli.net/2019/08/14/kKYREnvAGqcCP65.jpg" alt="Region表分裂.jpg"></li>
+<li>每个Region默认大小是100MB到200MB（2006年以前的硬件配置）<ul>
+<li>每个Region的最佳大小取决于单台服务器的有效处理能力</li>
+<li>目前每个Region最佳大小建议1GB-2GB（2013年以后的硬件配置）</li>
+</ul>
+</li>
+<li>同一个Region不会被分拆到多个Region服务器</li>
+<li>每个Region服务器存储10-1000个Region<br><img src="https://i.loli.net/2019/08/14/kDWwbKAnXqZs1xI.jpg" alt="Region表分布.jpg"></li>
+</ul>
+<h2 id="Region-定位"><a href="#Region-定位" class="headerlink" title="Region 定位"></a>Region 定位</h2><ul>
+<li>元数据表，又名.META.表，存储了Region和Region服务器的映射关系</li>
+<li>当HBase表很大时， .META.表也会被分裂成多个Region</li>
+<li>根数据表，又名-ROOT-表，记录所有元数据的具体位置</li>
+<li>-ROOT-表只有唯一一个Region，名字是在程序中被写死的</li>
+<li>Zookeeper文件记录了-ROOT-表的位置<br><img src="https://i.loli.net/2019/08/14/Z3FcJ1iXt7xrKTq.jpg" alt="HBase三层结构1.jpg"></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第一层</td>
+<td>Zookeeper文件</td>
+<td>记录了-ROOT-表的位置信息</td>
+</tr>
+<tr>
+<td>第二层</td>
+<td>-ROOT-表</td>
+<td>记录了.META.表的Region位置信息</td>
+</tr>
+<tr>
+<td>-ROOT-表只能有一个Region。通过-ROOT-表，就可以访问.META.表中的数据</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>第三层</td>
+<td>.META.表</td>
+<td>记录了用户数据表的Region位置信息，.META.表可以有多个Region，保存了HBase中所有用户数据表的Region位置信息</td>
+</tr>
+</tbody></table>
+<ul>
+<li>为了加快访问速度，.META.表的全部Region都会被保存在内存中</li>
+<li>假设.META.表的每行（一个映射条目）在内存中大约占用1KB，并且每个Region限制为128MB，那么，上面的三层结构可以保存的用户数据表的Region数目的计算方法是：</li>
+<li>（-ROOT-表能够寻址的.META.表的Region个数）×（每个.META.表的 Region可以寻址的用户数据表的Region个数）</li>
+<li>一个-ROOT-表最多只能有一个Region，也就是最多只能有128MB，按照每行（一个映射条目）占用1KB内存计算，128MB空间可以容纳128MB/1KB=217行，也就是说，一个-ROOT-表可以寻址217个.META.表的Region。</li>
+<li>同理，每个.META.表的 Region可以寻址的用户数据表的Region个数是128MB/1KB=217。</li>
+<li>最终，三层结构可以保存的Region数目是(128MB/1KB) × (128MB/1KB) = 234个Region</li>
+</ul>
+<h3 id="客户端访问数据时的“三级寻址”"><a href="#客户端访问数据时的“三级寻址”" class="headerlink" title="客户端访问数据时的“三级寻址”"></a>客户端访问数据时的“三级寻址”</h3><ul>
+<li>为了加速寻址，客户端会缓存位置信息，同时，需要解决缓存失效问题</li>
+<li>寻址过程客户端只需要询问Zookeeper服务器，不需要连接Master服务器</li>
+</ul>
+<h1 id="HBase运行机制"><a href="#HBase运行机制" class="headerlink" title="HBase运行机制"></a>HBase运行机制</h1><h2 id="HBase系统架构"><a href="#HBase系统架构" class="headerlink" title="HBase系统架构"></a>HBase系统架构</h2><p><img src="https://i.loli.net/2019/08/14/68D2kyjXOWYxwRQ.jpg" alt="HBase系统架构.jpg"></p>
+<ol>
+<li>客户端</li>
+</ol>
+<ul>
+<li>客户端包含访问HBase的接口，同时在缓存中维护着已经访问过的Region位置信息，用来加快后续数据访问过程</li>
+</ul>
+<ol start="2">
+<li>Zookeeper服务器</li>
+</ol>
+<ul>
+<li>Zookeeper可以帮助选举出一个Master作为集群的总管，并保证在任何时刻总有唯一一个Master在运行，这就避免了Master的“单点失效”问题</li>
+<li>Zookeeper是一个很好的集群管理工具，被大量用于分布式计算，提供配置维护、域名服务、分布式同步、组服务等。</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/14/nd9wWM5jDcLrSGF.jpg" alt="Zookeeper .jpg"></p>
+<ol start="3">
+<li>Master</li>
+</ol>
+<ul>
+<li>主服务器Master主要负责表和Region的管理工作：<ul>
+<li>管理用户对表的增加、删除、修改、查询等操作</li>
+<li>实现不同Region服务器之间的负载均衡</li>
+<li>在Region分裂或合并后，负责重新调整Region的分布</li>
+<li>对发生故障失效的Region服务器上的Region进行迁移</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>Region服务器</li>
+</ol>
+<ul>
+<li>Region服务器是HBase中最核心的模块，负责维护分配给自己的Region，并响应用户的读写请求</li>
+</ul>
+<h2 id="Region服务器工作原理"><a href="#Region服务器工作原理" class="headerlink" title="Region服务器工作原理"></a>Region服务器工作原理</h2><p><img src="https://i.loli.net/2019/08/14/zRVdymofpnXAkY6.jpg" alt="Region服务器向HDFS文件系统中读写数据 .jpg"></p>
+<ol>
+<li>用户读写数据过程<ul>
+<li>用户写入数据时，被分配到相应Region服务器去执行</li>
+<li>用户数据首先被写入到MemStore和Hlog中</li>
+<li>只有当操作写入Hlog之后，commit()调用才会将其返回给客户端</li>
+<li>当用户读取数据时，Region服务器会首先访问MemStore缓存，如果找不到，再去磁盘上面的StoreFile中寻找</li>
+</ul>
+</li>
+<li>缓存的刷新<ul>
+<li>系统会周期性地把MemStore缓存里的内容刷写到磁盘的StoreFile文件中，清空缓存，并在Hlog里面写入一个标记</li>
+<li>每次刷写都生成一个新的StoreFile文件，因此，每个Store包含多个StoreFile文件</li>
+<li>每个Region服务器都有一个自己的HLog 文件，每次启动都检查该文件，确认最近一次执行缓存刷新操作之后是否发生新的写入操作；如果发现更新，则先写入MemStore，再刷写到StoreFile，最后删除旧的Hlog文件，开始为用户提供服务</li>
+</ul>
+</li>
+<li>StoreFile的合并<ul>
+<li>每次刷写都生成一个新的StoreFile，数量太多，影响查找速度</li>
+<li>调用Store.compact()把多个合并成一个</li>
+<li>合并操作比较耗费资源，只有数量达到一个阈值才启动合并</li>
+</ul>
+</li>
+</ol>
+<h2 id="Store工作原理"><a href="#Store工作原理" class="headerlink" title="Store工作原理"></a>Store工作原理</h2><ul>
+<li>Store是Region服务器的核心</li>
+<li>多个StoreFile合并成一个</li>
+<li>单个StoreFile过大时，又触发分裂操作，1个父Region被分裂成两个子Region<br><img src="https://i.loli.net/2019/08/14/8O5SjMrPXwiKYtB.jpg" alt="Store是Region服务器的核心 .jpg"></li>
+</ul>
+<h2 id="HLog工作原理"><a href="#HLog工作原理" class="headerlink" title="HLog工作原理"></a>HLog工作原理</h2><ul>
+<li>分布式环境必须要考虑系统出错。HBase采用HLog保证系统恢复</li>
+<li>HBase系统为每个Region服务器配置了一个HLog文件，它是一种预写式日志（Write Ahead Log）</li>
+<li>用户更新数据必须首先写入日志后，才能写入MemStore缓存，并且，直到MemStore缓存内容对应的日志已经写入磁盘，该缓存内容才能被刷写到磁盘</li>
+<li>Zookeeper会实时监测每个Region服务器的状态，当某个Region服务器发生故障时，Zookeeper会通知Master</li>
+<li>Master首先会处理该故障Region服务器上面遗留的HLog文件，这个遗留的HLog文件中包含了来自多个Region对象的日志记录</li>
+<li>系统会根据每条日志记录所属的Region对象对HLog数据进行拆分，分别放到相应Region对象的目录下，然后，再将失效的Region重新分配到可用的Region服务器中，并把与该Region对象相关的HLog日志记录也发送给相应的Region服务器</li>
+<li>Region服务器领取到分配给自己的Region对象以及与之相关的HLog日志记录以后，会重新做一遍日志记录中的各种操作，把日志记录中的数据写入到MemStore缓存中，然后，刷新到磁盘的StoreFile文件中，完成数据恢复</li>
+<li>共用日志优点：提高对表的写操作性能；缺点：恢复时需要分拆日志</li>
+</ul>
+<h1 id="HBase应用方案"><a href="#HBase应用方案" class="headerlink" title="HBase应用方案"></a>HBase应用方案</h1><h2 id="HBase实际应用中的性能优化方法"><a href="#HBase实际应用中的性能优化方法" class="headerlink" title="HBase实际应用中的性能优化方法"></a>HBase实际应用中的性能优化方法</h2><h3 id="行健（Row-Key）"><a href="#行健（Row-Key）" class="headerlink" title="行健（Row Key）"></a>行健（Row Key）</h3><ul>
+<li>行键是按照字典序存储，因此，设计行键时，要充分利用这个排序特点，将经常一起读取的数据存储到一块，将最近可能会被访问的数据放在一块。</li>
+<li>举个例子：如果最近写入HBase表中的数据是最可能被访问的，可以考虑将时间戳作为行键的一部分，由于是字典序排序，所以可以使用Long.MAX_VALUE - timestamp作为行键，这样能保证新写入的数据在读取时可以被快速命中。<h3 id="Inmemory"><a href="#Inmemory" class="headerlink" title="Inmemory"></a>Inmemory</h3></li>
+<li>创建表的时候，可以通过HColumnDescriptor.setInMemory(true)将表放到Region服务器的缓存中，保证在读取的时候被cache命中。<h3 id="Max-Version"><a href="#Max-Version" class="headerlink" title="Max Version"></a>Max Version</h3></li>
+<li>创建表的时候，可以通过HColumnDescriptor.setMaxVersions(int maxVersions)设置表中数据的最大版本，如果只需要保存最新版本的数据，那么可以设置setMaxVersions(1)。<h3 id="Time-To-Live"><a href="#Time-To-Live" class="headerlink" title="Time To Live"></a>Time To Live</h3></li>
+<li>创建表的时候，可以通过HColumnDescriptor.setTimeToLive(int timeToLive)设置表中数据的存储生命期，过期数据将自动被删除，例如如果只需要存储最近两天的数据，那么可以设置setTimeToLive(2 * 24 * 60 * 60)。<h2 id="HBase性能监视"><a href="#HBase性能监视" class="headerlink" title="HBase性能监视"></a>HBase性能监视</h2></li>
+<li>Master-status(自带)</li>
+<li>Ambari</li>
+<li>OpenTSDB</li>
+<li>Ganglia<h2 id="在HBase之上构建SQL引擎"><a href="#在HBase之上构建SQL引擎" class="headerlink" title="在HBase之上构建SQL引擎"></a>在HBase之上构建SQL引擎</h2></li>
+<li>Hive整合HBase</li>
+<li>Phoenix<h2 id="构建HBase二级索引"><a href="#构建HBase二级索引" class="headerlink" title="构建HBase二级索引"></a>构建HBase二级索引</h2></li>
+<li>HBase只有一个针对行健的索引，访问HBase表中的行，只有三种方式：<ul>
+<li>通过单个行健访问</li>
+<li>通过一个行健的区间来访问</li>
+<li>全表扫描</li>
+</ul>
+</li>
+<li>二级索引延展<ul>
+<li>Hindex二级索引</li>
+<li>HBase+Redis</li>
+<li>HBase+solr</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/big-data-HBase/" rel="tag"># big data,HBase</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/14/YARN/" rel="next" title="YARN">
+                <i class="fa fa-chevron-left"></i> YARN
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/27/NoSQL/" rel="prev" title="NoSQL">
+                NoSQL <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">seven</p>
+              <p class="site-description motion-element" itemprop="description">seven 的精神家园，学习笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="1988xuegang@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HBase与传统关系数据库的对比分析"><span class="nav-number">1.2.</span> <span class="nav-text">HBase与传统关系数据库的对比分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HBase访问接口"><span class="nav-number">2.</span> <span class="nav-text">HBase访问接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hbase数据模型"><span class="nav-number">3.</span> <span class="nav-text">Hbase数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据模型概述"><span class="nav-number">3.1.</span> <span class="nav-text">数据模型概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据模型相关概念"><span class="nav-number">3.2.</span> <span class="nav-text">数据模型相关概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据坐标"><span class="nav-number">3.3.</span> <span class="nav-text">数据坐标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概念视图"><span class="nav-number">3.4.</span> <span class="nav-text">概念视图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#物理视图"><span class="nav-number">3.5.</span> <span class="nav-text">物理视图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面向列的存储"><span class="nav-number">3.6.</span> <span class="nav-text">面向列的存储</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HBase实现原理"><span class="nav-number">4.</span> <span class="nav-text">HBase实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HBase-功能组件"><span class="nav-number">4.1.</span> <span class="nav-text">HBase 功能组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表和Region"><span class="nav-number">4.2.</span> <span class="nav-text">表和Region</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Region-定位"><span class="nav-number">4.3.</span> <span class="nav-text">Region 定位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端访问数据时的“三级寻址”"><span class="nav-number">4.3.1.</span> <span class="nav-text">客户端访问数据时的“三级寻址”</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HBase运行机制"><span class="nav-number">5.</span> <span class="nav-text">HBase运行机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HBase系统架构"><span class="nav-number">5.1.</span> <span class="nav-text">HBase系统架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Region服务器工作原理"><span class="nav-number">5.2.</span> <span class="nav-text">Region服务器工作原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Store工作原理"><span class="nav-number">5.3.</span> <span class="nav-text">Store工作原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HLog工作原理"><span class="nav-number">5.4.</span> <span class="nav-text">HLog工作原理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HBase应用方案"><span class="nav-number">6.</span> <span class="nav-text">HBase应用方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HBase实际应用中的性能优化方法"><span class="nav-number">6.1.</span> <span class="nav-text">HBase实际应用中的性能优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#行健（Row-Key）"><span class="nav-number">6.1.1.</span> <span class="nav-text">行健（Row Key）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inmemory"><span class="nav-number">6.1.2.</span> <span class="nav-text">Inmemory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Max-Version"><span class="nav-number">6.1.3.</span> <span class="nav-text">Max Version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Time-To-Live"><span class="nav-number">6.1.4.</span> <span class="nav-text">Time To Live</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HBase性能监视"><span class="nav-number">6.2.</span> <span class="nav-text">HBase性能监视</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在HBase之上构建SQL引擎"><span class="nav-number">6.3.</span> <span class="nav-text">在HBase之上构建SQL引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建HBase二级索引"><span class="nav-number">6.4.</span> <span class="nav-text">构建HBase二级索引</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seven</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
