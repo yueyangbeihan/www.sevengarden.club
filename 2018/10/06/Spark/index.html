@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="bigdata,Spark,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Spark概述Spark简介 Spark最初由美国加州伯克利大学（UCBerkeley）的AMP实验室于2009年开发，是基于内存计算的大数据并行计算框架，可用于构建大型的、低延迟的数据分析应用程序 2013年Spark加入Apache孵化器项目后发展迅猛，如今已成为Apache软件基金会最重要的三大分布式计算系统开源项目之一（Hadoop、Spark、Storm） Spark具有如下几个主要特点">
+<meta name="keywords" content="bigdata,Spark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark">
+<meta property="og:url" content="http://sevengarden.club/2018/10/06/Spark/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="Spark概述Spark简介 Spark最初由美国加州伯克利大学（UCBerkeley）的AMP实验室于2009年开发，是基于内存计算的大数据并行计算框架，可用于构建大型的、低延迟的数据分析应用程序 2013年Spark加入Apache孵化器项目后发展迅猛，如今已成为Apache软件基金会最重要的三大分布式计算系统开源项目之一（Hadoop、Spark、Storm） Spark具有如下几个主要特点">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/vr9S5IBqmax1MFf.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/TVUy9Nz7DWkqpZ5.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/eGqLAQjrxYDIiB4.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/ayNnsW1oELcmMrV.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/TcBFl2LCj9PdIGM.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/gHdGTBRl4L8Ekhy.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/a1Y9sXAxECQTD6I.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/v71RxrEqTLsDjNI.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/iEwLC2qAhSlpY6M.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/N6DdUuQT8E5MXRn.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/B4gFD6Nnx75dblL.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/irYBgfjqWhAZCpx.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/IXHGPSlbvZxKoBa.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/Fnlm51KXpfL6NjB.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/vfjaYQR8shSqDJt.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/RPfTV8uejXhgvlw.png">
+<meta property="og:updated_time" content="2019-08-16T11:02:04.203Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spark">
+<meta name="twitter:description" content="Spark概述Spark简介 Spark最初由美国加州伯克利大学（UCBerkeley）的AMP实验室于2009年开发，是基于内存计算的大数据并行计算框架，可用于构建大型的、低延迟的数据分析应用程序 2013年Spark加入Apache孵化器项目后发展迅猛，如今已成为Apache软件基金会最重要的三大分布式计算系统开源项目之一（Hadoop、Spark、Storm） Spark具有如下几个主要特点">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/15/vr9S5IBqmax1MFf.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sevengarden.club/2018/10/06/Spark/">
+
+
+
+
+
+  <title>Spark | 岳阳北寒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">岳阳北寒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-somrthing">
+          <a href="/有料" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            somrthing
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/10/06/Spark/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spark</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-06T18:53:15+08:00">
+                2018-10-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bigdat/" itemprop="url" rel="index">
+                    <span itemprop="name">bigdat</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Spark概述"><a href="#Spark概述" class="headerlink" title="Spark概述"></a>Spark概述</h1><h2 id="Spark简介"><a href="#Spark简介" class="headerlink" title="Spark简介"></a>Spark简介</h2><ul>
+<li>Spark最初由美国加州伯克利大学（UCBerkeley）的AMP实验室于2009年开发，是基于内存计算的大数据并行计算框架，可用于构建大型的、低延迟的数据分析应用程序</li>
+<li>2013年Spark加入Apache孵化器项目后发展迅猛，如今已成为Apache软件基金会最重要的三大分布式计算系统开源项目之一（Hadoop、Spark、Storm）</li>
+<li>Spark具有如下几个主要特点：<ul>
+<li>运行速度快：使用DAG执行引擎以支持循环数据流与内存计算</li>
+<li>容易使用：支持使用Scala、Java、Python和R语言进行编程，可以通过Spark Shell进行交互式编程   </li>
+<li>通用性：Spark提供了完整而强大的技术栈，包括SQL查询、流式计算、机器学习和图算法组件</li>
+<li>运行模式多样：可运行于独立的集群模式中，可运行于Hadoop中，也可运行于Amazon EC2等云环境中，并且可以访问HDFS、Cassandra、HBase、Hive等多种数据源</li>
+</ul>
+</li>
+</ul>
+<h2 id="Scala简介"><a href="#Scala简介" class="headerlink" title="Scala简介"></a>Scala简介</h2><ul>
+<li>Scala是一门现代的多范式编程语言，运行于Java平台（JVM，Java 虚拟机），并兼容现有的Java程序</li>
+<li>Scala的特性：<ul>
+<li>Scala具备强大的并发性，支持函数式编程，可以更好地支持分布式系统</li>
+<li>Scala语法简洁，能提供优雅的API</li>
+<li>Scala兼容Java，运行速度快，且能融合到Hadoop生态圈中 </li>
+</ul>
+</li>
+<li>Scala是Spark的主要编程语言，但Spark还支持Java、Python、R作为编程语言</li>
+<li>Scala的优势是提供了REPL（Read-Eval-Print Loop，交互式解释器），提高程序开发效率</li>
+</ul>
+<h2 id="Spark与Hadoop的比较"><a href="#Spark与Hadoop的比较" class="headerlink" title="Spark与Hadoop的比较"></a>Spark与Hadoop的比较</h2><ul>
+<li>Hadoop存在如下一些缺点：<ul>
+<li>表达能力有限</li>
+<li>磁盘IO开销大</li>
+<li>延迟高</li>
+<li>任务之间的衔接涉及IO开销，在前一个任务执行完成之前，其他任务就无法开始，难以胜任复杂、多阶段的计算任务 </li>
+</ul>
+</li>
+<li>相比于Hadoop MapReduce，Spark主要具有如下优点：<ul>
+<li>Spark的计算模式也属于MapReduce，但不局限于Map和Reduce操作，还提供了多种数据集操作类型，编程模型比Hadoop MapReduce更灵活</li>
+<li>Spark提供了内存计算，可将中间结果放到内存中，对于迭代运算效率更高</li>
+<li>Spark基于<strong>DAG</strong>的任务调度执行机制，要优于Hadoop MapReduce的迭代执行机制 </li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/15/vr9S5IBqmax1MFf.png" alt="Spark执行流程.png"></p>
+<ul>
+<li>使用Hadoop进行迭代计算非常耗资源</li>
+<li>Spark将数据载入内存后，之后的迭代计算都可以直接使用内存中的中间结果作运算，避免了从磁盘中频繁读取数据</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/15/TVUy9Nz7DWkqpZ5.png" alt="Hadoop与Spark执行逻辑回归时间对比.png"></p>
+<h1 id="Spark生态系统"><a href="#Spark生态系统" class="headerlink" title="Spark生态系统"></a>Spark生态系统</h1><blockquote>
+<p>在实际应用中，大数据处理主要包括以下三个类型：</p>
+<ul>
+<li>复杂的批量数据处理：通常时间跨度在数十分钟到数小时之间</li>
+<li>基于历史数据的交互式查询：通常时间跨度在数十秒到数分钟之间</li>
+<li>基于实时数据流的数据处理：通常时间跨度在数百毫秒到数秒之间<br>当同时存在以上三种场景时，就需要同时部署三种不同的软件<br>比如: MapReduce  /  Impala  /  Storm</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>这样做难免会带来一些问题： </p>
+<ul>
+<li>不同场景之间输入输出数据无法做到无缝共享，通常需要进行数据格式的转换</li>
+<li>不同的软件需要不同的开发和维护团队，带来了较高的使用成本</li>
+<li>比较难以对同一个集群中的各个系统进行统一的资源协调和分配</li>
+</ul>
+</blockquote>
+<ul>
+<li><p>Spark的设计遵循<strong>“一个软件栈满足不同应用场景”</strong>的理念，逐渐形成了一套完整的生态系统</p>
+</li>
+<li><p>既能够提供内存计算框架，也可以支持SQL即席查询、实时流式计算、机器学习和图计算等</p>
+</li>
+<li><p>Spark可以部署在资源管理器YARN之上，提供一站式的大数据解决方案</p>
+</li>
+<li><p>因此，Spark所提供的生态系统足以应对上述三种场景，即同时支持批处理、交互式查询和流数据处理</p>
+</li>
+<li><p>Spark的生态系统主要包含了Spark Core、Spark SQL、Spark Streaming、MLLib和GraphX 等组件</p>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/15/eGqLAQjrxYDIiB4.png" alt="BDAS架构.png"></p>
+<table>
+<thead>
+<tr>
+<th>应用场景</th>
+<th>时间跨度</th>
+<th>其他框架</th>
+<th>Spark生态系统中的组件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>复杂的批量数据处理</td>
+<td>小时级</td>
+<td>MapReduce、Hive</td>
+<td>Spark</td>
+</tr>
+<tr>
+<td>基于历史数据的交互式查询</td>
+<td>分钟级、秒级</td>
+<td>Impala、Dremel、Drill</td>
+<td>Spark SQL</td>
+</tr>
+<tr>
+<td>基于实时数据流的数据处理</td>
+<td>毫秒、秒级</td>
+<td>Storm、S4</td>
+<td>Spark Streaming</td>
+</tr>
+<tr>
+<td>基于历史数据的数据挖掘</td>
+<td>-</td>
+<td>Mahout</td>
+<td>MLlib</td>
+</tr>
+<tr>
+<td>图结构数据的处理</td>
+<td>-</td>
+<td>Pregel、Hama</td>
+<td>GraphX</td>
+</tr>
+</tbody></table>
+<h1 id="Spark运行架构"><a href="#Spark运行架构" class="headerlink" title="Spark运行架构"></a>Spark运行架构</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li>RDD：是Resillient Distributed Dataset（弹性分布式数据集）的简称，是分布式内存的一个抽象概念，提供了一种高度受限的共享内存模型</li>
+<li>DAG：是Directed Acyclic Graph（有向无环图）的简称，反映RDD之间的依赖关系</li>
+<li>Executor：是运行在工作节点（WorkerNode）的一个进程，负责运行Task</li>
+<li>Application：用户编写的Spark应用程序</li>
+<li>Task：运行在Executor上的工作单元 </li>
+<li>Job：一个Job包含多个RDD及作用于相应RDD上的各种操作</li>
+<li>Stage：是Job的基本调度单位，一个Job会分为多组Task，每组Task被称为Stage，或者也被称为TaskSet，代表了一组关联的、相互之间没有Shuffle依赖关系的任务组成的任务集</li>
+</ul>
+<h2 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h2><ul>
+<li>Spark运行架构包括集群资源管理器（Cluster Manager）、运行作业任务的工作节点（Worker Node）、每个应用的任务控制节点（Driver）和每个工作节点上负责具体任务的执行进程（Executor）</li>
+<li>资源管理器可以自带或Mesos或YARN<blockquote>
+<p>与Hadoop MapReduce计算框架相比，Spark所采用的Executor有两个优点：</p>
+</blockquote>
+</li>
+<li>一是利用多线程来执行具体的任务，减少任务的启动开销</li>
+<li>二是Executor中有一个BlockManager存储模块，会将内存和磁盘共同作为存储设备，有效减少IO开销<br><img src="https://i.loli.net/2019/08/15/ayNnsW1oELcmMrV.png" alt="Spark运行架构.png"></li>
+<li>一个Application由一个Driver和若干个Job构成，一个Job由多个Stage构成，一个Stage由多个没有Shuffle关系的Task组成</li>
+<li>当执行一个Application时，Driver会向集群管理器申请资源，启动Executor，并向Executor发送应用程序代码和文件，然后在Executor上执行Task，运行结束后，执行结果会返回给Driver，或者写到HDFS或者其他数据库中<br><img src="https://i.loli.net/2019/08/15/TcBFl2LCj9PdIGM.png" alt="Spark中各种概念之间的相互关系.png"></li>
+</ul>
+<h2 id="Spark运行基本流程"><a href="#Spark运行基本流程" class="headerlink" title="Spark运行基本流程"></a>Spark运行基本流程</h2><p><img src="https://i.loli.net/2019/08/15/gHdGTBRl4L8Ekhy.png" alt="Spark运行基本流程图.png"></p>
+<ol>
+<li>运行环境，即由Driver创建一个SparkContext，进行资源的申请、任务的分配和监控</li>
+<li>资源管理器为Executor分配资源，并启动Executor进程</li>
+<li>SparkContext根据RDD的依赖关系构建DAG图，DAG图提交给DAGScheduler解析成Stage，然后把一个个TaskSet提交给底层调度器TaskScheduler处理；Executor向SparkContext申请Task，Task Scheduler将Task发放给Executor运行，并提供应用程序代码</li>
+<li>Task在Executor上运行，把执行结果反馈给TaskScheduler，然后反馈给DAGScheduler，运行完毕后写入数据并释放所有资源 <blockquote>
+<p><em>总体而言，Spark运行架构具有以下特点：</em></p>
+</blockquote>
+</li>
+<li>每个Application都有自己专属的Executor进程，并且该进程在Application运行期间一直驻留。Executor进程以多线程的方式运行Task</li>
+<li>Spark运行过程与资源管理器无关，只要能够获取Executor进程并保持通信即可</li>
+<li>Task采用了数据本地性和推测执行等优化机制</li>
+</ol>
+<h2 id="RDD-运行原理"><a href="#RDD-运行原理" class="headerlink" title="RDD 运行原理"></a>RDD 运行原理</h2><ol>
+<li>设计背景</li>
+</ol>
+<ul>
+<li>许多迭代式算法（比如机器学习、图算法等）和交互式数据挖掘工具，共同之处是，不同计算阶段之间会重用中间结果</li>
+<li>目前的MapReduce框架都是把中间结果写入到HDFS中，带来了大量的数据复制、磁盘IO和序列化开销</li>
+<li>RDD就是为了满足这种需求而出现的，它提供了一个抽象的数据架构，我们不必担心底层数据的分布式特性，只需将具体的应用逻辑表达为一系列转换处理，不同RDD之间的转换操作形成依赖关系，可以实现管道化，避免中间数据存储</li>
+</ul>
+<ol start="2">
+<li>RDD概念</li>
+</ol>
+<ul>
+<li>一个RDD就是一个分布式对象集合，本质上是一个只读的分区记录集合，每个RDD可分成多个分区，每个分区就是一个数据集片段，并且一个RDD的不同分区可以被保存到集群中不同的节点上，从而可以在集群中的不同节点上进行并行计算</li>
+<li>RDD提供了一种高度受限的共享内存模型，即RDD是只读的记录分区的集合，不能直接修改，只能基于稳定的物理存储中的数据集创建RDD，或者通过在其他RDD上执行确定的转换操作（如map、join和group by）而创建得到新的RDD</li>
+<li>RDD提供了一组丰富的操作以支持常见的数据运算，分为“动作”（Action）和“转换”（Transformation）两种类型</li>
+<li>RDD提供的转换接口都非常简单，都是类似map、filter、groupBy、join等粗粒度的数据转换操作，而不是针对某个数据项的细粒度修改（不适合网页爬虫）</li>
+<li>表面上RDD的功能很受限、不够强大，实际上RDD已经被实践证明可以高效地表达许多框架的编程模型（比如MapReduce、SQL、Pregel）</li>
+<li>Spark用Scala语言实现了RDD的API，程序员可以通过调用API实现对RDD的各种操作</li>
+<li>RDD典型的执行过程如下：<ul>
+<li>RDD读入外部数据源进行创建</li>
+<li>RDD经过一系列的转换（Transformation）操作，每一次都会产生不同的RDD，供给下一个转换操作使用</li>
+<li>最后一个RDD经过“动作”操作进行转换，并输出到外部数据源 <blockquote>
+<ul>
+<li>这一系列处理称为一个Lineage（血缘关系），即DAG拓扑排序的结果<br>优点：惰性调用、管道化、避免同步等待、不需要保存中间结果、每次操作变得简单<br><img src="https://i.loli.net/2019/08/15/a1Y9sXAxECQTD6I.png" alt="RDD执行过程的一个实例.png"></li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>RDD特性<br>Spark采用RDD以后能够实现高效计算的原因主要在于：</li>
+<li>高效的容错性<ul>
+<li>现有容错机制：数据复制或者记录日志</li>
+<li>RDD：血缘关系、重新计算丢失分区、无需回滚系统、重算过程在不同节点之间并行、只记录粗粒度的操作</li>
+</ul>
+</li>
+<li>中间结果持久化到内存，数据在内存中的多个RDD操作之间进行传递，避免了不必要的读写磁盘开销</li>
+<li>存放的数据可以是Java对象，避免了不必要的对象序列化和反序列化</li>
+<li>RDD之间的依赖关系<br><img src="https://i.loli.net/2019/08/15/v71RxrEqTLsDjNI.png" alt="窄依赖与宽依赖的区别.png"></li>
+</ol>
+<ul>
+<li>窄依赖表现为一个父RDD的分区对应于一个子RDD的分区或多个父RDD的分区对应于一个子RDD的分区</li>
+<li>宽依赖则表现为存在一个父RDD的一个分区对应一个子RDD的多个分区</li>
+</ul>
+<ol start="5">
+<li>Stage的划分<blockquote>
+<ul>
+<li>Spark通过分析各个RDD的依赖关系生成了DAG，再通过分析各个RDD中的分区之间的依赖关系来决定如何划分Stage，具体划分方法是：</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>在DAG中进行反向解析，遇到宽依赖就断开</li>
+<li>遇到窄依赖就把当前的RDD加入到Stage中</li>
+<li>　将窄依赖尽量划分在同一个Stage中，可以实现流水线计算<blockquote>
+<ul>
+<li>被分成三个Stage，在Stage2中，从map到union都是窄依赖，这两步操作可以形成一个流水线操作<br><img src="https://i.loli.net/2019/08/15/iEwLC2qAhSlpY6M.png" alt="根据RDD分区的依赖关系划分Stage.png"></li>
+</ul>
+</blockquote>
+</li>
+<li>流水线操作实例<ul>
+<li>分区7通过map操作生成的分区9，可以不用等待分区8到分区10这个map操作的计算结束，而是继续进行union操作，得到分区13，这样流水线执行大大提高了计算的效率</li>
+</ul>
+</li>
+<li>Stage的类型包括两种：ShuffleMapStage和ResultStage，具体如下：<ul>
+<li>ShuffleMapStage：不是最终的Stage，在它之后还有其他Stage，所以，它的输出一定需要经过Shuffle过程，并作为后续Stage的输入；这种Stage是以Shuffle为输出边界，其输入边界可以是从外部获取数据，也可以是另一个ShuffleMapStage的输出，其输出可以是另一个Stage的开始；在一个Job里可能有该类型的Stage，也可能没有该类型Stage；</li>
+<li>ResultStage：最终的Stage，没有输出，而是直接产生结果或存储。这种Stage是直接输出结果，其输入边界可以是从外部获取数据，也可以是另一个ShuffleMapStage的输出。在一个Job里必定有该类型Stage。<br>因此，一个Job含有一个或多个Stage，其中至少含有一个ResultStage</li>
+</ul>
+</li>
+</ul>
+<ol start="6">
+<li>RDD运行过程<blockquote>
+<ul>
+<li>通过上述对RDD概念、依赖关系和Stage划分的介绍，结合之前介绍的Spark运行基本流程，再总结一下RDD在Spark架构中的运行过程：</li>
+</ul>
+</blockquote>
+</li>
+<li>创建RDD对象；</li>
+<li>SparkContext负责计算RDD之间的依赖关系，构建DAG；</li>
+<li>DAGScheduler负责把DAG图分解成多个Stage，每个Stage中包含了多个Task，每个Task会被TaskScheduler分发给各个WorkerNode上的Executor去执行。<br><img src="https://i.loli.net/2019/08/15/N6DdUuQT8E5MXRn.png" alt="RDD在Spark中的运行过程.png"></li>
+</ol>
+<h1 id="Spark-SQL"><a href="#Spark-SQL" class="headerlink" title="Spark SQL"></a>Spark SQL</h1><ul>
+<li>Spark SQL在Hive兼容层面仅依赖HiveQL解析、Hive元数据，也就是说，从HQL被解析成抽象语法树（AST）起，就全部由Spark SQL接管了。Spark SQL执行计划生成和优化都由Catalyst（函数式关系查询优化框架）负责<br><img src="https://i.loli.net/2019/08/15/B4gFD6Nnx75dblL.png" alt="Spark SQL架构.png"><ul>
+<li>Spark SQL增加了SchemaRDD（即带有Schema信息的RDD），使用户可以在Spark SQL中执行SQL语句，数据既可以来自RDD，也可以是Hive、HDFS、Cassandra等外部数据源，还可以是JSON格式的数据</li>
+<li>Spark SQL目前支持Scala、Java、Python三种语言，支持SQL-92规范<br><img src="https://i.loli.net/2019/08/15/irYBgfjqWhAZCpx.png" alt="Spark SQL支持的数据格式和编程语言.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="Spark的部署和应用方式"><a href="#Spark的部署和应用方式" class="headerlink" title="Spark的部署和应用方式"></a>Spark的部署和应用方式</h1><h2 id="Spark三种部署方式"><a href="#Spark三种部署方式" class="headerlink" title="Spark三种部署方式"></a>Spark三种部署方式</h2><ul>
+<li>Standalone（类似于MapReduce1.0，slot为资源分配单位）</li>
+<li>Spark on Mesos（和Spark有血缘关系，更好支持Mesos）</li>
+<li>Spark on YARN<br><img src="https://i.loli.net/2019/08/15/IXHGPSlbvZxKoBa.png" alt="Spark on Yarn.png"></li>
+</ul>
+<h2 id="从Hadoop-Storm架构转向Spark架构"><a href="#从Hadoop-Storm架构转向Spark架构" class="headerlink" title="从Hadoop+Storm架构转向Spark架构"></a>从Hadoop+Storm架构转向Spark架构</h2><p><img src="https://i.loli.net/2019/08/15/Fnlm51KXpfL6NjB.png" alt="采用Hadoop+Storm部署方式的一个案例.png"></p>
+<blockquote>
+<ul>
+<li>用Spark架构具有如下优点：</li>
+</ul>
+<ul>
+<li>实现一键式安装和配置、线程级别的任务监控和告警</li>
+<li>降低硬件集群、软件维护、任务监控和应用开发的难度</li>
+<li>便于做成统一的硬件、计算平台资源池</li>
+</ul>
+<ul>
+<li>需要说明的是，Spark Streaming无法实现毫秒级的流计算，因此，对于需要毫秒级实时响应的企业应用而言，仍然需要采用流计算框架（如Storm）<br><img src="https://i.loli.net/2019/08/15/vfjaYQR8shSqDJt.png" alt="用Spark架构满足批处理和流处理需求.png"></li>
+</ul>
+</blockquote>
+<h2 id="Hadoop和Spark的统一部署"><a href="#Hadoop和Spark的统一部署" class="headerlink" title="Hadoop和Spark的统一部署"></a>Hadoop和Spark的统一部署</h2><ul>
+<li>由于Hadoop生态系统中的一些组件所实现的功能，目前还是无法由Spark取代的，比如，Storm</li>
+<li>现有的Hadoop组件开发的应用，完全转移到Spark上需要一定的成本<blockquote>
+<ul>
+<li>不同的计算框架统一运行在YARN中，可以带来如下好处：</li>
+</ul>
+</blockquote>
+</li>
+<li>计算资源按需伸缩</li>
+<li>不用负载应用混搭，集群利用率高</li>
+<li>共享底层存储，避免数据跨集群迁移<br><img src="https://i.loli.net/2019/08/15/RPfTV8uejXhgvlw.png" alt="Hadoop和Spark的统一部署.png"></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/bigdata-Spark/" rel="tag"># bigdata,Spark</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/27/NoSQL/" rel="next" title="NoSQL">
+                <i class="fa fa-chevron-left"></i> NoSQL
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/10/AWS-VPC/" rel="prev" title="AWS VPC">
+                AWS VPC <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">seven</p>
+              <p class="site-description motion-element" itemprop="description">seven 的精神家园，学习笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="1988xuegang@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark概述"><span class="nav-number">1.</span> <span class="nav-text">Spark概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark简介"><span class="nav-number">1.1.</span> <span class="nav-text">Spark简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scala简介"><span class="nav-number">1.2.</span> <span class="nav-text">Scala简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark与Hadoop的比较"><span class="nav-number">1.3.</span> <span class="nav-text">Spark与Hadoop的比较</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark生态系统"><span class="nav-number">2.</span> <span class="nav-text">Spark生态系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark运行架构"><span class="nav-number">3.</span> <span class="nav-text">Spark运行架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">3.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构设计"><span class="nav-number">3.2.</span> <span class="nav-text">架构设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark运行基本流程"><span class="nav-number">3.3.</span> <span class="nav-text">Spark运行基本流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDD-运行原理"><span class="nav-number">3.4.</span> <span class="nav-text">RDD 运行原理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark-SQL"><span class="nav-number">4.</span> <span class="nav-text">Spark SQL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark的部署和应用方式"><span class="nav-number">5.</span> <span class="nav-text">Spark的部署和应用方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark三种部署方式"><span class="nav-number">5.1.</span> <span class="nav-text">Spark三种部署方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从Hadoop-Storm架构转向Spark架构"><span class="nav-number">5.2.</span> <span class="nav-text">从Hadoop+Storm架构转向Spark架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop和Spark的统一部署"><span class="nav-number">5.3.</span> <span class="nav-text">Hadoop和Spark的统一部署</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seven</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

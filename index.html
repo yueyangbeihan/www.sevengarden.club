@@ -273,6 +273,391 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/16/流计算/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/16/流计算/" itemprop="url">流计算</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-16T19:02:37+08:00">
+                2019-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bigdat/" itemprop="url" rel="index">
+                    <span itemprop="name">bigdat</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="流计算概述"><a href="#流计算概述" class="headerlink" title="流计算概述"></a>流计算概述</h1><h2 id="静态数据和流数据"><a href="#静态数据和流数据" class="headerlink" title="静态数据和流数据"></a>静态数据和流数据</h2><ul>
+<li>很多企业为了支持决策分析而构建的数据仓库系统，其中存放的大量历史数据就是静态数据。技术人员可以利用数据挖掘和OLAP（On-Line Analytical Processing）分析工具从静态数据中找到对企业有价值的信息<br><img src="https://i.loli.net/2019/08/15/CMX6Q7n4UceDJi8.png" alt="静态数据.png"></li>
+</ul>
+<ul>
+<li>近年来，在Web应用、网络监控、传感监测等领域，兴起了一种新的数据密集型应用——流数据，即数据以大量、快速、时变的流形式持续到达</li>
+<li>实例：PM2.5检测、电子商务网站用户点击流</li>
+<li>流数据具有如下特征：<ul>
+<li>数据快速持续到达，潜在大小也许是无穷无尽的</li>
+<li>数据来源众多，格式复杂</li>
+<li>数据量大，但是不十分关注存储，一旦经过处理，要么被丢弃，要么被归档存储</li>
+<li>注重数据的整体价值，不过分关注个别数据</li>
+<li>数据顺序颠倒，或者不完整，系统无法控制将要处理的新到达的数据元素的顺序</li>
+</ul>
+</li>
+</ul>
+<h2 id="批量计算和实时计算"><a href="#批量计算和实时计算" class="headerlink" title="批量计算和实时计算"></a>批量计算和实时计算</h2><ul>
+<li>对静态数据和流数据的处理，对应着两种截然不同的计算模式：批量计算和实时计算</li>
+<li>批量计算：充裕时间处理静态数据，如Hadoop</li>
+<li>流数据不适合采用批量计算，因为流数据不适合用传统的关系模型建模</li>
+<li>流数据必须采用实时计算，响应时间为秒级</li>
+<li>数据量少时，不是问题，但是，在大数据时代，数据格式复杂、来源众多、数据量巨大，对实时计算提出了很大的挑战。因此，针对流数据的实时计算——流计算，应运而生<br><img src="https://i.loli.net/2019/08/15/nC72xfOSIHaXW6J.png" alt="数据的两种处理模型.png"></li>
+</ul>
+<h2 id="流计算概念"><a href="#流计算概念" class="headerlink" title="流计算概念"></a>流计算概念</h2><ul>
+<li>流计算：实时获取来自不同数据源的海量数据，经过实时分析处理，获得有价值的信息<br><img src="https://i.loli.net/2019/08/15/ryRDeMPvW2kVFZ8.png" alt="流计算示意图.png"></li>
+<li>流计算秉承一个基本理念，即<strong>数据的价值随着时间的流逝而降低</strong>，如用户点击流。因此，当事件出现时就应该立即进行处理，而不是缓存起来进行批量处理。为了及时处理流数据，就需要一个低延迟、可扩展、高可靠的处理引擎</li>
+<li>对于一个流计算系统来说，它应达到如下需求：<ul>
+<li>高性能：处理大数据的基本要求，如每秒处理几十万条数据</li>
+<li>海量式：支持TB级甚至是PB级的数据规模</li>
+<li>实时性：保证较低的延迟时间，达到秒级别，甚至是毫秒级别</li>
+<li>分布式：支持大数据的基本架构，必须能够平滑扩展</li>
+<li>易用性：能够快速进行开发和部署</li>
+<li>可靠性：能可靠地处理流数据</li>
+</ul>
+</li>
+</ul>
+<h2 id="流计算与Hadoop"><a href="#流计算与Hadoop" class="headerlink" title="流计算与Hadoop"></a>流计算与Hadoop</h2><ul>
+<li>Hadoop设计的初衷是面向大规模数据的批量处理，每台机器并行运行MapReduce任务，最后对结果进行汇总输出</li>
+<li>MapReduce是专门面向静态数据的批量处理的，内部各种实现机制都为批处理做了高度优化，不适合用于处理持续到达的动态数据</li>
+<li>可能会想到一种“变通”的方案来降低批处理的时间延迟——将基于MapReduce的批量处理转为小批量处理，将输入数据切成小的片段，每隔一个周期就启动一次MapReduce作业。但这种方式也无法有效处理流数据<ul>
+<li>切分成小片段，可以降低延迟，但是也增加了附加开销，还要处理片段之间依赖关系</li>
+<li>需要改造MapReduce以支持流式处理</li>
+</ul>
+</li>
+</ul>
+<p><font color="red"><strong>结论：鱼和熊掌不可兼得，Hadoop擅长批处理，不适合流计算</strong></font></p>
+<h2 id="流计算框架"><a href="#流计算框架" class="headerlink" title="流计算框架"></a>流计算框架</h2><ul>
+<li>目前有三类常见的流计算框架和平台：商业级的流计算平台、开源流计算框架、公司为支持自身业务开发的流计算框架</li>
+<li>商业级：IBM InfoSphere Streams和IBM StreamBase</li>
+<li>较为常见的是开源流计算框架，代表如下：<ul>
+<li>Twitter Storm：免费、开源的分布式实时计算系统，可简单、高效、可靠地处理大量的流数据</li>
+<li>Yahoo! S4（Simple Scalable Streaming System）：开源流计算平台，是通用的、分布式的、可扩展的、分区容错的、可插拔的流式系统</li>
+</ul>
+</li>
+<li>公司为支持自身业务开发的流计算框架：<ul>
+<li>Facebook Puma</li>
+<li>Dstream（百度）</li>
+<li>银河流数据处理平台（淘宝）</li>
+</ul>
+</li>
+</ul>
+<h1 id="流计算处理流程"><a href="#流计算处理流程" class="headerlink" title="流计算处理流程"></a>流计算处理流程</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>传统的数据处理流程，需要先采集数据并存储在关系数据库等数据管理系统中，之后由用户通过查询操作和数据管理系统进行交互</li>
+<li>传统的数据处理流程隐含了两个前提：<ul>
+<li><strong>存储的数据是旧的</strong>。存储的静态数据是过去某一时刻的快照，这些数据在查询时可能已不具备时效性了</li>
+<li><strong>需要用户主动发出查询来获取结果</strong><h2 id="数据实时采集"><a href="#数据实时采集" class="headerlink" title="数据实时采集"></a>数据实时采集</h2></li>
+</ul>
+</li>
+<li>数据实时采集阶段通常采集多个数据源的海量数据，需要保证实时性、低延迟与稳定可靠</li>
+<li>以日志数据为例，由于分布式集群的广泛应用，数据分散存储在不同的机器上，因此需要实时汇总来自不同机器上的日志数据</li>
+<li>目前有许多互联网公司发布的开源分布式日志采集系统均可满足每秒数百MB的数据采集和传输需求，如：<ul>
+<li>Facebook的Scribe</li>
+<li>LinkedIn的Kafka</li>
+<li>淘宝的Time Tunnel</li>
+<li>基于Hadoop的Chukwa和Flume<br><img src="https://i.loli.net/2019/08/16/uPW8HjeiowtgRVF.png" alt="数据实时采集.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="数据实时计算"><a href="#数据实时计算" class="headerlink" title="数据实时计算"></a>数据实时计算</h2><ul>
+<li>数据采集系统的基本架构一般有以下三个部分：<ul>
+<li>Agent：主动采集数据，并把数据推送到Collector部分</li>
+<li>Collector：接收多个Agent的数据，并实现有序、可靠、高性能的转发</li>
+<li>Store：存储Collector转发过来的数据（对于流计算不存储数据</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/U3KCNEJhtjHvkPZ.png" alt="数据采集系统基本架构.png"></p>
+<ul>
+<li>数据实时计算阶段对采集的数据进行实时的分析和计算，并反馈实时结果</li>
+<li>经流处理系统处理后的数据，可视情况进行存储，以便之后再进行分析计算。在时效性要求较高的场景中，处理之后的数据也可以直接丢弃</li>
+</ul>
+<h2 id="实时查询服务"><a href="#实时查询服务" class="headerlink" title="实时查询服务"></a>实时查询服务</h2><ul>
+<li>实时查询服务：经由流计算框架得出的结果可供用户进行实时查询、展示或储存</li>
+<li>传统的数据处理流程，用户需要主动发出查询才能获得想要的结果。而在流处理流程中，实时查询服务可以不断更新结果，并将用户所需的结果实时推送给用户</li>
+<li>虽然通过对传统的数据处理系统进行定时查询，也可以实现不断地更新结果和结果推送，但通过这样的方式获取的结果，仍然是根据过去某一时刻的数据得到的结果，与实时结果有着本质的区别<blockquote>
+<ul>
+<li>可见，流处理系统与传统的数据处理系统有如下不同：</li>
+</ul>
+</blockquote>
+</li>
+<li>流处理系统处理的是实时的数据，而传统的数据处理系统处理的是预先存储好的静态数据</li>
+<li>用户通过流处理系统获取的是实时结果，而通过传统的数据处理系统，获取的是过去某一时刻的结果</li>
+<li>流处理系统无需用户主动发出查询，实时查询服务可以主动将实时结果推送给用户</li>
+</ul>
+<h1 id="流计算应用"><a href="#流计算应用" class="headerlink" title="流计算应用"></a>流计算应用</h1><ul>
+<li>流计算是针对流数据的实时计算，可以应用在多种场景中，如Web服务、机器翻译、广告投放、自然语言处理、气候模拟预测等</li>
+<li>如百度、淘宝等大型网站中，每天都会产生大量流数据，包括用户的搜索内容、用户的浏览记录等数据。采用流计算进行实时数据分析，可以了解每个时刻的流量变化情况，甚至可以分析用户的实时浏览轨迹，从而进行实时个性化内容推荐</li>
+<li>但是，并不是每个应用场景都需要用到流计算的。流计算适合于需要处理持续到达的流数据、对数据处理有较高实时性要求的场景</li>
+</ul>
+<h1 id="流计算开源框架-–-Storm"><a href="#流计算开源框架-–-Storm" class="headerlink" title="流计算开源框架 – Storm"></a>流计算开源框架 – Storm</h1><h2 id="Storm简介"><a href="#Storm简介" class="headerlink" title="Storm简介"></a>Storm简介</h2><ul>
+<li>Twitter Storm是一个免费、开源的分布式实时计算系统，Storm对于实时计算的意义类似于Hadoop对于批处理的意义，Storm可以简单、高效、可靠地处理流数据，并支持多种编程语言</li>
+<li>Storm框架可以方便地与数据库系统进行整合，从而开发出强大的实时计算系统</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/2OAfhoyKXdsYmjV.png" alt="Twitter的分层数据处理架构.png"></p>
+<h2 id="Storm的特点"><a href="#Storm的特点" class="headerlink" title="Storm的特点"></a>Storm的特点</h2><ul>
+<li>Storm可用于许多领域中，如实时分析、在线机器学习、持续计算、远程RPC、数据提取加载转换等</li>
+<li>Storm具有以下主要特点：<ul>
+<li>整合性：Storm可方便地与队列系统和数据库系统进行整合</li>
+<li>简易的API：Storm的API在使用上即简单又方便</li>
+<li>可扩展性：Storm的并行特性使其可以运行在分布式集群中</li>
+<li>容错性：Storm可自动进行故障节点的重启、任务的重新分配</li>
+<li>可靠的消息处理：Storm保证每个消息都能完整处理 </li>
+<li>支持各种编程语言：Storm支持使用各种编程语言来定义任务</li>
+<li>快速部署：Storm可以快速进行部署和使用</li>
+<li>免费、开源：Storm是一款开源框架，可以免费使用</li>
+</ul>
+</li>
+</ul>
+<h2 id="Storm设计思想"><a href="#Storm设计思想" class="headerlink" title="Storm设计思想"></a>Storm设计思想</h2><ul>
+<li>Storm主要术语包括Streams、Spouts、Bolts、Topology和Stream Groupings</li>
+<li>Streams：Storm将流数据Stream描述成一个无限的Tuple序列，这些Tuple序列会以分布式的方式并行地创建和处理</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/pyhWGTaef9SscdM.png" alt="Stream.png"></p>
+<ul>
+<li>每个tuple是一堆值，每个值有一个名字，并且每个值可以是任何类型</li>
+<li>Tuple本来应该是一个Key-Value的Map，由于各个组件间传递的tuple的字段名称已经事先定义好了，所以Tuple只需要按序填入各个Value，所以就是一个Value List（值列表）</li>
+<li>Spout：Storm认为每个Stream都有一个源头，并把这个源头抽象为Spout</li>
+<li>通常Spout会从外部数据源（队列、数据库等）读取数据，然后封装成Tuple形式，发送到Stream中。Spout是一个主动的角色，在接口内部有个nextTuple函数，Storm框架会不停的调用该函数</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/uO6giCcEQ81NrBX.png" alt="Spout.png"></p>
+<ul>
+<li>Bolt：Storm将Streams的状态转换过程抽象为Bolt。Bolt即可以处理Tuple，也可以将处理后的Tuple作为新的Streams发送给其他Bolt</li>
+<li>Bolt可以执行过滤、函数操作、Join、操作数据库等任何操作</li>
+<li>Bolt是一个被动的角色，其接口中有一个execute(Tuple input)方法，在接收到消息之后会调用此函数，用户可以在此方法中执行自己的处理逻辑</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/TVfov9rABmMWx8D.png" alt="bboult.png"></p>
+<ul>
+<li>Topology：Storm将Spouts和Bolts组成的网络抽象成Topology，它可以被提交到Storm集群执行。Topology可视为流转换图，图中节点是一个Spout或Bolt，边则表示Bolt订阅了哪个Stream。当Spout或者Bolt发送元组时，它会把元组发送到每个订阅了该Stream的Bolt上进行处理</li>
+<li>Topology里面的每个处理组件（Spout或Bolt）都包含处理逻辑， 而组件之间的连接则表示数据流动的方向</li>
+<li>Topology里面的每一个组件都是并行运行的</li>
+<li>在Topology里面可以指定每个组件的并行度， Storm会在集群里面分配那么多的线程来同时计算</li>
+<li>在Topology的具体实现上，Storm中的Topology定义仅仅是一些Thrift结构体（二进制高性能的通信中间件），支持各种编程语言进行定义</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/sWUh84QkrPGbjdL.png" alt="Toploly.png"></p>
+<ul>
+<li>Stream Groupings：Storm中的Stream Groupings用于告知Topology如何在两个组件间（如Spout和Bolt之间，或者不同的Bolt之间）进行Tuple的传送。每一个Spout和Bolt都可以有多个分布式任务，一个任务在什么时候、以什么方式发送Tuple就是由Stream Groupings来决定的</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/IHnpzWscD8PEBmJ.png" alt="StramGrouping .png"></p>
+<blockquote>
+<ul>
+<li>目前，Storm中的Stream Groupings有如下几种方式：</li>
+</ul>
+<ol>
+<li>ShuffleGrouping：随机分组，随机分发Stream中的Tuple，保证每个Bolt的Task接收Tuple数量大致一致</li>
+<li>FieldsGrouping：按照字段分组，保证相同字段的Tuple分配到同一个Task中</li>
+<li>AllGrouping：广播发送，每一个Task都会收到所有的Tuple</li>
+<li>GlobalGrouping：全局分组，所有的Tuple都发送到同一个Task中</li>
+<li>NonGrouping：不分组，和ShuffleGrouping类似，当前Task的执行会和它的被订阅者在同一个线程中执行</li>
+<li>DirectGrouping：直接分组，直接指定由某个Task来执行Tuple的处理</li>
+</ol>
+</blockquote>
+<h2 id="Storm框架设计"><a href="#Storm框架设计" class="headerlink" title="Storm框架设计"></a>Storm框架设计</h2><ul>
+<li><p>Storm运行任务的方式与Hadoop类似：Hadoop运行的是MapReduce作业，而Storm运行的是“Topology”</p>
+</li>
+<li><p>但两者的任务大不相同，主要的不同是：MapReduce作业最终会完成计算并结束运行，而Topology将持续处理消息（直到人为终止）</p>
+<table>
+<thead>
+<tr>
+<th>Hadoop</th>
+<th>Storm</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应用名称</td>
+<td>Job</td>
+</tr>
+<tr>
+<td>系统角色</td>
+<td>JobTracker</td>
+</tr>
+<tr>
+<td>系统角色</td>
+<td>TaskTracker</td>
+</tr>
+<tr>
+<td>组件接口</td>
+<td>Map/Reduce</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Storm集群采用“Master—Worker”的节点方式：</p>
+<ul>
+<li>Master节点运行名为“Nimbus”的后台程序（类似Hadoop中的“JobTracker”），负责在集群范围内分发代码、为Worker分配任务和监测故障</li>
+<li>Worker节点运行名为“Supervisor”的后台程序，负责监听分配给它所在机器的工作，即根据Nimbus分配的任务来决定启动或停止Worker进程，一个Worker节点上同时运行若干个Worker进程</li>
+</ul>
+</li>
+<li><p>Storm使用Zookeeper来作为分布式协调组件，负责Nimbus和多个Supervisor之间的所有协调工作。借助于Zookeeper，若Nimbus进程或Supervisor进程意外终止，重启时也能读取、恢复之前的状态并继续工作，使得Storm极其稳定</p>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/OxlvwgL9Juq8Zam.png" alt="Storm集群架构示意图.png"></p>
+<ol>
+<li>worker:每个worker进程都属于一个特定的Topology，每个Supervisor节点的worker可以有多个，每个worker对Topology中的每个组件（Spout或 Bolt）运行一个或者多个executor线程来提供task的运行服务</li>
+<li>executor：executor是产生于worker进程内部的线程，会执行同一个组件的一个或者多个task。</li>
+<li>task:实际的数据处理由task完成，在Topology的生命周期中，每个组件的task数目是不会发生变化的，而executor的数目却不一定。executor数目小于等于task的数目，默认情况下，二者是相等的</li>
+</ol>
+<p><img src="https://i.loli.net/2019/08/16/ivGbezZRMup6jDh.png" alt="worker excuter和task关系.png"></p>
+<blockquote>
+<ul>
+<li>基于这样的架构设计，Storm的工作流程如下图所示：</li>
+</ul>
+<ul>
+<li>所有Topology任务的提交必须在Storm客户端节点上进行，提交后，由Nimbus节点分配给其他Supervisor节点进行处理</li>
+<li>Nimbus节点首先将提交的Topology进行分片，分成一个个Task，分配给相应的Supervisor，并将Task和Supervisor相关的信息提交到Zookeeper集群上</li>
+<li>Supervisor会去Zookeeper集群上认领自己的Task，通知自己的Worker进程进行Task的处理</li>
+<li>说明：在提交了一个Topology之后，Storm就会创建Spout/Bolt实例并进行序列化。之后，将序列化的组件发送给所有的任务所在的机器(即Supervisor节点)，在每一个任务上反序列化组件</li>
+</ul>
+</blockquote>
+<p><img src="https://i.loli.net/2019/08/16/GHqlOyPUjadZnzF.png" alt="Storm工作流程示意图.png"></p>
+<h1 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h1><h2 id="Spark-Streaming设计"><a href="#Spark-Streaming设计" class="headerlink" title="Spark Streaming设计"></a>Spark Streaming设计</h2><ul>
+<li>Spark Streaming可整合多种输入数据源，如Kafka、Flume、HDFS，甚至是普通的TCP套接字。经处理后的数据可存储至文件系统、数据库，或显示在仪表盘里</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/KvQyUpZ9Rs1c8uH.png" alt="Spark Streaming支持的输入、输出数据源.png"></p>
+<ul>
+<li>Spark Streaming的基本原理是将实时输入数据流以时间片（秒级）为单位进行拆分，然后经Spark引擎以类似批处理的方式处理每个时间片数据</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/wYuM6RTUAn9B5vi.png" alt="Spark Streaming执行流程.png"></p>
+<ul>
+<li>Spark Streaming最主要的抽象是DStream（Discretized Stream，离散化数据流），表示连续不断的数据流。在内部实现上，Spark Streaming的输入数据按照时间片（如1秒）分成一段一段的DStream，每一段数据转换为Spark中的RDD，并且对DStream的操作都最终转变为对相应的RDD的操作</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/7uiej3OvUBofWPp.png" alt="DStream操作示意图.png"></p>
+<h2 id="Spark-Streaming与Storm的对比"><a href="#Spark-Streaming与Storm的对比" class="headerlink" title="Spark Streaming与Storm的对比"></a>Spark Streaming与Storm的对比</h2><ul>
+<li>Spark Streaming和Storm最大的区别在于，Spark Streaming无法实现毫秒级的流计算，而Storm可以实现毫秒级响应</li>
+<li>Spark Streaming构建在Spark上，一方面是因为Spark的低延迟执行引擎（100ms+）可以用于实时计算，另一方面，相比于Storm，RDD数据集更容易做高效的容错处理</li>
+<li>Spark Streaming采用的小批量处理的方式使得它可以同时兼容批量和实时数据处理的逻辑和算法，因此，方便了一些需要历史数据和实时数据联合分析的特定应用场合</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/12/Kubernetes-架构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2461,6 +2846,413 @@ table tr:hover {
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/10/06/Spark/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/06/Spark/" itemprop="url">Spark</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-06T18:53:15+08:00">
+                2018-10-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bigdat/" itemprop="url" rel="index">
+                    <span itemprop="name">bigdat</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Spark概述"><a href="#Spark概述" class="headerlink" title="Spark概述"></a>Spark概述</h1><h2 id="Spark简介"><a href="#Spark简介" class="headerlink" title="Spark简介"></a>Spark简介</h2><ul>
+<li>Spark最初由美国加州伯克利大学（UCBerkeley）的AMP实验室于2009年开发，是基于内存计算的大数据并行计算框架，可用于构建大型的、低延迟的数据分析应用程序</li>
+<li>2013年Spark加入Apache孵化器项目后发展迅猛，如今已成为Apache软件基金会最重要的三大分布式计算系统开源项目之一（Hadoop、Spark、Storm）</li>
+<li>Spark具有如下几个主要特点：<ul>
+<li>运行速度快：使用DAG执行引擎以支持循环数据流与内存计算</li>
+<li>容易使用：支持使用Scala、Java、Python和R语言进行编程，可以通过Spark Shell进行交互式编程   </li>
+<li>通用性：Spark提供了完整而强大的技术栈，包括SQL查询、流式计算、机器学习和图算法组件</li>
+<li>运行模式多样：可运行于独立的集群模式中，可运行于Hadoop中，也可运行于Amazon EC2等云环境中，并且可以访问HDFS、Cassandra、HBase、Hive等多种数据源</li>
+</ul>
+</li>
+</ul>
+<h2 id="Scala简介"><a href="#Scala简介" class="headerlink" title="Scala简介"></a>Scala简介</h2><ul>
+<li>Scala是一门现代的多范式编程语言，运行于Java平台（JVM，Java 虚拟机），并兼容现有的Java程序</li>
+<li>Scala的特性：<ul>
+<li>Scala具备强大的并发性，支持函数式编程，可以更好地支持分布式系统</li>
+<li>Scala语法简洁，能提供优雅的API</li>
+<li>Scala兼容Java，运行速度快，且能融合到Hadoop生态圈中 </li>
+</ul>
+</li>
+<li>Scala是Spark的主要编程语言，但Spark还支持Java、Python、R作为编程语言</li>
+<li>Scala的优势是提供了REPL（Read-Eval-Print Loop，交互式解释器），提高程序开发效率</li>
+</ul>
+<h2 id="Spark与Hadoop的比较"><a href="#Spark与Hadoop的比较" class="headerlink" title="Spark与Hadoop的比较"></a>Spark与Hadoop的比较</h2><ul>
+<li>Hadoop存在如下一些缺点：<ul>
+<li>表达能力有限</li>
+<li>磁盘IO开销大</li>
+<li>延迟高</li>
+<li>任务之间的衔接涉及IO开销，在前一个任务执行完成之前，其他任务就无法开始，难以胜任复杂、多阶段的计算任务 </li>
+</ul>
+</li>
+<li>相比于Hadoop MapReduce，Spark主要具有如下优点：<ul>
+<li>Spark的计算模式也属于MapReduce，但不局限于Map和Reduce操作，还提供了多种数据集操作类型，编程模型比Hadoop MapReduce更灵活</li>
+<li>Spark提供了内存计算，可将中间结果放到内存中，对于迭代运算效率更高</li>
+<li>Spark基于<strong>DAG</strong>的任务调度执行机制，要优于Hadoop MapReduce的迭代执行机制 </li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/15/vr9S5IBqmax1MFf.png" alt="Spark执行流程.png"></p>
+<ul>
+<li>使用Hadoop进行迭代计算非常耗资源</li>
+<li>Spark将数据载入内存后，之后的迭代计算都可以直接使用内存中的中间结果作运算，避免了从磁盘中频繁读取数据</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/15/TVUy9Nz7DWkqpZ5.png" alt="Hadoop与Spark执行逻辑回归时间对比.png"></p>
+<h1 id="Spark生态系统"><a href="#Spark生态系统" class="headerlink" title="Spark生态系统"></a>Spark生态系统</h1><blockquote>
+<p>在实际应用中，大数据处理主要包括以下三个类型：</p>
+<ul>
+<li>复杂的批量数据处理：通常时间跨度在数十分钟到数小时之间</li>
+<li>基于历史数据的交互式查询：通常时间跨度在数十秒到数分钟之间</li>
+<li>基于实时数据流的数据处理：通常时间跨度在数百毫秒到数秒之间<br>当同时存在以上三种场景时，就需要同时部署三种不同的软件<br>比如: MapReduce  /  Impala  /  Storm</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>这样做难免会带来一些问题： </p>
+<ul>
+<li>不同场景之间输入输出数据无法做到无缝共享，通常需要进行数据格式的转换</li>
+<li>不同的软件需要不同的开发和维护团队，带来了较高的使用成本</li>
+<li>比较难以对同一个集群中的各个系统进行统一的资源协调和分配</li>
+</ul>
+</blockquote>
+<ul>
+<li><p>Spark的设计遵循<strong>“一个软件栈满足不同应用场景”</strong>的理念，逐渐形成了一套完整的生态系统</p>
+</li>
+<li><p>既能够提供内存计算框架，也可以支持SQL即席查询、实时流式计算、机器学习和图计算等</p>
+</li>
+<li><p>Spark可以部署在资源管理器YARN之上，提供一站式的大数据解决方案</p>
+</li>
+<li><p>因此，Spark所提供的生态系统足以应对上述三种场景，即同时支持批处理、交互式查询和流数据处理</p>
+</li>
+<li><p>Spark的生态系统主要包含了Spark Core、Spark SQL、Spark Streaming、MLLib和GraphX 等组件</p>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/15/eGqLAQjrxYDIiB4.png" alt="BDAS架构.png"></p>
+<table>
+<thead>
+<tr>
+<th>应用场景</th>
+<th>时间跨度</th>
+<th>其他框架</th>
+<th>Spark生态系统中的组件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>复杂的批量数据处理</td>
+<td>小时级</td>
+<td>MapReduce、Hive</td>
+<td>Spark</td>
+</tr>
+<tr>
+<td>基于历史数据的交互式查询</td>
+<td>分钟级、秒级</td>
+<td>Impala、Dremel、Drill</td>
+<td>Spark SQL</td>
+</tr>
+<tr>
+<td>基于实时数据流的数据处理</td>
+<td>毫秒、秒级</td>
+<td>Storm、S4</td>
+<td>Spark Streaming</td>
+</tr>
+<tr>
+<td>基于历史数据的数据挖掘</td>
+<td>-</td>
+<td>Mahout</td>
+<td>MLlib</td>
+</tr>
+<tr>
+<td>图结构数据的处理</td>
+<td>-</td>
+<td>Pregel、Hama</td>
+<td>GraphX</td>
+</tr>
+</tbody></table>
+<h1 id="Spark运行架构"><a href="#Spark运行架构" class="headerlink" title="Spark运行架构"></a>Spark运行架构</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li>RDD：是Resillient Distributed Dataset（弹性分布式数据集）的简称，是分布式内存的一个抽象概念，提供了一种高度受限的共享内存模型</li>
+<li>DAG：是Directed Acyclic Graph（有向无环图）的简称，反映RDD之间的依赖关系</li>
+<li>Executor：是运行在工作节点（WorkerNode）的一个进程，负责运行Task</li>
+<li>Application：用户编写的Spark应用程序</li>
+<li>Task：运行在Executor上的工作单元 </li>
+<li>Job：一个Job包含多个RDD及作用于相应RDD上的各种操作</li>
+<li>Stage：是Job的基本调度单位，一个Job会分为多组Task，每组Task被称为Stage，或者也被称为TaskSet，代表了一组关联的、相互之间没有Shuffle依赖关系的任务组成的任务集</li>
+</ul>
+<h2 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h2><ul>
+<li>Spark运行架构包括集群资源管理器（Cluster Manager）、运行作业任务的工作节点（Worker Node）、每个应用的任务控制节点（Driver）和每个工作节点上负责具体任务的执行进程（Executor）</li>
+<li>资源管理器可以自带或Mesos或YARN<blockquote>
+<p>与Hadoop MapReduce计算框架相比，Spark所采用的Executor有两个优点：</p>
+</blockquote>
+</li>
+<li>一是利用多线程来执行具体的任务，减少任务的启动开销</li>
+<li>二是Executor中有一个BlockManager存储模块，会将内存和磁盘共同作为存储设备，有效减少IO开销<br><img src="https://i.loli.net/2019/08/15/ayNnsW1oELcmMrV.png" alt="Spark运行架构.png"></li>
+<li>一个Application由一个Driver和若干个Job构成，一个Job由多个Stage构成，一个Stage由多个没有Shuffle关系的Task组成</li>
+<li>当执行一个Application时，Driver会向集群管理器申请资源，启动Executor，并向Executor发送应用程序代码和文件，然后在Executor上执行Task，运行结束后，执行结果会返回给Driver，或者写到HDFS或者其他数据库中<br><img src="https://i.loli.net/2019/08/15/TcBFl2LCj9PdIGM.png" alt="Spark中各种概念之间的相互关系.png"></li>
+</ul>
+<h2 id="Spark运行基本流程"><a href="#Spark运行基本流程" class="headerlink" title="Spark运行基本流程"></a>Spark运行基本流程</h2><p><img src="https://i.loli.net/2019/08/15/gHdGTBRl4L8Ekhy.png" alt="Spark运行基本流程图.png"></p>
+<ol>
+<li>运行环境，即由Driver创建一个SparkContext，进行资源的申请、任务的分配和监控</li>
+<li>资源管理器为Executor分配资源，并启动Executor进程</li>
+<li>SparkContext根据RDD的依赖关系构建DAG图，DAG图提交给DAGScheduler解析成Stage，然后把一个个TaskSet提交给底层调度器TaskScheduler处理；Executor向SparkContext申请Task，Task Scheduler将Task发放给Executor运行，并提供应用程序代码</li>
+<li>Task在Executor上运行，把执行结果反馈给TaskScheduler，然后反馈给DAGScheduler，运行完毕后写入数据并释放所有资源 <blockquote>
+<p><em>总体而言，Spark运行架构具有以下特点：</em></p>
+</blockquote>
+</li>
+<li>每个Application都有自己专属的Executor进程，并且该进程在Application运行期间一直驻留。Executor进程以多线程的方式运行Task</li>
+<li>Spark运行过程与资源管理器无关，只要能够获取Executor进程并保持通信即可</li>
+<li>Task采用了数据本地性和推测执行等优化机制</li>
+</ol>
+<h2 id="RDD-运行原理"><a href="#RDD-运行原理" class="headerlink" title="RDD 运行原理"></a>RDD 运行原理</h2><ol>
+<li>设计背景</li>
+</ol>
+<ul>
+<li>许多迭代式算法（比如机器学习、图算法等）和交互式数据挖掘工具，共同之处是，不同计算阶段之间会重用中间结果</li>
+<li>目前的MapReduce框架都是把中间结果写入到HDFS中，带来了大量的数据复制、磁盘IO和序列化开销</li>
+<li>RDD就是为了满足这种需求而出现的，它提供了一个抽象的数据架构，我们不必担心底层数据的分布式特性，只需将具体的应用逻辑表达为一系列转换处理，不同RDD之间的转换操作形成依赖关系，可以实现管道化，避免中间数据存储</li>
+</ul>
+<ol start="2">
+<li>RDD概念</li>
+</ol>
+<ul>
+<li>一个RDD就是一个分布式对象集合，本质上是一个只读的分区记录集合，每个RDD可分成多个分区，每个分区就是一个数据集片段，并且一个RDD的不同分区可以被保存到集群中不同的节点上，从而可以在集群中的不同节点上进行并行计算</li>
+<li>RDD提供了一种高度受限的共享内存模型，即RDD是只读的记录分区的集合，不能直接修改，只能基于稳定的物理存储中的数据集创建RDD，或者通过在其他RDD上执行确定的转换操作（如map、join和group by）而创建得到新的RDD</li>
+<li>RDD提供了一组丰富的操作以支持常见的数据运算，分为“动作”（Action）和“转换”（Transformation）两种类型</li>
+<li>RDD提供的转换接口都非常简单，都是类似map、filter、groupBy、join等粗粒度的数据转换操作，而不是针对某个数据项的细粒度修改（不适合网页爬虫）</li>
+<li>表面上RDD的功能很受限、不够强大，实际上RDD已经被实践证明可以高效地表达许多框架的编程模型（比如MapReduce、SQL、Pregel）</li>
+<li>Spark用Scala语言实现了RDD的API，程序员可以通过调用API实现对RDD的各种操作</li>
+<li>RDD典型的执行过程如下：<ul>
+<li>RDD读入外部数据源进行创建</li>
+<li>RDD经过一系列的转换（Transformation）操作，每一次都会产生不同的RDD，供给下一个转换操作使用</li>
+<li>最后一个RDD经过“动作”操作进行转换，并输出到外部数据源 <blockquote>
+<ul>
+<li>这一系列处理称为一个Lineage（血缘关系），即DAG拓扑排序的结果<br>优点：惰性调用、管道化、避免同步等待、不需要保存中间结果、每次操作变得简单<br><img src="https://i.loli.net/2019/08/15/a1Y9sXAxECQTD6I.png" alt="RDD执行过程的一个实例.png"></li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>RDD特性<br>Spark采用RDD以后能够实现高效计算的原因主要在于：</li>
+<li>高效的容错性<ul>
+<li>现有容错机制：数据复制或者记录日志</li>
+<li>RDD：血缘关系、重新计算丢失分区、无需回滚系统、重算过程在不同节点之间并行、只记录粗粒度的操作</li>
+</ul>
+</li>
+<li>中间结果持久化到内存，数据在内存中的多个RDD操作之间进行传递，避免了不必要的读写磁盘开销</li>
+<li>存放的数据可以是Java对象，避免了不必要的对象序列化和反序列化</li>
+<li>RDD之间的依赖关系<br><img src="https://i.loli.net/2019/08/15/v71RxrEqTLsDjNI.png" alt="窄依赖与宽依赖的区别.png"></li>
+</ol>
+<ul>
+<li>窄依赖表现为一个父RDD的分区对应于一个子RDD的分区或多个父RDD的分区对应于一个子RDD的分区</li>
+<li>宽依赖则表现为存在一个父RDD的一个分区对应一个子RDD的多个分区</li>
+</ul>
+<ol start="5">
+<li>Stage的划分<blockquote>
+<ul>
+<li>Spark通过分析各个RDD的依赖关系生成了DAG，再通过分析各个RDD中的分区之间的依赖关系来决定如何划分Stage，具体划分方法是：</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>在DAG中进行反向解析，遇到宽依赖就断开</li>
+<li>遇到窄依赖就把当前的RDD加入到Stage中</li>
+<li>　将窄依赖尽量划分在同一个Stage中，可以实现流水线计算<blockquote>
+<ul>
+<li>被分成三个Stage，在Stage2中，从map到union都是窄依赖，这两步操作可以形成一个流水线操作<br><img src="https://i.loli.net/2019/08/15/iEwLC2qAhSlpY6M.png" alt="根据RDD分区的依赖关系划分Stage.png"></li>
+</ul>
+</blockquote>
+</li>
+<li>流水线操作实例<ul>
+<li>分区7通过map操作生成的分区9，可以不用等待分区8到分区10这个map操作的计算结束，而是继续进行union操作，得到分区13，这样流水线执行大大提高了计算的效率</li>
+</ul>
+</li>
+<li>Stage的类型包括两种：ShuffleMapStage和ResultStage，具体如下：<ul>
+<li>ShuffleMapStage：不是最终的Stage，在它之后还有其他Stage，所以，它的输出一定需要经过Shuffle过程，并作为后续Stage的输入；这种Stage是以Shuffle为输出边界，其输入边界可以是从外部获取数据，也可以是另一个ShuffleMapStage的输出，其输出可以是另一个Stage的开始；在一个Job里可能有该类型的Stage，也可能没有该类型Stage；</li>
+<li>ResultStage：最终的Stage，没有输出，而是直接产生结果或存储。这种Stage是直接输出结果，其输入边界可以是从外部获取数据，也可以是另一个ShuffleMapStage的输出。在一个Job里必定有该类型Stage。<br>因此，一个Job含有一个或多个Stage，其中至少含有一个ResultStage</li>
+</ul>
+</li>
+</ul>
+<ol start="6">
+<li>RDD运行过程<blockquote>
+<ul>
+<li>通过上述对RDD概念、依赖关系和Stage划分的介绍，结合之前介绍的Spark运行基本流程，再总结一下RDD在Spark架构中的运行过程：</li>
+</ul>
+</blockquote>
+</li>
+<li>创建RDD对象；</li>
+<li>SparkContext负责计算RDD之间的依赖关系，构建DAG；</li>
+<li>DAGScheduler负责把DAG图分解成多个Stage，每个Stage中包含了多个Task，每个Task会被TaskScheduler分发给各个WorkerNode上的Executor去执行。<br><img src="https://i.loli.net/2019/08/15/N6DdUuQT8E5MXRn.png" alt="RDD在Spark中的运行过程.png"></li>
+</ol>
+<h1 id="Spark-SQL"><a href="#Spark-SQL" class="headerlink" title="Spark SQL"></a>Spark SQL</h1><ul>
+<li>Spark SQL在Hive兼容层面仅依赖HiveQL解析、Hive元数据，也就是说，从HQL被解析成抽象语法树（AST）起，就全部由Spark SQL接管了。Spark SQL执行计划生成和优化都由Catalyst（函数式关系查询优化框架）负责<br><img src="https://i.loli.net/2019/08/15/B4gFD6Nnx75dblL.png" alt="Spark SQL架构.png"><ul>
+<li>Spark SQL增加了SchemaRDD（即带有Schema信息的RDD），使用户可以在Spark SQL中执行SQL语句，数据既可以来自RDD，也可以是Hive、HDFS、Cassandra等外部数据源，还可以是JSON格式的数据</li>
+<li>Spark SQL目前支持Scala、Java、Python三种语言，支持SQL-92规范<br><img src="https://i.loli.net/2019/08/15/irYBgfjqWhAZCpx.png" alt="Spark SQL支持的数据格式和编程语言.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="Spark的部署和应用方式"><a href="#Spark的部署和应用方式" class="headerlink" title="Spark的部署和应用方式"></a>Spark的部署和应用方式</h1><h2 id="Spark三种部署方式"><a href="#Spark三种部署方式" class="headerlink" title="Spark三种部署方式"></a>Spark三种部署方式</h2><ul>
+<li>Standalone（类似于MapReduce1.0，slot为资源分配单位）</li>
+<li>Spark on Mesos（和Spark有血缘关系，更好支持Mesos）</li>
+<li>Spark on YARN<br><img src="https://i.loli.net/2019/08/15/IXHGPSlbvZxKoBa.png" alt="Spark on Yarn.png"></li>
+</ul>
+<h2 id="从Hadoop-Storm架构转向Spark架构"><a href="#从Hadoop-Storm架构转向Spark架构" class="headerlink" title="从Hadoop+Storm架构转向Spark架构"></a>从Hadoop+Storm架构转向Spark架构</h2><p><img src="https://i.loli.net/2019/08/15/Fnlm51KXpfL6NjB.png" alt="采用Hadoop+Storm部署方式的一个案例.png"></p>
+<blockquote>
+<ul>
+<li>用Spark架构具有如下优点：</li>
+</ul>
+<ul>
+<li>实现一键式安装和配置、线程级别的任务监控和告警</li>
+<li>降低硬件集群、软件维护、任务监控和应用开发的难度</li>
+<li>便于做成统一的硬件、计算平台资源池</li>
+</ul>
+<ul>
+<li>需要说明的是，Spark Streaming无法实现毫秒级的流计算，因此，对于需要毫秒级实时响应的企业应用而言，仍然需要采用流计算框架（如Storm）<br><img src="https://i.loli.net/2019/08/15/vfjaYQR8shSqDJt.png" alt="用Spark架构满足批处理和流处理需求.png"></li>
+</ul>
+</blockquote>
+<h2 id="Hadoop和Spark的统一部署"><a href="#Hadoop和Spark的统一部署" class="headerlink" title="Hadoop和Spark的统一部署"></a>Hadoop和Spark的统一部署</h2><ul>
+<li>由于Hadoop生态系统中的一些组件所实现的功能，目前还是无法由Spark取代的，比如，Storm</li>
+<li>现有的Hadoop组件开发的应用，完全转移到Spark上需要一定的成本<blockquote>
+<ul>
+<li>不同的计算框架统一运行在YARN中，可以带来如下好处：</li>
+</ul>
+</blockquote>
+</li>
+<li>计算资源按需伸缩</li>
+<li>不用负载应用混搭，集群利用率高</li>
+<li>共享底层存储，避免数据跨集群迁移<br><img src="https://i.loli.net/2019/08/15/RPfTV8uejXhgvlw.png" alt="Hadoop和Spark的统一部署.png"></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/09/27/NoSQL/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3802,680 +4594,13 @@ table tr:hover {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/08/08/HDFS-分布式文件系统/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/08/HDFS-分布式文件系统/" itemprop="url">HDFS-分布式文件系统</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-08T18:55:50+08:00">
-                2018-08-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Hadoop-分布式文件系统-HDFS"><a href="#Hadoop-分布式文件系统-HDFS" class="headerlink" title="Hadoop 分布式文件系统-HDFS"></a>Hadoop 分布式文件系统-HDFS</h1><p>分布式文件系统在物理结构上是由计算机集群中的多个节点构成的，这些节点分为两类，一类叫“主节点”(Master Node)或者也被称为“名称结点”(NameNode)，另一类叫“从节点”（Slave Node）或者也被称为“数据节点”(DataNode)<br><img src="https://i.loli.net/2019/08/13/tqh4cEsCudyDOPX.jpg" alt="图片1.jpg"></p>
-<h2 id="HDFS要实现的目标如下："><a href="#HDFS要实现的目标如下：" class="headerlink" title="HDFS要实现的目标如下："></a>HDFS要实现的目标如下：</h2><ul>
-<li>兼容廉价的硬件设备</li>
-<li>流数据读写</li>
-<li>大数据集</li>
-<li>简单的文件模型</li>
-<li>强大的跨平台兼容性<br>HDFS在实现以上特性同时，也使得自身有一些局限性，主要包括如下几个方面：</li>
-<li>不适合低延迟数据访问</li>
-<li>无法高效存储大量小文件</li>
-<li>不支持多用户写入及任意修改文件</li>
-</ul>
-<h2 id="块"><a href="#块" class="headerlink" title="块"></a>块</h2><ul>
-<li>HDFS默认一个块64MB，一个文件被分成多个块，以块作为存储单位块的大小远远大于普通文件系统，可以最小化寻址开销</li>
-<li>HDFS采用抽象的块概念可以带来以下几个明显的好处：<ul>
-<li>支持大规模文件存储：文件以块为单位进行存储，一个大规模文件可以被分拆成若干个文件块，不同的文件块可以被分发到不同的节点上，因此，一个文件的大小不会受到单个节点的存储容量的限制，可以远远大于网络中任意节点的存储容量</li>
-<li>简化系统设计：首先，大大简化了存储管理，因为文件块大小是固定的，这样就可以很容易计算出一个节点可以存储多少文件块；其次，方便了元数据的管理，元数据不需要和文件块一起存储，可以由其他系统负责管理元数据</li>
-<li>适合数据备份：每个文件块都可以冗余存储到多个节点上，大大提高了系统的容错性和可用性<h2 id="HDFS主要组件的功能"><a href="#HDFS主要组件的功能" class="headerlink" title="HDFS主要组件的功能"></a>HDFS主要组件的功能</h2></li>
-</ul>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="left"><strong>NameNode</strong></th>
-<th align="left"><strong>DataNode</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">存储元数据</td>
-<td align="left">存储文件内容</td>
-</tr>
-<tr>
-<td align="left">元数据保存在内存中</td>
-<td align="left">文件内容保存在磁盘上</td>
-</tr>
-<tr>
-<td align="left">保存文件，block，datanode之间的映射关系</td>
-<td align="left">维护了block id 到datanode本地文件的映射关系</td>
-</tr>
-</tbody></table>
-<h3 id="NameNode-数据结构"><a href="#NameNode-数据结构" class="headerlink" title="NameNode 数据结构"></a>NameNode 数据结构</h3><ul>
-<li>在HDFS中，名称节点（NameNode）负责管理分布式文件系统的命名空间（Namespace），保存了两个核心的数据结构，即FsImage和EditLog<ul>
-<li>FsImage用于维护文件系统树以及文件树中所有的文件和文件夹的元数据</li>
-<li>操作日志文件EditLog中记录了所有针对文件的创建、删除、重命名等操作</li>
-</ul>
-</li>
-<li>名称节点记录了每个文件中各个块所在的数据节点的位置信息<br><img src="https://i.loli.net/2019/08/13/m8GYhtLoaIpbq2d.jpg" alt="图片2.jpg"><h4 id="FsImage文件"><a href="#FsImage文件" class="headerlink" title="FsImage文件"></a>FsImage文件</h4><ul>
-<li>FsImage文件包含文件系统中所有目录和文件inode的序列化形式。每个inode是一个文件或目录的元数据的内部表示，并包含此类信息：文件的复制等级、修改和访问时间、访问权限、块大小以及组成文件的块。对于目录，则存储修改时间、权限和配额元数据</li>
-<li>FsImage文件没有记录文件包含哪些块以及每个块存储在哪个数据节点。而是由名称节点把这些映射信息保留在内存中，当数据节点加入HDFS集群时，数据节点会把自己所包含的块列表告知给名称节点，此后会定期执行这种告知操作，以确保名称节点的块映射是最新的<h4 id="名称节点启动"><a href="#名称节点启动" class="headerlink" title="名称节点启动"></a>名称节点启动</h4></li>
-<li>在名称节点启动的时候，它会将FsImage文件中的内容加载到内存中，之后再执行EditLog文件中的各项操作，使得内存中的元数据和实际的同步，存在内存中的元数据支持客户端的读操作。</li>
-<li>一旦在内存中成功建立文件系统元数据的映射，则创建一个新的FsImage文件和一个空的EditLog文件</li>
-<li>名称节点起来之后，HDFS中的更新操作会重新写到EditLog文件中，因为FsImage文件一般都很大（GB级别的很常见），如果所有的更新操作都往FsImage文件中添加，这样会导致系统运行的十分缓慢，但是，如果往EditLog文件里面写就不会这样，因为EditLog 要小很多。每次执行写操作之后，且在向客户端发送成功代码之前，edits文件都需要同步更新<h4 id="名称节点运行期间EditLog不断变大问题"><a href="#名称节点运行期间EditLog不断变大问题" class="headerlink" title="名称节点运行期间EditLog不断变大问题"></a>名称节点运行期间EditLog不断变大问题</h4></li>
-<li>在名称节点运行期间，HDFS的所有更新操作都是直接写到EditLog中，久而久之， EditLog文件将会变得很大</li>
-<li>虽然这对名称节点运行时候是没有什么明显影响的，但是，当名称节点重启的时候，名称节点需要先将FsImage里面的所有内容映像到内存中，然后再一条一条地执行EditLog中的记录，当EditLog文件非常大的时候，会导致名称节点启动操作非常慢，而在这段时间内HDFS系统处于安全模式，一直无法对外提供写操作，影响了用户的使用</li>
-</ul>
-<strong>答案：SecondaryNameNode第二名称节点</strong><h4 id="Secondary-Namenode-工作情况"><a href="#Secondary-Namenode-工作情况" class="headerlink" title="Secondary Namenode 工作情况"></a>Secondary Namenode 工作情况</h4><img src="https://i.loli.net/2019/08/13/c8lQmqSNioyRFxM.png" alt="图片3.png"><ol>
-<li>SecondaryNameNode会定期和NameNode通信，请求其停止使用EditLog文件，暂时将新的写操作写到一个新的文件edit.new上来，这个操作是瞬间完成，上层写日志的函数完全感觉不到差别；</li>
-<li>SecondaryNameNode通过HTTP GET方式从NameNode上获取到FsImage和EditLog文件，并下载到本地的相应目录下；</li>
-<li>SecondaryNameNode将下载下来的FsImage载入到内存，然后一条一条地执行EditLog文件中的各项更新操作，使得内存中的FsImage保持最新；这个过程就是EditLog和FsImage文件合并；</li>
-<li>SecondaryNameNode执行完（3）操作之后，会通过post方式将新的FsImage文件发送到NameNode节点上</li>
-<li>NameNode将从SecondaryNameNode接收到的新的FsImage替换旧的FsImage文件，同时将edit.new替换EditLog文件，通过这个过程EditLog就变小了<h3 id="DataNode"><a href="#DataNode" class="headerlink" title="DataNode"></a>DataNode</h3></li>
-</ol>
-<ul>
-<li>数据节点是分布式文件系统HDFS的工作节点，负责数据的存储和读取，会根据客户端或者名称节点的调度来进行数据的存储和检索，并且向名称节点定期发送自己所存储的快的列表</li>
-<li>每个数据节点中的数据会被保存在各自节点的本地linux文件系统中<h2 id="FDHS体系结构"><a href="#FDHS体系结构" class="headerlink" title="FDHS体系结构"></a>FDHS体系结构</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3>HDFS采用了主从（Master/Slave）结构模型，一个HDFS集群包括一个名称节点（NameNode）和若干个数据节点（DataNode）（如图3-4所示）。名称节点作为中心服务器，负责管理文件系统的命名空间及客户端对文件的访问。集群中的数据节点一般是一个节点运行一个数据节点进程，负责处理文件系统客户端的读/写请求，在名称节点的统一调度下进行数据块的创建、删除和复制等操作。每个数据节点的数据实际上是保存在本地Linux文件系统中的<br><img src="https://i.loli.net/2019/08/13/WG3cMdAf8KLiSHe.jpg" alt="图片4.jpg"><h3 id="命名空间管理"><a href="#命名空间管理" class="headerlink" title="命名空间管理"></a>命名空间管理</h3></li>
-<li>HDFS的命名空间包含目录、文件和块</li>
-<li>在HDFS1.0体系架构中，在整个HDFS集群中只有一个命名空间，并且只有唯一一个名称节点，该节点负责这个命名空间进行管理</li>
-<li>HDFS使用传统的分级文件系统，因此用户可以像使用普通文件系统一样，创建、删除目录和文件，在目录间转移文件，重命名文件等<h3 id="通信协议"><a href="#通信协议" class="headerlink" title="通信协议"></a>通信协议</h3></li>
-<li>HDFS是一个部署在集群上的分布式文件系统，因此，很多数据需要通过网络进行传输</li>
-<li>所有的HDFS通信协议都是构建在TCP/IP协议基础之上的</li>
-<li>客户端通过一个可配置的端口向名称节点主动发起TCP连接，并使用客户端协议与名称节点进行交互</li>
-<li>名称节点和数据节点之间则使用数据节点协议进行交互</li>
-<li>客户端与数据节点的交互是通过RPC（Remote Procedure Call）来实现的。在设计上，名称节点不会主动发起RPC，而是响应来自客户端和数据节点的RPC请求<h3 id="client"><a href="#client" class="headerlink" title="client"></a>client</h3></li>
-<li>客户端是用户操作HDFS最常用的方式，HDFS在部署时都提供了客户端</li>
-<li>HDFS客户端是一个库，暴露了HDFS文件系统接口，这些接口隐藏了HDFS实现中的大部分复杂性</li>
-<li>严格来说，客户端并不算是HDFS的一部分</li>
-<li>客户端可以支持打开、读取、写入等常见的操作，并且提供了类似Shell的命令行方式来访问HDFS中的数据</li>
-<li>此外，HDFS也提供了Java API，作为应用程序访问文件系统的客户端编程接口<h3 id="HDFS体系结构的局限性"><a href="#HDFS体系结构的局限性" class="headerlink" title="HDFS体系结构的局限性"></a>HDFS体系结构的局限性</h3></li>
-</ul>
-</li>
-</ul>
-<ol>
-<li>命名空间的限制：名称节点是保存在内存中的，因此，名称节点能够容纳的对象（文件、块）的个数会受到内存空间大小的限制。</li>
-<li>性能的瓶颈：整个分布式文件系统的吞吐量，受限于单个名称节点的吞吐量。</li>
-<li>隔离问题：由于集群中只有一个名称节点，只有一个命名空间，因此，无法对不同应用程序进行隔离。</li>
-<li>集群的可用性：一旦这个唯一的名称节点发生故障，会导致整个集群变得不可用<h2 id="HDFS存储原理"><a href="#HDFS存储原理" class="headerlink" title="HDFS存储原理"></a>HDFS存储原理</h2><h3 id="冗余数据保存"><a href="#冗余数据保存" class="headerlink" title="冗余数据保存"></a>冗余数据保存</h3>作为一个分布式文件系统，为了保证系统的容错性和可用性，HDFS采用了多副本方式对数据进行冗余存储，通常一个数据块的多个副本会被分布到不同的数据节点上，如图所示，数据块1被分别存放到数据节点A和C上，数据块2被存放在数据节点A和B上。这种多副本方式具有以下几个优点：<br><img src="https://i.loli.net/2019/08/14/o2ztn561hLSlrKw.jpg" alt="数据块副本.jpg"><ol>
-<li>加快数据传输速度</li>
-<li>容易检查数据错误</li>
-<li>保证数据可靠性<h3 id="数据存取策略"><a href="#数据存取策略" class="headerlink" title="数据存取策略"></a>数据存取策略</h3><h4 id="数据存放"><a href="#数据存放" class="headerlink" title="数据存放"></a>数据存放</h4><img src="https://i.loli.net/2019/08/14/aehmCizsqG9dM38.jpg" alt="数据副本放置策略.jpg"></li>
-</ol>
-<ul>
-<li>第一个副本：放置在上传文件的数据节点；如果是集群外提交，则随机挑选一台磁盘不太满、CPU不太忙的节点</li>
-<li>第二个副本：放置在与第一个副本不同的机架的节点上</li>
-<li>第三个副本：与第一个副本相同机架的其他节点上</li>
-<li>更多副本：随机节点<h4 id="数据读取"><a href="#数据读取" class="headerlink" title="数据读取"></a>数据读取</h4></li>
-<li>HDFS提供了一个API可以确定一个数据节点所属的机架ID，客户端也可以调用API获取自己所属的机架ID</li>
-<li>当客户端读取数据时，从名称节点获得数据块不同副本的存放位置列表，列表中包含了副本所在的数据节点，可以调用API来确定客户端和这些数据节点所属的机架ID，当发现某个数据块副本对应的机架ID和客户端对应的机架ID相同时，就优先选择该副本读取数据，如果没有发现，就随机选择一个副本读取数据<h3 id="数据错误与恢复"><a href="#数据错误与恢复" class="headerlink" title="数据错误与恢复"></a>数据错误与恢复</h3>HDFS具有较高的容错性，可以兼容廉价的硬件，它把硬件出错看作一种常态，而不是异常，并设计了相应的机制检测数据错误和进行自动恢复，主要包括以下几种情形：名称节点出错、数据节点出错和数据出错。<h4 id="名称节点出错"><a href="#名称节点出错" class="headerlink" title="名称节点出错"></a>名称节点出错</h4>名称节点保存了所有的元数据信息，其中，最核心的两大数据结构是FsImage和Editlog，如果这两个文件发生损坏，那么整个HDFS实例将失效。因此，HDFS设置了备份机制，把这些核心文件同步复制到备份服务器SecondaryNameNode上。当名称节点出错时，就可以根据备份服务器SecondaryNameNode中的FsImage和Editlog数据进行恢复。<h4 id="数据节点出错"><a href="#数据节点出错" class="headerlink" title="数据节点出错"></a>数据节点出错</h4></li>
-<li>每个数据节点会定期向名称节点发送“心跳”信息，向名称节点报告自己的状态</li>
-<li>当数据节点发生故障，或者网络发生断网时，名称节点就无法收到来自一些数据节点的心跳信息，这时，这些数据节点就会被标记为“机”，节点上面的所有数据都会被标记为“不可读”，名称节点不会再给它们发送任何I/O请求</li>
-<li>这时，有可能出现一种情形，即由于一些数据节点的不可用，会导致一些数据块的副本数量小于冗余因子</li>
-<li>名称节点会定期检查这种情况，一旦发现某个数据块的副本数量小于冗余因子，就会启动数据冗余复制，为它生成新的副本</li>
-<li><strong>HDFS和其它分布式文件系统的最大区别就是可以调整冗余数据的位置</strong><h4 id="数据出错"><a href="#数据出错" class="headerlink" title="数据出错"></a>数据出错</h4></li>
-<li>网络传输和磁盘错误等因素，都会造成数据错误</li>
-<li>客户端在读取到数据后，会采用md5和sha1对数据块进行校验，以确定读取到正确的数据</li>
-<li>在文件被创建时，客户端就会对每一个文件块进行信息摘录，并把这些信息写入到同一个路径的隐藏文件里面</li>
-<li>当客户端读取文件的时候，会先读取该信息文件，然后，利用该信息文件对每个读取的数据块进行校验，如果校验出错，客户端就会请求到另外一个数据节点读取该文件块，并且向名称节点报告这个文件块有错误，名称节点会定期检查并且重新复制这个块<h1 id="Hadoop-HDFS-2-0"><a href="#Hadoop-HDFS-2-0" class="headerlink" title="Hadoop HDFS 2.0"></a>Hadoop HDFS 2.0</h1></li>
-</ul>
-</li>
-</ol>
-<h2 id="Hadoop-1-0-局限与不足"><a href="#Hadoop-1-0-局限与不足" class="headerlink" title="Hadoop 1.0 局限与不足"></a>Hadoop 1.0 局限与不足</h2><p>Hadoop1.0的核心组件（仅指MapReduce和HDFS，不包括Hadoop生态系统内的Pig、Hive、HBase等其他组件），主要存在以下不足：</p>
-<ul>
-<li>抽象层次低，需人工编码</li>
-<li>表达能力有限</li>
-<li>开发者自己管理作业（Job）之间的依赖关系</li>
-<li>难以看到程序整体逻辑</li>
-<li>执行迭代操作效率低</li>
-<li>资源浪费（Map和Reduce分两阶段执行）</li>
-<li>实时性差（适合批处理，不支持实时交互式）</li>
-</ul>
-<h2 id="自身框架改进与提升"><a href="#自身框架改进与提升" class="headerlink" title="自身框架改进与提升"></a>自身框架改进与提升</h2><table>
-<thead>
-<tr>
-<th>组件</th>
-<th>Hadoop1.0的问题</th>
-<th>Hadoop2.0的改进</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>HDFS</td>
-<td>单一名称节点，存在单点失效问题</td>
-<td>设计了HDFS HA，提供名称节点热备机制</td>
-</tr>
-<tr>
-<td>HDFS</td>
-<td>单一命名空间，无法实现资源隔离</td>
-<td>设计了HDFS Federation，管理多个命名空间</td>
-</tr>
-<tr>
-<td>MapReduce</td>
-<td>资源管理效率低</td>
-<td>设计了新的资源管理框架YARN</td>
-</tr>
-</tbody></table>
-<h2 id="HDFS2-0的新特性"><a href="#HDFS2-0的新特性" class="headerlink" title="HDFS2.0的新特性"></a>HDFS2.0的新特性</h2><h3 id="HDFS-HA"><a href="#HDFS-HA" class="headerlink" title="HDFS HA"></a>HDFS HA</h3><ul>
-<li>第二名称节点（SecondaryNameNode）无法解决单点故障问题<ul>
-<li>不是热备份</li>
-<li>要是防止日志文件EditLog过大，导致名称节点失败恢复时消耗过多时间</li>
-<li>附带起到冷备份功能</li>
-</ul>
-</li>
-<li>HDFS HA（High Availability）是为了解决单点故障问题</li>
-<li>HA集群设置两个名称节点，“活跃（Active）”和“待命（Standby）”</li>
-<li>两种名称节点的状态同步，可以借助于一个<strong>共享存储系统</strong>来实现</li>
-<li>一旦活跃名称节点出现故障，就可以立即切换到待命名称节点</li>
-<li>Zookeeper确保一个名称节点在对外服务</li>
-<li>名称节点维护映射信息，数据节点同时向两个名称节点汇报信息<br><img src="https://i.loli.net/2019/08/14/PAzmeqEVokFUHgG.jpg" alt="HDFS HA.jpg"></li>
-</ul>
-<h3 id="HDFS-Federation"><a href="#HDFS-Federation" class="headerlink" title="HDFS Federation"></a>HDFS Federation</h3><h4 id="HDFS1-0中存在的问题"><a href="#HDFS1-0中存在的问题" class="headerlink" title="HDFS1.0中存在的问题"></a>HDFS1.0中存在的问题</h4><ul>
-<li>单点故障问题</li>
-<li>不可以水平扩展（是否可以通过纵向扩展来解决？）</li>
-<li>系统整体性能受限于单个名称节点的吞吐量</li>
-<li>单个名称节点难以提供不同程序之间的隔离性</li>
-<li>HDFS HA是热备份，提供高可用性，但是无法解决可扩展性、系统性能和隔离性<h4 id="HDFS-Federation-设计"><a href="#HDFS-Federation-设计" class="headerlink" title="HDFS Federation 设计"></a>HDFS Federation 设计</h4></li>
-<li>在HDFS Federation中，设计了多个相互独立的名称节点，使得HDFS的命名服务能够水平扩展，这些名称节点分别进行各自命名空间和块的管理，相互之间是联盟（Federation）关系，不需要彼此协调。并且向后兼容</li>
-<li>HDFS Federation中，所有名称节点会共享底层的数据节点存储资源，数据节点向所有名称节点汇报</li>
-<li>属于同一个命名空间的块构成一个“块池”<br><img src="https://i.loli.net/2019/08/14/WsQN43FHywPftOu.jpg" alt="HDFS Federation架构.jpg"></li>
-</ul>
-<h4 id="HDFS-Federation访问方式"><a href="#HDFS-Federation访问方式" class="headerlink" title="HDFS Federation访问方式"></a>HDFS Federation访问方式</h4><ul>
-<li>对于Federation中的多个命名空间，可以采用客户端挂载表（Client Side Mount Table）方式进行数据共享和访问</li>
-<li>客户可以访问不同的挂载点来访问不同的子命名空间</li>
-<li>把各个命名空间挂载到全局“挂载表”（mount-table）中，实现数据全局共享</li>
-<li>同样的命名空间挂载到个人的挂载表中，就成为应用程序可见的命名空间<h4 id="HDFS-Federation相对于HDFS1-0的优势"><a href="#HDFS-Federation相对于HDFS1-0的优势" class="headerlink" title="HDFS Federation相对于HDFS1.0的优势"></a>HDFS Federation相对于HDFS1.0的优势</h4></li>
-</ul>
-<ol>
-<li>HDFS集群扩展性。多个名称节点各自分管一部分目录，使得一个集群可以扩展到更多节点，不再像HDFS1.0中那样由于内存的限制制约文件存储数目</li>
-<li>性能更高效。多个名称节点管理不同的数据，且同时对外提供服务，将为用户提供更高的读写吞吐率</li>
-<li>良好的隔离性。用户可根据需要将不同业务数据交由不同名称节点管理，这样不同业务之间影响很小</li>
-</ol>
-<p>需要注意的，HDFS Federation并不能解决单点故障问题，也就是说，每个名称节点都存在在单点故障问题，需要为每个名称节点部署一个后备名称节点，以应对名称节点挂掉对业务产生的影响</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/08/03/大数据/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/03/大数据/" itemprop="url">大数据概述</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-03T22:00:08+08:00">
-                2018-08-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="大数据概述"><a href="#大数据概述" class="headerlink" title="大数据概述"></a>大数据概述</h1><p>大数据思维导图(点击链可以展开详细)<br><img src="https://i.loli.net/2019/08/13/n7zpOUBKujb4tr1.png" alt="大数据 (1).png"><br>(<a href="https://www.processon.com/view/link/5b9b6867e4b06fc64af4b823" target="_blank" rel="noopener">https://www.processon.com/view/link/5b9b6867e4b06fc64af4b823</a>)</p>
-<ul>
-<li>数据产生方式变革<ul>
-<li>运营式阶段：数据库使得数据管理复杂度降低，数据往往伴随着一定的运营活动产生记录，生产方式是被动的</li>
-<li>用户原创内容阶段：Web2.0时代，用户原创成为标志，智能手机加速内容产生，数据产生方式是主动的</li>
-<li>感知式系统阶段：感知系统广泛使用</li>
-</ul>
-</li>
-<li>大数据发展历程</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th><strong>阶段</strong></th>
-<th><strong>时间</strong></th>
-<th><strong>内容</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>第一阶段：萌芽期</td>
-<td>上世纪90年代至本世纪初</td>
-<td>随着数据挖掘理论和数据库技术的逐步成熟，一批商业智能工具和知识管理技术开始被应用，如数据仓库、专家系统、知识管理系统等。</td>
-</tr>
-<tr>
-<td>第二阶段：成熟期</td>
-<td>本世纪前十年</td>
-<td>Web2.0应用迅猛发展，非结构化数据大量产生，传统处理方法难以应对，带动了大数据技术的快速突破，大数据解决方案逐渐走向成熟，形成了并行计算与分布式系统两大核心技术，谷歌的GFS和MapReduce等大数据技术受到追捧，Hadoop平台开始大行其道</td>
-</tr>
-<tr>
-<td>第三阶段：大规模应用期</td>
-<td>2010年以后</td>
-<td>大数据应用渗透各行各业，数据驱动决策，信息社会智能化程度大幅提高</td>
-</tr>
-</tbody></table>
-<ul>
-<li>大数据概念<ul>
-<li>大量化 Volume</li>
-<li>快速化 Velocity （1秒定律）</li>
-<li>多样化 Variety</li>
-<li>价值化  Value  价值密度低，商业价值高</li>
-</ul>
-</li>
-<li>大数据影响<ul>
-<li>科学研究：先后经历了实验、理论、计算和数据四中范式<br><img src="https://i.loli.net/2019/08/13/aFXqhifzbmRLVGK.png" alt="图片1.png"></li>
-<li>思维方面（摘自《大数据时代》）<ul>
-<li>全样儿非抽样</li>
-<li>效率而非精确</li>
-<li>相关而非因果   </li>
-</ul>
-</li>
-</ul>
-</li>
-<li>大数据应用<ul>
-<li>智能医疗研发</li>
-<li>监控身体情况</li>
-<li>研发智能汽车</li>
-<li>实时掌控交通情况，改善日常生活</li>
-<li>金融交易</li>
-<li>业务流程优化</li>
-</ul>
-</li>
-<li>大数据关键技术</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th><strong>技术层面</strong></th>
-<th align="left"><strong>功能</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据采集</td>
-<td align="left">利用ETL工具将分布的、异构数据源中的数据如关系数据、平面数据文件等，抽取到临时中间层后进行清洗、转换、集成，最后加载到数据仓库或数据集市中，成为联机分析处理、数据挖掘的基础；或者也可以把实时采集的数据作为流计算系统的输入，进行实时处理分析</td>
-</tr>
-<tr>
-<td>数据存储和管理</td>
-<td align="left">利用分布式文件系统、数据仓库、关系数据库、NoSQL数据库、云数据库等，实现对结构化、半结构化和非结构化海量数据的存储和管理</td>
-</tr>
-<tr>
-<td>数据处理与分析</td>
-<td align="left">利用分布式并行编程模型和计算框架，结合机器学习和数据挖掘算法，实现对海量数据的处理和分析；对分析结果进行可视化呈现，帮助人们更好地理解数据、分析数据</td>
-</tr>
-<tr>
-<td>数据隐私和安全</td>
-<td align="left">在从大数据中挖掘潜在的巨大商业价值和学术价值的同时，构建隐私数据保护体系和数据安全体系，有效保护个人隐私和数据安全</td>
-</tr>
-</tbody></table>
-<ul>
-<li><p>两大核心技术<br><img src="https://i.loli.net/2019/08/13/OYDRiAm1vBK2cjw.png" alt="图片2.png"></p>
-</li>
-<li><p>大数据计算模式</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th><strong>大数据计算模式</strong></th>
-<th><strong>解决问题</strong></th>
-<th><strong>代表产品</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>批处理计算</td>
-<td>针对大规模数据的批量处理</td>
-<td>MapReduce、Spark等</td>
-</tr>
-<tr>
-<td>流计算</td>
-<td>针对流数据的实时计算</td>
-<td>Storm、S4、Flume、Streams、Puma、DStream、Super Mario、银河流数据处理平台等</td>
-</tr>
-<tr>
-<td>图计算</td>
-<td>针对大规模图结构数据的处理</td>
-<td>Pregel、GraphX、Giraph、PowerGraph、Hama、GoldenOrb等</td>
-</tr>
-<tr>
-<td>查询分析计算</td>
-<td>大规模数据的存储管理和查询分析</td>
-<td>Dremel、Hive、Cassandra、Impala等</td>
-</tr>
-</tbody></table>
-<ul>
-<li>大数据产业</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center"><strong>产业链环节</strong></th>
-<th><strong>包含内容</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">IT基础设施层</td>
-<td>包括提供硬件、软件、网络等基础设施以及提供咨询、规划和系统集成服务的企业，比如，提供数据中心解决方案的IBM、惠普和戴尔等，提供存储解决方案的EMC，提供虚拟化管理软件的微软、思杰、SUN、Redhat等</td>
-</tr>
-<tr>
-<td align="center">数据源层</td>
-<td>大数据生态圈里的数据提供者，是生物大数据（生物信息学领域的各类研究机构）、交通大数据（交通主管部门）、医疗大数据（各大医院、体检机构）、政务大数据（政府部门）、电商大数据（淘宝、天猫、苏宁云商、京东等电商）、社交网络大数据（微博、微信、人人网等）、搜索引擎大数据（百度、谷歌等）等各种数据的来源</td>
-</tr>
-<tr>
-<td align="center">数据管理层</td>
-<td>包括数据抽取、转换、存储和管理等服务的各类企业或产品，比如分布式文件系统（如Hadoop的HDFS和谷歌的GFS）、ETL工具（Informatica、Datastage、Kettle等）、数据库和数据仓库（Oracle、MySQL、SQL Server、HBase、GreenPlum等）</td>
-</tr>
-<tr>
-<td align="center">数据分析层</td>
-<td>包括提供分布式计算、数据挖掘、统计分析等服务的各类企业或产品，比如，分布式计算框架MapReduce、统计分析软件SPSS和SAS、数据挖掘工具Weka、数据可视化工具Tableau、BI工具（MicroStrategy、Cognos、BO）等等</td>
-</tr>
-<tr>
-<td align="center">数据平台层</td>
-<td>包括提供数据分享平台、数据分析平台、数据租售平台等服务的企业或产品，比如阿里巴巴、谷歌、中国电信、百度等</td>
-</tr>
-<tr>
-<td align="center">数据应用层</td>
-<td>提供智能交通、智慧医疗、智能物流、智能电网等行业应用的企业、机构或政府部门，比如交通主管部门、各大医疗机构、菜鸟网络、国家电网等</td>
-</tr>
-</tbody></table>
-<ul>
-<li>大数据、云计算、物联网关系</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/13/LNPauHj28IFpZn6.jpg" alt="图片3.jpg"></p>
-<h1 id="Hadoop-概述（Hadoop-2-0）"><a href="#Hadoop-概述（Hadoop-2-0）" class="headerlink" title="Hadoop 概述（Hadoop 2.0）"></a>Hadoop 概述（Hadoop 2.0）</h1><p> Hadoop 是 Apache 基金会下的一个开源分布式计算平台，以 <strong><font color="red">HDFS 分布式文件系统</font></strong> 和 <strong><font color="red">MapReduce</font></strong> 分布式计算框架为核心，为用户提供底层细节透明的分布式基础设施。目前，Hadoop 是分析海量数据的首选工具。Hadoop 是一个可以更容易开发和并行处理大规模数据的分布式计算平台，它的主要特点是扩展能力强、成本低、高效率和可靠。目前，Hadoop 的用户已经从传统的互联网公司，扩展到了各个行业，并且得到越来越广泛的应用。它的优势包括：</p>
-<ol>
-<li>方便：Hadoop 可以运行在商业机器集群上，或者Amazon EC2 等云计算服务商</li>
-<li>弹性：Hadoop 可以方便增加和减少集群节点</li>
-<li>健壮：Hadoop 可以从容处理常见的硬件失效情况</li>
-<li>简单：Hadoop 允许用户快速高效编写并行分布代码<h2 id="Hadoop-项目结构"><a href="#Hadoop-项目结构" class="headerlink" title="Hadoop 项目结构"></a>Hadoop 项目结构</h2><img src="https://i.loli.net/2019/08/13/LEQbCB2q53mphVo.png" alt="hadoop项目结构.png"></li>
-</ol>
-<table>
-<thead>
-<tr>
-<th><strong>组件</strong></th>
-<th><strong>功能</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>HDFS</td>
-<td>分布式文件系统</td>
-</tr>
-<tr>
-<td>MapReduce</td>
-<td>分布式并行编程模型</td>
-</tr>
-<tr>
-<td>YARN</td>
-<td>资源管理和调度器</td>
-</tr>
-<tr>
-<td>Tez</td>
-<td>运行在YARN之上的下一代Hadoop查询处理框架</td>
-</tr>
-<tr>
-<td>Hive</td>
-<td>Hadoop上的数据仓库</td>
-</tr>
-<tr>
-<td>HBase</td>
-<td>Hadoop上的非关系型的分布式数据库</td>
-</tr>
-<tr>
-<td>Pig</td>
-<td>一个基于Hadoop的大规模数据分析平台，提供类似SQL的查询语言Pig Latin</td>
-</tr>
-<tr>
-<td>Sqoop</td>
-<td>用于在Hadoop与传统数据库之间进行数据传递</td>
-</tr>
-<tr>
-<td>Oozie</td>
-<td>Hadoop上的工作流管理系统</td>
-</tr>
-<tr>
-<td>Zookeeper</td>
-<td>提供分布式协调一致性服务</td>
-</tr>
-<tr>
-<td>Storm</td>
-<td>流计算框架</td>
-</tr>
-<tr>
-<td>Flume</td>
-<td>一个高可用的，高可靠的，分布式的海量日志采集、聚合和传输的系统</td>
-</tr>
-<tr>
-<td>Ambari</td>
-<td>Hadoop快速部署工具，支持Apache Hadoop集群的供应、管理和监控</td>
-</tr>
-<tr>
-<td>Kafka</td>
-<td>一种高吞吐量的分布式发布订阅消息系统，可以处理消费者规模的网站中的所有动作流数据</td>
-</tr>
-<tr>
-<td>Spark</td>
-<td>类似于Hadoop MapReduce的通用并行框架</td>
-</tr>
-</tbody></table>
-<ul>
-<li>HDFS有着高容错特点，并且设计用来部署在低廉的硬件之上，适合有着超量大数据集的应用程序</li>
-<li>MapReduce：Hadoop编程模型，用于大规模数据及（大于1TB）的并行计算。MR是离线处理框架，由编程模型、运行时环境（JobTracker和TaskTracker）和数据处理引擎（MapTask和ReduceTask）三部分组成</li>
-<li>HBase:基于列存储模型的分布式数据库，专用用于Hadoop档案系统上的资料库系统，采用Column-Oriented设计，不同于传统关系型数据库，没有资料表、Schema等规范，而是采用Key-Value形式的架构，采用多维度的对应关系建立类似于表格效果的资料架构。如此采用分布式存储方式，可以扩充到前台服务器，应付PB级资料处理</li>
-<li>Hive：可用SQL语法存储Hadoop资料的工具。<ul>
-<li>Hive是建置在HDFS上的一套分散式资料仓储系统，可让使用者以惯用的SQL语法，来存取Hadoop档案中的大型资料集，例如可以使用Join、Group by、Order by等，而这个语法称为Hive QL。Hive 提供完整的 SQL 查询功能，可以将 SQL 语句转换为 MR 任务进行运行。不过，Hive QL和SQL并非完全相同，例如Hive就不支援Store Procedure、Trigger等功能。</li>
-<li>Hive会将使用者输入的Hive QL指令编译成Java程序，再来存取HDFS档案系统上的资料，所以，执行效率依指令复杂度和处理的资料量而异，可能有数秒鐘，甚至是数分鐘的延迟。和HBase相比，Hive容易使用且弹性高，但执行速度较慢。不少资料库系统，都是透过先连结到Hive，才能与Hadoop整合。例如微软就是透过Hive ODBC驱动程序，将SQL指令转换成Hive QL，让Excel可以存取Hadoop上的资料。</li>
-<li>在同一个Hadoop集群中，Hive可以存取HBase上的资料，将HBase上的资料对应成Hive内的一个表格</li>
-</ul>
-</li>
-<li>Pig：基于Hadoop分析组件，Pig 为复杂的海量数据并行计算提供一个简易的操作和编程接口。它提供了一个Script语言Pig Latin，语法简单，类似可读性高的高阶Basic语言，可用来撰写MapReduce程序。Pig会自动将这些脚本程序转换，成为能在Hadoop中执行的MapReduce Java程序。因此，使用者即使不懂Java也能撰写出MapReduce。<br>Zookeeper：是一个高效的可扩展的资源协调系统，存储和协调关键共享状态。它监控和协调 Hadoop 分散式运作的集中式服务，可提供各个服务器的配置和运作状态资讯，用於提供不同Hadoop系统角色之间的工作协调。<ul>
-<li>以HBase资料库为例，其中有两种服务器角色：Region服务器角色和Master服务器角色，系统会自动透过ZooKeeper监看Master服务器的状态，一旦Master的运作资讯消失，代表当机或网路断线，HBase就会选出另一台Region服务器成为Mater角色来负责管理工作。<ul>
-<li>可等同于etcd功能</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -4519,7 +4644,7 @@ table tr:hover {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -4541,7 +4666,7 @@ table tr:hover {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
