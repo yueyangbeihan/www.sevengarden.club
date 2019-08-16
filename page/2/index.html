@@ -273,6 +273,203 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/08/13/MapReduce/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/13/MapReduce/" itemprop="url">MapReduce</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-13T19:08:03+08:00">
+                2018-08-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="MapReduce模型"><a href="#MapReduce模型" class="headerlink" title="MapReduce模型"></a>MapReduce模型</h2><ul>
+<li>MapReduce将复杂的、运行于大规模集群上的并行计算过程高度地抽象到了两个函数：Map和Reduce</li>
+<li>编程容易，不需要掌握分布式并行编程细节，也可以很容易把自己的程序运行在分布式系统上，完成海量数据的计算</li>
+<li>MapReduce采用<font color="red"><strong>“分而治之”</strong></font>策略，一个存储在分布式文件系统中的大规模数据集，会被切分成许多独立的分片（split），这些分片可以被多个Map任务并行处理</li>
+<li>MapReduce设计的一个理念就是<font color="red"><strong>“计算向数据靠拢”</strong></font>，而不是“数据向计算靠拢”，因为，移动数据需要大量的网络传输开销</li>
+<li>MapReduce框架采用了Master/Slave架构，包括一个Master和若干个Slave。Master上运行JobTracker，Slave上运行TaskTracker </li>
+<li>Hadoop框架是用Java实现的，但是，MapReduce应用程序则不一定要用Java来写 </li>
+</ul>
+<h2 id="Map和Reduce函数"><a href="#Map和Reduce函数" class="headerlink" title="Map和Reduce函数"></a>Map和Reduce函数</h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>输入</th>
+<th>输出</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Map</td>
+<td>&lt;k1,v1&gt;如：&lt;行号,”a b c”&gt;</td>
+<td>List(&lt;k2,v2&gt;)如：&lt;“a”,1&gt;&lt;“b”,1&gt; &lt;“c”,1&gt;</td>
+<td align="left">1.将小数据集进一步解析成一批&lt;key,value&gt;对，输入Map函数中进行处理 2.每一个输入的&lt;k1,v1&gt;会输出一批&lt;k2,v2&gt;。&lt;k2,v2&gt;是计算的中间结果</td>
+</tr>
+<tr>
+<td>Reduce</td>
+<td>&lt;k2,List(v2)&gt; 如：&lt;“a”,&lt;1,1,1&gt;&gt;</td>
+<td>&lt;k3,v3&gt; &lt;“a”,3&gt;</td>
+<td align="left">输入的中间结果&lt;k2,List(v2)&gt;中的List(v2)表示是一批属于同一个k2的value</td>
+</tr>
+</tbody></table>
+<h2 id="MapReduce的体系结构"><a href="#MapReduce的体系结构" class="headerlink" title="MapReduce的体系结构"></a>MapReduce的体系结构</h2><p>MapReduce体系结构主要由四个部分组成，分别是：Client、JobTracker、TaskTracker以及Task<br><img src="https://i.loli.net/2019/08/14/N3suO6efTaCHiRJ.png" alt="MapReduce.png"></p>
+<h3 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h3><ul>
+<li>用户编写的MapReduce程序通过Client提交到JobTracker端</li>
+<li>用户可通过Client提供的一些接口查看作业运行状态<h3 id="JobTracker"><a href="#JobTracker" class="headerlink" title="JobTracker"></a>JobTracker</h3></li>
+<li>JobTracker负责资源监控和作业调度</li>
+<li>JobTracker 监控所有TaskTracker与Job的健康状况，一旦发现失败，就将相应的任务转移到其他节点</li>
+<li>JobTracker 会跟踪任务的执行进度、资源使用量等信息，并将这些信息告诉任务调度器（TaskScheduler），而调度器会在资源出现空闲时，选择合适的任务去使用这些资源<h3 id="TaskTracker"><a href="#TaskTracker" class="headerlink" title="TaskTracker"></a>TaskTracker</h3></li>
+<li>TaskTracker 会周期性地通过“心跳”将本节点上资源的使用情况和任务的运行进度汇报给JobTracker，同时接收JobTracker 发送过来的命令并执行相应的操作（如启动新任务、杀死任务等）</li>
+<li>TaskTracker 使用“slot”等量划分本节点上的资源量（CPU、内存等）。一个Task 获取到一个slot 后才有机会运行，而Hadoop调度器的作用就是将各个TaskTracker上的空闲slot分配给Task使用。slot 分为Map slot 和Reduce slot 两种，分别供MapTask 和Reduce Task 使用<h3 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h3></li>
+<li>Task 分为Map Task 和Reduce Task 两种，均由TaskTracker 启动</li>
+</ul>
+<h2 id="MapReduce工作流程"><a href="#MapReduce工作流程" class="headerlink" title="MapReduce工作流程"></a>MapReduce工作流程</h2><h3 id="工作流程概述"><a href="#工作流程概述" class="headerlink" title="工作流程概述"></a>工作流程概述</h3><p><img src="https://i.loli.net/2019/08/14/6aMxLNtEWOicV5P.jpg" alt="MapReduce工作流程.jpg"></p>
+<ul>
+<li>不同的Map任务之间不会进行通信</li>
+<li>不同的Reduce任务之间也不会发生任何信息交换</li>
+<li>用户不能显式地从一台机器向另一台机器发送消息</li>
+<li>所有的数据交换都是通过MapReduce框架自身去实现的<h3 id="MapReduce各个执行阶段"><a href="#MapReduce各个执行阶段" class="headerlink" title="MapReduce各个执行阶段"></a>MapReduce各个执行阶段</h3><img src="https://i.loli.net/2019/08/14/7GtfeaTjuilJyAC.jpg" alt="MapReduce各个阶段.jpg"><h4 id="关于Spilt（分片）"><a href="#关于Spilt（分片）" class="headerlink" title="关于Spilt（分片）"></a>关于Spilt（分片）</h4><img src="https://i.loli.net/2019/08/14/iBMRf2n7VOW5c9U.jpg" alt="Spilt分片.jpg"><br>HDFS 以固定大小的block 为基本单位存储数据，而对于MapReduce 而言，其处理单位是split。split 是一个逻辑概念，它只包含一些元数据信息，比如数据起始位置、数据长度、数据所在节点等。它的划分方法完全由用户自己决定。<h4 id="Map任务数量"><a href="#Map任务数量" class="headerlink" title="Map任务数量"></a>Map任务数量</h4></li>
+<li>Hadoop为每个split创建一个Map任务，split 的多少决定了Map任务的数目。大多数情况下，理想的分片大小是一个HDFS块<h4 id="Reduce任务数量"><a href="#Reduce任务数量" class="headerlink" title="Reduce任务数量"></a>Reduce任务数量</h4></li>
+<li>最优的Reduce任务个数取决于集群中可用的reduce任务槽(slot)的数目</li>
+<li>通常设置比reduce任务槽数目稍微小一些的Reduce任务个数（这样可以预留一些系统资源处理可能发生的错误）<h3 id="Shuffle过程详解"><a href="#Shuffle过程详解" class="headerlink" title="Shuffle过程详解"></a>Shuffle过程详解</h3></li>
+</ul>
+<ol>
+<li>Shuffle过程简介<br><img src="https://i.loli.net/2019/08/14/3NpMWh6L41Dz9IQ.jpg" alt="shuffle.jpg"></li>
+<li>Map端的Shuffle过程<br><img src="https://i.loli.net/2019/08/14/5mnoagOvUxbYy19.jpg" alt="Map端shuffle.jpg"></li>
+</ol>
+<ul>
+<li>每个Map任务分配一个缓存</li>
+<li>MapReduce默认100MB缓存</li>
+<li>设置溢写比例0.8</li>
+<li>分区默认采用哈希函数</li>
+<li>排序是默认的操作</li>
+<li>排序后可以合并（Combine）</li>
+<li>合并不能改变最终结果</li>
+<li>在Map任务全部结束之前进行归并</li>
+<li>归并得到一个大的文件，放在本地磁盘</li>
+<li>文件归并时，如果溢写文件数量大于预定值（默认是3）则可以再次启动Combiner，少于3不需要</li>
+<li>JobTracker会一直监测Map任务的执行，并通知Reduce任务来领取数据</li>
+</ul>
+<p>合并（Combine）和归并（Merge）的区别：<br>两个键值对&lt;“a”,1&gt;和&lt;“a”,1&gt;，如果合并，会得到&lt;“a”,2&gt;，如果归并，会得到&lt;“a”,&lt;1,1&gt;&gt;</p>
+<ol start="3">
+<li>Reduce端的shuffle过程</li>
+</ol>
+<ul>
+<li>Reduce任务通过RPC向JobTracker询问Map任务是否已经完成，若完成，则领取数据</li>
+<li>Reduce领取数据先放入缓存，来自不同Map机器，先归并，再合并，写入磁盘</li>
+<li>多个溢写文件归并成一个或多个大文件，文件中的键值对是排序的</li>
+<li>当数据很少时，不需要溢写到磁盘，直接在缓存中归并，然后输出给Reduce<br><img src="https://i.loli.net/2019/08/14/EkQv7xD5a9YtA4F.jpg" alt="Reduce端shuffle.jpg"><h3 id="MapReduce应用程序执行过程"><a href="#MapReduce应用程序执行过程" class="headerlink" title="MapReduce应用程序执行过程"></a>MapReduce应用程序执行过程</h3><img src="https://i.loli.net/2019/08/14/KUiuB7o6pzYZeLg.jpg" alt="MapReduce执行过程.jpg"></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/08/08/HDFS-分布式文件系统/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -981,7 +1178,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1003,7 +1200,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

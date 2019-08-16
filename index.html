@@ -273,391 +273,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/16/流计算/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/16/流计算/" itemprop="url">流计算</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-16T19:02:37+08:00">
-                2019-08-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bigdat/" itemprop="url" rel="index">
-                    <span itemprop="name">bigdat</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="流计算概述"><a href="#流计算概述" class="headerlink" title="流计算概述"></a>流计算概述</h1><h2 id="静态数据和流数据"><a href="#静态数据和流数据" class="headerlink" title="静态数据和流数据"></a>静态数据和流数据</h2><ul>
-<li>很多企业为了支持决策分析而构建的数据仓库系统，其中存放的大量历史数据就是静态数据。技术人员可以利用数据挖掘和OLAP（On-Line Analytical Processing）分析工具从静态数据中找到对企业有价值的信息<br><img src="https://i.loli.net/2019/08/15/CMX6Q7n4UceDJi8.png" alt="静态数据.png"></li>
-</ul>
-<ul>
-<li>近年来，在Web应用、网络监控、传感监测等领域，兴起了一种新的数据密集型应用——流数据，即数据以大量、快速、时变的流形式持续到达</li>
-<li>实例：PM2.5检测、电子商务网站用户点击流</li>
-<li>流数据具有如下特征：<ul>
-<li>数据快速持续到达，潜在大小也许是无穷无尽的</li>
-<li>数据来源众多，格式复杂</li>
-<li>数据量大，但是不十分关注存储，一旦经过处理，要么被丢弃，要么被归档存储</li>
-<li>注重数据的整体价值，不过分关注个别数据</li>
-<li>数据顺序颠倒，或者不完整，系统无法控制将要处理的新到达的数据元素的顺序</li>
-</ul>
-</li>
-</ul>
-<h2 id="批量计算和实时计算"><a href="#批量计算和实时计算" class="headerlink" title="批量计算和实时计算"></a>批量计算和实时计算</h2><ul>
-<li>对静态数据和流数据的处理，对应着两种截然不同的计算模式：批量计算和实时计算</li>
-<li>批量计算：充裕时间处理静态数据，如Hadoop</li>
-<li>流数据不适合采用批量计算，因为流数据不适合用传统的关系模型建模</li>
-<li>流数据必须采用实时计算，响应时间为秒级</li>
-<li>数据量少时，不是问题，但是，在大数据时代，数据格式复杂、来源众多、数据量巨大，对实时计算提出了很大的挑战。因此，针对流数据的实时计算——流计算，应运而生<br><img src="https://i.loli.net/2019/08/15/nC72xfOSIHaXW6J.png" alt="数据的两种处理模型.png"></li>
-</ul>
-<h2 id="流计算概念"><a href="#流计算概念" class="headerlink" title="流计算概念"></a>流计算概念</h2><ul>
-<li>流计算：实时获取来自不同数据源的海量数据，经过实时分析处理，获得有价值的信息<br><img src="https://i.loli.net/2019/08/15/ryRDeMPvW2kVFZ8.png" alt="流计算示意图.png"></li>
-<li>流计算秉承一个基本理念，即<strong>数据的价值随着时间的流逝而降低</strong>，如用户点击流。因此，当事件出现时就应该立即进行处理，而不是缓存起来进行批量处理。为了及时处理流数据，就需要一个低延迟、可扩展、高可靠的处理引擎</li>
-<li>对于一个流计算系统来说，它应达到如下需求：<ul>
-<li>高性能：处理大数据的基本要求，如每秒处理几十万条数据</li>
-<li>海量式：支持TB级甚至是PB级的数据规模</li>
-<li>实时性：保证较低的延迟时间，达到秒级别，甚至是毫秒级别</li>
-<li>分布式：支持大数据的基本架构，必须能够平滑扩展</li>
-<li>易用性：能够快速进行开发和部署</li>
-<li>可靠性：能可靠地处理流数据</li>
-</ul>
-</li>
-</ul>
-<h2 id="流计算与Hadoop"><a href="#流计算与Hadoop" class="headerlink" title="流计算与Hadoop"></a>流计算与Hadoop</h2><ul>
-<li>Hadoop设计的初衷是面向大规模数据的批量处理，每台机器并行运行MapReduce任务，最后对结果进行汇总输出</li>
-<li>MapReduce是专门面向静态数据的批量处理的，内部各种实现机制都为批处理做了高度优化，不适合用于处理持续到达的动态数据</li>
-<li>可能会想到一种“变通”的方案来降低批处理的时间延迟——将基于MapReduce的批量处理转为小批量处理，将输入数据切成小的片段，每隔一个周期就启动一次MapReduce作业。但这种方式也无法有效处理流数据<ul>
-<li>切分成小片段，可以降低延迟，但是也增加了附加开销，还要处理片段之间依赖关系</li>
-<li>需要改造MapReduce以支持流式处理</li>
-</ul>
-</li>
-</ul>
-<p><font color="red"><strong>结论：鱼和熊掌不可兼得，Hadoop擅长批处理，不适合流计算</strong></font></p>
-<h2 id="流计算框架"><a href="#流计算框架" class="headerlink" title="流计算框架"></a>流计算框架</h2><ul>
-<li>目前有三类常见的流计算框架和平台：商业级的流计算平台、开源流计算框架、公司为支持自身业务开发的流计算框架</li>
-<li>商业级：IBM InfoSphere Streams和IBM StreamBase</li>
-<li>较为常见的是开源流计算框架，代表如下：<ul>
-<li>Twitter Storm：免费、开源的分布式实时计算系统，可简单、高效、可靠地处理大量的流数据</li>
-<li>Yahoo! S4（Simple Scalable Streaming System）：开源流计算平台，是通用的、分布式的、可扩展的、分区容错的、可插拔的流式系统</li>
-</ul>
-</li>
-<li>公司为支持自身业务开发的流计算框架：<ul>
-<li>Facebook Puma</li>
-<li>Dstream（百度）</li>
-<li>银河流数据处理平台（淘宝）</li>
-</ul>
-</li>
-</ul>
-<h1 id="流计算处理流程"><a href="#流计算处理流程" class="headerlink" title="流计算处理流程"></a>流计算处理流程</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li>传统的数据处理流程，需要先采集数据并存储在关系数据库等数据管理系统中，之后由用户通过查询操作和数据管理系统进行交互</li>
-<li>传统的数据处理流程隐含了两个前提：<ul>
-<li><strong>存储的数据是旧的</strong>。存储的静态数据是过去某一时刻的快照，这些数据在查询时可能已不具备时效性了</li>
-<li><strong>需要用户主动发出查询来获取结果</strong><h2 id="数据实时采集"><a href="#数据实时采集" class="headerlink" title="数据实时采集"></a>数据实时采集</h2></li>
-</ul>
-</li>
-<li>数据实时采集阶段通常采集多个数据源的海量数据，需要保证实时性、低延迟与稳定可靠</li>
-<li>以日志数据为例，由于分布式集群的广泛应用，数据分散存储在不同的机器上，因此需要实时汇总来自不同机器上的日志数据</li>
-<li>目前有许多互联网公司发布的开源分布式日志采集系统均可满足每秒数百MB的数据采集和传输需求，如：<ul>
-<li>Facebook的Scribe</li>
-<li>LinkedIn的Kafka</li>
-<li>淘宝的Time Tunnel</li>
-<li>基于Hadoop的Chukwa和Flume<br><img src="https://i.loli.net/2019/08/16/uPW8HjeiowtgRVF.png" alt="数据实时采集.png"></li>
-</ul>
-</li>
-</ul>
-<h2 id="数据实时计算"><a href="#数据实时计算" class="headerlink" title="数据实时计算"></a>数据实时计算</h2><ul>
-<li>数据采集系统的基本架构一般有以下三个部分：<ul>
-<li>Agent：主动采集数据，并把数据推送到Collector部分</li>
-<li>Collector：接收多个Agent的数据，并实现有序、可靠、高性能的转发</li>
-<li>Store：存储Collector转发过来的数据（对于流计算不存储数据</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/U3KCNEJhtjHvkPZ.png" alt="数据采集系统基本架构.png"></p>
-<ul>
-<li>数据实时计算阶段对采集的数据进行实时的分析和计算，并反馈实时结果</li>
-<li>经流处理系统处理后的数据，可视情况进行存储，以便之后再进行分析计算。在时效性要求较高的场景中，处理之后的数据也可以直接丢弃</li>
-</ul>
-<h2 id="实时查询服务"><a href="#实时查询服务" class="headerlink" title="实时查询服务"></a>实时查询服务</h2><ul>
-<li>实时查询服务：经由流计算框架得出的结果可供用户进行实时查询、展示或储存</li>
-<li>传统的数据处理流程，用户需要主动发出查询才能获得想要的结果。而在流处理流程中，实时查询服务可以不断更新结果，并将用户所需的结果实时推送给用户</li>
-<li>虽然通过对传统的数据处理系统进行定时查询，也可以实现不断地更新结果和结果推送，但通过这样的方式获取的结果，仍然是根据过去某一时刻的数据得到的结果，与实时结果有着本质的区别<blockquote>
-<ul>
-<li>可见，流处理系统与传统的数据处理系统有如下不同：</li>
-</ul>
-</blockquote>
-</li>
-<li>流处理系统处理的是实时的数据，而传统的数据处理系统处理的是预先存储好的静态数据</li>
-<li>用户通过流处理系统获取的是实时结果，而通过传统的数据处理系统，获取的是过去某一时刻的结果</li>
-<li>流处理系统无需用户主动发出查询，实时查询服务可以主动将实时结果推送给用户</li>
-</ul>
-<h1 id="流计算应用"><a href="#流计算应用" class="headerlink" title="流计算应用"></a>流计算应用</h1><ul>
-<li>流计算是针对流数据的实时计算，可以应用在多种场景中，如Web服务、机器翻译、广告投放、自然语言处理、气候模拟预测等</li>
-<li>如百度、淘宝等大型网站中，每天都会产生大量流数据，包括用户的搜索内容、用户的浏览记录等数据。采用流计算进行实时数据分析，可以了解每个时刻的流量变化情况，甚至可以分析用户的实时浏览轨迹，从而进行实时个性化内容推荐</li>
-<li>但是，并不是每个应用场景都需要用到流计算的。流计算适合于需要处理持续到达的流数据、对数据处理有较高实时性要求的场景</li>
-</ul>
-<h1 id="流计算开源框架-–-Storm"><a href="#流计算开源框架-–-Storm" class="headerlink" title="流计算开源框架 – Storm"></a>流计算开源框架 – Storm</h1><h2 id="Storm简介"><a href="#Storm简介" class="headerlink" title="Storm简介"></a>Storm简介</h2><ul>
-<li>Twitter Storm是一个免费、开源的分布式实时计算系统，Storm对于实时计算的意义类似于Hadoop对于批处理的意义，Storm可以简单、高效、可靠地处理流数据，并支持多种编程语言</li>
-<li>Storm框架可以方便地与数据库系统进行整合，从而开发出强大的实时计算系统</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/2OAfhoyKXdsYmjV.png" alt="Twitter的分层数据处理架构.png"></p>
-<h2 id="Storm的特点"><a href="#Storm的特点" class="headerlink" title="Storm的特点"></a>Storm的特点</h2><ul>
-<li>Storm可用于许多领域中，如实时分析、在线机器学习、持续计算、远程RPC、数据提取加载转换等</li>
-<li>Storm具有以下主要特点：<ul>
-<li>整合性：Storm可方便地与队列系统和数据库系统进行整合</li>
-<li>简易的API：Storm的API在使用上即简单又方便</li>
-<li>可扩展性：Storm的并行特性使其可以运行在分布式集群中</li>
-<li>容错性：Storm可自动进行故障节点的重启、任务的重新分配</li>
-<li>可靠的消息处理：Storm保证每个消息都能完整处理 </li>
-<li>支持各种编程语言：Storm支持使用各种编程语言来定义任务</li>
-<li>快速部署：Storm可以快速进行部署和使用</li>
-<li>免费、开源：Storm是一款开源框架，可以免费使用</li>
-</ul>
-</li>
-</ul>
-<h2 id="Storm设计思想"><a href="#Storm设计思想" class="headerlink" title="Storm设计思想"></a>Storm设计思想</h2><ul>
-<li>Storm主要术语包括Streams、Spouts、Bolts、Topology和Stream Groupings</li>
-<li>Streams：Storm将流数据Stream描述成一个无限的Tuple序列，这些Tuple序列会以分布式的方式并行地创建和处理</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/pyhWGTaef9SscdM.png" alt="Stream.png"></p>
-<ul>
-<li>每个tuple是一堆值，每个值有一个名字，并且每个值可以是任何类型</li>
-<li>Tuple本来应该是一个Key-Value的Map，由于各个组件间传递的tuple的字段名称已经事先定义好了，所以Tuple只需要按序填入各个Value，所以就是一个Value List（值列表）</li>
-<li>Spout：Storm认为每个Stream都有一个源头，并把这个源头抽象为Spout</li>
-<li>通常Spout会从外部数据源（队列、数据库等）读取数据，然后封装成Tuple形式，发送到Stream中。Spout是一个主动的角色，在接口内部有个nextTuple函数，Storm框架会不停的调用该函数</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/uO6giCcEQ81NrBX.png" alt="Spout.png"></p>
-<ul>
-<li>Bolt：Storm将Streams的状态转换过程抽象为Bolt。Bolt即可以处理Tuple，也可以将处理后的Tuple作为新的Streams发送给其他Bolt</li>
-<li>Bolt可以执行过滤、函数操作、Join、操作数据库等任何操作</li>
-<li>Bolt是一个被动的角色，其接口中有一个execute(Tuple input)方法，在接收到消息之后会调用此函数，用户可以在此方法中执行自己的处理逻辑</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/TVfov9rABmMWx8D.png" alt="bboult.png"></p>
-<ul>
-<li>Topology：Storm将Spouts和Bolts组成的网络抽象成Topology，它可以被提交到Storm集群执行。Topology可视为流转换图，图中节点是一个Spout或Bolt，边则表示Bolt订阅了哪个Stream。当Spout或者Bolt发送元组时，它会把元组发送到每个订阅了该Stream的Bolt上进行处理</li>
-<li>Topology里面的每个处理组件（Spout或Bolt）都包含处理逻辑， 而组件之间的连接则表示数据流动的方向</li>
-<li>Topology里面的每一个组件都是并行运行的</li>
-<li>在Topology里面可以指定每个组件的并行度， Storm会在集群里面分配那么多的线程来同时计算</li>
-<li>在Topology的具体实现上，Storm中的Topology定义仅仅是一些Thrift结构体（二进制高性能的通信中间件），支持各种编程语言进行定义</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/sWUh84QkrPGbjdL.png" alt="Toploly.png"></p>
-<ul>
-<li>Stream Groupings：Storm中的Stream Groupings用于告知Topology如何在两个组件间（如Spout和Bolt之间，或者不同的Bolt之间）进行Tuple的传送。每一个Spout和Bolt都可以有多个分布式任务，一个任务在什么时候、以什么方式发送Tuple就是由Stream Groupings来决定的</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/IHnpzWscD8PEBmJ.png" alt="StramGrouping .png"></p>
-<blockquote>
-<ul>
-<li>目前，Storm中的Stream Groupings有如下几种方式：</li>
-</ul>
-<ol>
-<li>ShuffleGrouping：随机分组，随机分发Stream中的Tuple，保证每个Bolt的Task接收Tuple数量大致一致</li>
-<li>FieldsGrouping：按照字段分组，保证相同字段的Tuple分配到同一个Task中</li>
-<li>AllGrouping：广播发送，每一个Task都会收到所有的Tuple</li>
-<li>GlobalGrouping：全局分组，所有的Tuple都发送到同一个Task中</li>
-<li>NonGrouping：不分组，和ShuffleGrouping类似，当前Task的执行会和它的被订阅者在同一个线程中执行</li>
-<li>DirectGrouping：直接分组，直接指定由某个Task来执行Tuple的处理</li>
-</ol>
-</blockquote>
-<h2 id="Storm框架设计"><a href="#Storm框架设计" class="headerlink" title="Storm框架设计"></a>Storm框架设计</h2><ul>
-<li><p>Storm运行任务的方式与Hadoop类似：Hadoop运行的是MapReduce作业，而Storm运行的是“Topology”</p>
-</li>
-<li><p>但两者的任务大不相同，主要的不同是：MapReduce作业最终会完成计算并结束运行，而Topology将持续处理消息（直到人为终止）</p>
-<table>
-<thead>
-<tr>
-<th>Hadoop</th>
-<th>Storm</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应用名称</td>
-<td>Job</td>
-</tr>
-<tr>
-<td>系统角色</td>
-<td>JobTracker</td>
-</tr>
-<tr>
-<td>系统角色</td>
-<td>TaskTracker</td>
-</tr>
-<tr>
-<td>组件接口</td>
-<td>Map/Reduce</td>
-</tr>
-</tbody></table>
-</li>
-<li><p>Storm集群采用“Master—Worker”的节点方式：</p>
-<ul>
-<li>Master节点运行名为“Nimbus”的后台程序（类似Hadoop中的“JobTracker”），负责在集群范围内分发代码、为Worker分配任务和监测故障</li>
-<li>Worker节点运行名为“Supervisor”的后台程序，负责监听分配给它所在机器的工作，即根据Nimbus分配的任务来决定启动或停止Worker进程，一个Worker节点上同时运行若干个Worker进程</li>
-</ul>
-</li>
-<li><p>Storm使用Zookeeper来作为分布式协调组件，负责Nimbus和多个Supervisor之间的所有协调工作。借助于Zookeeper，若Nimbus进程或Supervisor进程意外终止，重启时也能读取、恢复之前的状态并继续工作，使得Storm极其稳定</p>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/OxlvwgL9Juq8Zam.png" alt="Storm集群架构示意图.png"></p>
-<ol>
-<li>worker:每个worker进程都属于一个特定的Topology，每个Supervisor节点的worker可以有多个，每个worker对Topology中的每个组件（Spout或 Bolt）运行一个或者多个executor线程来提供task的运行服务</li>
-<li>executor：executor是产生于worker进程内部的线程，会执行同一个组件的一个或者多个task。</li>
-<li>task:实际的数据处理由task完成，在Topology的生命周期中，每个组件的task数目是不会发生变化的，而executor的数目却不一定。executor数目小于等于task的数目，默认情况下，二者是相等的</li>
-</ol>
-<p><img src="https://i.loli.net/2019/08/16/ivGbezZRMup6jDh.png" alt="worker excuter和task关系.png"></p>
-<blockquote>
-<ul>
-<li>基于这样的架构设计，Storm的工作流程如下图所示：</li>
-</ul>
-<ul>
-<li>所有Topology任务的提交必须在Storm客户端节点上进行，提交后，由Nimbus节点分配给其他Supervisor节点进行处理</li>
-<li>Nimbus节点首先将提交的Topology进行分片，分成一个个Task，分配给相应的Supervisor，并将Task和Supervisor相关的信息提交到Zookeeper集群上</li>
-<li>Supervisor会去Zookeeper集群上认领自己的Task，通知自己的Worker进程进行Task的处理</li>
-<li>说明：在提交了一个Topology之后，Storm就会创建Spout/Bolt实例并进行序列化。之后，将序列化的组件发送给所有的任务所在的机器(即Supervisor节点)，在每一个任务上反序列化组件</li>
-</ul>
-</blockquote>
-<p><img src="https://i.loli.net/2019/08/16/GHqlOyPUjadZnzF.png" alt="Storm工作流程示意图.png"></p>
-<h1 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h1><h2 id="Spark-Streaming设计"><a href="#Spark-Streaming设计" class="headerlink" title="Spark Streaming设计"></a>Spark Streaming设计</h2><ul>
-<li>Spark Streaming可整合多种输入数据源，如Kafka、Flume、HDFS，甚至是普通的TCP套接字。经处理后的数据可存储至文件系统、数据库，或显示在仪表盘里</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/KvQyUpZ9Rs1c8uH.png" alt="Spark Streaming支持的输入、输出数据源.png"></p>
-<ul>
-<li>Spark Streaming的基本原理是将实时输入数据流以时间片（秒级）为单位进行拆分，然后经Spark引擎以类似批处理的方式处理每个时间片数据</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/wYuM6RTUAn9B5vi.png" alt="Spark Streaming执行流程.png"></p>
-<ul>
-<li>Spark Streaming最主要的抽象是DStream（Discretized Stream，离散化数据流），表示连续不断的数据流。在内部实现上，Spark Streaming的输入数据按照时间片（如1秒）分成一段一段的DStream，每一段数据转换为Spark中的RDD，并且对DStream的操作都最终转变为对相应的RDD的操作</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/7uiej3OvUBofWPp.png" alt="DStream操作示意图.png"></p>
-<h2 id="Spark-Streaming与Storm的对比"><a href="#Spark-Streaming与Storm的对比" class="headerlink" title="Spark Streaming与Storm的对比"></a>Spark Streaming与Storm的对比</h2><ul>
-<li>Spark Streaming和Storm最大的区别在于，Spark Streaming无法实现毫秒级的流计算，而Storm可以实现毫秒级响应</li>
-<li>Spark Streaming构建在Spark上，一方面是因为Spark的低延迟执行引擎（100ms+）可以用于实时计算，另一方面，相比于Storm，RDD数据集更容易做高效的容错处理</li>
-<li>Spark Streaming采用的小批量处理的方式使得它可以同时兼容批量和实时数据处理的逻辑和算法，因此，方便了一些需要历史数据和实时数据联合分析的特定应用场合</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/12/Kubernetes-架构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2846,6 +2461,666 @@ table tr:hover {
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/10/26/图计算/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/26/图计算/" itemprop="url">图计算</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-26T19:13:10+08:00">
+                2018-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bigdat/" itemprop="url" rel="index">
+                    <span itemprop="name">bigdat</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="图计算简介"><a href="#图计算简介" class="headerlink" title="图计算简介"></a>图计算简介</h1><h2 id="图结构数据"><a href="#图结构数据" class="headerlink" title="图结构数据"></a>图结构数据</h2><ul>
+<li>许多大数据都是以大规模图或网络的形式呈现，如社交网络、传染病传播途径、交通事故对路网的影响</li>
+<li>许多非图结构的大数据，也常常会被转换为图模型后进行分析</li>
+<li>图数据结构很好地表达了数据之间的关联性</li>
+<li>关联性计算是大数据计算的核心——通过获得数据的关联性，可以从噪音很多的海量数据中抽取有用的信息<ul>
+<li>比如，通过为购物者之间的关系建模，就能很快找到口味相似的用户，并为之推荐商品</li>
+<li>或者在社交网络中，通过传播关系发现意见领袖<h2 id="传统图计算解决方案的不足之处"><a href="#传统图计算解决方案的不足之处" class="headerlink" title="传统图计算解决方案的不足之处"></a>传统图计算解决方案的不足之处</h2></li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>常常表现出比较差的内存访问局部性</li>
+<li>针对单个顶点的处理工作过少</li>
+<li>计算过程中伴随着并行度的改变<h2 id="图计算通用软件"><a href="#图计算通用软件" class="headerlink" title="图计算通用软件"></a>图计算通用软件</h2></li>
+</ol>
+<ul>
+<li>第一种主要是基于遍历算法的、实时的图数据库，如Neo4j、OrientDB、DEX和 Infinite Graph</li>
+<li>第二种则是以图顶点为中心的、基于消息传递批处理的并行引擎，如GoldenOrb、Giraph、Pregel和Hama，这些图处理软件主要是基于BSP模型实现的并行图处理系统<blockquote>
+<ul>
+<li>一次BSP(Bulk Synchronous Parallel Computing Model，又称“大同步”模型)计算过程包括一系列全局超步（所谓的超步就是计算中的一次迭代），每个超步主要包括三个组件：</li>
+</ul>
+</blockquote>
+</li>
+<li><strong>局部计算</strong>：每个参与的处理器都有自身的计算任务，它们只读取存储在本地内存中的值，不同处理器的计算任务都是异步并且独立的</li>
+<li><strong>通讯</strong>：处理器群相互交换数据，交换的形式是，由一方发起推送(put)和获取(get)操作</li>
+<li><strong>栅栏同步(Barrier Synchronization)</strong>：当一个处理器遇到“路障”（或栅栏），会等到其他所有处理器完成它们的计算步骤；每一次同步也是一个超步的完成和下一个超步的开始<br><img src="https://i.loli.net/2019/08/16/CbFHOziDv5lRt3f.png" alt="一个超步的垂直结构图 .png"><br><img src="https://i.loli.net/2019/08/16/xJ7QVRDH8P1dMCY.png" alt="超同步.png"><h1 id="Pregel简介"><a href="#Pregel简介" class="headerlink" title="Pregel简介"></a>Pregel简介</h1></li>
+<li>Pregel是一种基于BSP模型实现的并行图处理系统</li>
+<li>为了解决大型图的分布式计算问题，Pregel搭建了一套可扩展的、有容错机制的平台，该平台提供了一套非常灵活的API，可以描述各种各样的图计算</li>
+<li>Pregel作为分布式图计算的计算框架，主要用于图遍历、最短路径、PageRank计算等等<h1 id="Pregel图计算模型"><a href="#Pregel图计算模型" class="headerlink" title="Pregel图计算模型"></a>Pregel图计算模型</h1><h2 id="有向图和顶点"><a href="#有向图和顶点" class="headerlink" title="有向图和顶点"></a>有向图和顶点</h2></li>
+<li>Pregel计算模型以有向图作为输入</li>
+<li>有向图的每个顶点都有一个String类型的顶点ID</li>
+<li>每个顶点都有一个可修改的用户自定义值与之关联</li>
+<li>每条有向边都和其源顶点关联，并记录了其目标顶点ID<br><img src="https://i.loli.net/2019/08/16/gLxEuf8voYjP6Qs.png" alt="有向图和顶点.png"></li>
+<li>边上有一个可修改的用户自定义值与之关联</li>
+<li>在每个超步S中，图中的所有顶点都会并行执行相同的用户自定义函数</li>
+<li>每个顶点可以接收前一个超步(S-1)中发送给它的消息，修改其自身及其出射边的状态，并发送消息给其他顶点，甚至是修改整个图的拓扑结构</li>
+<li>在这种计算模式中，“边”并不是核心对象，在边上面不会运行相应的计算，只有顶点才会执行用户自定义函数进行相应计算<br><img src="https://i.loli.net/2019/08/16/xJ7QVRDH8P1dMCY.png" alt="超同步.png"><h2 id="顶点之间的消息传递"><a href="#顶点之间的消息传递" class="headerlink" title="顶点之间的消息传递"></a>顶点之间的消息传递</h2></li>
+</ul>
+<blockquote>
+<ul>
+<li>采用消息传递模型主要基于以下两个原因：</li>
+</ul>
+<ol>
+<li>消息传递具有足够的表达能力，没有必要使用远程读取或共享内存的方式</li>
+<li>有助于提升系统整体性能。大型图计算通常是由一个集群完成的，集群环境中执行远程数据读取会有较高的延迟；Pregel的消息模式采用异步和批量的方式传递消息，因此可以缓解远程读取的延迟<br><img src="https://i.loli.net/2019/08/16/bmZ8JU2CrKexPVa.png" alt="纯消息传递模型图 .png"></li>
+</ol>
+</blockquote>
+<h2 id="Pregel的计算过程"><a href="#Pregel的计算过程" class="headerlink" title="Pregel的计算过程"></a>Pregel的计算过程</h2><ul>
+<li>Pregel的计算过程是由一系列被称为“超步”的迭代组成的</li>
+<li>在每个超步中，每个顶点上面都会并行执行用户自定义的函数，该函数描述了一个顶点V在一个超步S中需要执行的操作</li>
+<li>该函数可以读取前一个超步(S-1)中其他顶点发送给顶点V的消息，执行相应计算后，修改顶点V及其出射边的状态，然后沿着顶点V的出射边发送消息给其他顶点，而且，一个消息可能经过多条边的传递后被发送到任意已知ID的目标顶点上去</li>
+<li>这些消息将会在下一个超步(S+1)中被目标顶点接收，然后象上述过程一样开始下一个超步(S+1)的迭代过程<br><img src="https://i.loli.net/2019/08/16/eUrodhXamDiVS1Y.png" alt="Ptrgel计算过程.png"></li>
+<li>在Pregel计算过程中，一个算法什么时候可以结束，是由所有顶点的状态决定的</li>
+<li>在第0个超步，所有顶点处于活跃状态，都会参与该超步的计算过程</li>
+<li>当一个顶点不需要继续执行进一步的计算时，就会把自己的状态设置为“停机”，进入非活跃状态</li>
+<li>一旦一个顶点进入非活跃状态，后续超步中就不会再在该顶点上执行计算，除非其他顶点给该顶点发送消息把它再次激活</li>
+<li>当一个处于非活跃状态的顶点收到来自其他顶点的消息时，Pregel计算框架必须根据条件判断来决定是否将其显式唤醒进入活跃状态</li>
+<li>当图中所有的顶点都已经标识其自身达到“非活跃（inactive）”状态，并且没有消息在传送的时候，算法就可以停止运行<br><img src="https://i.loli.net/2019/08/16/Bfl9CYyFdSunm7i.png" alt="一个简单的状态机图.png"><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><img src="https://i.loli.net/2019/08/16/YzldRLfNjiSUwM3.png" alt="一个求最大值的Pregel计算过程图 .png"><h1 id="Pregel的C-API"><a href="#Pregel的C-API" class="headerlink" title="Pregel的C++ API"></a>Pregel的C++ API</h1></li>
+<li>Pregel已经预先定义好一个基类——Vertex类：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename VertexValue, typename EdgeValue, typename MessageValue&gt;</span><br><span class="line">class Vertex &#123;</span><br><span class="line">  public:</span><br><span class="line">	virtual void Compute(MessageIterator* msgs) = 0;</span><br><span class="line">	const string&amp; vertex_id() const;</span><br><span class="line">	int64 superstep() const;</span><br><span class="line">	const VertexValue&amp; GetValue();</span><br><span class="line">	VertexValue* MutableValue();</span><br><span class="line">	OutEdgeIterator GetOutEdgeIterator();	</span><br><span class="line">	void SendMessageTo(const string&amp; dest_vertex,	const MessageValue&amp; message);</span><br><span class="line">	void VoteToHalt();</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在Vetex类中，定义了三个值类型参数，分别表示顶点、边和消息。每一个顶点都有一个给定类型的值与之对应</li>
+<li>编写Pregel程序时，需要继承Vertex类，并且覆写Vertex类的虚函数Compute() </li>
+<li>在Pregel执行计算过程时，在每个超步中都会并行调用每个顶点上定义的Compute()函数</li>
+<li>允许Compute()方法查询当前顶点及其边的信息，以及发送消息到其他的顶点<ul>
+<li>Compute()方法可以调用GetValue()方法来获取当前顶点的值</li>
+<li>调用MutableValue()方法来修改当前顶点的值</li>
+<li>通过由出射边的迭代器提供的方法来查看、修改出射边对应的值</li>
+</ul>
+</li>
+<li>对状态的修改，对于被修改的顶点而言是可以立即被看见的，但是，对于其他顶点而言是不可见的，因此，不同顶点并发进行的数据访问是不存在竞争关系的<blockquote>
+<ul>
+<li>整个过程中，唯一需要在超步之间持久化的顶点级状态，是顶点和其对应的边所关联的值，因而，Pregel计算框架所需要管理的图状态就只包括顶点和边所关联的值，这种做法大大简化了计算流程，同时，也有利于图的分布和故障恢复</li>
+</ul>
+</blockquote>
+<h2 id="消息传递机制"><a href="#消息传递机制" class="headerlink" title="消息传递机制"></a>消息传递机制</h2></li>
+<li>顶点之间的通讯是借助于消息传递机制来实现的，每条消息都包含了消息值和需要到达的目标顶点ID。用户可以通过Vertex类的模板参数来设定消息值的数据类型</li>
+<li>在一个超步S中，一个顶点可以发送任意数量的消息，这些消息将在下一个超步（S+1）中被其他顶点接收</li>
+<li>也就是说，在超步（S+1）中，当Pregel计算框架在顶点V上执行用户自定义的Compute()方法时，所有在前一个超步S中发送给顶点V的消息，都可以通过一个迭代器来访问到。迭代器不能保证消息的顺序，不过可以保证消息一定会被传送并且不会被重复传送</li>
+<li>一个顶点V通过与之关联的出射边向外发送消息，并且，消息要到达的目标顶点并不一定是与顶点V相邻的顶点，一个消息可以连续经过多条连通的边到达某个与顶点V不相邻的顶点U，U可以从接收的消息中获取到与其不相邻的顶点V的ID<br><img src="https://i.loli.net/2019/08/16/xJ7QVRDH8P1dMCY.png" alt="超同步.png"><h2 id="Combiner"><a href="#Combiner" class="headerlink" title="Combiner"></a>Combiner</h2></li>
+<li>Pregel计算框架在消息发出去之前，Combiner可以将发往同一个顶点的多个整型值进行求和得到一个值，只需向外发送这个“求和结果”，从而实现了由多个消息合并成一个消息，大大减少了传输和缓存的开销</li>
+<li>在默认情况下，Pregel计算框架并不会开启Combiner功能，因为，通常很难找到一种对所有顶点的Compute()函数都合适的Combiner</li>
+<li>当用户打算开启Combiner功能时，可以继承Combiner类并覆写虚函数Combine()<br>此外，通常只对那些满足交换律和结合律的操作才可以去开启Combiner功能，因为，Pregel计算框架无法保证哪些消息会被合并，也无法保证消息传递给 Combine()的顺序和合并操作执行的顺序<br><img src="https://i.loli.net/2019/08/16/5LgTwuXAxR4lHJS.png" alt="Combiner应用的例子.png"><h2 id="Aggregator"><a href="#Aggregator" class="headerlink" title="Aggregator"></a>Aggregator</h2></li>
+<li>Aggregator提供了一种全局通信、监控和数据查看的机制</li>
+<li>在一个超步S中，每一个顶点都可以向一个Aggregator提供一个数据，Pregel计算框架会对这些值进行聚合操作产生一个值，在下一个超步（S+1）中，图中的所有顶点都可以看见这个值</li>
+<li>Aggregator的聚合功能，允许在整型和字符串类型上执行最大值、最小值、求和操作，比如，可以定义一个“Sum”Aggregator来统计每个顶点的出射边数量，最后相加可以得到整个图的边的数量</li>
+<li>Aggregator还可以实现全局协同的功能，比如，可以设计“and” Aggregator来决定在某个超步中Compute()函数是否执行某些逻辑分支，只有当“and” Aggregator显示所有顶点都满足了某条件时，才去执行这些逻辑分支<h2 id="拓扑改变"><a href="#拓扑改变" class="headerlink" title="拓扑改变"></a>拓扑改变</h2></li>
+<li>Pregel计算框架允许用户在自定义函数Compute()中定义操作，修改图的拓扑结构，比如在图中增加（或删除）边或顶点</li>
+<li>对于全局拓扑改变，Pregel采用了惰性协调机制，在改变请求发出时，Pregel不会对这些操作进行协调，只有当这些改变请求的消息到达目标顶点并被执行时，Pregel才会对这些操作进行协调，这样，所有针对某个顶点V的拓扑修改操作所引发的冲突，都会由V自己来处理</li>
+<li>对于本地的局部拓扑改变，是不会引发冲突的，顶点或边的本地增减能够立即生效，很大程度上简化了分布式编程<h2 id="输入和输出"><a href="#输入和输出" class="headerlink" title="输入和输出"></a>输入和输出</h2></li>
+<li>在Pregel计算框架中，图的保存格式多种多样，包括文本文件、关系数据库或键值数据库等</li>
+<li>在Pregel中，“从输入文件生成得到图结构”和“执行图计算”这两个过程是分离的，从而不会限制输入文件的格式</li>
+<li>对于输出，Pregel也采用了灵活的方式，可以以多种方式进行输出<h1 id="Pregel的体系结构"><a href="#Pregel的体系结构" class="headerlink" title="Pregel的体系结构"></a>Pregel的体系结构</h1><h2 id="Pregel的执行过程"><a href="#Pregel的执行过程" class="headerlink" title="Pregel的执行过程"></a>Pregel的执行过程</h2></li>
+<li>在Pregel计算框架中，一个大型图会被划分成许多个分区，每个分区都包含了一部分顶点以及以其为起点的边</li>
+<li>一个顶点应该被分配到哪个分区上，是由一个函数决定的，系统默认函数为hash(ID) mod N，其中，N为所有分区总数，ID是这个顶点的标识符；当然，用户也可以自己定义这个函数</li>
+<li>这样，无论在哪台机器上，都可以简单根据顶点ID判断出该顶点属于哪个分区，即使该顶点可能已经不存在了</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/tl1LIS5QxwoK3vf.png" alt="图的划分图.png"></p>
+<blockquote>
+<ul>
+<li>在理想的情况下（不发生任何错误），一个Pregel用户程序的执行过程如下：</li>
+</ul>
+<ol>
+<li>选择集群中的多台机器执行图计算任务，每台机器上运行用户程序的一个副本，其中，有一台机器会被选为Master，其他机器作为Worker。Master只负责协调多个Worker执行任务，系统不会把图的任何分区分配给它。Worker借助于名称服务系统可以定位到Master的位置，并向Master发送自己的注册信息。</li>
+<li>Master把一个图分成多个分区，并把分区分配到多个Worker。一个Worker会领到一个或多个分区，每个Worker知道所有其他Worker所分配到的分区情况。每个Worker负责维护分配给自己的那些分区的状态(顶点及边的增删)，对分配给自己的分区中的顶点执行Compute()函数，向外发送消息，并管理接收到的消息。<br><img src="https://i.loli.net/2019/08/16/8vGSQVM9zCxF5Ab.png" alt="Pregel的执行过程图 .png"></li>
+<li>Master会把用户输入划分成多个部分，通常是基于文件边界进行划分。划分后，每个部分都是一系列记录的集合，每条记录都包含一定数量的顶点和边。然后，Master会为每个Worker分配用户输入的一部分。如果一个Worker从输入内容中加载到的顶点，刚好是自己所分配到的分区中的顶点，就会立即更新相应的数据结构。否则，该Worker会根据加载到的顶点的ID，把它发送到其所属的分区所在的Worker上。当所有的输入都被加载后，图中的所有顶点都会被标记为“活跃”状态。</li>
+<li>Master向每个Worker发送指令，Worker收到指令后，开始运行一个超步。Worker会为自己管辖的每个分区分配一个线程，对于分区中的每个顶点，Worker会把来自上一个超步的、发给该顶点的消息传递给它，并调用处于“活跃”状态的顶点上的Compute()函数，在执行计算过程中，顶点可以对外发送消息，但是，所有消息的发送工作必须在本超步结束之前完成。当所有这些工作都完成以后，Worker会通知Master，并把自己在下一个超步还处于“活跃”状态的顶点的数量报告给Master。上述步骤会被不断重复，直到所有顶点都不再活跃并且系统中不会有任何消息在传输，这时，执行过程才会结束。</li>
+<li>计算过程结束后，Master会给所有的Worker发送指令，通知每个Worker对自己的计算结果进行持久化存储。</li>
+</ol>
+</blockquote>
+<h2 id="容错性"><a href="#容错性" class="headerlink" title="容错性"></a>容错性</h2><ul>
+<li>Pregel采用检查点机制来实现容错。在每个超步的开始，Master会通知所有的Worker把自己管辖的分区的状态（包括顶点值、边值以及接收到的消息），写入到持久化存储设备</li>
+<li>Master会周期性地向每个Worker发送ping消息，Worker收到ping消息后会给Master发送反馈消息。如果Master在指定时间间隔内没有收到某个Worker的反馈消息，就会把该Worker标记为“失效”。同样地，如果一个Worker在指定的时间间隔内没有收到来自Master的ping消息，该Worker也会停止工作</li>
+<li>每个Worker上都保存了一个或多个分区的状态信息，当一个Worker发生故障时，它所负责维护的分区的当前状态信息就会丢失。Master监测到一个Worker发生故障“失效”后，会把失效Worker所分配到的分区，重新分配到其他处于正常工作状态的Worker集合上，然后，所有这些分区会从最近的某超步S开始时写出的检查点中，重新加载状态信息<h2 id="Worker"><a href="#Worker" class="headerlink" title="Worker"></a>Worker</h2></li>
+<li>在一个Worker中，它所管辖的分区的状态信息是保存在内存中的。分区中的顶点的状态信息包括：<ul>
+<li>顶点的当前值</li>
+<li>以该顶点为起点的出射边列表，每条出射边包含了目标顶点ID和边的值</li>
+<li>消息队列，包含了所有接收到的、发送给该顶点的消息</li>
+<li>标志位，用来标记顶点是否处于活跃状态</li>
+</ul>
+</li>
+<li>在每个超步中，Worker会对自己所管辖的分区中的每个顶点进行遍历，并调用顶点上的Compute()函数，在调用时，会把以下三个参数传递进去：<ul>
+<li>该顶点的当前值</li>
+<li>一个接收到的消息的迭代器 </li>
+<li>一个出射边的迭代器 </li>
+</ul>
+</li>
+<li>在Pregel中，为了获得更好的性能，“标志位”和输入消息队列是分开保存的</li>
+<li>对于每个顶点而言，Pregel只保存一份顶点值和边值，但是，会保存两份“标志位”和输入消息队列，分别用于当前超步和下一个超步</li>
+<li>在超步S中，当一个Worker在进行顶点处理时，用于当前超步的消息会被处理，同时，它在处理过程中还会接收到来自其他Worker的消息，这些消息会在下一个超步S+1中被处理，因此，需要两个消息队列用于存放作用于当前超步S的消息和作用于下一个超步S+1的消息</li>
+<li>如果一个顶点V在超步S接收到消息，那么，它表示V将会在下一个超步S+1中（而不是当前超步S中）处于“活跃”状态</li>
+<li>当一个Worker上的一个顶点V需要发送消息到其他顶点U时，该Worker会首先判断目标顶点U是否位于自己机器上</li>
+<li>如果目标顶点U在自己的机器上，就直接把消息放入到与目标顶点U对应的输入消息队列中</li>
+<li>如果发现目标顶点U在远程机器上，这个消息就会被暂时缓存到本地，当缓存中的消息数目达到一个事先设定的阈值时，这些缓存消息会被批量异步发送出去，传输到目标顶点所在的Worker上</li>
+<li>如果存在用户自定义的Combiner操作，那么，当消息被加入到输出队列或者到达输入队列时，就可以对消息执行合并操作，这样可以节省存储空间和网络传输开销<h2 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h2></li>
+<li>Master主要负责协调各个Worker执行任务，每个Worker会借助于名称服务系统定位到Master的位置，并向Master发送自己的注册信息，Master会为每个Worker分配一个唯一的ID</li>
+<li>Master维护着关于当前处于“有效”状态的所有Worker的各种信息，包括每个Worker的ID和地址信息，以及每个Worker被分配到的分区信息</li>
+<li>虽然在集群中只有一个Master，但是，它仍然能够承担起一个大规模图计算的协调任务，这是因为Master中保存这些信息的数据结构的大小，只与分区的数量有关，而与顶点和边的数量无关</li>
+<li>一个大规模图计算任务会被Master分解到多个Worker去执行，在每个超步开始时，Master都会向所有处于“有效”状态的Worker发送相同的指令，然后等待这些Worker的回应</li>
+<li>如果在指定时间内收不到某个Worker的反馈，Master就认为这个Worker失效</li>
+<li>如果参与任务执行的多个Worker中的任意一个发生了故障失效，Master就会进入恢复模式</li>
+<li>在每个超步中，图计算的各种工作，比如输入、输出、计算、保存和从检查点中恢复，都会在“路障（barrier）”之前结束</li>
+<li>如果路障同步成功，说明一个超步顺利结束，Master就会进入下一个处理阶段，图计算进入下一个超步的执行</li>
+<li>Master在内部运行了一个HTTP服务器来显示图计算过程的各种信息</li>
+<li>用户可以通过网页随时监控图计算执行过程各个细节<ul>
+<li>图的大小</li>
+<li>关于出度分布的柱状图</li>
+<li>处于活跃状态的顶点数量</li>
+<li>在当前超步的时间信息和消息流量</li>
+<li>所有用户自定义Aggregator的值</li>
+</ul>
+</li>
+</ul>
+<h2 id="Aggregator-1"><a href="#Aggregator-1" class="headerlink" title="Aggregator"></a>Aggregator</h2><ul>
+<li>每个用户自定义的Aggregator都会采用聚合函数对一个值集合进行聚合计算得到一个全局值</li>
+<li>每个Worker都保存了一个Aggregator的实例集，其中的每个实例都是由类型名称和实例名称来标识的</li>
+<li>在执行图计算过程的某个超步S中，每个Worker会利用一个Aggregator对当前本地分区中包含的所有顶点的值进行归约，得到一个本地的局部归约值</li>
+<li>在超步S结束时，所有Worker会将所有包含局部归约值的Aggregator的值进行最后的汇总，得到全局值，然后提交给Master</li>
+<li>在下一个超步S+1开始时，Master就会将Aggregator的全局值发送给每个Worker</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/10/16/流计算/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/16/流计算/" itemprop="url">流计算</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T19:02:37+08:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bigdat/" itemprop="url" rel="index">
+                    <span itemprop="name">bigdat</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="流计算概述"><a href="#流计算概述" class="headerlink" title="流计算概述"></a>流计算概述</h1><h2 id="静态数据和流数据"><a href="#静态数据和流数据" class="headerlink" title="静态数据和流数据"></a>静态数据和流数据</h2><ul>
+<li>很多企业为了支持决策分析而构建的数据仓库系统，其中存放的大量历史数据就是静态数据。技术人员可以利用数据挖掘和OLAP（On-Line Analytical Processing）分析工具从静态数据中找到对企业有价值的信息<br><img src="https://i.loli.net/2019/08/15/CMX6Q7n4UceDJi8.png" alt="静态数据.png"></li>
+</ul>
+<ul>
+<li>近年来，在Web应用、网络监控、传感监测等领域，兴起了一种新的数据密集型应用——流数据，即数据以大量、快速、时变的流形式持续到达</li>
+<li>实例：PM2.5检测、电子商务网站用户点击流</li>
+<li>流数据具有如下特征：<ul>
+<li>数据快速持续到达，潜在大小也许是无穷无尽的</li>
+<li>数据来源众多，格式复杂</li>
+<li>数据量大，但是不十分关注存储，一旦经过处理，要么被丢弃，要么被归档存储</li>
+<li>注重数据的整体价值，不过分关注个别数据</li>
+<li>数据顺序颠倒，或者不完整，系统无法控制将要处理的新到达的数据元素的顺序</li>
+</ul>
+</li>
+</ul>
+<h2 id="批量计算和实时计算"><a href="#批量计算和实时计算" class="headerlink" title="批量计算和实时计算"></a>批量计算和实时计算</h2><ul>
+<li>对静态数据和流数据的处理，对应着两种截然不同的计算模式：批量计算和实时计算</li>
+<li>批量计算：充裕时间处理静态数据，如Hadoop</li>
+<li>流数据不适合采用批量计算，因为流数据不适合用传统的关系模型建模</li>
+<li>流数据必须采用实时计算，响应时间为秒级</li>
+<li>数据量少时，不是问题，但是，在大数据时代，数据格式复杂、来源众多、数据量巨大，对实时计算提出了很大的挑战。因此，针对流数据的实时计算——流计算，应运而生<br><img src="https://i.loli.net/2019/08/15/nC72xfOSIHaXW6J.png" alt="数据的两种处理模型.png"></li>
+</ul>
+<h2 id="流计算概念"><a href="#流计算概念" class="headerlink" title="流计算概念"></a>流计算概念</h2><ul>
+<li>流计算：实时获取来自不同数据源的海量数据，经过实时分析处理，获得有价值的信息<br><img src="https://i.loli.net/2019/08/15/ryRDeMPvW2kVFZ8.png" alt="流计算示意图.png"></li>
+<li>流计算秉承一个基本理念，即<strong>数据的价值随着时间的流逝而降低</strong>，如用户点击流。因此，当事件出现时就应该立即进行处理，而不是缓存起来进行批量处理。为了及时处理流数据，就需要一个低延迟、可扩展、高可靠的处理引擎</li>
+<li>对于一个流计算系统来说，它应达到如下需求：<ul>
+<li>高性能：处理大数据的基本要求，如每秒处理几十万条数据</li>
+<li>海量式：支持TB级甚至是PB级的数据规模</li>
+<li>实时性：保证较低的延迟时间，达到秒级别，甚至是毫秒级别</li>
+<li>分布式：支持大数据的基本架构，必须能够平滑扩展</li>
+<li>易用性：能够快速进行开发和部署</li>
+<li>可靠性：能可靠地处理流数据</li>
+</ul>
+</li>
+</ul>
+<h2 id="流计算与Hadoop"><a href="#流计算与Hadoop" class="headerlink" title="流计算与Hadoop"></a>流计算与Hadoop</h2><ul>
+<li>Hadoop设计的初衷是面向大规模数据的批量处理，每台机器并行运行MapReduce任务，最后对结果进行汇总输出</li>
+<li>MapReduce是专门面向静态数据的批量处理的，内部各种实现机制都为批处理做了高度优化，不适合用于处理持续到达的动态数据</li>
+<li>可能会想到一种“变通”的方案来降低批处理的时间延迟——将基于MapReduce的批量处理转为小批量处理，将输入数据切成小的片段，每隔一个周期就启动一次MapReduce作业。但这种方式也无法有效处理流数据<ul>
+<li>切分成小片段，可以降低延迟，但是也增加了附加开销，还要处理片段之间依赖关系</li>
+<li>需要改造MapReduce以支持流式处理<br><font color="red"><strong>结论：鱼和熊掌不可兼得，Hadoop擅长批处理，不适合流计算</strong></font></li>
+</ul>
+</li>
+</ul>
+<h2 id="流计算框架"><a href="#流计算框架" class="headerlink" title="流计算框架"></a>流计算框架</h2><ul>
+<li>目前有三类常见的流计算框架和平台：商业级的流计算平台、开源流计算框架、公司为支持自身业务开发的流计算框架</li>
+<li>商业级：IBM InfoSphere Streams和IBM StreamBase</li>
+<li>较为常见的是开源流计算框架，代表如下：<ul>
+<li>Twitter Storm：免费、开源的分布式实时计算系统，可简单、高效、可靠地处理大量的流数据</li>
+<li>Yahoo! S4（Simple Scalable Streaming System）：开源流计算平台，是通用的、分布式的、可扩展的、分区容错的、可插拔的流式系统</li>
+</ul>
+</li>
+<li>公司为支持自身业务开发的流计算框架：<ul>
+<li>Facebook Puma</li>
+<li>Dstream（百度）</li>
+<li>银河流数据处理平台（淘宝）</li>
+</ul>
+</li>
+</ul>
+<h1 id="流计算处理流程"><a href="#流计算处理流程" class="headerlink" title="流计算处理流程"></a>流计算处理流程</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>传统的数据处理流程，需要先采集数据并存储在关系数据库等数据管理系统中，之后由用户通过查询操作和数据管理系统进行交互</li>
+<li>传统的数据处理流程隐含了两个前提：<ul>
+<li><strong>存储的数据是旧的</strong>。存储的静态数据是过去某一时刻的快照，这些数据在查询时可能已不具备时效性了</li>
+<li><strong>需要用户主动发出查询来获取结果</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="数据实时采集"><a href="#数据实时采集" class="headerlink" title="数据实时采集"></a>数据实时采集</h2><ul>
+<li>数据实时采集阶段通常采集多个数据源的海量数据，需要保证实时性、低延迟与稳定可靠</li>
+<li>以日志数据为例，由于分布式集群的广泛应用，数据分散存储在不同的机器上，因此需要实时汇总来自不同机器上的日志数据</li>
+<li>目前有许多互联网公司发布的开源分布式日志采集系统均可满足每秒数百MB的数据采集和传输需求，如：<ul>
+<li>Facebook的Scribe</li>
+<li>LinkedIn的Kafka</li>
+<li>淘宝的Time Tunnel</li>
+<li>基于Hadoop的Chukwa和Flume<br><img src="https://i.loli.net/2019/08/16/uPW8HjeiowtgRVF.png" alt="数据实时采集.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="数据实时计算"><a href="#数据实时计算" class="headerlink" title="数据实时计算"></a>数据实时计算</h2><ul>
+<li>数据采集系统的基本架构一般有以下三个部分：<ul>
+<li>Agent：主动采集数据，并把数据推送到Collector部分</li>
+<li>Collector：接收多个Agent的数据，并实现有序、可靠、高性能的转发</li>
+<li>Store：存储Collector转发过来的数据（对于流计算不存储数据</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/U3KCNEJhtjHvkPZ.png" alt="数据采集系统基本架构.png"></p>
+<ul>
+<li>数据实时计算阶段对采集的数据进行实时的分析和计算，并反馈实时结果</li>
+<li>经流处理系统处理后的数据，可视情况进行存储，以便之后再进行分析计算。在时效性要求较高的场景中，处理之后的数据也可以直接丢弃</li>
+</ul>
+<h2 id="实时查询服务"><a href="#实时查询服务" class="headerlink" title="实时查询服务"></a>实时查询服务</h2><ul>
+<li>实时查询服务：经由流计算框架得出的结果可供用户进行实时查询、展示或储存</li>
+<li>传统的数据处理流程，用户需要主动发出查询才能获得想要的结果。而在流处理流程中，实时查询服务可以不断更新结果，并将用户所需的结果实时推送给用户</li>
+<li>虽然通过对传统的数据处理系统进行定时查询，也可以实现不断地更新结果和结果推送，但通过这样的方式获取的结果，仍然是根据过去某一时刻的数据得到的结果，与实时结果有着本质的区别<blockquote>
+<ul>
+<li>可见，流处理系统与传统的数据处理系统有如下不同：</li>
+</ul>
+</blockquote>
+</li>
+<li>流处理系统处理的是实时的数据，而传统的数据处理系统处理的是预先存储好的静态数据</li>
+<li>用户通过流处理系统获取的是实时结果，而通过传统的数据处理系统，获取的是过去某一时刻的结果</li>
+<li>流处理系统无需用户主动发出查询，实时查询服务可以主动将实时结果推送给用户</li>
+</ul>
+<h1 id="流计算应用"><a href="#流计算应用" class="headerlink" title="流计算应用"></a>流计算应用</h1><ul>
+<li>流计算是针对流数据的实时计算，可以应用在多种场景中，如Web服务、机器翻译、广告投放、自然语言处理、气候模拟预测等</li>
+<li>如百度、淘宝等大型网站中，每天都会产生大量流数据，包括用户的搜索内容、用户的浏览记录等数据。采用流计算进行实时数据分析，可以了解每个时刻的流量变化情况，甚至可以分析用户的实时浏览轨迹，从而进行实时个性化内容推荐</li>
+<li>但是，并不是每个应用场景都需要用到流计算的。流计算适合于需要处理持续到达的流数据、对数据处理有较高实时性要求的场景</li>
+</ul>
+<h1 id="流计算开源框架-–-Storm"><a href="#流计算开源框架-–-Storm" class="headerlink" title="流计算开源框架 – Storm"></a>流计算开源框架 – Storm</h1><h2 id="Storm简介"><a href="#Storm简介" class="headerlink" title="Storm简介"></a>Storm简介</h2><ul>
+<li>Twitter Storm是一个免费、开源的分布式实时计算系统，Storm对于实时计算的意义类似于Hadoop对于批处理的意义，Storm可以简单、高效、可靠地处理流数据，并支持多种编程语言</li>
+<li>Storm框架可以方便地与数据库系统进行整合，从而开发出强大的实时计算系统</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/2OAfhoyKXdsYmjV.png" alt="Twitter的分层数据处理架构.png"></p>
+<h2 id="Storm的特点"><a href="#Storm的特点" class="headerlink" title="Storm的特点"></a>Storm的特点</h2><ul>
+<li>Storm可用于许多领域中，如实时分析、在线机器学习、持续计算、远程RPC、数据提取加载转换等</li>
+<li>Storm具有以下主要特点：<ul>
+<li>整合性：Storm可方便地与队列系统和数据库系统进行整合</li>
+<li>简易的API：Storm的API在使用上即简单又方便</li>
+<li>可扩展性：Storm的并行特性使其可以运行在分布式集群中</li>
+<li>容错性：Storm可自动进行故障节点的重启、任务的重新分配</li>
+<li>可靠的消息处理：Storm保证每个消息都能完整处理 </li>
+<li>支持各种编程语言：Storm支持使用各种编程语言来定义任务</li>
+<li>快速部署：Storm可以快速进行部署和使用</li>
+<li>免费、开源：Storm是一款开源框架，可以免费使用</li>
+</ul>
+</li>
+</ul>
+<h2 id="Storm设计思想"><a href="#Storm设计思想" class="headerlink" title="Storm设计思想"></a>Storm设计思想</h2><ul>
+<li>Storm主要术语包括Streams、Spouts、Bolts、Topology和Stream Groupings</li>
+<li>Streams：Storm将流数据Stream描述成一个无限的Tuple序列，这些Tuple序列会以分布式的方式并行地创建和处理<br><img src="https://i.loli.net/2019/08/16/pyhWGTaef9SscdM.png" alt="Stream.png"></li>
+<li>每个tuple是一堆值，每个值有一个名字，并且每个值可以是任何类型</li>
+<li>Tuple本来应该是一个Key-Value的Map，由于各个组件间传递的tuple的字段名称已经事先定义好了，所以Tuple只需要按序填入各个Value，所以就是一个Value List（值列表）</li>
+<li>Spout：Storm认为每个Stream都有一个源头，并把这个源头抽象为Spout</li>
+<li>通常Spout会从外部数据源（队列、数据库等）读取数据，然后封装成Tuple形式，发送到Stream中。Spout是一个主动的角色，在接口内部有个nextTuple函数，Storm框架会不停的调用该函数<br><img src="https://i.loli.net/2019/08/16/uO6giCcEQ81NrBX.png" alt="Spout.png"></li>
+<li>Bolt：Storm将Streams的状态转换过程抽象为Bolt。Bolt即可以处理Tuple，也可以将处理后的Tuple作为新的Streams发送给其他Bolt</li>
+<li>Bolt可以执行过滤、函数操作、Join、操作数据库等任何操作</li>
+<li>Bolt是一个被动的角色，其接口中有一个execute(Tuple input)方法，在接收到消息之后会调用此函数，用户可以在此方法中执行自己的处理逻辑<br><img src="https://i.loli.net/2019/08/16/TVfov9rABmMWx8D.png" alt="bboult.png"></li>
+<li>Topology：Storm将Spouts和Bolts组成的网络抽象成Topology，它可以被提交到Storm集群执行。Topology可视为流转换图，图中节点是一个Spout或Bolt，边则表示Bolt订阅了哪个Stream。当Spout或者Bolt发送元组时，它会把元组发送到每个订阅了该Stream的Bolt上进行处理</li>
+<li>Topology里面的每个处理组件（Spout或Bolt）都包含处理逻辑， 而组件之间的连接则表示数据流动的方向</li>
+<li>Topology里面的每一个组件都是并行运行的</li>
+<li>在Topology里面可以指定每个组件的并行度， Storm会在集群里面分配那么多的线程来同时计算</li>
+<li>在Topology的具体实现上，Storm中的Topology定义仅仅是一些Thrift结构体（二进制高性能的通信中间件），支持各种编程语言进行定义<br><img src="https://i.loli.net/2019/08/16/sWUh84QkrPGbjdL.png" alt="Toploly.png"></li>
+<li>Stream Groupings：Storm中的Stream Groupings用于告知Topology如何在两个组件间（如Spout和Bolt之间，或者不同的Bolt之间）进行Tuple的传送。每一个Spout和Bolt都可以有多个分布式任务，一个任务在什么时候、以什么方式发送Tuple就是由Stream Groupings来决定的<br><img src="https://i.loli.net/2019/08/16/IHnpzWscD8PEBmJ.png" alt="StramGrouping .png"><blockquote>
+<ul>
+<li>目前，Storm中的Stream Groupings有如下几种方式：</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<ol>
+<li>ShuffleGrouping：随机分组，随机分发Stream中的Tuple，保证每个Bolt的Task接收Tuple数量大致一致</li>
+<li>FieldsGrouping：按照字段分组，保证相同字段的Tuple分配到同一个Task中</li>
+<li>AllGrouping：广播发送，每一个Task都会收到所有的Tuple</li>
+<li>GlobalGrouping：全局分组，所有的Tuple都发送到同一个Task中</li>
+<li>NonGrouping：不分组，和ShuffleGrouping类似，当前Task的执行会和它的被订阅者在同一个线程中执行</li>
+<li>DirectGrouping：直接分组，直接指定由某个Task来执行Tuple的处理</li>
+</ol>
+<h2 id="Storm框架设计"><a href="#Storm框架设计" class="headerlink" title="Storm框架设计"></a>Storm框架设计</h2><ul>
+<li>Storm运行任务的方式与Hadoop类似：Hadoop运行的是MapReduce作业，而Storm运行的是“Topology”</li>
+<li>但两者的任务大不相同，主要的不同是：MapReduce作业最终会完成计算并结束运行，而Topology将持续处理消息（直到人为终止）<table>
+<thead>
+<tr>
+<th>Hadoop</th>
+<th>Storm</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应用名称</td>
+<td>Job</td>
+</tr>
+<tr>
+<td>系统角色</td>
+<td>JobTracker</td>
+</tr>
+<tr>
+<td>系统角色</td>
+<td>TaskTracker</td>
+</tr>
+<tr>
+<td>组件接口</td>
+<td>Map/Reduce</td>
+</tr>
+</tbody></table>
+</li>
+<li>Storm集群采用“Master—Worker”的节点方式：<ul>
+<li>Master节点运行名为“Nimbus”的后台程序（类似Hadoop中的“JobTracker”），负责在集群范围内分发代码、为Worker分配任务和监测故障</li>
+<li>Worker节点运行名为“Supervisor”的后台程序，负责监听分配给它所在机器的工作，即根据Nimbus分配的任务来决定启动或停止Worker进程，一个Worker节点上同时运行若干个Worker进程</li>
+</ul>
+</li>
+<li>Storm使用Zookeeper来作为分布式协调组件，负责Nimbus和多个Supervisor之间的所有协调工作。借助于Zookeeper，若Nimbus进程或Supervisor进程意外终止，重启时也能读取、恢复之前的状态并继续工作，使得Storm极其稳定<br><img src="https://i.loli.net/2019/08/16/OxlvwgL9Juq8Zam.png" alt="Storm集群架构示意图.png"></li>
+</ul>
+<ol>
+<li>worker:每个worker进程都属于一个特定的Topology，每个Supervisor节点的worker可以有多个，每个worker对Topology中的每个组件（Spout或 Bolt）运行一个或者多个executor线程来提供task的运行服务</li>
+<li>executor：executor是产生于worker进程内部的线程，会执行同一个组件的一个或者多个task。</li>
+<li>task:实际的数据处理由task完成，在Topology的生命周期中，每个组件的task数目是不会发生变化的，而executor的数目却不一定。executor数目小于等于task的数目，默认情况下，二者是相等的<br><img src="https://i.loli.net/2019/08/16/ivGbezZRMup6jDh.png" alt="worker excuter和task关系.png"><blockquote>
+<ul>
+<li>基于这样的架构设计，Storm的工作流程如下图所示：</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>所有Topology任务的提交必须在Storm客户端节点上进行，提交后，由Nimbus节点分配给其他Supervisor节点进行处理</li>
+<li>Nimbus节点首先将提交的Topology进行分片，分成一个个Task，分配给相应的Supervisor，并将Task和Supervisor相关的信息提交到Zookeeper集群上</li>
+<li>Supervisor会去Zookeeper集群上认领自己的Task，通知自己的Worker进程进行Task的处理</li>
+<li>说明：在提交了一个Topology之后，Storm就会创建Spout/Bolt实例并进行序列化。之后，将序列化的组件发送给所有的任务所在的机器(即Supervisor节点)，在每一个任务上反序列化组件<br><img src="https://i.loli.net/2019/08/16/GHqlOyPUjadZnzF.png" alt="Storm工作流程示意图.png"><h1 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h1><h2 id="Spark-Streaming设计"><a href="#Spark-Streaming设计" class="headerlink" title="Spark Streaming设计"></a>Spark Streaming设计</h2></li>
+<li>Spark Streaming可整合多种输入数据源，如Kafka、Flume、HDFS，甚至是普通的TCP套接字。经处理后的数据可存储至文件系统、数据库，或显示在仪表盘里<br><img src="https://i.loli.net/2019/08/16/KvQyUpZ9Rs1c8uH.png" alt="Spark Streaming支持的输入、输出数据源.png"></li>
+<li>Spark Streaming的基本原理是将实时输入数据流以时间片（秒级）为单位进行拆分，然后经Spark引擎以类似批处理的方式处理每个时间片数据<br><img src="https://i.loli.net/2019/08/16/wYuM6RTUAn9B5vi.png" alt="Spark Streaming执行流程.png"></li>
+<li>Spark Streaming最主要的抽象是DStream（Discretized Stream，离散化数据流），表示连续不断的数据流。在内部实现上，Spark Streaming的输入数据按照时间片（如1秒）分成一段一段的DStream，每一段数据转换为Spark中的RDD，并且对DStream的操作都最终转变为对相应的RDD的操作<br><img src="https://i.loli.net/2019/08/16/7uiej3OvUBofWPp.png" alt="DStream操作示意图.png"></li>
+</ul>
+<h2 id="Spark-Streaming与Storm的对比"><a href="#Spark-Streaming与Storm的对比" class="headerlink" title="Spark Streaming与Storm的对比"></a>Spark Streaming与Storm的对比</h2><ul>
+<li>Spark Streaming和Storm最大的区别在于，Spark Streaming无法实现毫秒级的流计算，而Storm可以实现毫秒级响应</li>
+<li>Spark Streaming构建在Spark上，一方面是因为Spark的低延迟执行引擎（100ms+）可以用于实时计算，另一方面，相比于Storm，RDD数据集更容易做高效的容错处理</li>
+<li>Spark Streaming采用的小批量处理的方式使得它可以同时兼容批量和实时数据处理的逻辑和算法，因此，方便了一些需要历史数据和实时数据联合分析的特定应用场合</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/10/06/Spark/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4397,203 +4672,6 @@ table tr:hover {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/08/13/MapReduce/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/13/MapReduce/" itemprop="url">MapReduce</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-13T19:08:03+08:00">
-                2018-08-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="MapReduce模型"><a href="#MapReduce模型" class="headerlink" title="MapReduce模型"></a>MapReduce模型</h2><ul>
-<li>MapReduce将复杂的、运行于大规模集群上的并行计算过程高度地抽象到了两个函数：Map和Reduce</li>
-<li>编程容易，不需要掌握分布式并行编程细节，也可以很容易把自己的程序运行在分布式系统上，完成海量数据的计算</li>
-<li>MapReduce采用<font color="red"><strong>“分而治之”</strong></font>策略，一个存储在分布式文件系统中的大规模数据集，会被切分成许多独立的分片（split），这些分片可以被多个Map任务并行处理</li>
-<li>MapReduce设计的一个理念就是<font color="red"><strong>“计算向数据靠拢”</strong></font>，而不是“数据向计算靠拢”，因为，移动数据需要大量的网络传输开销</li>
-<li>MapReduce框架采用了Master/Slave架构，包括一个Master和若干个Slave。Master上运行JobTracker，Slave上运行TaskTracker </li>
-<li>Hadoop框架是用Java实现的，但是，MapReduce应用程序则不一定要用Java来写 </li>
-</ul>
-<h2 id="Map和Reduce函数"><a href="#Map和Reduce函数" class="headerlink" title="Map和Reduce函数"></a>Map和Reduce函数</h2><table>
-<thead>
-<tr>
-<th>函数</th>
-<th>输入</th>
-<th>输出</th>
-<th align="left">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Map</td>
-<td>&lt;k1,v1&gt;如：&lt;行号,”a b c”&gt;</td>
-<td>List(&lt;k2,v2&gt;)如：&lt;“a”,1&gt;&lt;“b”,1&gt; &lt;“c”,1&gt;</td>
-<td align="left">1.将小数据集进一步解析成一批&lt;key,value&gt;对，输入Map函数中进行处理 2.每一个输入的&lt;k1,v1&gt;会输出一批&lt;k2,v2&gt;。&lt;k2,v2&gt;是计算的中间结果</td>
-</tr>
-<tr>
-<td>Reduce</td>
-<td>&lt;k2,List(v2)&gt; 如：&lt;“a”,&lt;1,1,1&gt;&gt;</td>
-<td>&lt;k3,v3&gt; &lt;“a”,3&gt;</td>
-<td align="left">输入的中间结果&lt;k2,List(v2)&gt;中的List(v2)表示是一批属于同一个k2的value</td>
-</tr>
-</tbody></table>
-<h2 id="MapReduce的体系结构"><a href="#MapReduce的体系结构" class="headerlink" title="MapReduce的体系结构"></a>MapReduce的体系结构</h2><p>MapReduce体系结构主要由四个部分组成，分别是：Client、JobTracker、TaskTracker以及Task<br><img src="https://i.loli.net/2019/08/14/N3suO6efTaCHiRJ.png" alt="MapReduce.png"></p>
-<h3 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h3><ul>
-<li>用户编写的MapReduce程序通过Client提交到JobTracker端</li>
-<li>用户可通过Client提供的一些接口查看作业运行状态<h3 id="JobTracker"><a href="#JobTracker" class="headerlink" title="JobTracker"></a>JobTracker</h3></li>
-<li>JobTracker负责资源监控和作业调度</li>
-<li>JobTracker 监控所有TaskTracker与Job的健康状况，一旦发现失败，就将相应的任务转移到其他节点</li>
-<li>JobTracker 会跟踪任务的执行进度、资源使用量等信息，并将这些信息告诉任务调度器（TaskScheduler），而调度器会在资源出现空闲时，选择合适的任务去使用这些资源<h3 id="TaskTracker"><a href="#TaskTracker" class="headerlink" title="TaskTracker"></a>TaskTracker</h3></li>
-<li>TaskTracker 会周期性地通过“心跳”将本节点上资源的使用情况和任务的运行进度汇报给JobTracker，同时接收JobTracker 发送过来的命令并执行相应的操作（如启动新任务、杀死任务等）</li>
-<li>TaskTracker 使用“slot”等量划分本节点上的资源量（CPU、内存等）。一个Task 获取到一个slot 后才有机会运行，而Hadoop调度器的作用就是将各个TaskTracker上的空闲slot分配给Task使用。slot 分为Map slot 和Reduce slot 两种，分别供MapTask 和Reduce Task 使用<h3 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h3></li>
-<li>Task 分为Map Task 和Reduce Task 两种，均由TaskTracker 启动</li>
-</ul>
-<h2 id="MapReduce工作流程"><a href="#MapReduce工作流程" class="headerlink" title="MapReduce工作流程"></a>MapReduce工作流程</h2><h3 id="工作流程概述"><a href="#工作流程概述" class="headerlink" title="工作流程概述"></a>工作流程概述</h3><p><img src="https://i.loli.net/2019/08/14/6aMxLNtEWOicV5P.jpg" alt="MapReduce工作流程.jpg"></p>
-<ul>
-<li>不同的Map任务之间不会进行通信</li>
-<li>不同的Reduce任务之间也不会发生任何信息交换</li>
-<li>用户不能显式地从一台机器向另一台机器发送消息</li>
-<li>所有的数据交换都是通过MapReduce框架自身去实现的<h3 id="MapReduce各个执行阶段"><a href="#MapReduce各个执行阶段" class="headerlink" title="MapReduce各个执行阶段"></a>MapReduce各个执行阶段</h3><img src="https://i.loli.net/2019/08/14/7GtfeaTjuilJyAC.jpg" alt="MapReduce各个阶段.jpg"><h4 id="关于Spilt（分片）"><a href="#关于Spilt（分片）" class="headerlink" title="关于Spilt（分片）"></a>关于Spilt（分片）</h4><img src="https://i.loli.net/2019/08/14/iBMRf2n7VOW5c9U.jpg" alt="Spilt分片.jpg"><br>HDFS 以固定大小的block 为基本单位存储数据，而对于MapReduce 而言，其处理单位是split。split 是一个逻辑概念，它只包含一些元数据信息，比如数据起始位置、数据长度、数据所在节点等。它的划分方法完全由用户自己决定。<h4 id="Map任务数量"><a href="#Map任务数量" class="headerlink" title="Map任务数量"></a>Map任务数量</h4></li>
-<li>Hadoop为每个split创建一个Map任务，split 的多少决定了Map任务的数目。大多数情况下，理想的分片大小是一个HDFS块<h4 id="Reduce任务数量"><a href="#Reduce任务数量" class="headerlink" title="Reduce任务数量"></a>Reduce任务数量</h4></li>
-<li>最优的Reduce任务个数取决于集群中可用的reduce任务槽(slot)的数目</li>
-<li>通常设置比reduce任务槽数目稍微小一些的Reduce任务个数（这样可以预留一些系统资源处理可能发生的错误）<h3 id="Shuffle过程详解"><a href="#Shuffle过程详解" class="headerlink" title="Shuffle过程详解"></a>Shuffle过程详解</h3></li>
-</ul>
-<ol>
-<li>Shuffle过程简介<br><img src="https://i.loli.net/2019/08/14/3NpMWh6L41Dz9IQ.jpg" alt="shuffle.jpg"></li>
-<li>Map端的Shuffle过程<br><img src="https://i.loli.net/2019/08/14/5mnoagOvUxbYy19.jpg" alt="Map端shuffle.jpg"></li>
-</ol>
-<ul>
-<li>每个Map任务分配一个缓存</li>
-<li>MapReduce默认100MB缓存</li>
-<li>设置溢写比例0.8</li>
-<li>分区默认采用哈希函数</li>
-<li>排序是默认的操作</li>
-<li>排序后可以合并（Combine）</li>
-<li>合并不能改变最终结果</li>
-<li>在Map任务全部结束之前进行归并</li>
-<li>归并得到一个大的文件，放在本地磁盘</li>
-<li>文件归并时，如果溢写文件数量大于预定值（默认是3）则可以再次启动Combiner，少于3不需要</li>
-<li>JobTracker会一直监测Map任务的执行，并通知Reduce任务来领取数据</li>
-</ul>
-<p>合并（Combine）和归并（Merge）的区别：<br>两个键值对&lt;“a”,1&gt;和&lt;“a”,1&gt;，如果合并，会得到&lt;“a”,2&gt;，如果归并，会得到&lt;“a”,&lt;1,1&gt;&gt;</p>
-<ol start="3">
-<li>Reduce端的shuffle过程</li>
-</ol>
-<ul>
-<li>Reduce任务通过RPC向JobTracker询问Map任务是否已经完成，若完成，则领取数据</li>
-<li>Reduce领取数据先放入缓存，来自不同Map机器，先归并，再合并，写入磁盘</li>
-<li>多个溢写文件归并成一个或多个大文件，文件中的键值对是排序的</li>
-<li>当数据很少时，不需要溢写到磁盘，直接在缓存中归并，然后输出给Reduce<br><img src="https://i.loli.net/2019/08/14/EkQv7xD5a9YtA4F.jpg" alt="Reduce端shuffle.jpg"><h3 id="MapReduce应用程序执行过程"><a href="#MapReduce应用程序执行过程" class="headerlink" title="MapReduce应用程序执行过程"></a>MapReduce应用程序执行过程</h3><img src="https://i.loli.net/2019/08/14/KUiuB7o6pzYZeLg.jpg" alt="MapReduce执行过程.jpg"></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -4644,7 +4722,7 @@ table tr:hover {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -4666,7 +4744,7 @@ table tr:hover {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
