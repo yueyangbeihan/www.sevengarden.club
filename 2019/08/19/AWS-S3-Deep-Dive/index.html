@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="S3,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言：本文主要介绍S3的详细功能，涉及S3 存储分类，一致性模型，生命周期管理，版本控制，权限管理，数据加密和最佳实践建议等。  S3 Overview简要 Amazon S3是一个面向Internet设计的简单的键值对象存储系统 S3提供无限的存储空间，并仅在使用时才产生付费（按需）。费用随着使用量增加将变得更便宜。 S3是对象级别存储(不是块级存储)，不能用于托管OS或动态网站 S3资源在默认">
+<meta name="keywords" content="S3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS S3 Deep Dive">
+<meta property="og:url" content="http://sevengarden.club/2019/08/19/AWS-S3-Deep-Dive/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="前言：本文主要介绍S3的详细功能，涉及S3 存储分类，一致性模型，生命周期管理，版本控制，权限管理，数据加密和最佳实践建议等。  S3 Overview简要 Amazon S3是一个面向Internet设计的简单的键值对象存储系统 S3提供无限的存储空间，并仅在使用时才产生付费（按需）。费用随着使用量增加将变得更便宜。 S3是对象级别存储(不是块级存储)，不能用于托管OS或动态网站 S3资源在默认">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/qv6ix2mDjR4XkUS.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/k6UAI5Cyf87sE1P.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/skd6nRq1mWagxoB.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/3Ekn2RjTqsCFVUW.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/KT7oy4njN6IH9Fb.jpg">
+<meta property="og:updated_time" content="2019-08-19T10:20:43.003Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWS S3 Deep Dive">
+<meta name="twitter:description" content="前言：本文主要介绍S3的详细功能，涉及S3 存储分类，一致性模型，生命周期管理，版本控制，权限管理，数据加密和最佳实践建议等。  S3 Overview简要 Amazon S3是一个面向Internet设计的简单的键值对象存储系统 S3提供无限的存储空间，并仅在使用时才产生付费（按需）。费用随着使用量增加将变得更便宜。 S3是对象级别存储(不是块级存储)，不能用于托管OS或动态网站 S3资源在默认">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/19/qv6ix2mDjR4XkUS.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sevengarden.club/2019/08/19/AWS-S3-Deep-Dive/">
+
+
+
+
+
+  <title>AWS S3 Deep Dive | 岳阳北寒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">岳阳北寒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-somrthing">
+          <a href="/有料" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            somrthing
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/19/AWS-S3-Deep-Dive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AWS S3 Deep Dive</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-19T17:24:15+08:00">
+                2019-08-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><em>前言：本文主要介绍S3的详细功能，涉及S3 存储分类，一致性模型，生命周期管理，版本控制，权限管理，数据加密和最佳实践建议等。</em> </p>
+<h1 id="S3-Overview"><a href="#S3-Overview" class="headerlink" title="S3 Overview"></a>S3 Overview</h1><h2 id="简要"><a href="#简要" class="headerlink" title="简要"></a>简要</h2><ul>
+<li>Amazon S3是一个面向Internet设计的简单的键值对象存储系统</li>
+<li>S3提供无限的存储空间，并仅在使用时才产生付费（按需）。费用随着使用量增加将变得更便宜。</li>
+<li>S3是对象级别存储(不是块级存储)，不能用于托管OS或动态网站</li>
+<li>S3资源在默认情况下是私有的，包含bucket和对象数据</li>
+</ul>
+<h2 id="S3-Bucket-amp-Objects"><a href="#S3-Bucket-amp-Objects" class="headerlink" title="S3 Bucket&amp;Objects"></a>S3 Bucket&amp;Objects</h2><ul>
+<li>Buckets<ul>
+<li>Bucket(存储桶)是存储对象的容器空间，组织和管理S3的命名空间</li>
+<li>bucket由AWS帐户拥有，该帐户创建bucket并帮助标识负责存储和数据传输费用，bucket所有权不可转让</li>
+<li>S3桶名是全局惟一的，但bueket创建是需要指定其所在区域（Region），<table><tr><td bgcolor="orange"> 也就是指其名字是Global，而数据仅限于Region范围内</td></tr></table></li>
+<li>每一个object依附于bucket中</li>
+<li>可以存储在存储桶中的对象数量没有限制，性能也没有差异(无论使用多buckets或单一bucket)</li>
+<li>S3数据模型是扁平结构，即桶内没有层次结构或文件夹。可以通过使用键名称前缀（例如Folder1 / Object1）来推断逻辑层次结构</li>
+<li>限制<ul>
+<li>每个AWS账户中创建100个存储桶（软限制）</li>
+</ul>
+</li>
+<li>存储桶名称应该是全局唯一且符合DNS的要求<table><tr><td bgcolor="orange">（小写，每一个对象都能通过其唯一url访问，url包含域名）</td></tr></table><ul>
+<li>bucket所有权不可转让</li>
+<li>bucket不能嵌套bucket</li>
+</ul>
+</li>
+<li>可以删除空桶或非空桶</li>
+<li>S3允许检索1000个对象并提供分页支持</li>
+</ul>
+</li>
+<li>Objects<ul>
+<li>对象是存储在S3 bucket中的基本实体</li>
+<li>对象的唯一标识通过<table><tr><td bgcolor="orange">键名和版本ID</td></tr></table></li>
+<li>对象由对象数据、元数据等其他信息组成</li>
+<li>Key（键）是对象名称</li>
+<li>Value(值)是数据部分且对S3不透明</li>
+<li>元数据是关于数据的数据，并且是一组name-value，其描述例如内容类型，大小，最后修改时间。还可以在存储对象时自定义元数据</li>
+<li>版本ID是对象的版本，与key结合使用在桶中唯一标识对象</li>
+<li>Subresource（子资源） 有助于为对象提供附加信息</li>
+<li>Access Control控制对象的访问权限</li>
+<li>S3对象允许对象两种元数据<ul>
+<li>System metadata<ul>
+<li>诸如Last-Modified 时间之类的元数据，只能有S3有权限进行修改</li>
+<li>用户可以控制的系统元数据，例如为对象配置的存储类（class）。</li>
+</ul>
+</li>
+<li>User-defined metadata<ul>
+<li>User可以自定义其对象元数据上传之前或之后</li>
+<li>字定义的元数据与对象一起存储，并在下载对象时返回</li>
+<li>S3不处理自定义元数据</li>
+<li>自定义元数据必须以“x-amz-meta”开头，否则S3将不会处理其自定义设置</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对象元数据上传之后不能修改，只能通过执行复制操作来设置元数据修改</li>
+<li>属于bucket的对象保存在设定的Region范围内，不能离开此区域，除非使用块区域复制进行显式复制</li>
+<li>对象作为整体或部分进行检索</li>
+<li>启用版本控制之后，可以检索当前和之前的版本</li>
+</ul>
+</li>
+</ul>
+<h2 id="Bucket-amp-Object-操作"><a href="#Bucket-amp-Object-操作" class="headerlink" title="Bucket &amp; Object 操作"></a>Bucket &amp; Object 操作</h2><ul>
+<li>Listing<ul>
+<li>S 3 允许列出存储桶中所有key</li>
+<li>一个list请求最多返回1000个对象，并且支持分页展示，在响应中使用指示器显示是否响应</li>
+<li>可以使用前缀和分隔符列出key</li>
+<li>Prefix将结果限制为仅以指定前缀开头的键(过滤)，分隔符list将包含公共前缀的所有key列出，形成一个摘要列表</li>
+</ul>
+</li>
+<li>Retrival<ul>
+<li>对象可以作为整体取回</li>
+<li>可以使用Range HTTP标头一部分或部分特定字节检索对象</li>
+<li>Range HTTP 标头非常有用<ul>
+<li>如只需要部分对象，在多文件作为一个归档文件上传的时候</li>
+<li>在网络环境较差的情况下，进行下载数据</li>
+</ul>
+</li>
+<li>对象支持预签名 url访问</li>
+<li>对象的元数据包含在响应标头中</li>
+</ul>
+</li>
+<li>Object Uploads<ul>
+<li>单次操作——单次put 操作最大对象5GB</li>
+<li>分段上传——可用于上传大于5B大小的对象，最大5TB</li>
+<li>支持预签名 URL上传对象</li>
+<li>上传对象是否成功，可通过reponse值显示。此外，可以将返回的ETAG值与对象的MD5值进行比对</li>
+</ul>
+</li>
+<li>Copying Objects<ul>
+<li>单次操作最大5GB的对象，使用分段上传进行大于5GB的对象（最大5TB）</li>
+<li>复制对象时<ul>
+<li>用户自定义的元数据，如存储类和自定义的元数据都会被复制</li>
+<li>系统元数据保留（如创建日期）</li>
+</ul>
+</li>
+<li>其他复制情形<ul>
+<li>复制多个对象副本</li>
+<li>跨地点复制对象</li>
+<li>重命名对象</li>
+<li>更改对象元数据，例如存储分类，服务器端加密等</li>
+<li>更新对象的任何元数据都需要再次指定的字段</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Deleting Objects<ul>
+<li>S3允许单次删除一个或最多100个对象</li>
+<li>未开启版本控制bucket<ul>
+<li>明确提供键名（key）则永久删除对象</li>
+</ul>
+</li>
+<li>开启版本控制bucket<ul>
+<li>删除对象键(key)，S3将插入一个删除标记，当前对象将变为非当前对象</li>
+<li>删除对象键（key）和version ID,S3将永久删除对象</li>
+<li>若version id作为删除标记，那么删除标记将被删除，previous版本将成为当前版本对象</li>
+<li>启用MFA安全删除需要删除的对象</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Restoring Objects from Glacier <ul>
+<li>在访问存档对象之前，必须还原对象</li>
+<li>对象的恢复可能需要大约3到5个小时进行标准检索。Glacier现在可以在几分钟内提供快速检索</li>
+<li>恢复请求对象需要指定需要维护对象副本（Glacier数据临时放到S3上）的时间（天）</li>
+<li>在此期间，存档和副本的存储费用都要收取</li>
+</ul>
+</li>
+</ul>
+<h2 id="Pre-Signed-URLs"><a href="#Pre-Signed-URLs" class="headerlink" title="Pre-Signed  URLs"></a>Pre-Signed  URLs</h2><ul>
+<li>默认情况下，所有存储桶和对象都是私有的</li>
+<li>预签名URL允许用户无需AWS安全凭据或权限即可下载或上载特定对象</li>
+<li>预签名URL允许任何人访问URL中标识的对象，只要创建者游泳访问权限</li>
+<li>预签名url需要创建者提供其安全凭证、指定bucket名称、对象密钥、HTTP方法(GET PUT)以及过期日期和时间</li>
+<li>预签名url有时间期限</li>
+</ul>
+<h2 id="Multipart-upload"><a href="#Multipart-upload" class="headerlink" title="Multipart upload"></a>Multipart upload</h2><ul>
+<li>分段上传允许分批次上传，每一次操作都是数据的一部分（子集）</li>
+<li>Multipart uploads支持将数据拆分成1~10000部分，每部分数据从5MB到5GB，最后一次上传的数据允许小于5MB</li>
+<li>每一部分数据可以独立上传，并且可以任意顺序上传。如果任何部分的传输失败，不影响其他部分的情况下重新上传</li>
+<li>上传对象的所有部分并完成初始化之后，S3组装这些数据并创建对</li>
+<li>使用分段上传的优势<ul>
+<li>提高吞吐量——并行</li>
+<li>避免网络故障的影响范围——最大减小网络故障带来上传数据失败（但也只影响部分数据，而不是全部）</li>
+<li>暂停和恢复上传-对象部分可以随时间上传。一旦多部分上传启动，需要指定其完成或者中断时间，要不然会持续占有进程。就</li>
+<li>对象可以在创建时上传，即便未知其大小</li>
+</ul>
+</li>
+<li>操作步骤<ul>
+<li>分段上传初始化<ul>
+<li>分段上传请求初始化时会为每个分段上传分配唯一ID</li>
+<li>每个部分上传，在完成或中止请求以及分段调用使用供此ID</li>
+<li>在初始化时需要用提供object的元数据</li>
+</ul>
+</li>
+<li>分段上传<ul>
+<li>分段上传的数据使用唯一的上传ID标识</li>
+<li>每一部分都有一个part number（1~1000）标识自己的分段在对象数据中位置</li>
+<li>如果上传部分有相同的part number 则会覆盖前面的数据</li>
+<li>上传成功之后，S3会返回Etag标头，标头需要与part number一起记录下来</li>
+</ul>
+</li>
+<li>上传完成或暂停<ul>
+<li>一旦上传请求完成，S3根据part number顺序组装数据，并将元数据与对象关联，创建对象</li>
+<li>每一部分上传完成，应包含分段唯一上传UD、Etag</li>
+<li>S3 response包括唯一地标识所述组合对象数据一个ETag</li>
+<li>当分段上传abort时，则中止并删除所有上传的分段。但是，任何其他已经正在上传的部分，必须在完成上传之后才能发送abort</li>
+<li>S3需要明确接收到上传完成或中止请求，不然不会删除上传部分并会收取相关存储费用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="虚拟主机-vs-url路径访问模式"><a href="#虚拟主机-vs-url路径访问模式" class="headerlink" title="虚拟主机 vs url路径访问模式"></a>虚拟主机 vs url路径访问模式</h2><p>S3允许以路径样式或虚拟主机样式的url引用桶和对象</p>
+<ul>
+<li>Path style <ul>
+<li>Bucket name不是域名一部分（除非使用区域特定端点）</li>
+<li>使用的endpoint必须与存储桶所在的区域匹配，例如，如果有一个名为mybucket的存储桶位于EU（爱尔兰）区域，其对象名为puppy.jpg，则正确的路径样式语法URI为http：//s3-eu-west-1.amazonaws.com/mybucket/puppy.jpg</li>
+<li>收到带有HTTP响应代码301的“PermanentRedirect”错误，这条消息表达的意思是：如果在美国东部（弗吉尼亚北部）区域之外访问存储桶，正确的合规的资源URL请使用如下表达方式：<ul>
+<li><a href="http://s3.amazonaws.com" target="_blank" rel="noopener">http://s3.amazonaws.com</a></li>
+<li>与存储区所在区域不同的区域的endpoint。 例如，如果使用<a href="http://s3-eu-west-1.amazonaws.com获取在美国西部（加利福尼亚州北部）地区创建的存储桶" target="_blank" rel="noopener">http://s3-eu-west-1.amazonaws.com获取在美国西部（加利福尼亚州北部）地区创建的存储桶</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Virtual Host style <ul>
+<li>S3 支持在所有区域中的虚拟主机托管和路径访问模式</li>
+<li>在虚拟主机托管方式中，bucket name是url中域名的一部分</li>
+<li>如<a href="http://bucketname.s3.amazonaws.com/objectname" target="_blank" rel="noopener">http://bucketname.s3.amazonaws.com/objectname</a></li>
+<li>S3虚拟主机可用于通过使用HTTP host 标头头来使用REST API调用存储桶</li>
+<li>优势<ul>
+<li>自定义访问路径</li>
+<li>提供发布到bucket虚拟主机的“root directory”的功能。此功能非常重要，许多现有应用程序会在此标准位置搜索数据</li>
+</ul>
+</li>
+<li>当在任何区域中创建存储桶时，S3会更新DNS以将请求重新路由到正确的位置，这可能需要一些时间。</li>
+<li>如果使用美国东部（弗吉尼亚北部）端点s3.amazonaws.com，则S3会将任何虚拟托管样式请求路由到美国东部（N.Virginia）区域，而不是特定于区域的端点（例如 ，s3-eu-west-1.amazonaws.com）并且S3将其重定向到HTTP 307重定向到正确的区域。</li>
+<li>使用带有SSL的虚拟托管样式存储桶时，SSL通配符证书仅匹配不包含句点的存储桶。要解决此问题，请使用HTTP或自行编写证书验证逻辑。</li>
+<li>如果向<a href="http://bucket.s3.amazonaws.com端点发出请求，则DNS有足够的信息将请求直接路由到存储区所在的区域。" target="_blank" rel="noopener">http://bucket.s3.amazonaws.com端点发出请求，则DNS有足够的信息将请求直接路由到存储区所在的区域。</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="S3-Conssistency-Model-一致性模型"><a href="#S3-Conssistency-Model-一致性模型" class="headerlink" title="S3 Conssistency Model 一致性模型"></a>S3 Conssistency Model 一致性模型</h1><ul>
+<li>S3通过在亚马逊数据数据中心内的多个服务器上复制数据来实现高可用性</li>
+<li>S3为新的对象put 提供写后读一致性（read-after-write）<ul>
+<li>对于PUT请求，S3在返回SUCCESS之前完成在多个设施中数据同步</li>
+<li>进程对新对象的写入，可以立即读取对象</li>
+<li>进程将新对象的写入S3能立即在其存储桶中列出key。 在完全传播更改之前，对象可能不会出现在list中</li>
+</ul>
+</li>
+<li>S3对覆盖puts&amp;deletes 对象提供最终一致性<ul>
+<li>对象的更新和删除，更改最终会反映出来并且不会立即可用</li>
+<li>若进程替换现有对象并立即尝试读取它。 在完全传播更改之前，S3可能会返回先前的数据</li>
+<li>若进程删除现有对象并立即尝试读取它。 在完全传播删除之前，S3可能会返回已删除的数据</li>
+<li>若进程删除现有对象并立即在其存储桶中列出key。 在删除完全传播之前，S3可能会列出已删除的对象。</li>
+</ul>
+</li>
+<li>对于key的更改是原子的。 例如，如果PUT到现有key，后续读取可能会返回旧数据或更新数据，但它永远不会写入损坏或只有部分数据（不存在中间状态，要么成功要么失败）。</li>
+<li>S3目前不支持对象数据锁定。例如，如果同时对同一个key发出两个PUT请求，则具有最新时间戳的请求获胜。如果要避免这个问题，将需要在应用程序中构建一个对象锁定机制</li>
+<li>更新是基于key的; 没有办法跨key进行原子更新。 例如，除非在应用程序中设计此功能，否则无法更新一个key取决于另一个key的更新</li>
+</ul>
+<h1 id="S3-Subresources"><a href="#S3-Subresources" class="headerlink" title="S3 Subresources"></a>S3 Subresources</h1><ul>
+<li>S3 Subresources提供存储和管理bucket配置</li>
+<li>S3 subresources 存在于特定的存储桶或对象中</li>
+<li>S3定义了一组与桶和对象相关联的subresources</li>
+<li>S3 subresources是对象的子集; 也就是说，它们不是自己存在的，它们总是与某个其他实体相关联，例如对象或桶(如acl或bittorrent)</li>
+<li>S3支持配置存储桶的各种选项，例如，可以配置存储桶用于网站托管，添加配置以管理存储桶中对象的生命周期，以及记录对存储桶的所有访问</li>
+</ul>
+<h2 id="静态网站托管"><a href="#静态网站托管" class="headerlink" title="静态网站托管"></a>静态网站托管</h2><ul>
+<li>S3可用于静态网站托管（client 处理脚本）</li>
+<li>S3不支持服务端处理脚本</li>
+<li>S3与Route 53结合使用，支持根域托管网站，直接指向指向S3网站端点</li>
+<li>S3 网站端点不支持Https</li>
+<li>对于S3网站托管，内容应该是公开可读的，可以使用桶策略或对象上的ACL来设置</li>
+<li>用户可以自定义索引，错误页面以及指向对象名称的条件路由</li>
+<li>存储桶策略仅适用于存储桶拥有者拥有的对象。如果存储桶包含不属于存储桶拥有者的对象，则应使用对象ACL授予对这些对象的公共READ权限</li>
+<li>请求者支付费用或DevPay存储桶不允许通过网站端点进行访问。对此类存储桶的任何请求都将收到403 -拒绝响应</li>
+</ul>
+<h2 id="跨源资源共享-CORS"><a href="#跨源资源共享-CORS" class="headerlink" title="跨源资源共享 (CORS)"></a>跨源资源共享 (CORS)</h2><ul>
+<li>所有浏览器都实现了同源策略，出于安全考虑，其中来自域网页只能从同一个域请求资源。</li>
+<li>CORS允许装在一个域中访问受限的资源上的客户端Web应用程序从另一个域要求</li>
+<li>在S3中使用CORS支持允许跨源访问S3资源</li>
+<li>CORS配置规则标识允许访问存储桶的起源，每个源支持的操作（HTTP 方法）以及其他特定操作的信息</li>
+</ul>
+<h2 id="日志记录"><a href="#日志记录" class="headerlink" title="日志记录"></a>日志记录</h2><ul>
+<li>默认情况下禁用日志记录，开启追踪可以记录S3访问记录</li>
+<li>每单个访问请求的详细日志记录信息，包含请求者，存储桶名称，请求时间，请求操作，响应状态和错误代码（如果有）。</li>
+<li>访问日志信息在安全性和访问审核中非常有用，还有助于了解客户和S3账单</li>
+<li>S3定期收集访问日志记录，合并日志文件中的记录，然后将日志文件作为日志对象上载到目标存储桶。</li>
+<li>如果在具有相同目标bucket的多个源存储桶上启用了日志记录，则目标存储桶将具有所有这些源存储桶的访问日志，但每个日志对象将报告指定其源存储桶的访问日志记录。<br>标签</li>
+<li>S3提供标记子资源以存储和管理存储桶上的标记</li>
+<li>可以将成本分配标签添加到存储桶以对AWS成本进行分类和跟踪</li>
+<li>AWS可以产生与使用和添加到bucket中的标签汇总费用成本分配报告</li>
+</ul>
+<h2 id="地理位置"><a href="#地理位置" class="headerlink" title="地理位置"></a>地理位置</h2><ul>
+<li>创建存储桶时，需要明确指定在将要创建S3存储桶的AWS区域</li>
+<li>S3将此信息存储在subresource(子资源)中，并提供用于检索此信息的API</li>
+</ul>
+<h2 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h2><ul>
+<li>通过 Amazon S3 通知功能，可以在存储桶中发生某些事件时接收通知</li>
+<li>通知级别是Bucket级</li>
+<li>通知配置可以通过对象的key的前缀和后缀进行过滤，但是不能使用重叠定义过滤规则</li>
+<li>S3支持的时间类型<ul>
+<li>新对象创建<ul>
+<li>PUT、POST、COPY操作</li>
+<li>不会从失败的操作收到事件通知</li>
+</ul>
+</li>
+<li>对象删除事件<ul>
+<li>公共删除事件以删除对象，删除版本对象或删除标记的插入</li>
+<li>不会收到来自生命周期策略或失败操作的自动删除的事件通知</li>
+<li>RRS存储类别对象丢失事件</li>
+<li>可用于重现/重新创建Object</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>S3支持将事件发布到一下目标<ul>
+<li>SNS</li>
+<li>SQS</li>
+<li>AWS lambda</li>
+<li>必须授予Amazon S3 权限以调用相应目标</li>
+</ul>
+</li>
+</ul>
+<h2 id="跨区域复制-CRR"><a href="#跨区域复制-CRR" class="headerlink" title="跨区域复制 (CRR)"></a>跨区域复制 (CRR)</h2><ul>
+<li>跨区域复制是一项存储桶级别配置，该功能支持跨不同 AWS 区域中的存储桶自动异步复制对象</li>
+<li>可以请求 Amazon S3 复制所有对象，也可以通过在配置中提供一个键名称前缀来请求复制部分对象</li>
+<li>默认使用安全套接字层 (SSL) 跨 AWS 区域加密传输中的所有数据</li>
+<li>除非复制配置中发出特定请求，否则目标存储桶中的对象副本与源存储桶中的对象完全相同</li>
+<li>CRR可用于以下场景需求：<ul>
+<li>合规性要求——跨区域备份</li>
+<li>最大限度减少延迟 – 客户处于两个地理位置</li>
+<li>操作原因 – 两个不同 AWS 区域中具有分析同一组对象的计算集群</li>
+</ul>
+</li>
+<li>要求<ul>
+<li>源存储桶和目标存储桶必须已启用版本控制</li>
+<li>源存储桶和目标存储桶必须处于不同的 AWS 区域</li>
+<li>对象只能从源存储桶复制到一个目标存储桶</li>
+<li>S3 必须对象从源存储桶复制到目标存储桶的权限</li>
+<li>源存储桶拥有者也是对象的拥有者，则其拥有复制对象的完全权限。如果不是，则对象拥有者必须通过对象 ACL 向存储桶拥有者授予 READ 和 READ_ACP 权限（s3:GetObjectVersion and s3:GetObjectVersionACL）</li>
+<li>在跨账户方案 (其中，源存储桶和目标存储桶由不同的 AWS 账户拥有) 中设置复制配置，源存储区拥有者必须具有复制目标存储区中对象的权限。</li>
+</ul>
+</li>
+<li>复制和不复制的内容<ul>
+<li>复制的内容<ul>
+<li>添加复制配置之后创建的任何新对象</li>
+<li>S3 会复制使用 Amazon S3 托管密钥 (SSE-S3) </li>
+<li>复制存储桶拥有者有权读取对象和访问控制列表 (ACL) 的源存储桶中的对象</li>
+<li>虽然在Amazon S3可以使两者同步之前可能会有一些延迟，但会复制任何对象ACL更新。 这仅适用于将复制配置添加到存储桶后创建的对象。<ul>
+<li>不复制的内容</li>
+</ul>
+</li>
+<li>S3不会追溯复制添加复制配置之前存在的对象</li>
+<li>S3不会复制存储桶拥有者没有权限的源存储桶中的对象</li>
+<li>对存储桶级别子资源进行的更新不会进行复制</li>
+<li>不会复制使用客户提供的加密密钥通过服务器端加密 (SSE-C) 创建的对象。</li>
+<li>不会复制使用 AWS KMS 托管加密密钥通过服务器端加密 (SSE-KMS) 创建的对象</li>
+<li>仅复制客户操作。不复制生命周期配置执行的操作</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="S3-Storage-Tiers-存储分层"><a href="#S3-Storage-Tiers-存储分层" class="headerlink" title="S3 Storage Tiers 存储分层"></a>S3 Storage Tiers 存储分层</h1><ul>
+<li>Amazon S3存储层旨在维持一个或两个设施中的并发数据丢失</li>
+<li>S3存储层允许生命周期管理以自动迁移对象以节省成本</li>
+<li>S3存储层支持传输中的数据和静态数据加密的SSL加密</li>
+<li>S3还使用校验和定期验证数据的完整性，并提供自动修复功能</li>
+</ul>
+<h2 id="Standard"><a href="#Standard" class="headerlink" title="Standard"></a>Standard</h2><ul>
+<li>针对性能敏感的场景和频繁访问数据的理想选择，能够在2个设施的故障情况下继续提供服务</li>
+<li>默认的存储层</li>
+<li>低延迟和高吞吐的性能</li>
+<li>11个9的持久性设计方案</li>
+<li>年可使用率达到99.99%</li>
+<li>提供Amazon SLA服务等级保障协议</li>
+</ul>
+<h2 id="Standard-IA"><a href="#Standard-IA" class="headerlink" title="Standard-IA"></a>Standard-IA</h2><ul>
+<li>S3 Standard-IA （infrequent Access）存储层旨在提供长周期保存和不长访问的数据，如备份和受限访问旧数据，但仍然在访问时需要提供Standard层的性能</li>
+<li>STANDARD-IA旨在维持两个基础设施中的数据丢失</li>
+<li>STANDARD_IA对象可用于实时访问</li>
+<li>STANDARD_IA存储类适用于保留至少30天的大于128 KB的较大对象（较小的对象仅为128 KB）。</li>
+<li>标准的低延迟和高吞吐量性能</li>
+<li>专为99.999999999％的持久性设计</li>
+<li>年可使用率达到99.99%</li>
+<li>提供Amazon SLA服务等级保障协议</li>
+</ul>
+<h2 id="Reduced-Redundancy-Storage-–-RRS"><a href="#Reduced-Redundancy-Storage-–-RRS" class="headerlink" title="Reduced Redundancy Storage – RRS"></a>Reduced Redundancy Storage – RRS</h2><ul>
+<li>RRS存储层设计用于以比STANDARD层别更低的冗余级别存储，存储非关键，可重现的数据，从而降低存储成本</li>
+<li>专为99.99％的持久性设计</li>
+<li>年可使用率达到99.99%</li>
+<li>较低的冗余级别导致较低的耐用性和可用性</li>
+<li>RRS将对象存储在多个设备的多个设备上，提供400倍于典型磁盘驱动器的耐用性，</li>
+<li>RRS不会像S3标准存储一样多次复制对象，并且旨在维持单个设施中的数据丢失。</li>
+<li>如果RRS对象丢失，则S3对该对象发出的请求返回405错误</li>
+<li>S3可以发送在桶上配置的事件通知，以在检测到RRS对象丢失时用于警告用户或启动工作流，该RRS对象可用于替换丢失的对象</li>
+</ul>
+<h2 id="Glacier"><a href="#Glacier" class="headerlink" title="Glacier"></a>Glacier</h2><ul>
+<li>GLACIER存储层特别适合用于存档数据，其中数据取回通常需要3-5小时罕</li>
+<li>GLACIER存储层使用非常低成本的存储服务，但此存储类中的对象仍通过S3管理</li>
+<li>专为99.999999999％的持久性设计</li>
+<li>GLACIER不能在对象创建时指定为存储层，但必须使用生命周期管理从STANDARD，RRS或STANDARD_IA转换为GLACIER存储类。</li>
+<li>访问Glacier 对象<ul>
+<li>必须通过恢复对象，这可能需要3-5小时</li>
+<li>对象仅适用于还原请求期间指定的时间段（天数）</li>
+<li>对象的始终保存在Glacier</li>
+<li>存档（GLACIER层费用）和临时恢复的副本（RRS层费用）均收取费用</li>
+</ul>
+</li>
+<li>Vault Lock功能可锁定策略强制实施合规性</li>
+</ul>
+<h1 id="S3-Object-Lifecycle"><a href="#S3-Object-Lifecycle" class="headerlink" title="S3 Object Lifecycle"></a>S3 Object Lifecycle</h1><h2 id="S3-Object-Lifecycle-Overview"><a href="#S3-Object-Lifecycle-Overview" class="headerlink" title="S3 Object Lifecycle Overview"></a>S3 Object Lifecycle Overview</h2><ul>
+<li>可以使用生命周期策略来管理S3对象生命周期，该生命周期策略定义S3在其生命周期中如何管理对象</li>
+<li>生命周期策略简化对象的生命周期管理，例如移动访问频率较低的对象、备份或存档数年的数据或永久删除对象，所有操作都可以后台自动控制</li>
+<li>每个bucket最多配置1000个生命周期规则</li>
+<li>应用于存储桶的S3对象生命周期策略规则适用于存储桶中的现有对象以及将未来添加的对象</li>
+<li>S3对象生命周期策略对数据管理支持两种操作：<ul>
+<li>Transition(转换)，其对象可以更改存储层（class）</li>
+<li>Expiration，到期时间永久删除</li>
+</ul>
+</li>
+<li>生命周期策略可以与版本控制结合，允许一个当前对象版本和零级或多个非当前对象的版</li>
+<li>生命周期策略适用于非版本控制和启用版本控制的存储桶</li>
+<li>未开启版本控制bucket<ul>
+<li>Transition周期从对象创建时算起</li>
+</ul>
+</li>
+<li>开启版本控制bucket<ul>
+<li>Transition周期从对象创建起开始</li>
+<li>非当前对象的转换周期是为该对象成为非当前版本控制对象的日期计算的</li>
+<li>S3使用自其后续对象创建以来的天数作为对象非当前的时间</li>
+</ul>
+</li>
+<li>S3规则中指定的时间从对象创建时间开始算起，采用UTC记录。</li>
+<li>不支持在bucket的生命周期策略使用MFA</li>
+</ul>
+<h2 id="S3-Object-Lifecycle-Management-Rules"><a href="#S3-Object-Lifecycle-Management-Rules" class="headerlink" title="S3 Object Lifecycle Management Rules"></a>S3 Object Lifecycle Management Rules</h2><ol>
+<li>STANDARD或REDUCED_REDUNDANCY  - &gt;（128 KB和30天） - &gt; STANDARD_IA<ul>
+<li>只能transition(转换)超过128kb的对象，因为只有较大的对象才能实现成本优势（转到Standard-ia）</li>
+<li>在转换到STANDARD_IA之前，对象必须在当前存储层中至少30天，因为较新的对象被更频繁地访问或者比适合STANDARD_IA更早删除</li>
+</ul>
+</li>
+<li>STANDARD_IA -&gt; X -&gt; STANDARD or REDUCED_REDUNDANCY<ul>
+<li>无法从Standard-IA转换到Standard或reduced-redundancy</li>
+</ul>
+</li>
+<li>STANDARD or REDUCED_REDUNDANCY or STANDARD_IA -&gt; GLACIER<ul>
+<li>任何存储层数据都可以transition 到Glacier</li>
+</ul>
+</li>
+<li>STANDARD or REDUCED_REDUNDANCY -&gt; (1 day) -&gt; GLACIER<ul>
+<li>标准或RRS层转换到Glacier在一天内完成</li>
+</ul>
+</li>
+<li>STANDARD_IA -&gt; (30 days) -&gt; GLACIER<ul>
+<li>对象创建起或非当前版本日期，需要花费30~60天才能从Standard-IA转换到Glacier</li>
+</ul>
+</li>
+<li>GLACIER-&gt; X -&gt; STANDARD or REDUCED_REDUNDANCY or STANDARD_IA<ul>
+<li>对象转换到Glacier层时单向的</li>
+<li>无法从Glacier层将数据转换到其他存储层</li>
+</ul>
+</li>
+<li>GLACIER -&gt; (90 days) -&gt; Permanent Deletion<ul>
+<li>归档到Glacier层的数据，已经存档3个月或更长，则删除归档对象是免费的</li>
+<li>如果删除或覆盖存档3个月以内的对象，则会按比例收取相关费用</li>
+</ul>
+</li>
+<li>STANDARD or STANDARD_IA or GLACIER -&gt; X-&gt; REDUCED_REDUNDANCY<ul>
+<li>无法将数据从任何存储层转换到Reduced-redundancy</li>
+</ul>
+</li>
+<li>使用对象生命周期策略将对象归档到Glacier是异步执行的，并且生命周期策略中的转换日期与物理转换的日期之间可能存在延迟。 但是，AWS会根据规则中指定的转换日期收取Glacier的价格。</li>
+<li>开启版本控制的bucket<ul>
+<li>Transition和Experition 都适合当前的版本</li>
+<li>NoncurrentVersionTransition和NoncurrentVersionExpiration操作适用于非当前版本，其工作方式类似于未开启版本对象，但时间段是从对象变为非当前时间开始的</li>
+</ul>
+</li>
+<li>过期规则<ul>
+<li>未开启版本控制：对象永久删除</li>
+<li>开启版本控制<ul>
+<li>规则使用于current 对象，不影响任何非当前对象</li>
+<li>S3将标记具有唯一ID的Delete Marker对象，并且先前的当前对象变为非当前版本</li>
+<li>若当前对象已经有一个删除标记，将不会采取任何操作</li>
+<li>如果bucket只有一个对象，并且已经标记删除（过期对象删除标记），S3移除删除标记</li>
+</ul>
+</li>
+<li>版本控制suspend 桶<ul>
+<li>S3将插入版本ID为null的Delete Marker标记，并覆盖版本ID为null的任何对象</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>当对象到达其生命周期的末尾时， S3将排队以进行删除并异步操作。 在到期日期和S3删除对象的日期之间可能存在延迟。不需要为与已过期的对象关联的存储时间付费。</li>
+<li>如果生命周期策略置于STANDARD_IA中的对象不到30天，或者GLACIER少于90天，则会有额外的成本费用产生。</li>
+</ol>
+<h1 id="S3-Object-Versioning"><a href="#S3-Object-Versioning" class="headerlink" title="S3 Object Versioning"></a>S3 Object Versioning</h1><ul>
+<li>版本控制可用于防止意外覆盖和删除数据</li>
+<li>版本控制将对象多个不同版本保留在bucket中，用于保存历史版本，检索和还原对象的不同版本</li>
+<li>由于版本控制保留了整个相同对象的多个副本，因此要为多个版本产生费用。 对于带有5个副本的1GB文件，如果存在细微的差异，则会消耗5GB的S3存储空间，并且需要支付相同5GB空间费用</li>
+<li>默认情况下不启用版本控制，存储桶使用时要明确启用</li>
+<li>版本一旦启用，无法禁用，只能暂停</li>
+<li>Bucket启用版本控制，适用于存储桶中所有对象</li>
+<li>权限在版本级别设置。 每个版本都有自己的对象所有者; AWS账户是创建对象版本所有者。 因此，可以为同一对象的不同版本设置不同的权限</li>
+<li>无论如何控制版本，桶中每个对象都有一个版本<ul>
+<li>未开启版本控制存储桶，每个对象的版本ID为null</li>
+<li>开启版本控制的存储桶，每个对象分配唯一的版本ID</li>
+</ul>
+</li>
+<li>版本控制，版本ID与桶名和对象key(键)一起构成一个唯一的key元素，用于定义桶中对象的唯一性</li>
+<li>对象检索<ul>
+<li>未开启版本控制存储桶：检索始终返回唯一的可用对象</li>
+<li>开启版本控制的存储桶，返回当前对象，可以通过指定版本ID返回非当前对象</li>
+</ul>
+</li>
+<li>对象添加<ul>
+<li>未开启版本控制：再次上传相同键的对象，则会覆盖该对象</li>
+<li>开启版本控制：上传相同键的对象，则新上传的将会成为当前版本，之前的成为非当前版本</li>
+<li>可以检索和恢复非当前版本化对象，从而防止意外覆盖</li>
+</ul>
+</li>
+<li>删除对象<ul>
+<li>未开启版本控制：对象永久删除，且无法恢复</li>
+<li>开启版本控制：所有对象都保留，Amazon会插入一个删除标记，用于标记当前版本；可以检索和恢复非当前版本对象，从而防止意外删除和覆盖；如果指定删除版本ID的对象，则会永久删除且无法恢复</li>
+</ul>
+</li>
+<li>删除标记<ul>
+<li>删除标记对象没有任何与之关联的数据或acl，只有key和版本ID</li>
+<li>对已经使用删除标记的对象检索将返回404</li>
+<li>已经标记“delete marker”对象上只允许DELETE操作</li>
+<li>指定其版本ID删除标记对象，则先前的版本对象将成为当前版本对象</li>
+<li>如果将DELETE标记作为当前版本在桶上触发DELETE请求，则不会删除DELETE标记，而是再次添加一个DELETE标记</li>
+</ul>
+</li>
+<li>恢复之前版本<ul>
+<li>将先前版本对象复制到同一存储桶中。复制的对象将成为该对象当前的版本，并保留之前的对象版本。（建议保留所有版本）</li>
+<li>永久删除当前版本时，世纪将之前的版本转换为当前版本</li>
+</ul>
+</li>
+<li>暂停版本控制<ul>
+<li>可以暂停版本控制功能，以停止存储桶后续对象的积累新的版本</li>
+<li>已存在的对象不会更改，只对新添加对象有效</li>
+<li>对于每个新添加的对象，对象添加版本ID为null</li>
+<li>对于具有相同key的对象添加，对象和版本ID（null）都会被覆盖</li>
+<li>存储桶上的DELETE请求将永久删除版本ID空对象并插入删除标记</li>
+<li>如果存储桶没有版本ID为null的对象，则DELETE请求不会删除任何内容</li>
+<li>对于存储了版本ID的任何先前对象，仍然可以使用指定版本ID触发DELETE请求</li>
+</ul>
+</li>
+<li>启用 MFA 删除<ul>
+<li>启用MFA删除，可以提高起安全性</li>
+<li>在存储桶上启用MFA删除，以确保不会意外删除存储桶中的数据</li>
+<li>存储桶拥有者，创建存储桶（root帐户）的AWS账户以及所有授权的IAM用户可以启用版本控制，但只有存储桶拥有者（root帐户）可以启用MFA删除</li>
+</ul>
+</li>
+</ul>
+<h1 id="S3-Permission-权限"><a href="#S3-Permission-权限" class="headerlink" title="S3 Permission 权限"></a>S3 Permission 权限</h1><ul>
+<li>默认情况下，所有S3 存储桶，对象和相关子资源都时私有的</li>
+<li>可以通过AWS 账户或IAM（有权限）访问资源</li>
+<li>存储拥有者时创建存储桶的AWS账户</li>
+<li>对象所有者是将对象上载到存储桶的AWS账户，而不是该账户所拥有的存储桶</li>
+<li>只有资源所有者（创建资源的AWS账户）才能访问该资源</li>
+<li>资源所有者<ul>
+<li>创建存储桶或对象的AWS账户时这些资源拥有者</li>
+<li>如果IAM用户创建存储桶或对象，则IAM用户的AWS账户拥有该资源</li>
+<li>如果存储桶拥有者向其他AWS账户用户授予跨对象权限以将对象上载到存储桶，则对象由上载对象的用户的AWS账户拥有，而不是存储桶拥有者，但以下条件除外<ul>
+<li>存储桶拥有者可以拒绝访问该对象，因为它是支付该对象的存储桶拥有者</li>
+<li>存储桶拥有者可以删除或应用存档规则到对象并执行恢复</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="S3-权限分类"><a href="#S3-权限分类" class="headerlink" title="S3 权限分类"></a>S3 权限分类</h2><ul>
+<li>基于资源的策略和用户策略</li>
+</ul>
+<h3 id="用户策略"><a href="#用户策略" class="headerlink" title="用户策略"></a>用户策略</h3><ul>
+<li>基于用户的策略使用IAM和S3来控制用户或用户组对AWS账户拥有的S3存储桶的访问类型</li>
+<li>基于用户的策略始终附加到用户，组或角色，无法授予匿名权限</li>
+<li>如果拥有存储桶的AWS账户想要向其帐户中的用户授予权限，则可以使用存储桶策略或用户策略</li>
+</ul>
+<h3 id="资源策略"><a href="#资源策略" class="headerlink" title="资源策略"></a>资源策略</h3><ul>
+<li>存储桶策略和访问控制列表（ACL）是基于资源的，因为它们附加到Amazon S3资源</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/19/qv6ix2mDjR4XkUS.jpg" alt="001.jpg"></p>
+<ul>
+<li>存储桶策略&amp;访问控制列表</li>
+</ul>
+<h3 id="存储桶策略"><a href="#存储桶策略" class="headerlink" title="存储桶策略"></a>存储桶策略</h3><ul>
+<li>存储桶策略用于向其他AWS账户或IAM用户授予对其中的存储桶和对象的跨账户访问权限</li>
+<li>桶策略提供集中的，基于各种条件，包括S3的操作，请求者，资源和方面请求的访问控制区和物件（例如IP地址）</li>
+<li>如果拥有存储桶的AWS账户想要向其帐户中的用户授予权限，则可以使用存储桶策略或用户策略</li>
+<li>附加到存储桶的权限适用于存储桶所有者创建和拥有的该存储桶中的所有对象</li>
+<li>策略可以在存储桶中的所有（或子集）对象上添加或拒绝权限</li>
+<li>仅允许存储桶拥有者将策略与存储桶关联</li>
+<li>仅允许存储桶拥有者将策略与存储桶关联</li>
+</ul>
+<h3 id="访问控制列表"><a href="#访问控制列表" class="headerlink" title="访问控制列表"></a>访问控制列表</h3><ul>
+<li>存储桶和对象都可以有与之相关联的ACL</li>
+<li>ACL是一个授权列表，用于标识被授予者和授予的权限</li>
+<li>ACL向其他账户授予对资源的基本读/写权限</li>
+<li>ACL是一系列的受限的权限集，<ul>
+<li>不能授予条件权限，</li>
+<li>也不能显式拒绝权限</li>
+<li>不能用于授予bucket子资源的权限</li>
+</ul>
+</li>
+<li>可以通过电子邮件地址或规范用户ID（模糊匹配的帐户ID）向AWS账户授予权限。 如果提供了电子邮件地址，S3仍会找到该用户的规范用户ID并将其添加到ACL</li>
+<li>建议使用规范的用户ID，电子邮件地址将来不会被支持</li>
+</ul>
+<h3 id="Bucket-ACL"><a href="#Bucket-ACL" class="headerlink" title="Bucket ACL"></a>Bucket ACL</h3><ul>
+<li>仅推荐用于 bucket ACL的用例是向S3 Log Delivery组授予写入权限，以将访问日志对象写入存储区</li>
+<li>如果存储桶需要访问日志传送，则bucket ACL将有助于将存储桶的写入权限授予日志传送组</li>
+<li>只有这样才能通过bucket ACL为日志传送组授予必要的权限</li>
+</ul>
+<h3 id="Object-ACL"><a href="#Object-ACL" class="headerlink" title="Object ACL"></a>Object ACL</h3><ul>
+<li>对象ACL仅控制对象级权限</li>
+<li>对象ACL是管理不属于存储桶拥有者的存储桶中对象的权限的唯一方法，即如果存储桶拥有者允许跨帐户对象上载，并且对象所有者与存储桶拥有者不同，则对象的所有者授予对象的权限是通过对象ACL</li>
+<li>如果存储桶和对象由同一AWS账户拥有，则可以使用存储桶策略来管理权限</li>
+<li>如果对象和用户归同一AWS账户所有，则可以使用用户策略来管理权限</li>
+</ul>
+<h3 id="Amazon-S3-请求授权"><a href="#Amazon-S3-请求授权" class="headerlink" title="Amazon S3 请求授权"></a>Amazon S3 请求授权</h3><pre><code>当Amazon S3收到请求时，它将评估所有用户策略，存储桶策略和确定是否授权或拒绝该请求。</code></pre><p>S3将在3个方面进行策略评估</p>
+<ul>
+<li><p>User context 是S3评估AWS父账户（上下文）附加到用户策略的基本策略</p>
+</li>
+<li><p>Bucket context是S3评估存储桶所有者拥有访问策略的上下文，以检查存储桶所有者是否显式拒绝访问资源</p>
+</li>
+<li><p>Object context是是S3评估对象所有者拥有的策略的上下文</p>
+<h3 id="类比场景"><a href="#类比场景" class="headerlink" title="类比场景"></a>类比场景</h3></li>
+<li><p>假设有三个AWS账户，A、B、C且其子用户（IAM user）分别为AA、BA、CA</p>
+</li>
+<li><p>A账户拥有Toy bucket,其中存储对象Toy AAA,允许对象被删掉和创建</p>
+</li>
+<li><p>A账户创建一个授权，AA可以访问Toy bucket和其中对象（user policy或Bucket policy或两者都包含）</p>
+</li>
+<li><p>A创建一个授权（bucket policy），允许B可以创建对象在Toy bucket中；那么B可以授权其BA在Toy bucket中创建对象(如BAA)的策略（user policy）</p>
+</li>
+<li><p>B可以授权A访问Toy bucket中BAA的权限策略（object acl）</p>
+</li>
+<li><p>A创建一个授权（bucket policy）访问Toy bucket中AAA（object）的策略，而C又可以授权CA访问AAA的权限策略（user policy）</p>
+</li>
+<li><p>A 可以授权C访问BAA（object）的权限(IAM role）,而C又可以授权CA访问BAA的权限（user policy）</p>
+</li>
+</ul>
+<h3 id="Bucket-操作授权"><a href="#Bucket-操作授权" class="headerlink" title="Bucket 操作授权"></a>Bucket 操作授权</h3><p><img src="https://i.loli.net/2019/08/19/k6UAI5Cyf87sE1P.jpg" alt="002.jpg"></p>
+<ol>
+<li>如果请求者是 IAM 用户，则该用户必须拥有来自其所属的父 AWS 账户的权限。在此步骤中，Amazon S3 将评估由父账户 (也称为上下文机构) 拥有的一个策略子集。该策略子集包含父账户附加到该用户的用户策略。如果父级也拥有请求中的资源 (在本例中为存储桶)，则 Amazon S3 还会同时评估相应资源策略 (存储桶策略和存储桶 ACL)。</li>
+<li>请求者必须拥有来自存储桶拥有者的权限才能执行特定存储桶操作。在此步骤中，Amazon S3 对由拥有该存储桶的 AWS 账户拥有的策略子集进行评估。</li>
+<li>存储桶拥有者可通过使用存储桶策略或存储桶 ACL 来授予权限</li>
+</ol>
+<h3 id="Object操作授权"><a href="#Object操作授权" class="headerlink" title="Object操作授权"></a>Object操作授权</h3><p> <img src="https://i.loli.net/2019/08/19/skd6nRq1mWagxoB.jpg" alt="003.jpg"></p>
+<ol>
+<li>如果请求者是 IAM 用户，则该用户必须拥有来自其所属的父 AWS 账户的权限</li>
+<li>Amazon S3 会评估由父账户 (也称为上下文机构) 拥有的一个策略子集。该策略子集包含父级附加到该用户的用户策略。如果父级也拥有请求中的资源 (存储桶、对象)，则 Amazon S3 还会同时评估相应资源策略 (存储桶策略、存储桶 ACL 和对象 ACL)</li>
+<li>在此上下文中，Amazon S3 评估拥有该存储桶的 AWS 账户所拥有的策略。如果拥有请求中的对象的 AWS 账户与存储桶拥有者不同，则 Amazon S3 会在存储桶上下文中检查策略，查看存储桶拥有者是否已显式拒绝对该对象的访问。如果对该对象设置了显式拒绝，则 Amazon S3不对请求授权。</li>
+<li>请求者必须拥有来自对象拥有者的权限才能执行特定对象操作。在此步骤中，Amazon S3将评估对象 ACL</li>
+</ol>
+<h3 id="权限委派"><a href="#权限委派" class="headerlink" title="权限委派"></a>权限委派</h3><ul>
+<li>如果AWS账户拥有资源，则可以将这些权限授予另一个AWS账户。</li>
+<li>该帐户可以将这些权限或其中一部分委派给帐户中的用户。 这称为权限委派。</li>
+<li>但是，从其他帐户接收权限的帐户无法将权限跨帐户委派给其他AWS账户。</li>
+<li>如果Bucket所有者想要将不属于它的Object的权限授予其他AWS账户，则无法通过跨账户权限执行该操作，并且需要定义IAM角色，AWS账户可以采用该角色来获取访问权限</li>
+</ul>
+<h1 id="S3-Data-Protection"><a href="#S3-Data-Protection" class="headerlink" title="S3 Data Protection"></a>S3 Data Protection</h1><ul>
+<li>Amazon S3 为任务关键型和主数据存储提供了高度耐用的存储基础设施。在 Amazon S3 区域，对象以冗余方式存储在多个设施间的多个设备中。</li>
+<li>对象冗余地存储在S3区域中的多个设施上的多个设备上</li>
+<li>为帮助确保数据持久性，Amazon S3 PUT 和 PUT Object copy 操作会在多个设施间同步完成之后，然后才会返回 SUCCESS</li>
+<li>存储对象后，Amazon S3 将通过快速检测和修复任何丢失的冗余数据，保持对象的持久性</li>
+<li>S3 还会使用校验和定期验证所存储数据的完整性。如果 Amazon S3 检测到数据损坏，它将使用冗<br>余的数据进行修复</li>
+<li>Amazon S3 还会在存储或检索数据时对所有网络流量计算校验和，以检测数据包是否损坏</li>
+<li>S3还提供保护传输中的数据（当它往返S3时）和静止存放（当它存储在S3中时）的能力</li>
+</ul>
+<h2 id="传输中的数据"><a href="#传输中的数据" class="headerlink" title="传输中的数据"></a>传输中的数据</h2><ul>
+<li>通过SSL或使用客户端加密进行通信来保护传输中的数据</li>
+</ul>
+<h2 id="静态数据"><a href="#静态数据" class="headerlink" title="静态数据"></a>静态数据</h2><ul>
+<li>支持客户端加密和服务器端加密，以保护静态数据</li>
+<li>服务器端加密关乎静态数据加密，即 Amazon S3 将数据写入数据中心内的磁盘时会在对象级别上加密这些数据，并在访问这些数据时解密这些数据</li>
+<li>使用客户端加密，可以加密客户端数据并将加密数据上传到S3。 在这种情况下，自行管理加密过程，加密密钥和相关工具</li>
+</ul>
+<h2 id="Server-side-加密"><a href="#Server-side-加密" class="headerlink" title="Server-side 加密"></a>Server-side 加密</h2><ul>
+<li>服务器端加密关于静态数据加密</li>
+<li>服务器端加密仅加密对象数据,对象元数据是不加密的</li>
+<li>S3处理数据对象的加密（写入磁盘时）和解密（访问对象时）</li>
+<li>加密或未加密对象的访问机制没有区别，并由S3透明处理</li>
+</ul>
+<h2 id="Server-Side-Encryption-with-Amazon-S3-Managed-Keys-SSE-S3"><a href="#Server-Side-Encryption-with-Amazon-S3-Managed-Keys-SSE-S3" class="headerlink" title="Server-Side Encryption with Amazon S3-Managed Keys (SSE-S3)"></a>Server-Side Encryption with Amazon S3-Managed Keys (SSE-S3)</h2><ul>
+<li><p>Amazon S3 托管加密密钥的服务器端加密 (SSE-S3) 采用了多因素强加密。S3 使用唯一的密钥来加密每个对象。作为额外的保护，它将使用定期轮换的主密钥对密钥本身进行加密。</p>
+</li>
+<li><p>S3 服务器端加密使用可用的最强数据块密码之一 (即 256 位高级加密标准 (AES-256))来加密数据</p>
+</li>
+<li><p>当使用预签名url上传对象时，不能强制使用SSE-S3加密对象，因为指定服务器端加密的惟一方法是通过AWS管理控制台或HTTP请求头<br>Server-Side Encryption with AWS KMS-Managed Keys (SSE-KMS)<br><img src="https://i.loli.net/2019/08/19/3Ekn2RjTqsCFVUW.jpg" alt="004.jpg"></p>
+</li>
+<li><p>SSE-KMS类似于SSE-S3，但它使用AWS Key Management Services（KMS），它提供额外的优势和性价比</p>
+<ul>
+<li>AWS Key Management Service (AWS KMS) 是一项将安全、高度可用的硬件和软件结合起来，提供可扩展到云的密钥管理系统的服务</li>
+<li>KMS 使用用户主密钥 (CMK) 加密Amazon S3 对象</li>
+<li>主密钥（master key）从不使用</li>
+<li>KMS集中创建加密密钥，定义控制密钥使用方式的策略</li>
+<li>通过检查AWS CloudTrail中的日志，审计使用密钥用法是否正确使用</li>
+<li>允许临时禁用和重新启用密钥</li>
+<li>允许key进行定期轮换</li>
+<li>AWS KMS中的安全控制有助于满足与加密相关的合规性要求</li>
+</ul>
+</li>
+<li><p>SSE-KMS为使用信封密钥（即保护数据加密密钥的密钥）启用单独的权限，从而提供额外的保护，防止在S3中对对象进行未经授权的访问</p>
+</li>
+<li><p>SSE-KMS提供了创建和管理加密密钥的选项，或者默认使用客户主密钥(CMK)，该主密钥可用于当前服务，并且所工作的区域是惟一的</p>
+</li>
+<li><p>创建自定义的CMK可提供更大灵活性，包括创建、轮换、禁用和定义访问控制，以及审核用于保护数据的加密密钥的能力</p>
+</li>
+<li><p>用于加密数据的数据密钥也会加密并与它们保护的数据一起存储，并且对每个对象都是唯一的</p>
+</li>
+<li><p>处理流程</p>
+<ul>
+<li>应用程序或AWS服务客户端请求加密密钥来加密数据，并将引用传递给帐户下的主密钥</li>
+<li>验证客户端请求是否有权使用主密钥进行加密</li>
+<li>创建新的<table><tr><td bgcolor="orange">数据加密密钥</td></tr></table>，并在<table><tr><td bgcolor="red">主密钥（CMK）</td></tr></table>下加密<table><tr><td bgcolor="orange">数据加密密钥</td></tr></table>（经过授权）</li>
+<li>数据密钥和加密数据密钥都返回给客户端</li>
+<li>数据密钥用于加密客户数据，建议在实际使用完加密密钥之后尽快将其从内存中删除</li>
+<li>保留<table><tr><td bgcolor="orange">加密数据密钥</td></tr></table>以供以后使用，并在需要解密数据时将其发送回AWS KMS进行解密获取数据密钥<br>Server-Side Encryption with Customer-Provided Keys (SSE-C)<br><img src="https://i.loli.net/2019/08/19/KT7oy4njN6IH9Fb.jpg" alt="005.jpg"></li>
+</ul>
+</li>
+<li><p>使用客户提供的加密密钥的服务器端加密 (SSE-C) 允许设置自己的加密密钥。</p>
+</li>
+<li><p>S3在访问对象时管理加密，写入磁盘和解密载对象时，加密密钥作为请求的一部分提供，S3使用该加密密钥对数据应用AES-256加密，并从内存中删除加密密钥</p>
+</li>
+<li><p>在检索对象时，必须提供相同的加密密钥作为请求的一部分。Amazon S3 在将对象数据返回之前，会首先验证提供的加密密钥是否匹配，然后再解密对象</p>
+</li>
+<li><p>每个对象，每个对象的版本可以使用不同的密钥进行加密，但需要自行负责维护对象和所使用的加密密钥之间的映射。</p>
+</li>
+<li><p>SSE-C请求必须通过HTTPS完成，S3将拒绝使用SSE-C时通过http发出的任何请求</p>
+</li>
+<li><p>出于安全原因，错误地使用 http 发送的任何密钥都将存在被外泄的可能性。此时应丢弃该密钥，并根据需要轮换密钥</p>
+</li>
+<li><p>S3 不存储加密密钥，而是存储加密密钥添加了随机数据的 HMAC 值来验证请求。无法使用添加了随机数据的 HMAC 值来推导出加密密钥的值或解密加密对象的内容。这意味着，如果丢失加密密钥，则会失去该对象</p>
+</li>
+</ul>
+<h2 id="客户端加密"><a href="#客户端加密" class="headerlink" title="客户端加密"></a>客户端加密</h2><p>客户端加密是指在将数据发送到Amazon S3之前加密数据并在下载之后解密数据。</p>
+<h2 id="使用-AWS-KMS-托管客户主密钥-CMK"><a href="#使用-AWS-KMS-托管客户主密钥-CMK" class="headerlink" title="使用 AWS KMS 托管客户主密钥 (CMK)"></a>使用 AWS KMS 托管客户主密钥 (CMK)</h2><ul>
+<li>客户可以使用 AWS KMS 托管客户主密钥用于客户端数据加密时，此时使 AWS KMS 客户主密钥 ID (CMK ID)</li>
+<li>上传对象时<ul>
+<li>客户端首先将请求发送到 AWS Key Management Service (AWS KMS)以获取可用于加密对象数据的密钥</li>
+<li>AWS KMS 将返回一个随机生成的数据加密密钥，其中包含客户端用于<table><tr><td bgcolor="orange">加密对象数据的纯文本版本</td></tr></table>和客户端将作为对象元数据上传到 Amazon S3 的<table><tr><td bgcolor="orange">同一数据加密密钥的密码 blob</td></tr></table></li>
+<li>客户端将为其上传的每个对象获取一个唯一的数据加密密钥</li>
+<li>AWS S3加密的客户端上载与对象元数据的加密数据和加密BLOB</li>
+</ul>
+</li>
+<li>下载对象时<ul>
+<li>客户端首先从 Amazon S3 下载加密的对象以及作为对象元数据存储的数据加密密钥的密blob 版本</li>
+<li>客户端将密码 blob 发送到 AWS KMS 以获取密钥的纯文本版本，以便让客户端解密对象数据<br>使用客户端主密钥</li>
+</ul>
+</li>
+<li>加密主密钥完全在客户端维护</li>
+<li>上传对象时<ol>
+<li>Amazon S3 加密客户端在本地生成一个一次性对称密钥 (也称为“数据加密密钥”或“数据密钥”)。它使用数据密钥加密单个 Amazon S3 对象的数据。该客户端将为每个对象生成一个单独的数据密钥。</li>
+<li>该客户端使用主密钥来加密数据加密密钥。客户端会将加密的数据密钥及其材料说明作为对象元数据的一部分上传。</li>
+<li>该客户端将加密数据上传到 Amazon S3 并在 Amazon S3 中将加密数据密钥保存为对象元数据 (xamz-meta-x-amz-key)</li>
+</ol>
+</li>
+<li>下载对象时<ul>
+<li>该客户端从 Amazon S3 下载加密的对象。</li>
+<li>通过对象元数据中的说明，该客户端将确定要用于解密数据密钥的主密钥</li>
+<li>该客户端将使用该主密钥解密数据密钥，然后使用该数据密钥对对象进行解密</li>
+</ul>
+</li>
+<li>客户端主密钥和未加密的数据从来不会发送到 AWS。务必安全地管理加密密钥</li>
+<li>如果丢失了加密密钥，将无法解密数据</li>
+</ul>
+<h1 id="S3-最佳实践"><a href="#S3-最佳实践" class="headerlink" title="S3 最佳实践"></a>S3 最佳实践</h1><h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><h3 id="并发PUTS-GETS"><a href="#并发PUTS-GETS" class="headerlink" title="并发PUTS/GETS"></a>并发PUTS/GETS</h3><ul>
+<li>Amazon S3 可进行扩展，以支持非常高的请求速率。如果请求速率稳定增长，则 Amazon S3 会自动根据需要将存储桶进行分区，以支持更高的请求速率</li>
+<li>如果典型工作负载仅涉及每秒100个请求的偶尔突发和每秒少于800个请求，则AWS会自动进行扩展和处理</li>
+<li>如果预计存储桶的请求速率会快速提高到超过每秒 300 个 PUT/LIST/DELETE 请求或超过每秒 800 个 GET 请求，建议申请support,以便为工作负载做好准备，并且避免对请求速率的任何临时限制</li>
+<li>仅当每秒定期处理100个或更多请求时，才能应用S3最佳实践指南</li>
+<li>混合请求类型的工作负载<ul>
+<li>如果请求一般为 GET、PUT、DELETE 或 GET Bucket (列出对象) 的组合，则为对象合理选择键名称可缩短访问 Amazon S3 索引的延迟，从而确保实现更高的性能</li>
+<li>这种方式是由S3 存储key驱动的<ul>
+<li>Amazon S3 在每个 AWS 区域维护对象键名称的索引</li>
+<li>对象键以 UTF-8 二进制顺序保存在索引的多个分区中，键名称指示用于存储键的分区</li>
+<li>对于大量键，使用顺序前缀 (如时间戳或字母顺序) 可增大 Amazon S3以特定分区为目标的可能性，从而耗尽该分区的 I/O 容量。</li>
+</ul>
+</li>
+<li>如果在键名称前缀中引入某种随机性，则键名称 (以及 I/O 负载) 会在多个分区间分布</li>
+<li>无论每秒发送的请求数量如何，它还可确保可扩展性</li>
+</ul>
+</li>
+<li>GET 密集型工作负载<ul>
+<li>建议使用 Amazon CloudFront 内容传输服务</li>
+<li>向用户分发内容时同时实现低延迟和高数据传输速率。另外可以减少向 Amazon S3 发送直接请求，从而降低成本</li>
+<li>支持Web分发或RTMP分发<h3 id="PUTs-GETs-for-Large-Objects"><a href="#PUTs-GETs-for-Large-Objects" class="headerlink" title="PUTs/GETs for Large Objects"></a>PUTs/GETs for Large Objects</h3></li>
+</ul>
+</li>
+<li>AWS支持并行化PUT / GET请求以提高上载和下载性能以及在失败时恢复的能力</li>
+<li>对于上传，分段上传可以帮助改善上传体验<ul>
+<li>同时执行多个上载并最大化网络带宽利用率</li>
+<li>从故障中快速恢复，因为只有一部分上传失败需要重新上传</li>
+<li>暂停和恢复上传的能力</li>
+<li>在已知对象大小之前开始上载</li>
+</ul>
+</li>
+<li>对于GET，range http标头可以帮助提高下载<ul>
+<li>允许在部分而不是整个对象中检索对象</li>
+<li>从故障中快速恢复，因为只有无法下载的部分需要重试</li>
+</ul>
+</li>
+</ul>
+<h2 id="List-Operations"><a href="#List-Operations" class="headerlink" title="List Operations"></a>List Operations</h2><ul>
+<li>对象键(key)以字典顺序存储在Amazon S3索引中，因此很难对LIST的内容进行排序和操作</li>
+<li>S3维护单个按字典顺序排序的索引列表</li>
+<li>在S3之外构建和维护二级索引，例如 DynamoDB或RDS用于存储，索引和查询对象元数据，而不是在S3上执行操作</li>
+</ul>
+<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><ul>
+<li>开启版本控制<ul>
+<li>防止意外的覆盖和删除</li>
+<li>允许检索和恢复已删除对象或回滚到以前版本的功能</li>
+</ul>
+</li>
+<li>启用MFA（多重身份验证）删除来启用安全性</li>
+<li>版本控制不会阻止Bucket删除，必须进行备份，就像意外或恶意删除数据一样</li>
+<li>使用跨区域复制功能将数据备份到其他区域</li>
+<li>将VPC与S3一起使用时，建议使用VPC S3端点<ul>
+<li>是水平缩放，冗余和高可用性的VPC组件</li>
+<li>帮助在VPC和S3之间建立专用连接，流量永远不会离开AWS网络</li>
+</ul>
+</li>
+</ul>
+<h2 id="Traking"><a href="#Traking" class="headerlink" title="Traking"></a>Traking</h2><ul>
+<li>使用事件通知来通知S3put或delete请求</li>
+<li>使用CloudTrail，便于 AWS账户捕获特定的API调用，并提供日志文件到一个S3桶</li>
+<li>使用CloudWatch监控Amazon S3存储桶，跟踪存储的对象计数和字节等指标，并配置相应的操作</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/S3/" rel="tag"># S3</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/18/思考心得/" rel="next" title="思考心得">
+                <i class="fa fa-chevron-left"></i> 思考心得
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">seven</p>
+              <p class="site-description motion-element" itemprop="description">seven 的精神家园，学习笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="1988xuegang@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#S3-Overview"><span class="nav-number">1.</span> <span class="nav-text">S3 Overview</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简要"><span class="nav-number">1.1.</span> <span class="nav-text">简要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S3-Bucket-amp-Objects"><span class="nav-number">1.2.</span> <span class="nav-text">S3 Bucket&amp;Objects</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bucket-amp-Object-操作"><span class="nav-number">1.3.</span> <span class="nav-text">Bucket &amp; Object 操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pre-Signed-URLs"><span class="nav-number">1.4.</span> <span class="nav-text">Pre-Signed  URLs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multipart-upload"><span class="nav-number">1.5.</span> <span class="nav-text">Multipart upload</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟主机-vs-url路径访问模式"><span class="nav-number">1.6.</span> <span class="nav-text">虚拟主机 vs url路径访问模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#S3-Conssistency-Model-一致性模型"><span class="nav-number">2.</span> <span class="nav-text">S3 Conssistency Model 一致性模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#S3-Subresources"><span class="nav-number">3.</span> <span class="nav-text">S3 Subresources</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#静态网站托管"><span class="nav-number">3.1.</span> <span class="nav-text">静态网站托管</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跨源资源共享-CORS"><span class="nav-number">3.2.</span> <span class="nav-text">跨源资源共享 (CORS)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志记录"><span class="nav-number">3.3.</span> <span class="nav-text">日志记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地理位置"><span class="nav-number">3.4.</span> <span class="nav-text">地理位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通知"><span class="nav-number">3.5.</span> <span class="nav-text">通知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跨区域复制-CRR"><span class="nav-number">3.6.</span> <span class="nav-text">跨区域复制 (CRR)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#S3-Storage-Tiers-存储分层"><span class="nav-number">4.</span> <span class="nav-text">S3 Storage Tiers 存储分层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Standard"><span class="nav-number">4.1.</span> <span class="nav-text">Standard</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Standard-IA"><span class="nav-number">4.2.</span> <span class="nav-text">Standard-IA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reduced-Redundancy-Storage-–-RRS"><span class="nav-number">4.3.</span> <span class="nav-text">Reduced Redundancy Storage – RRS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Glacier"><span class="nav-number">4.4.</span> <span class="nav-text">Glacier</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#S3-Object-Lifecycle"><span class="nav-number">5.</span> <span class="nav-text">S3 Object Lifecycle</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#S3-Object-Lifecycle-Overview"><span class="nav-number">5.1.</span> <span class="nav-text">S3 Object Lifecycle Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S3-Object-Lifecycle-Management-Rules"><span class="nav-number">5.2.</span> <span class="nav-text">S3 Object Lifecycle Management Rules</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#S3-Object-Versioning"><span class="nav-number">6.</span> <span class="nav-text">S3 Object Versioning</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#S3-Permission-权限"><span class="nav-number">7.</span> <span class="nav-text">S3 Permission 权限</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#S3-权限分类"><span class="nav-number">7.1.</span> <span class="nav-text">S3 权限分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户策略"><span class="nav-number">7.1.1.</span> <span class="nav-text">用户策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源策略"><span class="nav-number">7.1.2.</span> <span class="nav-text">资源策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储桶策略"><span class="nav-number">7.1.3.</span> <span class="nav-text">存储桶策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问控制列表"><span class="nav-number">7.1.4.</span> <span class="nav-text">访问控制列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bucket-ACL"><span class="nav-number">7.1.5.</span> <span class="nav-text">Bucket ACL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-ACL"><span class="nav-number">7.1.6.</span> <span class="nav-text">Object ACL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Amazon-S3-请求授权"><span class="nav-number">7.1.7.</span> <span class="nav-text">Amazon S3 请求授权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类比场景"><span class="nav-number">7.1.8.</span> <span class="nav-text">类比场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bucket-操作授权"><span class="nav-number">7.1.9.</span> <span class="nav-text">Bucket 操作授权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object操作授权"><span class="nav-number">7.1.10.</span> <span class="nav-text">Object操作授权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限委派"><span class="nav-number">7.1.11.</span> <span class="nav-text">权限委派</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#S3-Data-Protection"><span class="nav-number">8.</span> <span class="nav-text">S3 Data Protection</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#传输中的数据"><span class="nav-number">8.1.</span> <span class="nav-text">传输中的数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态数据"><span class="nav-number">8.2.</span> <span class="nav-text">静态数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server-side-加密"><span class="nav-number">8.3.</span> <span class="nav-text">Server-side 加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server-Side-Encryption-with-Amazon-S3-Managed-Keys-SSE-S3"><span class="nav-number">8.4.</span> <span class="nav-text">Server-Side Encryption with Amazon S3-Managed Keys (SSE-S3)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端加密"><span class="nav-number">8.5.</span> <span class="nav-text">客户端加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-AWS-KMS-托管客户主密钥-CMK"><span class="nav-number">8.6.</span> <span class="nav-text">使用 AWS KMS 托管客户主密钥 (CMK)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#S3-最佳实践"><span class="nav-number">9.</span> <span class="nav-text">S3 最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#性能"><span class="nav-number">9.1.</span> <span class="nav-text">性能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#并发PUTS-GETS"><span class="nav-number">9.1.1.</span> <span class="nav-text">并发PUTS/GETS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PUTs-GETs-for-Large-Objects"><span class="nav-number">9.1.2.</span> <span class="nav-text">PUTs/GETs for Large Objects</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-Operations"><span class="nav-number">9.2.</span> <span class="nav-text">List Operations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全"><span class="nav-number">9.3.</span> <span class="nav-text">安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Traking"><span class="nav-number">9.4.</span> <span class="nav-text">Traking</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seven</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
