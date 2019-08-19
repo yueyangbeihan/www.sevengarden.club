@@ -273,6 +273,535 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/19/AWS-Disaster-Recovery/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/19/AWS-Disaster-Recovery/" itemprop="url">AWS Disaster Recovery</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-19T21:08:22+08:00">
+                2019-08-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><em>前言：HA目标保障应用的连续运行（7</em>24），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用.</p>
+<h1 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h1><ul>
+<li>AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。</li>
+<li>概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践</li>
+<li>灾备（Disaster Recovery）包括灾备方案和环境准备，以及从灾难中恢复两部分。任何对企业的业务持续性或财务有负面影响的事件都可成为灾难。AWS最佳实践之一就是始终故障设计系统的构建。</li>
+<li>灾难包括硬件或软件故障、断网、断电、火灾、水灾、人为错误等等。为了减少灾难带来的损失，企业往往会投入时间和金钱来计划和准备、训练员工、定义和更新流程。为DR 计划而做的投资往往有很大不同。灾难恢复往往有两个指标：</li>
+</ul>
+<p>RTO - Recovery time objective：从灾难发生到恢复到满足计划SLA服务的时间<br>RPO - Reovery point objective：允许丢失的数据的时间长度<br><img src="https://i.loli.net/2019/08/19/EXpeLb4d6JwfrgO.jpg" alt="001.jpg"></p>
+<ul>
+<li>常见故障位置</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>硬件故障</td>
+<td>系统中任何硬件组件的故障，包括主机，存储，网络或其他等。</td>
+</tr>
+<tr>
+<td>部署失败</td>
+<td>由于软件，硬件，网络或配置部署而直接导致的故障。 包括自动和手动更改。</td>
+</tr>
+<tr>
+<td>负载因素</td>
+<td>负载相关的故障可以是一个行为触发、特定进程或负载聚合加重，或者服务达到临界点。 而网络尤其可能发生负载故障。</td>
+</tr>
+<tr>
+<td>数据因素</td>
+<td>系统接受了无法处理的操作（毒丸）</td>
+</tr>
+<tr>
+<td>凭证过期</td>
+<td>证书或凭证到期导致的系统无法继续运行</td>
+</tr>
+<tr>
+<td>依赖关系</td>
+<td>相关依赖的服务故障</td>
+</tr>
+<tr>
+<td>基础设施</td>
+<td>电力或环境因素导致的硬件故障风险</td>
+</tr>
+<tr>
+<td>资源耗尽</td>
+<td>超出可用容量，达到限制条件，ID耗尽，提供的资源不再可用</td>
+</tr>
+</tbody></table>
+<ul>
+<li>常见应用应用程序设计目标和可用性</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>可用性</th>
+<th>最大停机时间（年）</th>
+<th>应用类别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>99%</td>
+<td>3天15小时</td>
+<td>Batch processing, data extraction, transfer, and load jobs</td>
+</tr>
+<tr>
+<td>99.90%</td>
+<td>8小时45分钟</td>
+<td>Internal tools like knowledge management, project tracking</td>
+</tr>
+<tr>
+<td>99.95%</td>
+<td>4小时22分钟</td>
+<td>Online commerce, point of sale</td>
+</tr>
+<tr>
+<td><font color="orange">99.99% </font></td>
+<td><font color="orange"> 52分钟 </font></td>
+<td><font color="orange">Video delivery, broadcast systems    </font></td>
+</tr>
+<tr>
+<td><font color="orange">99.999% </font></td>
+<td><font color="orange">5分钟  </font></td>
+<td><font color="orange"> ATM transactions, telecommunications systems </font></td>
+</tr>
+</tbody></table>
+<p><font face="黑体" size="5" color="red">针对最后两个AWS建议多Region部署</font></p>
+<h2 id="Region级别服务"><a href="#Region级别服务" class="headerlink" title="Region级别服务"></a>Region级别服务</h2><ul>
+<li><p>默认S3 DynamoDB EFS SQS Kinesis 提供区域内可靠性保障（无单点）</p>
+</li>
+<li><p>RDS ElasticCache ElasticSearch 需要配置多可用区部署实现可靠性保障<br><img src="https://i.loli.net/2019/08/19/IOTGYH4Q9EFVcLB.jpg" alt="002.jpg"></p>
+</li>
+<li><p><strong>AWS服务设计可用性目标</strong>（具体可相见文末《Reliability Pillar》，白皮书包含了非常详细的每一个服务的设计可用性）</p>
+</li>
+<li><p>基本上来讲，每一个服务都包含控制平面和数据平面，每一个纬度可用性不一样</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>服务</strong></th>
+<th align="center"><strong>组件</strong></th>
+<th align="center"><strong>可用性</strong></th>
+<th align="center"><strong>多可用区可用性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">EC2</td>
+<td align="center">控制平面</td>
+<td align="center">99.950%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">单AZ数据平面</td>
+<td align="center">99.950%</td>
+<td align="center">99.9975%</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">多AZ数据平面</td>
+<td align="center">99.950%</td>
+<td align="center">99.9990%</td>
+</tr>
+<tr>
+<td align="center">EBS</td>
+<td align="center">控制平面</td>
+<td align="center">99.950%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">EBS</td>
+<td align="center">数据平面（卷可用性）</td>
+<td align="center">99.999%</td>
+<td align="center">100.0000%</td>
+</tr>
+<tr>
+<td align="center">RDS</td>
+<td align="center">控制平面</td>
+<td align="center">99.950%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">RDS</td>
+<td align="center">单AZ数据平面</td>
+<td align="center">99.950%</td>
+<td align="center">99.9975%</td>
+</tr>
+<tr>
+<td align="center">RDS</td>
+<td align="center">多AZ数据平面</td>
+<td align="center">99.990%</td>
+<td align="center">99.9999%</td>
+</tr>
+<tr>
+<td align="center">Route 53</td>
+<td align="center">控制平面</td>
+<td align="center">99.950%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">Route 53</td>
+<td align="center">数据平面(查询结果)</td>
+<td align="center">100.000%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">S3</td>
+<td align="center">服务（标准）</td>
+<td align="center">99.990%</td>
+<td align="center">99.9999%</td>
+</tr>
+<tr>
+<td align="center">Auto Scaling</td>
+<td align="center">控制平面</td>
+<td align="center">99.900%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">Auto Scaling</td>
+<td align="center">数据平面</td>
+<td align="center">99.990%</td>
+<td align="center">99.9999%</td>
+</tr>
+<tr>
+<td align="center">EFS</td>
+<td align="center">控制平面</td>
+<td align="center">99.950%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">EFS</td>
+<td align="center">数据平面</td>
+<td align="center">99.990%</td>
+<td align="center">99.9999%</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">控制平面</td>
+<td align="center">99.900%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">数据平面</td>
+<td align="center">99.995%</td>
+<td align="center">99.9975%</td>
+</tr>
+<tr>
+<td align="center">Lambda</td>
+<td align="center">函数调用</td>
+<td align="center">99.950%</td>
+<td align="center">99.9975%</td>
+</tr>
+<tr>
+<td align="center">ELB</td>
+<td align="center">控制平面</td>
+<td align="center">99.950%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">ELB</td>
+<td align="center">数据平面</td>
+<td align="center">99.990%</td>
+<td align="center">99.9999%</td>
+</tr>
+<tr>
+<td align="center">KMS</td>
+<td align="center">控制平面</td>
+<td align="center">99.990%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">KMS</td>
+<td align="center">数据平面（卷可用性）</td>
+<td align="center">99.995%</td>
+<td align="center">N/A</td>
+</tr>
+</tbody></table>
+<h1 id="实现DR的AWS关键服务"><a href="#实现DR的AWS关键服务" class="headerlink" title="实现DR的AWS关键服务"></a>实现DR的AWS关键服务</h1><h3 id="Region"><a href="#Region" class="headerlink" title="Region"></a>Region</h3><ul>
+<li>AWS服务在全球多个地区都可以使用，并DR站点位置可以适当地选择与主站点位置不同的区域<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><h4 id="S3"><a href="#S3" class="headerlink" title="S3"></a>S3</h4></li>
+<li>11个9的持久性设计的存储架构，专为关键任务和主要数据存储设计</li>
+<li>对象数据冗余的存储区域内多个设施多个设备上<h4 id="Glacier"><a href="#Glacier" class="headerlink" title="Glacier"></a>Glacier</h4></li>
+<li>为数据存档和备份提供极具性价比的存储系统</li>
+<li>针对不频繁访问模型进行优化，通常减速时间在3～5小时即可完成<h4 id="EBS"><a href="#EBS" class="headerlink" title="EBS"></a>EBS</h4></li>
+<li>提供基于时间点的快照功能</li>
+<li>快照卷可以用于创建新卷并附加到运行的实例上<h4 id="Storage-Gateway"><a href="#Storage-Gateway" class="headerlink" title="Storage Gateway"></a>Storage Gateway</h4></li>
+<li>提供本地环境与AWS存储系统之间无缝和高度安全的集成服务<h4 id="Snow-Family"><a href="#Snow-Family" class="headerlink" title="Snow Family"></a>Snow Family</h4></li>
+<li>使用便携式存储设备绕过Internet进行传输，加速大量数据移入和移出AWS</li>
+<li>通过设高速内部网络将数据直接在设备与存储服务之间传输<h3 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h3><h4 id="EC2"><a href="#EC2" class="headerlink" title="EC2"></a>EC2</h4></li>
+<li>在云中提供可调整大小的实例，轻松实现创建和扩展</li>
+<li>实例使用预配置的AMI模板</li>
+<li>EC2可以在多个AZ中启动，实现AZ级别的故障隔离<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><h4 id="Route53"><a href="#Route53" class="headerlink" title="Route53"></a>Route53</h4></li>
+<li>高度可用且可扩展的域名解析服务</li>
+<li>支持全局负载均衡功能，这在处理灾难场景时非常有效。在多站点进行故障转移的时候，站点健康检查非常有用<h4 id="Elastic-IP"><a href="#Elastic-IP" class="headerlink" title="Elastic IP"></a>Elastic IP</h4></li>
+<li>在实例或AZ故障的情况下，IP地址可以被重新映射到健康实例上</li>
+<li>EIP专为云计算动态资源设计<h4 id="ELB"><a href="#ELB" class="headerlink" title="ELB"></a>ELB</h4></li>
+<li>运行运行状况检查并自动在多个目标（如EC2实例）之间分配的应用程序流量<h4 id="VPC"><a href="#VPC" class="headerlink" title="VPC"></a>VPC</h4></li>
+<li>允许配置AWS云的私有隔离部分，以便在定义的虚拟网络中启动资源<h4 id="Direct-Connect"><a href="#Direct-Connect" class="headerlink" title="Direct Connect"></a>Direct Connect</h4></li>
+<li>设置从本地环境到AWS的专用网络连接<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3></li>
+<li>RDS，DynamoDb，Redshift提供完全托管的RDBMS，NoSQL和数据仓库解决方案，可轻松扩展</li>
+<li>DynamoDB提供跨区域复制</li>
+<li>RDS提供多可用区部署和只读副本，还能够将数据从一个区域快照到另一个区域<h3 id="部署编排"><a href="#部署编排" class="headerlink" title="部署编排"></a>部署编排</h3><h4 id="CloudFormation"><a href="#CloudFormation" class="headerlink" title="CloudFormation"></a>CloudFormation</h4></li>
+<li>为开发人员和系统管理员提供了一种简单的方法来创建相关AWS资源的集合，并以有序和可预测的方式进行配置（DIY）<h4 id="Elastice-Beanstalk"><a href="#Elastice-Beanstalk" class="headerlink" title="Elastice Beanstalk"></a>Elastice Beanstalk</h4></li>
+<li>是一种易于使用的服务，用于部署和扩展Web应用程序和服务<h4 id="OpsWorks"><a href="#OpsWorks" class="headerlink" title="OpsWorks"></a>OpsWorks</h4></li>
+<li>完全托管的配置管理服务，基础设施和应用程序管理的自动化工具</li>
+<li>应用程序塑造成一个包含不同层级 (例如负载均衡层、数据库层和应用程序服务器层) 的堆栈</li>
+<li>具实例发生故障时，它将自动替换实例</li>
+<li>可用于准备阶段以模拟环境，并在恢复阶段与AWS CloudFormation配合使用</li>
+<li>可以依托预配置的堆栈快速的恢复预设环境（达到预设RTO）</li>
+</ul>
+<h1 id="四种场景"><a href="#四种场景" class="headerlink" title="四种场景"></a>四种场景</h1><p>从“备份和还原”选项（左侧）移至“多站点”选项（右侧）时，RTO和RPO会随着成本的增加而降低<br><img src="https://i.loli.net/2019/08/19/Kqtkb1VrwO5ISAh.png" alt="003.png"></p>
+<h2 id="Backup-amp-Restore"><a href="#Backup-amp-Restore" class="headerlink" title="Backup &amp; Restore"></a>Backup &amp; Restore</h2><ul>
+<li>备份恢复是最常见的一种容灾手段，将主站点数据备份到与主站点隔离的存储设备。当生产环境故障后，能够在备站点将数据恢复。<h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a><strong>备份</strong></h3><img src="https://i.loli.net/2019/08/19/lzv5RpfmHdFo16h.jpg" alt="005.jpg"></li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/19/S2Wusy9fhACOVko.jpg" alt="006.jpg"></p>
+<ul>
+<li>在大多数传统环境中，数据备份到磁带并定期发送到异地，需要花费更长时间在中断或灾难时恢复系统</li>
+</ul>
+<ol>
+<li>S3可以在任何位置上进行数据备份和快速恢复</li>
+<li>Snow Family系列设备可以直接绕过Internet进行大规模数据的传输</li>
+<li>Glacier可用于存档场景，几个小时即可取回数据</li>
+<li>Storage Gateway支持将本地数据卷（EBS卷）透明的复制到云上S3中进行备份。既可以作为备份解决方案的网关，也可作为主数据存储（缓存卷）</li>
+<li>Direct Connect用于构建高速稳定一致的链路层（本地环境到云上）</li>
+<li>EBS卷、RDS、Redshift的快照都可以存储到S3中</li>
+</ol>
+<h3 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a><strong>恢复</strong></h3><p><img src="https://i.loli.net/2019/08/19/HYOyPK4SIceX2kb.jpg" alt="007.jpg"></p>
+<ul>
+<li>备份数据可以快速恢复和创建EC2、数据库实例的运行环境</li>
+<li>几个关键步骤<ol>
+<li>选择适当的工具或方法将数据备份到AWS</li>
+<li>确保对此数据采用适当的保留策略</li>
+<li>确保为此数据采取适当的安全措施，包括加密和访问策略</li>
+<li>定期测试此数据的恢复和系统的恢复</li>
+</ol>
+</li>
+</ul>
+<h2 id="Pilot-Light"><a href="#Pilot-Light" class="headerlink" title="Pilot Light"></a>Pilot Light</h2><p>   Pilot Light 则在AWS上创建最小运行环境，它包含业务系统中最核心部分，比如数据库。这会节省恢复时间，因为系统中最核心部分已经在运行，而且数据是最新的了。而不经常更新部分，比如操作系统和应用，则可以定期打包到AMI中</p>
+<ul>
+<li>通过在AWS中维持配置和运行最小或关键系统，如数据库应用（保持数据库的复制和更新）</li>
+<li>在恢复过程中，一个完整的生产环境，包括应用程序、Web服务等，可以围绕这个核心系统快速配置（预配置AMI模板和EBS快照）；</li>
+<li>网络层面，可以使用ELB实现流量分配，并将DNS指向ELB，也可以使用预先分配的EIP与相关实例绑定</li>
+</ul>
+<h3 id="Pilotlight-prep"><a href="#Pilotlight-prep" class="headerlink" title="Pilotlight-prep"></a>Pilotlight-prep</h3><p><img src="https://i.loli.net/2019/08/19/xdZmK2tVSb9plRD.jpg" alt="008.jpg"></p>
+<ol>
+<li>建立EC2实例或RDS实例复制或镜像关系，保持关键数据两边一致</li>
+<li>确保所有的软件在AWS环境中都可用</li>
+<li>建立和维护在故障恢复时的关键服务的AMI（将操作系统和应用，则可以定期打包到AMI）</li>
+<li>定期运行这些服务并测试，及时更新配置、软件更新</li>
+<li>建议优先考虑自动化配置AWS服务</li>
+</ol>
+<h3 id="Pilot-light-recovery"><a href="#Pilot-light-recovery" class="headerlink" title="Pilot light-recovery"></a>Pilot light-recovery</h3><p><img src="https://i.loli.net/2019/08/19/C18ZsEtOWjmNDSq.jpg" alt="009.jpg"></p>
+<ol>
+<li>启动AMI创建EC2实例</li>
+<li>视情况调整数据库实例大小/存储实例大小，以应对可能增大的流量，如RDS支持scale up，而EC2也可轻松实现水平扩展</li>
+<li>建议在DR站点开启RDS 多可用区部署，以增强站点数据层的健壮性</li>
+<li>更改DNS域名解析到新的EC2服务器</li>
+<li>安装和配置任何非基于AMI的系统，最好使用自动化方式（避免手工错误）</li>
+</ol>
+<h2 id="Warm-Standby"><a href="#Warm-Standby" class="headerlink" title="Warm Standby"></a>Warm Standby</h2><ul>
+<li>在温备场景下，一个小规模的完整业务环境会运行在AWS中</li>
+<li>还能用于非生产环境，比如测试和内部使用</li>
+<li>在灾难的情况下，系统可以轻松地按比例放大或缩小处理生产负载<h3 id="Warm-standby—prep"><a href="#Warm-standby—prep" class="headerlink" title="Warm standby—prep"></a>Warm standby—prep</h3><img src="https://i.loli.net/2019/08/19/VfY2FtMjGD65a89.jpg" alt="010.jpg"></li>
+</ul>
+<ol>
+<li>建立实例级别的复制或镜像关系</li>
+<li>创建和维护AMI以加快部署速度</li>
+<li>使用最小配置环境运行服务</li>
+<li>根据需要及时更新软件、补丁和配置文件，保持与主站点一致<h3 id="Warm-standby—recover"><a href="#Warm-standby—recover" class="headerlink" title="Warm standby—recover"></a>Warm standby—recover</h3><img src="https://i.loli.net/2019/08/19/UYPvqVmub3FwCnj.jpg" alt="011.jpg"></li>
+<li>增加EC2数量（横向扩展）（扩成与主站点一致）</li>
+<li>根据需要增大EC2配置（纵向扩展）使其启动应用程序</li>
+<li>手动更改DNS记录，或使用Route 53自动运行状况检查将所有流量路由到AWS环境</li>
+<li>增大或扩展数据库以防止DR发生故障</li>
+<li>考虑使用AutoScaling组以调整适应负载的变化</li>
+</ol>
+<h2 id="Multi-Site"><a href="#Multi-Site" class="headerlink" title="Multi Site"></a>Multi Site</h2><ul>
+<li>Multi Site 指的是 active-active 的架构，在两个站点上提供同样的基础架构</li>
+<li>主备站点同时对外提供服务，由DNS根据加权路由决定将请求转发到相应站点</li>
+<li>在故障的情况下，通过DNS解析可以将流量转发到健康站点，并同时扩展其架构以使用负载增大<h3 id="Multi-site—prep"><a href="#Multi-site—prep" class="headerlink" title="Multi site—prep"></a>Multi site—prep</h3><img src="https://i.loli.net/2019/08/19/EAqiml5hf7Iwp19.jpg" alt="012.jpg"></li>
+</ul>
+<ol>
+<li>在AWS上复制生产环境到站点</li>
+<li>DNS 可以根据加权规则进行不同比率流量分配</li>
+<li>配置自动故障转移以将流量从受影响的站点重新路由。 例如用于检查主数据库是否可用的应用程序，若master故障则重定向到另外一边<h3 id="Multi-site—recovery"><a href="#Multi-site—recovery" class="headerlink" title="Multi site—recovery"></a>Multi site—recovery</h3><img src="https://i.loli.net/2019/08/19/lyESjqAcoma8UPg.jpg" alt="013.jpg"></li>
+<li>手动或使用DNS故障转移集群，修改DNS权重，以便将所有请求转发到将康站点</li>
+<li>具备故障转移应用程r 需要能够逻辑处理在切换后使用本地的数据库（健康）</li>
+<li>建议使用AutoScaling组以自动调整其负载规模的变化</li>
+</ol>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="Fail-back"><a href="#Fail-back" class="headerlink" title="Fail back"></a>Fail back</h2><p>当主站点恢复以后，你往往需要将运行环境从灾备环境切换到原来的主环境，此成为 fail-back。对于不同的灾备场景，有不同的做法。</p>
+<p><strong>备份和恢复</strong></p>
+<ol>
+<li>冻结向 DR site 的数据更新</li>
+<li>做备份</li>
+<li>将备份 restore 到主 site</li>
+<li>将用户引流到主site</li>
+<li>解冻数据更新</li>
+</ol>
+<p><strong>Pilot light, warm standby, and multi-site：</strong></p>
+<ol>
+<li>从 DR site 往主site 做数据同步，直到主site数据一致</li>
+<li>冻结向 DR site 的数据更新</li>
+<li>将用户引流到主site</li>
+<li>解冻数据更新</li>
+</ol>
+<h2 id="多站点部署需要考虑的因素"><a href="#多站点部署需要考虑的因素" class="headerlink" title="多站点部署需要考虑的因素"></a>多站点部署需要考虑的因素</h2><ul>
+<li>站点间的距离 - 距离越远，往往延迟越高</li>
+<li>可用的带宽</li>
+<li>应用所需的数据同步速率 - 这速度需要低于可用带宽</li>
+<li>同步技术 - 同步需要是并行的，以提高效率</li>
+<li>同步方式 - 同步的和异步的。AWS RDS 在可用区之间是同步的</li>
+<li>同步目标 - 是往一个目标站点同步，还是往多个目标站点同步</li>
+</ul>
+<h2 id="灾备计划"><a href="#灾备计划" class="headerlink" title="灾备计划"></a>灾备计划</h2><ul>
+<li>测试：一旦DR site 准备就绪，需要有完整的测试来验证</li>
+<li>持续的监控和告警：对 DR site 做持续监控，并及时处理问题</li>
+<li>备份：即使切换到DR site，还是要做常规备份</li>
+<li>用户访问：要保证用户访问 DR site 的安全性</li>
+</ul>
+<p>Refer</p>
+<ol>
+<li><a href="https://media.amazonwebservices.com/AWS_Disaster_Recovery.pdf" target="_blank" rel="noopener">https://media.amazonwebservices.com/AWS_Disaster_Recovery.pdf</a> 《Using Amazon Web Services for Disaster Recovery》</li>
+<li><a href="https://www.cnblogs.com/sammyliu/p/8902556.html" target="_blank" rel="noopener">https://www.cnblogs.com/sammyliu/p/8902556.html</a></li>
+<li>《Building Fault-Tolerant Application on AWS》</li>
+<li><a href="https://d1.awsstatic.com/whitepapers/architecture/AWS-Reliability-Pillar.pdf" target="_blank" rel="noopener">https://d1.awsstatic.com/whitepapers/architecture/AWS-Reliability-Pillar.pdf</a> 《Reliability Pillar》</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/19/AWS-S3-Deep-Dive/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -5437,363 +5966,6 @@ table tr:hover {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/10/16/流计算/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/16/流计算/" itemprop="url">流计算</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T19:02:37+08:00">
-                2018-10-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bigdata/" itemprop="url" rel="index">
-                    <span itemprop="name">Bigdata</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="流计算概述"><a href="#流计算概述" class="headerlink" title="流计算概述"></a>流计算概述</h1><h2 id="静态数据和流数据"><a href="#静态数据和流数据" class="headerlink" title="静态数据和流数据"></a>静态数据和流数据</h2><ul>
-<li>很多企业为了支持决策分析而构建的数据仓库系统，其中存放的大量历史数据就是静态数据。技术人员可以利用数据挖掘和OLAP（On-Line Analytical Processing）分析工具从静态数据中找到对企业有价值的信息<br><img src="https://i.loli.net/2019/08/15/CMX6Q7n4UceDJi8.png" alt="静态数据.png"></li>
-</ul>
-<ul>
-<li>近年来，在Web应用、网络监控、传感监测等领域，兴起了一种新的数据密集型应用——流数据，即数据以大量、快速、时变的流形式持续到达</li>
-<li>实例：PM2.5检测、电子商务网站用户点击流</li>
-<li>流数据具有如下特征：<ul>
-<li>数据快速持续到达，潜在大小也许是无穷无尽的</li>
-<li>数据来源众多，格式复杂</li>
-<li>数据量大，但是不十分关注存储，一旦经过处理，要么被丢弃，要么被归档存储</li>
-<li>注重数据的整体价值，不过分关注个别数据</li>
-<li>数据顺序颠倒，或者不完整，系统无法控制将要处理的新到达的数据元素的顺序</li>
-</ul>
-</li>
-</ul>
-<h2 id="批量计算和实时计算"><a href="#批量计算和实时计算" class="headerlink" title="批量计算和实时计算"></a>批量计算和实时计算</h2><ul>
-<li>对静态数据和流数据的处理，对应着两种截然不同的计算模式：批量计算和实时计算</li>
-<li>批量计算：充裕时间处理静态数据，如Hadoop</li>
-<li>流数据不适合采用批量计算，因为流数据不适合用传统的关系模型建模</li>
-<li>流数据必须采用实时计算，响应时间为秒级</li>
-<li>数据量少时，不是问题，但是，在大数据时代，数据格式复杂、来源众多、数据量巨大，对实时计算提出了很大的挑战。因此，针对流数据的实时计算——流计算，应运而生<br><img src="https://i.loli.net/2019/08/15/nC72xfOSIHaXW6J.png" alt="数据的两种处理模型.png"></li>
-</ul>
-<h2 id="流计算概念"><a href="#流计算概念" class="headerlink" title="流计算概念"></a>流计算概念</h2><ul>
-<li>流计算：实时获取来自不同数据源的海量数据，经过实时分析处理，获得有价值的信息<br><img src="https://i.loli.net/2019/08/15/ryRDeMPvW2kVFZ8.png" alt="流计算示意图.png"></li>
-<li>流计算秉承一个基本理念，即<strong>数据的价值随着时间的流逝而降低</strong>，如用户点击流。因此，当事件出现时就应该立即进行处理，而不是缓存起来进行批量处理。为了及时处理流数据，就需要一个低延迟、可扩展、高可靠的处理引擎</li>
-<li>对于一个流计算系统来说，它应达到如下需求：<ul>
-<li>高性能：处理大数据的基本要求，如每秒处理几十万条数据</li>
-<li>海量式：支持TB级甚至是PB级的数据规模</li>
-<li>实时性：保证较低的延迟时间，达到秒级别，甚至是毫秒级别</li>
-<li>分布式：支持大数据的基本架构，必须能够平滑扩展</li>
-<li>易用性：能够快速进行开发和部署</li>
-<li>可靠性：能可靠地处理流数据</li>
-</ul>
-</li>
-</ul>
-<h2 id="流计算与Hadoop"><a href="#流计算与Hadoop" class="headerlink" title="流计算与Hadoop"></a>流计算与Hadoop</h2><ul>
-<li>Hadoop设计的初衷是面向大规模数据的批量处理，每台机器并行运行MapReduce任务，最后对结果进行汇总输出</li>
-<li>MapReduce是专门面向静态数据的批量处理的，内部各种实现机制都为批处理做了高度优化，不适合用于处理持续到达的动态数据</li>
-<li>可能会想到一种“变通”的方案来降低批处理的时间延迟——将基于MapReduce的批量处理转为小批量处理，将输入数据切成小的片段，每隔一个周期就启动一次MapReduce作业。但这种方式也无法有效处理流数据<ul>
-<li>切分成小片段，可以降低延迟，但是也增加了附加开销，还要处理片段之间依赖关系</li>
-<li>需要改造MapReduce以支持流式处理<br><font color="red"><strong>结论：鱼和熊掌不可兼得，Hadoop擅长批处理，不适合流计算</strong></font></li>
-</ul>
-</li>
-</ul>
-<h2 id="流计算框架"><a href="#流计算框架" class="headerlink" title="流计算框架"></a>流计算框架</h2><ul>
-<li>目前有三类常见的流计算框架和平台：商业级的流计算平台、开源流计算框架、公司为支持自身业务开发的流计算框架</li>
-<li>商业级：IBM InfoSphere Streams和IBM StreamBase</li>
-<li>较为常见的是开源流计算框架，代表如下：<ul>
-<li>Twitter Storm：免费、开源的分布式实时计算系统，可简单、高效、可靠地处理大量的流数据</li>
-<li>Yahoo! S4（Simple Scalable Streaming System）：开源流计算平台，是通用的、分布式的、可扩展的、分区容错的、可插拔的流式系统</li>
-</ul>
-</li>
-<li>公司为支持自身业务开发的流计算框架：<ul>
-<li>Facebook Puma</li>
-<li>Dstream（百度）</li>
-<li>银河流数据处理平台（淘宝）</li>
-</ul>
-</li>
-</ul>
-<h1 id="流计算处理流程"><a href="#流计算处理流程" class="headerlink" title="流计算处理流程"></a>流计算处理流程</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li>传统的数据处理流程，需要先采集数据并存储在关系数据库等数据管理系统中，之后由用户通过查询操作和数据管理系统进行交互</li>
-<li>传统的数据处理流程隐含了两个前提：<ul>
-<li><strong>存储的数据是旧的</strong>。存储的静态数据是过去某一时刻的快照，这些数据在查询时可能已不具备时效性了</li>
-<li><strong>需要用户主动发出查询来获取结果</strong></li>
-</ul>
-</li>
-</ul>
-<h2 id="数据实时采集"><a href="#数据实时采集" class="headerlink" title="数据实时采集"></a>数据实时采集</h2><ul>
-<li>数据实时采集阶段通常采集多个数据源的海量数据，需要保证实时性、低延迟与稳定可靠</li>
-<li>以日志数据为例，由于分布式集群的广泛应用，数据分散存储在不同的机器上，因此需要实时汇总来自不同机器上的日志数据</li>
-<li>目前有许多互联网公司发布的开源分布式日志采集系统均可满足每秒数百MB的数据采集和传输需求，如：<ul>
-<li>Facebook的Scribe</li>
-<li>LinkedIn的Kafka</li>
-<li>淘宝的Time Tunnel</li>
-<li>基于Hadoop的Chukwa和Flume<br><img src="https://i.loli.net/2019/08/16/uPW8HjeiowtgRVF.png" alt="数据实时采集.png"></li>
-</ul>
-</li>
-</ul>
-<h2 id="数据实时计算"><a href="#数据实时计算" class="headerlink" title="数据实时计算"></a>数据实时计算</h2><ul>
-<li>数据采集系统的基本架构一般有以下三个部分：<ul>
-<li>Agent：主动采集数据，并把数据推送到Collector部分</li>
-<li>Collector：接收多个Agent的数据，并实现有序、可靠、高性能的转发</li>
-<li>Store：存储Collector转发过来的数据（对于流计算不存储数据</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/U3KCNEJhtjHvkPZ.png" alt="数据采集系统基本架构.png"></p>
-<ul>
-<li>数据实时计算阶段对采集的数据进行实时的分析和计算，并反馈实时结果</li>
-<li>经流处理系统处理后的数据，可视情况进行存储，以便之后再进行分析计算。在时效性要求较高的场景中，处理之后的数据也可以直接丢弃</li>
-</ul>
-<h2 id="实时查询服务"><a href="#实时查询服务" class="headerlink" title="实时查询服务"></a>实时查询服务</h2><ul>
-<li>实时查询服务：经由流计算框架得出的结果可供用户进行实时查询、展示或储存</li>
-<li>传统的数据处理流程，用户需要主动发出查询才能获得想要的结果。而在流处理流程中，实时查询服务可以不断更新结果，并将用户所需的结果实时推送给用户</li>
-<li>虽然通过对传统的数据处理系统进行定时查询，也可以实现不断地更新结果和结果推送，但通过这样的方式获取的结果，仍然是根据过去某一时刻的数据得到的结果，与实时结果有着本质的区别<blockquote>
-<ul>
-<li>可见，流处理系统与传统的数据处理系统有如下不同：</li>
-</ul>
-</blockquote>
-</li>
-<li>流处理系统处理的是实时的数据，而传统的数据处理系统处理的是预先存储好的静态数据</li>
-<li>用户通过流处理系统获取的是实时结果，而通过传统的数据处理系统，获取的是过去某一时刻的结果</li>
-<li>流处理系统无需用户主动发出查询，实时查询服务可以主动将实时结果推送给用户</li>
-</ul>
-<h1 id="流计算应用"><a href="#流计算应用" class="headerlink" title="流计算应用"></a>流计算应用</h1><ul>
-<li>流计算是针对流数据的实时计算，可以应用在多种场景中，如Web服务、机器翻译、广告投放、自然语言处理、气候模拟预测等</li>
-<li>如百度、淘宝等大型网站中，每天都会产生大量流数据，包括用户的搜索内容、用户的浏览记录等数据。采用流计算进行实时数据分析，可以了解每个时刻的流量变化情况，甚至可以分析用户的实时浏览轨迹，从而进行实时个性化内容推荐</li>
-<li>但是，并不是每个应用场景都需要用到流计算的。流计算适合于需要处理持续到达的流数据、对数据处理有较高实时性要求的场景</li>
-</ul>
-<h1 id="流计算开源框架-–-Storm"><a href="#流计算开源框架-–-Storm" class="headerlink" title="流计算开源框架 – Storm"></a>流计算开源框架 – Storm</h1><h2 id="Storm简介"><a href="#Storm简介" class="headerlink" title="Storm简介"></a>Storm简介</h2><ul>
-<li>Twitter Storm是一个免费、开源的分布式实时计算系统，Storm对于实时计算的意义类似于Hadoop对于批处理的意义，Storm可以简单、高效、可靠地处理流数据，并支持多种编程语言</li>
-<li>Storm框架可以方便地与数据库系统进行整合，从而开发出强大的实时计算系统</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/2OAfhoyKXdsYmjV.png" alt="Twitter的分层数据处理架构.png"></p>
-<h2 id="Storm的特点"><a href="#Storm的特点" class="headerlink" title="Storm的特点"></a>Storm的特点</h2><ul>
-<li>Storm可用于许多领域中，如实时分析、在线机器学习、持续计算、远程RPC、数据提取加载转换等</li>
-<li>Storm具有以下主要特点：<ul>
-<li>整合性：Storm可方便地与队列系统和数据库系统进行整合</li>
-<li>简易的API：Storm的API在使用上即简单又方便</li>
-<li>可扩展性：Storm的并行特性使其可以运行在分布式集群中</li>
-<li>容错性：Storm可自动进行故障节点的重启、任务的重新分配</li>
-<li>可靠的消息处理：Storm保证每个消息都能完整处理 </li>
-<li>支持各种编程语言：Storm支持使用各种编程语言来定义任务</li>
-<li>快速部署：Storm可以快速进行部署和使用</li>
-<li>免费、开源：Storm是一款开源框架，可以免费使用</li>
-</ul>
-</li>
-</ul>
-<h2 id="Storm设计思想"><a href="#Storm设计思想" class="headerlink" title="Storm设计思想"></a>Storm设计思想</h2><ul>
-<li>Storm主要术语包括Streams、Spouts、Bolts、Topology和Stream Groupings</li>
-<li>Streams：Storm将流数据Stream描述成一个无限的Tuple序列，这些Tuple序列会以分布式的方式并行地创建和处理<br><img src="https://i.loli.net/2019/08/16/pyhWGTaef9SscdM.png" alt="Stream.png"></li>
-<li>每个tuple是一堆值，每个值有一个名字，并且每个值可以是任何类型</li>
-<li>Tuple本来应该是一个Key-Value的Map，由于各个组件间传递的tuple的字段名称已经事先定义好了，所以Tuple只需要按序填入各个Value，所以就是一个Value List（值列表）</li>
-<li>Spout：Storm认为每个Stream都有一个源头，并把这个源头抽象为Spout</li>
-<li>通常Spout会从外部数据源（队列、数据库等）读取数据，然后封装成Tuple形式，发送到Stream中。Spout是一个主动的角色，在接口内部有个nextTuple函数，Storm框架会不停的调用该函数<br><img src="https://i.loli.net/2019/08/16/uO6giCcEQ81NrBX.png" alt="Spout.png"></li>
-<li>Bolt：Storm将Streams的状态转换过程抽象为Bolt。Bolt即可以处理Tuple，也可以将处理后的Tuple作为新的Streams发送给其他Bolt</li>
-<li>Bolt可以执行过滤、函数操作、Join、操作数据库等任何操作</li>
-<li>Bolt是一个被动的角色，其接口中有一个execute(Tuple input)方法，在接收到消息之后会调用此函数，用户可以在此方法中执行自己的处理逻辑<br><img src="https://i.loli.net/2019/08/16/TVfov9rABmMWx8D.png" alt="bboult.png"></li>
-<li>Topology：Storm将Spouts和Bolts组成的网络抽象成Topology，它可以被提交到Storm集群执行。Topology可视为流转换图，图中节点是一个Spout或Bolt，边则表示Bolt订阅了哪个Stream。当Spout或者Bolt发送元组时，它会把元组发送到每个订阅了该Stream的Bolt上进行处理</li>
-<li>Topology里面的每个处理组件（Spout或Bolt）都包含处理逻辑， 而组件之间的连接则表示数据流动的方向</li>
-<li>Topology里面的每一个组件都是并行运行的</li>
-<li>在Topology里面可以指定每个组件的并行度， Storm会在集群里面分配那么多的线程来同时计算</li>
-<li>在Topology的具体实现上，Storm中的Topology定义仅仅是一些Thrift结构体（二进制高性能的通信中间件），支持各种编程语言进行定义<br><img src="https://i.loli.net/2019/08/16/sWUh84QkrPGbjdL.png" alt="Toploly.png"></li>
-<li>Stream Groupings：Storm中的Stream Groupings用于告知Topology如何在两个组件间（如Spout和Bolt之间，或者不同的Bolt之间）进行Tuple的传送。每一个Spout和Bolt都可以有多个分布式任务，一个任务在什么时候、以什么方式发送Tuple就是由Stream Groupings来决定的<br><img src="https://i.loli.net/2019/08/16/IHnpzWscD8PEBmJ.png" alt="StramGrouping .png"><blockquote>
-<ul>
-<li>目前，Storm中的Stream Groupings有如下几种方式：</li>
-</ul>
-</blockquote>
-</li>
-</ul>
-<ol>
-<li>ShuffleGrouping：随机分组，随机分发Stream中的Tuple，保证每个Bolt的Task接收Tuple数量大致一致</li>
-<li>FieldsGrouping：按照字段分组，保证相同字段的Tuple分配到同一个Task中</li>
-<li>AllGrouping：广播发送，每一个Task都会收到所有的Tuple</li>
-<li>GlobalGrouping：全局分组，所有的Tuple都发送到同一个Task中</li>
-<li>NonGrouping：不分组，和ShuffleGrouping类似，当前Task的执行会和它的被订阅者在同一个线程中执行</li>
-<li>DirectGrouping：直接分组，直接指定由某个Task来执行Tuple的处理</li>
-</ol>
-<h2 id="Storm框架设计"><a href="#Storm框架设计" class="headerlink" title="Storm框架设计"></a>Storm框架设计</h2><ul>
-<li>Storm运行任务的方式与Hadoop类似：Hadoop运行的是MapReduce作业，而Storm运行的是“Topology”</li>
-<li>但两者的任务大不相同，主要的不同是：MapReduce作业最终会完成计算并结束运行，而Topology将持续处理消息（直到人为终止）<table>
-<thead>
-<tr>
-<th>Hadoop</th>
-<th>Storm</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>应用名称</td>
-<td>Job</td>
-</tr>
-<tr>
-<td>系统角色</td>
-<td>JobTracker</td>
-</tr>
-<tr>
-<td>系统角色</td>
-<td>TaskTracker</td>
-</tr>
-<tr>
-<td>组件接口</td>
-<td>Map/Reduce</td>
-</tr>
-</tbody></table>
-</li>
-<li>Storm集群采用“Master—Worker”的节点方式：<ul>
-<li>Master节点运行名为“Nimbus”的后台程序（类似Hadoop中的“JobTracker”），负责在集群范围内分发代码、为Worker分配任务和监测故障</li>
-<li>Worker节点运行名为“Supervisor”的后台程序，负责监听分配给它所在机器的工作，即根据Nimbus分配的任务来决定启动或停止Worker进程，一个Worker节点上同时运行若干个Worker进程</li>
-</ul>
-</li>
-<li>Storm使用Zookeeper来作为分布式协调组件，负责Nimbus和多个Supervisor之间的所有协调工作。借助于Zookeeper，若Nimbus进程或Supervisor进程意外终止，重启时也能读取、恢复之前的状态并继续工作，使得Storm极其稳定<br><img src="https://i.loli.net/2019/08/16/OxlvwgL9Juq8Zam.png" alt="Storm集群架构示意图.png"></li>
-</ul>
-<ol>
-<li>worker:每个worker进程都属于一个特定的Topology，每个Supervisor节点的worker可以有多个，每个worker对Topology中的每个组件（Spout或 Bolt）运行一个或者多个executor线程来提供task的运行服务</li>
-<li>executor：executor是产生于worker进程内部的线程，会执行同一个组件的一个或者多个task。</li>
-<li>task:实际的数据处理由task完成，在Topology的生命周期中，每个组件的task数目是不会发生变化的，而executor的数目却不一定。executor数目小于等于task的数目，默认情况下，二者是相等的<br><img src="https://i.loli.net/2019/08/16/ivGbezZRMup6jDh.png" alt="worker excuter和task关系.png"><blockquote>
-<ul>
-<li>基于这样的架构设计，Storm的工作流程如下图所示：</li>
-</ul>
-</blockquote>
-</li>
-</ol>
-<ul>
-<li>所有Topology任务的提交必须在Storm客户端节点上进行，提交后，由Nimbus节点分配给其他Supervisor节点进行处理</li>
-<li>Nimbus节点首先将提交的Topology进行分片，分成一个个Task，分配给相应的Supervisor，并将Task和Supervisor相关的信息提交到Zookeeper集群上</li>
-<li>Supervisor会去Zookeeper集群上认领自己的Task，通知自己的Worker进程进行Task的处理</li>
-<li>说明：在提交了一个Topology之后，Storm就会创建Spout/Bolt实例并进行序列化。之后，将序列化的组件发送给所有的任务所在的机器(即Supervisor节点)，在每一个任务上反序列化组件<br><img src="https://i.loli.net/2019/08/16/GHqlOyPUjadZnzF.png" alt="Storm工作流程示意图.png"><h1 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h1><h2 id="Spark-Streaming设计"><a href="#Spark-Streaming设计" class="headerlink" title="Spark Streaming设计"></a>Spark Streaming设计</h2></li>
-<li>Spark Streaming可整合多种输入数据源，如Kafka、Flume、HDFS，甚至是普通的TCP套接字。经处理后的数据可存储至文件系统、数据库，或显示在仪表盘里<br><img src="https://i.loli.net/2019/08/16/KvQyUpZ9Rs1c8uH.png" alt="Spark Streaming支持的输入、输出数据源.png"></li>
-<li>Spark Streaming的基本原理是将实时输入数据流以时间片（秒级）为单位进行拆分，然后经Spark引擎以类似批处理的方式处理每个时间片数据<br><img src="https://i.loli.net/2019/08/16/wYuM6RTUAn9B5vi.png" alt="Spark Streaming执行流程.png"></li>
-<li>Spark Streaming最主要的抽象是DStream（Discretized Stream，离散化数据流），表示连续不断的数据流。在内部实现上，Spark Streaming的输入数据按照时间片（如1秒）分成一段一段的DStream，每一段数据转换为Spark中的RDD，并且对DStream的操作都最终转变为对相应的RDD的操作<br><img src="https://i.loli.net/2019/08/16/7uiej3OvUBofWPp.png" alt="DStream操作示意图.png"></li>
-</ul>
-<h2 id="Spark-Streaming与Storm的对比"><a href="#Spark-Streaming与Storm的对比" class="headerlink" title="Spark Streaming与Storm的对比"></a>Spark Streaming与Storm的对比</h2><ul>
-<li>Spark Streaming和Storm最大的区别在于，Spark Streaming无法实现毫秒级的流计算，而Storm可以实现毫秒级响应</li>
-<li>Spark Streaming构建在Spark上，一方面是因为Spark的低延迟执行引擎（100ms+）可以用于实时计算，另一方面，相比于Storm，RDD数据集更容易做高效的容错处理</li>
-<li>Spark Streaming采用的小批量处理的方式使得它可以同时兼容批量和实时数据处理的逻辑和算法，因此，方便了一些需要历史数据和实时数据联合分析的特定应用场合</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -5844,7 +6016,7 @@ table tr:hover {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -5866,7 +6038,7 @@ table tr:hover {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

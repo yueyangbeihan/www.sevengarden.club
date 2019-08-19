@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Distatster Recovery,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言：HA目标保障应用的连续运行（724），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用. 背景知识 AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。 概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践 灾备（D">
+<meta name="keywords" content="Distatster Recovery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS Disaster Recovery">
+<meta property="og:url" content="http://sevengarden.club/2019/08/19/AWS-Disaster-Recovery/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="前言：HA目标保障应用的连续运行（724），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用. 背景知识 AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。 概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践 灾备（D">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/EXpeLb4d6JwfrgO.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/IOTGYH4Q9EFVcLB.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/Kqtkb1VrwO5ISAh.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/lzv5RpfmHdFo16h.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/S2Wusy9fhACOVko.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/HYOyPK4SIceX2kb.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/xdZmK2tVSb9plRD.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/C18ZsEtOWjmNDSq.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/VfY2FtMjGD65a89.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/UYPvqVmub3FwCnj.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/EAqiml5hf7Iwp19.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/lyESjqAcoma8UPg.jpg">
+<meta property="og:updated_time" content="2019-08-19T13:38:12.389Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWS Disaster Recovery">
+<meta name="twitter:description" content="前言：HA目标保障应用的连续运行（724），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用. 背景知识 AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。 概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践 灾备（D">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/19/EXpeLb4d6JwfrgO.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sevengarden.club/2019/08/19/AWS-Disaster-Recovery/">
+
+
+
+
+
+  <title>AWS Disaster Recovery | 岳阳北寒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">岳阳北寒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-somrthing">
+          <a href="/有料" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            somrthing
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/19/AWS-Disaster-Recovery/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AWS Disaster Recovery</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-19T21:08:22+08:00">
+                2019-08-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><em>前言：HA目标保障应用的连续运行（7</em>24），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用.</p>
+<h1 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h1><ul>
+<li>AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。</li>
+<li>概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践</li>
+<li>灾备（Disaster Recovery）包括灾备方案和环境准备，以及从灾难中恢复两部分。任何对企业的业务持续性或财务有负面影响的事件都可成为灾难。AWS最佳实践之一就是始终故障设计系统的构建。</li>
+<li>灾难包括硬件或软件故障、断网、断电、火灾、水灾、人为错误等等。为了减少灾难带来的损失，企业往往会投入时间和金钱来计划和准备、训练员工、定义和更新流程。为DR 计划而做的投资往往有很大不同。灾难恢复往往有两个指标：</li>
+</ul>
+<p>RTO - Recovery time objective：从灾难发生到恢复到满足计划SLA服务的时间<br>RPO - Reovery point objective：允许丢失的数据的时间长度<br><img src="https://i.loli.net/2019/08/19/EXpeLb4d6JwfrgO.jpg" alt="001.jpg"></p>
+<ul>
+<li>常见故障位置</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>硬件故障</td>
+<td>系统中任何硬件组件的故障，包括主机，存储，网络或其他等。</td>
+</tr>
+<tr>
+<td>部署失败</td>
+<td>由于软件，硬件，网络或配置部署而直接导致的故障。 包括自动和手动更改。</td>
+</tr>
+<tr>
+<td>负载因素</td>
+<td>负载相关的故障可以是一个行为触发、特定进程或负载聚合加重，或者服务达到临界点。 而网络尤其可能发生负载故障。</td>
+</tr>
+<tr>
+<td>数据因素</td>
+<td>系统接受了无法处理的操作（毒丸）</td>
+</tr>
+<tr>
+<td>凭证过期</td>
+<td>证书或凭证到期导致的系统无法继续运行</td>
+</tr>
+<tr>
+<td>依赖关系</td>
+<td>相关依赖的服务故障</td>
+</tr>
+<tr>
+<td>基础设施</td>
+<td>电力或环境因素导致的硬件故障风险</td>
+</tr>
+<tr>
+<td>资源耗尽</td>
+<td>超出可用容量，达到限制条件，ID耗尽，提供的资源不再可用</td>
+</tr>
+</tbody></table>
+<ul>
+<li>常见应用应用程序设计目标和可用性</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>可用性</th>
+<th>最大停机时间（年）</th>
+<th>应用类别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>99%</td>
+<td>3天15小时</td>
+<td>Batch processing, data extraction, transfer, and load jobs</td>
+</tr>
+<tr>
+<td>99.90%</td>
+<td>8小时45分钟</td>
+<td>Internal tools like knowledge management, project tracking</td>
+</tr>
+<tr>
+<td>99.95%</td>
+<td>4小时22分钟</td>
+<td>Online commerce, point of sale</td>
+</tr>
+<tr>
+<td><font color="orange">99.99% </font></td>
+<td><font color="orange"> 52分钟 </font></td>
+<td><font color="orange">Video delivery, broadcast systems    </font></td>
+</tr>
+<tr>
+<td><font color="orange">99.999% </font></td>
+<td><font color="orange">5分钟  </font></td>
+<td><font color="orange"> ATM transactions, telecommunications systems </font></td>
+</tr>
+</tbody></table>
+<p><font face="黑体" size="5" color="red">针对最后两个AWS建议多Region部署</font></p>
+<h2 id="Region级别服务"><a href="#Region级别服务" class="headerlink" title="Region级别服务"></a>Region级别服务</h2><ul>
+<li><p>默认S3 DynamoDB EFS SQS Kinesis 提供区域内可靠性保障（无单点）</p>
+</li>
+<li><p>RDS ElasticCache ElasticSearch 需要配置多可用区部署实现可靠性保障<br><img src="https://i.loli.net/2019/08/19/IOTGYH4Q9EFVcLB.jpg" alt="002.jpg"></p>
+</li>
+<li><p><strong>AWS服务设计可用性目标</strong>（具体可相见文末《Reliability Pillar》，白皮书包含了非常详细的每一个服务的设计可用性）</p>
+</li>
+<li><p>基本上来讲，每一个服务都包含控制平面和数据平面，每一个纬度可用性不一样</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>服务</strong></th>
+<th align="center"><strong>组件</strong></th>
+<th align="center"><strong>可用性</strong></th>
+<th align="center"><strong>多可用区可用性</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">EC2</td>
+<td align="center">控制平面</td>
+<td align="center">99.950%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">单AZ数据平面</td>
+<td align="center">99.950%</td>
+<td align="center">99.9975%</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">多AZ数据平面</td>
+<td align="center">99.950%</td>
+<td align="center">99.9990%</td>
+</tr>
+<tr>
+<td align="center">EBS</td>
+<td align="center">控制平面</td>
+<td align="center">99.950%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">EBS</td>
+<td align="center">数据平面（卷可用性）</td>
+<td align="center">99.999%</td>
+<td align="center">100.0000%</td>
+</tr>
+<tr>
+<td align="center">RDS</td>
+<td align="center">控制平面</td>
+<td align="center">99.950%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">RDS</td>
+<td align="center">单AZ数据平面</td>
+<td align="center">99.950%</td>
+<td align="center">99.9975%</td>
+</tr>
+<tr>
+<td align="center">RDS</td>
+<td align="center">多AZ数据平面</td>
+<td align="center">99.990%</td>
+<td align="center">99.9999%</td>
+</tr>
+<tr>
+<td align="center">Route 53</td>
+<td align="center">控制平面</td>
+<td align="center">99.950%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">Route 53</td>
+<td align="center">数据平面(查询结果)</td>
+<td align="center">100.000%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">S3</td>
+<td align="center">服务（标准）</td>
+<td align="center">99.990%</td>
+<td align="center">99.9999%</td>
+</tr>
+<tr>
+<td align="center">Auto Scaling</td>
+<td align="center">控制平面</td>
+<td align="center">99.900%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">Auto Scaling</td>
+<td align="center">数据平面</td>
+<td align="center">99.990%</td>
+<td align="center">99.9999%</td>
+</tr>
+<tr>
+<td align="center">EFS</td>
+<td align="center">控制平面</td>
+<td align="center">99.950%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">EFS</td>
+<td align="center">数据平面</td>
+<td align="center">99.990%</td>
+<td align="center">99.9999%</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">控制平面</td>
+<td align="center">99.900%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">数据平面</td>
+<td align="center">99.995%</td>
+<td align="center">99.9975%</td>
+</tr>
+<tr>
+<td align="center">Lambda</td>
+<td align="center">函数调用</td>
+<td align="center">99.950%</td>
+<td align="center">99.9975%</td>
+</tr>
+<tr>
+<td align="center">ELB</td>
+<td align="center">控制平面</td>
+<td align="center">99.950%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">ELB</td>
+<td align="center">数据平面</td>
+<td align="center">99.990%</td>
+<td align="center">99.9999%</td>
+</tr>
+<tr>
+<td align="center">KMS</td>
+<td align="center">控制平面</td>
+<td align="center">99.990%</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="center">KMS</td>
+<td align="center">数据平面（卷可用性）</td>
+<td align="center">99.995%</td>
+<td align="center">N/A</td>
+</tr>
+</tbody></table>
+<h1 id="实现DR的AWS关键服务"><a href="#实现DR的AWS关键服务" class="headerlink" title="实现DR的AWS关键服务"></a>实现DR的AWS关键服务</h1><h3 id="Region"><a href="#Region" class="headerlink" title="Region"></a>Region</h3><ul>
+<li>AWS服务在全球多个地区都可以使用，并DR站点位置可以适当地选择与主站点位置不同的区域<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><h4 id="S3"><a href="#S3" class="headerlink" title="S3"></a>S3</h4></li>
+<li>11个9的持久性设计的存储架构，专为关键任务和主要数据存储设计</li>
+<li>对象数据冗余的存储区域内多个设施多个设备上<h4 id="Glacier"><a href="#Glacier" class="headerlink" title="Glacier"></a>Glacier</h4></li>
+<li>为数据存档和备份提供极具性价比的存储系统</li>
+<li>针对不频繁访问模型进行优化，通常减速时间在3～5小时即可完成<h4 id="EBS"><a href="#EBS" class="headerlink" title="EBS"></a>EBS</h4></li>
+<li>提供基于时间点的快照功能</li>
+<li>快照卷可以用于创建新卷并附加到运行的实例上<h4 id="Storage-Gateway"><a href="#Storage-Gateway" class="headerlink" title="Storage Gateway"></a>Storage Gateway</h4></li>
+<li>提供本地环境与AWS存储系统之间无缝和高度安全的集成服务<h4 id="Snow-Family"><a href="#Snow-Family" class="headerlink" title="Snow Family"></a>Snow Family</h4></li>
+<li>使用便携式存储设备绕过Internet进行传输，加速大量数据移入和移出AWS</li>
+<li>通过设高速内部网络将数据直接在设备与存储服务之间传输<h3 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h3><h4 id="EC2"><a href="#EC2" class="headerlink" title="EC2"></a>EC2</h4></li>
+<li>在云中提供可调整大小的实例，轻松实现创建和扩展</li>
+<li>实例使用预配置的AMI模板</li>
+<li>EC2可以在多个AZ中启动，实现AZ级别的故障隔离<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><h4 id="Route53"><a href="#Route53" class="headerlink" title="Route53"></a>Route53</h4></li>
+<li>高度可用且可扩展的域名解析服务</li>
+<li>支持全局负载均衡功能，这在处理灾难场景时非常有效。在多站点进行故障转移的时候，站点健康检查非常有用<h4 id="Elastic-IP"><a href="#Elastic-IP" class="headerlink" title="Elastic IP"></a>Elastic IP</h4></li>
+<li>在实例或AZ故障的情况下，IP地址可以被重新映射到健康实例上</li>
+<li>EIP专为云计算动态资源设计<h4 id="ELB"><a href="#ELB" class="headerlink" title="ELB"></a>ELB</h4></li>
+<li>运行运行状况检查并自动在多个目标（如EC2实例）之间分配的应用程序流量<h4 id="VPC"><a href="#VPC" class="headerlink" title="VPC"></a>VPC</h4></li>
+<li>允许配置AWS云的私有隔离部分，以便在定义的虚拟网络中启动资源<h4 id="Direct-Connect"><a href="#Direct-Connect" class="headerlink" title="Direct Connect"></a>Direct Connect</h4></li>
+<li>设置从本地环境到AWS的专用网络连接<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3></li>
+<li>RDS，DynamoDb，Redshift提供完全托管的RDBMS，NoSQL和数据仓库解决方案，可轻松扩展</li>
+<li>DynamoDB提供跨区域复制</li>
+<li>RDS提供多可用区部署和只读副本，还能够将数据从一个区域快照到另一个区域<h3 id="部署编排"><a href="#部署编排" class="headerlink" title="部署编排"></a>部署编排</h3><h4 id="CloudFormation"><a href="#CloudFormation" class="headerlink" title="CloudFormation"></a>CloudFormation</h4></li>
+<li>为开发人员和系统管理员提供了一种简单的方法来创建相关AWS资源的集合，并以有序和可预测的方式进行配置（DIY）<h4 id="Elastice-Beanstalk"><a href="#Elastice-Beanstalk" class="headerlink" title="Elastice Beanstalk"></a>Elastice Beanstalk</h4></li>
+<li>是一种易于使用的服务，用于部署和扩展Web应用程序和服务<h4 id="OpsWorks"><a href="#OpsWorks" class="headerlink" title="OpsWorks"></a>OpsWorks</h4></li>
+<li>完全托管的配置管理服务，基础设施和应用程序管理的自动化工具</li>
+<li>应用程序塑造成一个包含不同层级 (例如负载均衡层、数据库层和应用程序服务器层) 的堆栈</li>
+<li>具实例发生故障时，它将自动替换实例</li>
+<li>可用于准备阶段以模拟环境，并在恢复阶段与AWS CloudFormation配合使用</li>
+<li>可以依托预配置的堆栈快速的恢复预设环境（达到预设RTO）</li>
+</ul>
+<h1 id="四种场景"><a href="#四种场景" class="headerlink" title="四种场景"></a>四种场景</h1><p>从“备份和还原”选项（左侧）移至“多站点”选项（右侧）时，RTO和RPO会随着成本的增加而降低<br><img src="https://i.loli.net/2019/08/19/Kqtkb1VrwO5ISAh.png" alt="003.png"></p>
+<h2 id="Backup-amp-Restore"><a href="#Backup-amp-Restore" class="headerlink" title="Backup &amp; Restore"></a>Backup &amp; Restore</h2><ul>
+<li>备份恢复是最常见的一种容灾手段，将主站点数据备份到与主站点隔离的存储设备。当生产环境故障后，能够在备站点将数据恢复。<h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a><strong>备份</strong></h3><img src="https://i.loli.net/2019/08/19/lzv5RpfmHdFo16h.jpg" alt="005.jpg"></li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/19/S2Wusy9fhACOVko.jpg" alt="006.jpg"></p>
+<ul>
+<li>在大多数传统环境中，数据备份到磁带并定期发送到异地，需要花费更长时间在中断或灾难时恢复系统</li>
+</ul>
+<ol>
+<li>S3可以在任何位置上进行数据备份和快速恢复</li>
+<li>Snow Family系列设备可以直接绕过Internet进行大规模数据的传输</li>
+<li>Glacier可用于存档场景，几个小时即可取回数据</li>
+<li>Storage Gateway支持将本地数据卷（EBS卷）透明的复制到云上S3中进行备份。既可以作为备份解决方案的网关，也可作为主数据存储（缓存卷）</li>
+<li>Direct Connect用于构建高速稳定一致的链路层（本地环境到云上）</li>
+<li>EBS卷、RDS、Redshift的快照都可以存储到S3中</li>
+</ol>
+<h3 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a><strong>恢复</strong></h3><p><img src="https://i.loli.net/2019/08/19/HYOyPK4SIceX2kb.jpg" alt="007.jpg"></p>
+<ul>
+<li>备份数据可以快速恢复和创建EC2、数据库实例的运行环境</li>
+<li>几个关键步骤<ol>
+<li>选择适当的工具或方法将数据备份到AWS</li>
+<li>确保对此数据采用适当的保留策略</li>
+<li>确保为此数据采取适当的安全措施，包括加密和访问策略</li>
+<li>定期测试此数据的恢复和系统的恢复</li>
+</ol>
+</li>
+</ul>
+<h2 id="Pilot-Light"><a href="#Pilot-Light" class="headerlink" title="Pilot Light"></a>Pilot Light</h2><p>   Pilot Light 则在AWS上创建最小运行环境，它包含业务系统中最核心部分，比如数据库。这会节省恢复时间，因为系统中最核心部分已经在运行，而且数据是最新的了。而不经常更新部分，比如操作系统和应用，则可以定期打包到AMI中</p>
+<ul>
+<li>通过在AWS中维持配置和运行最小或关键系统，如数据库应用（保持数据库的复制和更新）</li>
+<li>在恢复过程中，一个完整的生产环境，包括应用程序、Web服务等，可以围绕这个核心系统快速配置（预配置AMI模板和EBS快照）；</li>
+<li>网络层面，可以使用ELB实现流量分配，并将DNS指向ELB，也可以使用预先分配的EIP与相关实例绑定</li>
+</ul>
+<h3 id="Pilotlight-prep"><a href="#Pilotlight-prep" class="headerlink" title="Pilotlight-prep"></a>Pilotlight-prep</h3><p><img src="https://i.loli.net/2019/08/19/xdZmK2tVSb9plRD.jpg" alt="008.jpg"></p>
+<ol>
+<li>建立EC2实例或RDS实例复制或镜像关系，保持关键数据两边一致</li>
+<li>确保所有的软件在AWS环境中都可用</li>
+<li>建立和维护在故障恢复时的关键服务的AMI（将操作系统和应用，则可以定期打包到AMI）</li>
+<li>定期运行这些服务并测试，及时更新配置、软件更新</li>
+<li>建议优先考虑自动化配置AWS服务</li>
+</ol>
+<h3 id="Pilot-light-recovery"><a href="#Pilot-light-recovery" class="headerlink" title="Pilot light-recovery"></a>Pilot light-recovery</h3><p><img src="https://i.loli.net/2019/08/19/C18ZsEtOWjmNDSq.jpg" alt="009.jpg"></p>
+<ol>
+<li>启动AMI创建EC2实例</li>
+<li>视情况调整数据库实例大小/存储实例大小，以应对可能增大的流量，如RDS支持scale up，而EC2也可轻松实现水平扩展</li>
+<li>建议在DR站点开启RDS 多可用区部署，以增强站点数据层的健壮性</li>
+<li>更改DNS域名解析到新的EC2服务器</li>
+<li>安装和配置任何非基于AMI的系统，最好使用自动化方式（避免手工错误）</li>
+</ol>
+<h2 id="Warm-Standby"><a href="#Warm-Standby" class="headerlink" title="Warm Standby"></a>Warm Standby</h2><ul>
+<li>在温备场景下，一个小规模的完整业务环境会运行在AWS中</li>
+<li>还能用于非生产环境，比如测试和内部使用</li>
+<li>在灾难的情况下，系统可以轻松地按比例放大或缩小处理生产负载<h3 id="Warm-standby—prep"><a href="#Warm-standby—prep" class="headerlink" title="Warm standby—prep"></a>Warm standby—prep</h3><img src="https://i.loli.net/2019/08/19/VfY2FtMjGD65a89.jpg" alt="010.jpg"></li>
+</ul>
+<ol>
+<li>建立实例级别的复制或镜像关系</li>
+<li>创建和维护AMI以加快部署速度</li>
+<li>使用最小配置环境运行服务</li>
+<li>根据需要及时更新软件、补丁和配置文件，保持与主站点一致<h3 id="Warm-standby—recover"><a href="#Warm-standby—recover" class="headerlink" title="Warm standby—recover"></a>Warm standby—recover</h3><img src="https://i.loli.net/2019/08/19/UYPvqVmub3FwCnj.jpg" alt="011.jpg"></li>
+<li>增加EC2数量（横向扩展）（扩成与主站点一致）</li>
+<li>根据需要增大EC2配置（纵向扩展）使其启动应用程序</li>
+<li>手动更改DNS记录，或使用Route 53自动运行状况检查将所有流量路由到AWS环境</li>
+<li>增大或扩展数据库以防止DR发生故障</li>
+<li>考虑使用AutoScaling组以调整适应负载的变化</li>
+</ol>
+<h2 id="Multi-Site"><a href="#Multi-Site" class="headerlink" title="Multi Site"></a>Multi Site</h2><ul>
+<li>Multi Site 指的是 active-active 的架构，在两个站点上提供同样的基础架构</li>
+<li>主备站点同时对外提供服务，由DNS根据加权路由决定将请求转发到相应站点</li>
+<li>在故障的情况下，通过DNS解析可以将流量转发到健康站点，并同时扩展其架构以使用负载增大<h3 id="Multi-site—prep"><a href="#Multi-site—prep" class="headerlink" title="Multi site—prep"></a>Multi site—prep</h3><img src="https://i.loli.net/2019/08/19/EAqiml5hf7Iwp19.jpg" alt="012.jpg"></li>
+</ul>
+<ol>
+<li>在AWS上复制生产环境到站点</li>
+<li>DNS 可以根据加权规则进行不同比率流量分配</li>
+<li>配置自动故障转移以将流量从受影响的站点重新路由。 例如用于检查主数据库是否可用的应用程序，若master故障则重定向到另外一边<h3 id="Multi-site—recovery"><a href="#Multi-site—recovery" class="headerlink" title="Multi site—recovery"></a>Multi site—recovery</h3><img src="https://i.loli.net/2019/08/19/lyESjqAcoma8UPg.jpg" alt="013.jpg"></li>
+<li>手动或使用DNS故障转移集群，修改DNS权重，以便将所有请求转发到将康站点</li>
+<li>具备故障转移应用程r 需要能够逻辑处理在切换后使用本地的数据库（健康）</li>
+<li>建议使用AutoScaling组以自动调整其负载规模的变化</li>
+</ol>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="Fail-back"><a href="#Fail-back" class="headerlink" title="Fail back"></a>Fail back</h2><p>当主站点恢复以后，你往往需要将运行环境从灾备环境切换到原来的主环境，此成为 fail-back。对于不同的灾备场景，有不同的做法。</p>
+<p><strong>备份和恢复</strong></p>
+<ol>
+<li>冻结向 DR site 的数据更新</li>
+<li>做备份</li>
+<li>将备份 restore 到主 site</li>
+<li>将用户引流到主site</li>
+<li>解冻数据更新</li>
+</ol>
+<p><strong>Pilot light, warm standby, and multi-site：</strong></p>
+<ol>
+<li>从 DR site 往主site 做数据同步，直到主site数据一致</li>
+<li>冻结向 DR site 的数据更新</li>
+<li>将用户引流到主site</li>
+<li>解冻数据更新</li>
+</ol>
+<h2 id="多站点部署需要考虑的因素"><a href="#多站点部署需要考虑的因素" class="headerlink" title="多站点部署需要考虑的因素"></a>多站点部署需要考虑的因素</h2><ul>
+<li>站点间的距离 - 距离越远，往往延迟越高</li>
+<li>可用的带宽</li>
+<li>应用所需的数据同步速率 - 这速度需要低于可用带宽</li>
+<li>同步技术 - 同步需要是并行的，以提高效率</li>
+<li>同步方式 - 同步的和异步的。AWS RDS 在可用区之间是同步的</li>
+<li>同步目标 - 是往一个目标站点同步，还是往多个目标站点同步</li>
+</ul>
+<h2 id="灾备计划"><a href="#灾备计划" class="headerlink" title="灾备计划"></a>灾备计划</h2><ul>
+<li>测试：一旦DR site 准备就绪，需要有完整的测试来验证</li>
+<li>持续的监控和告警：对 DR site 做持续监控，并及时处理问题</li>
+<li>备份：即使切换到DR site，还是要做常规备份</li>
+<li>用户访问：要保证用户访问 DR site 的安全性</li>
+</ul>
+<p>Refer</p>
+<ol>
+<li><a href="https://media.amazonwebservices.com/AWS_Disaster_Recovery.pdf" target="_blank" rel="noopener">https://media.amazonwebservices.com/AWS_Disaster_Recovery.pdf</a> 《Using Amazon Web Services for Disaster Recovery》</li>
+<li><a href="https://www.cnblogs.com/sammyliu/p/8902556.html" target="_blank" rel="noopener">https://www.cnblogs.com/sammyliu/p/8902556.html</a></li>
+<li>《Building Fault-Tolerant Application on AWS》</li>
+<li><a href="https://d1.awsstatic.com/whitepapers/architecture/AWS-Reliability-Pillar.pdf" target="_blank" rel="noopener">https://d1.awsstatic.com/whitepapers/architecture/AWS-Reliability-Pillar.pdf</a> 《Reliability Pillar》</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Distatster-Recovery/" rel="tag"># Distatster Recovery</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/19/AWS-S3-Deep-Dive/" rel="next" title="AWS S3 Deep Dive">
+                <i class="fa fa-chevron-left"></i> AWS S3 Deep Dive
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">seven</p>
+              <p class="site-description motion-element" itemprop="description">seven 的精神家园，学习笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="1988xuegang@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景知识"><span class="nav-number">1.</span> <span class="nav-text">背景知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Region级别服务"><span class="nav-number">1.1.</span> <span class="nav-text">Region级别服务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现DR的AWS关键服务"><span class="nav-number">2.</span> <span class="nav-text">实现DR的AWS关键服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Region"><span class="nav-number">2.0.1.</span> <span class="nav-text">Region</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储"><span class="nav-number">2.0.2.</span> <span class="nav-text">存储</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#S3"><span class="nav-number">2.0.2.1.</span> <span class="nav-text">S3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Glacier"><span class="nav-number">2.0.2.2.</span> <span class="nav-text">Glacier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EBS"><span class="nav-number">2.0.2.3.</span> <span class="nav-text">EBS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Storage-Gateway"><span class="nav-number">2.0.2.4.</span> <span class="nav-text">Storage Gateway</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Snow-Family"><span class="nav-number">2.0.2.5.</span> <span class="nav-text">Snow Family</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算"><span class="nav-number">2.0.3.</span> <span class="nav-text">计算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EC2"><span class="nav-number">2.0.3.1.</span> <span class="nav-text">EC2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络"><span class="nav-number">2.0.4.</span> <span class="nav-text">网络</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Route53"><span class="nav-number">2.0.4.1.</span> <span class="nav-text">Route53</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Elastic-IP"><span class="nav-number">2.0.4.2.</span> <span class="nav-text">Elastic IP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ELB"><span class="nav-number">2.0.4.3.</span> <span class="nav-text">ELB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VPC"><span class="nav-number">2.0.4.4.</span> <span class="nav-text">VPC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Direct-Connect"><span class="nav-number">2.0.4.5.</span> <span class="nav-text">Direct Connect</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库"><span class="nav-number">2.0.5.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署编排"><span class="nav-number">2.0.6.</span> <span class="nav-text">部署编排</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CloudFormation"><span class="nav-number">2.0.6.1.</span> <span class="nav-text">CloudFormation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Elastice-Beanstalk"><span class="nav-number">2.0.6.2.</span> <span class="nav-text">Elastice Beanstalk</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OpsWorks"><span class="nav-number">2.0.6.3.</span> <span class="nav-text">OpsWorks</span></a></li></ol></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#四种场景"><span class="nav-number">3.</span> <span class="nav-text">四种场景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Backup-amp-Restore"><span class="nav-number">3.1.</span> <span class="nav-text">Backup &amp; Restore</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#备份"><span class="nav-number">3.1.1.</span> <span class="nav-text">备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#恢复"><span class="nav-number">3.1.2.</span> <span class="nav-text">恢复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pilot-Light"><span class="nav-number">3.2.</span> <span class="nav-text">Pilot Light</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pilotlight-prep"><span class="nav-number">3.2.1.</span> <span class="nav-text">Pilotlight-prep</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pilot-light-recovery"><span class="nav-number">3.2.2.</span> <span class="nav-text">Pilot light-recovery</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Warm-Standby"><span class="nav-number">3.3.</span> <span class="nav-text">Warm Standby</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Warm-standby—prep"><span class="nav-number">3.3.1.</span> <span class="nav-text">Warm standby—prep</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Warm-standby—recover"><span class="nav-number">3.3.2.</span> <span class="nav-text">Warm standby—recover</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multi-Site"><span class="nav-number">3.4.</span> <span class="nav-text">Multi Site</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-site—prep"><span class="nav-number">3.4.1.</span> <span class="nav-text">Multi site—prep</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-site—recovery"><span class="nav-number">3.4.2.</span> <span class="nav-text">Multi site—recovery</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Fail-back"><span class="nav-number">4.1.</span> <span class="nav-text">Fail back</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多站点部署需要考虑的因素"><span class="nav-number">4.2.</span> <span class="nav-text">多站点部署需要考虑的因素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#灾备计划"><span class="nav-number">4.3.</span> <span class="nav-text">灾备计划</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seven</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
