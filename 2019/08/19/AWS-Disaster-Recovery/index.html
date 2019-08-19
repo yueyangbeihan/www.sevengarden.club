@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/19/UYPvqVmub3FwCnj.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/08/19/EAqiml5hf7Iwp19.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/08/19/lyESjqAcoma8UPg.jpg">
-<meta property="og:updated_time" content="2019-08-19T13:38:12.389Z">
+<meta property="og:updated_time" content="2019-08-19T13:42:27.727Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AWS Disaster Recovery">
 <meta name="twitter:description" content="前言：HA目标保障应用的连续运行（724），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用. 背景知识 AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。 概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践 灾备（D">
@@ -617,31 +617,61 @@
 </tr>
 </tbody></table>
 <h1 id="实现DR的AWS关键服务"><a href="#实现DR的AWS关键服务" class="headerlink" title="实现DR的AWS关键服务"></a>实现DR的AWS关键服务</h1><h3 id="Region"><a href="#Region" class="headerlink" title="Region"></a>Region</h3><ul>
-<li>AWS服务在全球多个地区都可以使用，并DR站点位置可以适当地选择与主站点位置不同的区域<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><h4 id="S3"><a href="#S3" class="headerlink" title="S3"></a>S3</h4></li>
+<li>AWS服务在全球多个地区都可以使用，并DR站点位置可以适当地选择与主站点位置不同的区域</li>
+</ul>
+<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><h4 id="S3"><a href="#S3" class="headerlink" title="S3"></a>S3</h4><ul>
 <li>11个9的持久性设计的存储架构，专为关键任务和主要数据存储设计</li>
-<li>对象数据冗余的存储区域内多个设施多个设备上<h4 id="Glacier"><a href="#Glacier" class="headerlink" title="Glacier"></a>Glacier</h4></li>
+<li>对象数据冗余的存储区域内多个设施多个设备上</li>
+</ul>
+<h4 id="Glacier"><a href="#Glacier" class="headerlink" title="Glacier"></a>Glacier</h4><ul>
 <li>为数据存档和备份提供极具性价比的存储系统</li>
-<li>针对不频繁访问模型进行优化，通常减速时间在3～5小时即可完成<h4 id="EBS"><a href="#EBS" class="headerlink" title="EBS"></a>EBS</h4></li>
+<li>针对不频繁访问模型进行优化，通常减速时间在3～5小时即可完成</li>
+</ul>
+<h4 id="EBS"><a href="#EBS" class="headerlink" title="EBS"></a>EBS</h4><ul>
 <li>提供基于时间点的快照功能</li>
-<li>快照卷可以用于创建新卷并附加到运行的实例上<h4 id="Storage-Gateway"><a href="#Storage-Gateway" class="headerlink" title="Storage Gateway"></a>Storage Gateway</h4></li>
-<li>提供本地环境与AWS存储系统之间无缝和高度安全的集成服务<h4 id="Snow-Family"><a href="#Snow-Family" class="headerlink" title="Snow Family"></a>Snow Family</h4></li>
+<li>快照卷可以用于创建新卷并附加到运行的实例上</li>
+</ul>
+<h4 id="Storage-Gateway"><a href="#Storage-Gateway" class="headerlink" title="Storage Gateway"></a>Storage Gateway</h4><ul>
+<li>提供本地环境与AWS存储系统之间无缝和高度安全的集成服务</li>
+</ul>
+<h4 id="Snow-Family"><a href="#Snow-Family" class="headerlink" title="Snow Family"></a>Snow Family</h4><ul>
 <li>使用便携式存储设备绕过Internet进行传输，加速大量数据移入和移出AWS</li>
-<li>通过设高速内部网络将数据直接在设备与存储服务之间传输<h3 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h3><h4 id="EC2"><a href="#EC2" class="headerlink" title="EC2"></a>EC2</h4></li>
+<li>通过设高速内部网络将数据直接在设备与存储服务之间传输<h3 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h3></li>
+</ul>
+<h4 id="EC2"><a href="#EC2" class="headerlink" title="EC2"></a>EC2</h4><ul>
 <li>在云中提供可调整大小的实例，轻松实现创建和扩展</li>
 <li>实例使用预配置的AMI模板</li>
-<li>EC2可以在多个AZ中启动，实现AZ级别的故障隔离<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><h4 id="Route53"><a href="#Route53" class="headerlink" title="Route53"></a>Route53</h4></li>
+<li>EC2可以在多个AZ中启动，实现AZ级别的故障隔离<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3></li>
+</ul>
+<h4 id="Route53"><a href="#Route53" class="headerlink" title="Route53"></a>Route53</h4><ul>
 <li>高度可用且可扩展的域名解析服务</li>
-<li>支持全局负载均衡功能，这在处理灾难场景时非常有效。在多站点进行故障转移的时候，站点健康检查非常有用<h4 id="Elastic-IP"><a href="#Elastic-IP" class="headerlink" title="Elastic IP"></a>Elastic IP</h4></li>
+<li>支持全局负载均衡功能，这在处理灾难场景时非常有效。在多站点进行故障转移的时候，站点健康检查非常有用</li>
+</ul>
+<h4 id="Elastic-IP"><a href="#Elastic-IP" class="headerlink" title="Elastic IP"></a>Elastic IP</h4><ul>
 <li>在实例或AZ故障的情况下，IP地址可以被重新映射到健康实例上</li>
-<li>EIP专为云计算动态资源设计<h4 id="ELB"><a href="#ELB" class="headerlink" title="ELB"></a>ELB</h4></li>
-<li>运行运行状况检查并自动在多个目标（如EC2实例）之间分配的应用程序流量<h4 id="VPC"><a href="#VPC" class="headerlink" title="VPC"></a>VPC</h4></li>
-<li>允许配置AWS云的私有隔离部分，以便在定义的虚拟网络中启动资源<h4 id="Direct-Connect"><a href="#Direct-Connect" class="headerlink" title="Direct Connect"></a>Direct Connect</h4></li>
-<li>设置从本地环境到AWS的专用网络连接<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3></li>
+<li>EIP专为云计算动态资源设计</li>
+</ul>
+<h4 id="ELB"><a href="#ELB" class="headerlink" title="ELB"></a>ELB</h4><ul>
+<li>运行运行状况检查并自动在多个目标（如EC2实例）之间分配的应用程序流量</li>
+</ul>
+<h4 id="VPC"><a href="#VPC" class="headerlink" title="VPC"></a>VPC</h4><ul>
+<li>允许配置AWS云的私有隔离部分，以便在定义的虚拟网络中启动资源</li>
+</ul>
+<h4 id="Direct-Connect"><a href="#Direct-Connect" class="headerlink" title="Direct Connect"></a>Direct Connect</h4><ul>
+<li>设置从本地环境到AWS的专用网络连接</li>
+</ul>
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><ul>
 <li>RDS，DynamoDb，Redshift提供完全托管的RDBMS，NoSQL和数据仓库解决方案，可轻松扩展</li>
 <li>DynamoDB提供跨区域复制</li>
-<li>RDS提供多可用区部署和只读副本，还能够将数据从一个区域快照到另一个区域<h3 id="部署编排"><a href="#部署编排" class="headerlink" title="部署编排"></a>部署编排</h3><h4 id="CloudFormation"><a href="#CloudFormation" class="headerlink" title="CloudFormation"></a>CloudFormation</h4></li>
-<li>为开发人员和系统管理员提供了一种简单的方法来创建相关AWS资源的集合，并以有序和可预测的方式进行配置（DIY）<h4 id="Elastice-Beanstalk"><a href="#Elastice-Beanstalk" class="headerlink" title="Elastice Beanstalk"></a>Elastice Beanstalk</h4></li>
-<li>是一种易于使用的服务，用于部署和扩展Web应用程序和服务<h4 id="OpsWorks"><a href="#OpsWorks" class="headerlink" title="OpsWorks"></a>OpsWorks</h4></li>
+<li>RDS提供多可用区部署和只读副本，还能够将数据从一个区域快照到另一个区域</li>
+</ul>
+<h3 id="部署编排"><a href="#部署编排" class="headerlink" title="部署编排"></a>部署编排</h3><h4 id="CloudFormation"><a href="#CloudFormation" class="headerlink" title="CloudFormation"></a>CloudFormation</h4><ul>
+<li>为开发人员和系统管理员提供了一种简单的方法来创建相关AWS资源的集合，并以有序和可预测的方式进行配置（DIY）</li>
+</ul>
+<h4 id="Elastice-Beanstalk"><a href="#Elastice-Beanstalk" class="headerlink" title="Elastice Beanstalk"></a>Elastice Beanstalk</h4><ul>
+<li>是一种易于使用的服务，用于部署和扩展Web应用程序和服务</li>
+</ul>
+<h4 id="OpsWorks"><a href="#OpsWorks" class="headerlink" title="OpsWorks"></a>OpsWorks</h4><ul>
 <li>完全托管的配置管理服务，基础设施和应用程序管理的自动化工具</li>
 <li>应用程序塑造成一个包含不同层级 (例如负载均衡层、数据库层和应用程序服务器层) 的堆栈</li>
 <li>具实例发生故障时，它将自动替换实例</li>
@@ -700,13 +730,17 @@
 <h2 id="Warm-Standby"><a href="#Warm-Standby" class="headerlink" title="Warm Standby"></a>Warm Standby</h2><ul>
 <li>在温备场景下，一个小规模的完整业务环境会运行在AWS中</li>
 <li>还能用于非生产环境，比如测试和内部使用</li>
-<li>在灾难的情况下，系统可以轻松地按比例放大或缩小处理生产负载<h3 id="Warm-standby—prep"><a href="#Warm-standby—prep" class="headerlink" title="Warm standby—prep"></a>Warm standby—prep</h3><img src="https://i.loli.net/2019/08/19/VfY2FtMjGD65a89.jpg" alt="010.jpg"></li>
+<li>在灾难的情况下，系统可以轻松地按比例放大或缩小处理生产负载</li>
 </ul>
+<h3 id="Warm-standby—prep"><a href="#Warm-standby—prep" class="headerlink" title="Warm standby—prep"></a>Warm standby—prep</h3><p><img src="https://i.loli.net/2019/08/19/VfY2FtMjGD65a89.jpg" alt="010.jpg"></p>
 <ol>
 <li>建立实例级别的复制或镜像关系</li>
 <li>创建和维护AMI以加快部署速度</li>
 <li>使用最小配置环境运行服务</li>
-<li>根据需要及时更新软件、补丁和配置文件，保持与主站点一致<h3 id="Warm-standby—recover"><a href="#Warm-standby—recover" class="headerlink" title="Warm standby—recover"></a>Warm standby—recover</h3><img src="https://i.loli.net/2019/08/19/UYPvqVmub3FwCnj.jpg" alt="011.jpg"></li>
+<li>根据需要及时更新软件、补丁和配置文件，保持与主站点一致</li>
+</ol>
+<h3 id="Warm-standby—recover"><a href="#Warm-standby—recover" class="headerlink" title="Warm standby—recover"></a>Warm standby—recover</h3><p><img src="https://i.loli.net/2019/08/19/UYPvqVmub3FwCnj.jpg" alt="011.jpg"></p>
+<ol>
 <li>增加EC2数量（横向扩展）（扩成与主站点一致）</li>
 <li>根据需要增大EC2配置（纵向扩展）使其启动应用程序</li>
 <li>手动更改DNS记录，或使用Route 53自动运行状况检查将所有流量路由到AWS环境</li>
@@ -716,12 +750,16 @@
 <h2 id="Multi-Site"><a href="#Multi-Site" class="headerlink" title="Multi Site"></a>Multi Site</h2><ul>
 <li>Multi Site 指的是 active-active 的架构，在两个站点上提供同样的基础架构</li>
 <li>主备站点同时对外提供服务，由DNS根据加权路由决定将请求转发到相应站点</li>
-<li>在故障的情况下，通过DNS解析可以将流量转发到健康站点，并同时扩展其架构以使用负载增大<h3 id="Multi-site—prep"><a href="#Multi-site—prep" class="headerlink" title="Multi site—prep"></a>Multi site—prep</h3><img src="https://i.loli.net/2019/08/19/EAqiml5hf7Iwp19.jpg" alt="012.jpg"></li>
+<li>在故障的情况下，通过DNS解析可以将流量转发到健康站点，并同时扩展其架构以使用负载增大</li>
 </ul>
+<h3 id="Multi-site—prep"><a href="#Multi-site—prep" class="headerlink" title="Multi site—prep"></a>Multi site—prep</h3><p><img src="https://i.loli.net/2019/08/19/EAqiml5hf7Iwp19.jpg" alt="012.jpg"></p>
 <ol>
 <li>在AWS上复制生产环境到站点</li>
 <li>DNS 可以根据加权规则进行不同比率流量分配</li>
-<li>配置自动故障转移以将流量从受影响的站点重新路由。 例如用于检查主数据库是否可用的应用程序，若master故障则重定向到另外一边<h3 id="Multi-site—recovery"><a href="#Multi-site—recovery" class="headerlink" title="Multi site—recovery"></a>Multi site—recovery</h3><img src="https://i.loli.net/2019/08/19/lyESjqAcoma8UPg.jpg" alt="013.jpg"></li>
+<li>配置自动故障转移以将流量从受影响的站点重新路由。 例如用于检查主数据库是否可用的应用程序，若master故障则重定向到另外一边</li>
+</ol>
+<h3 id="Multi-site—recovery"><a href="#Multi-site—recovery" class="headerlink" title="Multi site—recovery"></a>Multi site—recovery</h3><p><img src="https://i.loli.net/2019/08/19/lyESjqAcoma8UPg.jpg" alt="013.jpg"></p>
+<ol>
 <li>手动或使用DNS故障转移集群，修改DNS权重，以便将所有请求转发到将康站点</li>
 <li>具备故障转移应用程r 需要能够逻辑处理在切换后使用本地的数据库（健康）</li>
 <li>建议使用AutoScaling组以自动调整其负载规模的变化</li>
