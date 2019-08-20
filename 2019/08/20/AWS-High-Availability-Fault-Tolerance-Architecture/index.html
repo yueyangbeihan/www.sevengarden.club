@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="HA,FT,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言：AWS提供众多服务和基础架构能力，以在云中构建可靠，容错且高度可用的系统。一下为AWS的定义范围和解释   Fault Tolerance定义了构建系统的某些组件发生故障时，系统仍能保持运行的能力 大多数高级服务（如S3，RDS，SQS和ELB）都考虑了容错和高可用性（自设计冗余性和高可用） 提供基本基础架构（如EC2和EBS）的服务提供特定功能，例如可用区，弹性IP地址和快照，系统需要正">
+<meta name="keywords" content="HA,FT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS High Availability &amp; Fault Tolerance Architecture">
+<meta property="og:url" content="http://sevengarden.club/2019/08/20/AWS-High-Availability-Fault-Tolerance-Architecture/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="前言：AWS提供众多服务和基础架构能力，以在云中构建可靠，容错且高度可用的系统。一下为AWS的定义范围和解释   Fault Tolerance定义了构建系统的某些组件发生故障时，系统仍能保持运行的能力 大多数高级服务（如S3，RDS，SQS和ELB）都考虑了容错和高可用性（自设计冗余性和高可用） 提供基本基础架构（如EC2和EBS）的服务提供特定功能，例如可用区，弹性IP地址和快照，系统需要正">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2019/08/20/UKcMhzL8VOBtHmD.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/20/o7k6O5vtfeIEcUP.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/20/eBGgKt6F527nRLf.jpg">
+<meta property="og:updated_time" content="2019-08-20T10:06:32.647Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWS High Availability &amp; Fault Tolerance Architecture">
+<meta name="twitter:description" content="前言：AWS提供众多服务和基础架构能力，以在云中构建可靠，容错且高度可用的系统。一下为AWS的定义范围和解释   Fault Tolerance定义了构建系统的某些组件发生故障时，系统仍能保持运行的能力 大多数高级服务（如S3，RDS，SQS和ELB）都考虑了容错和高可用性（自设计冗余性和高可用） 提供基本基础架构（如EC2和EBS）的服务提供特定功能，例如可用区，弹性IP地址和快照，系统需要正">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/20/UKcMhzL8VOBtHmD.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sevengarden.club/2019/08/20/AWS-High-Availability-Fault-Tolerance-Architecture/">
+
+
+
+
+
+  <title>AWS High Availability & Fault Tolerance Architecture | 岳阳北寒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">岳阳北寒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-somrthing">
+          <a href="/有料" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            somrthing
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/20/AWS-High-Availability-Fault-Tolerance-Architecture/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AWS High Availability & Fault Tolerance Architecture</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-20T17:30:32+08:00">
+                2019-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>前言：AWS提供众多服务和基础架构能力，以在云中构建可靠，容错且高度可用的系统。一下为AWS的定义范围和解释</li>
+</ul>
+<ul>
+<li>Fault Tolerance定义了构建系统的某些组件发生故障时，系统仍能保持运行的能力</li>
+<li>大多数高级服务（如S3，RDS，SQS和ELB）都考虑了容错和高可用性（<font size="3" color="orange">自设计冗余性和高可用</font>）</li>
+<li>提供基本基础架构（如EC2和EBS）的服务提供特定功能，例如可用区，弹性IP地址和快照，系统需要正确利用和使用这些功能才能达到容错和高可用性（<strong><font color="red">需要借助AWS基础架构实现高可用性和容错性</font></strong>）</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/20/UKcMhzL8VOBtHmD.png" alt="AWS-High-Availability-and-Fault-Tolerance.png"></p>
+<h2 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h2><h3 id="HA"><a href="#HA" class="headerlink" title="HA"></a>HA</h3><ul>
+<li>高可用性是指提供在本地系统单个组件故障情况下，能继续访问应用的能力，无论这个故障是业务流程、物理设施、IT软/硬件的故障。</li>
+<li>主要用于确保关键系统始终正常运行，如核心业务系统、数据库场景。</li>
+<li>（RPO=0，共享存储的情况下，RTO分钟级）</li>
+<li>一般使用通过运行时间百分比表示其可用性，5 个9：99.999%年可用率，意味着每年停机时间在一到两分钟</li>
+</ul>
+<h3 id="FT"><a href="#FT" class="headerlink" title="FT"></a>FT</h3><ul>
+<li>设计方式时当一个组件发生故障（无论是硬件还是软件）时，备份组件立即接管操作，从而不会丢失服务</li>
+<li>容错是高可用性的更严格版本。 HA专注于提供尽可能少的停机时间，而FT则通过实现零停机而进一步提升， 但是，在容错模型中，系统在发生故障时提供高性能的能力不是首要任务，相反，预计系统可以保持运行性能，甚至降低水平</li>
+<li>（ 设计目标RTO =0 &amp;&amp; RPO = 0）</li>
+</ul>
+<h3 id="DR"><a href="#DR" class="headerlink" title="DR"></a>DR</h3><ul>
+<li><p>灾难恢复涉及<font color="red">一系列政策，工具和程序</font>，以便在自然灾害或人为灾难之后恢复或延续重要技术基础设施和系统。</p>
+</li>
+<li><p>DR需要具有异地设施，可以在其中恢复关键数据和工作负载（无论是完全还是部分），以便在发生破坏性事件后恢复足够的业务运营。要将工作负载转移到远程位置，必须采用适当的灾难恢复解决方案</p>
+</li>
+<li><p>灾难恢复是一个更广泛，更复杂的概念，它指的是一套具有全面组件的战略，包括：风险评估，规划，依赖关系分析，远程站点配置，员工培训，测试，自动化设置等等。灾难恢复超越了<font color="red">HA和FT</font>，但可以而且应该将这些因素包括在其技术设计中。</p>
+</li>
+<li><p>由于DR场景已经跨单数据中心，基本上RPO可小时级，RTO小时级到天级别</p>
+</li>
+<li><p>相比HA、FT，DR强调发生灾难后处理，而不是应急或预防，而是减弱灾难带来的影响。DR处理的不是单个组件的故障情况，而是DC级别的故障，应对人力不可控的风险。</p>
+</li>
+<li><p>在场景上一般都是有着严格行业监管要求的，如金融、医疗等</p>
+</li>
+<li><p>容灾通常意义上分为<font color="red"><strong>三个级别（数据、应用、业务</strong></font>，国际上专业划分为7个层次）</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>级别</th>
+<th>定义</th>
+<th>RTO</th>
+<th>RTO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据级</td>
+<td>指通过建立异地容灾中心，做数据的远程备份，在灾难发生之后要确保原有的数据不会丢失或者遭到破坏。但在数据级容灾这个级别，发生灾难时应用是会中断的。在数据级容灾方式下，所建立的异地容灾中心可以简单地把它理解成一个远程的数据备份中心。数据级容灾的恢复时间比较长，但是相比其他容灾级别来讲它的费用比较低，而且构建实施也相对简单。但是，“数据源是一切关键性业务系统的生命源泉”，因此数据级容灾必不可少。</td>
+<td>RTO 最长(若干天) ，因为灾难发生时，需要重新部署机器，利用备份数据恢复业务。</td>
+<td>最低</td>
+</tr>
+<tr>
+<td>应用级</td>
+<td>在数据级容灾的基础之上，在备份站点同样构建一套相同的应用系统，通过同步或异步复制技术，这样可以保证关键应用在允许的时间范围内恢复运行，尽可能减少灾难带来的损失，让用户基本感受不到灾难的发生，这样就使系统所提供的服务是完整的、可靠的和安全的。</td>
+<td>RTO 中等（若干小时）</td>
+<td>中等。异地可以搭建一样的系统，或者小些的系统。</td>
+</tr>
+<tr>
+<td>业务级</td>
+<td>全业务的灾备，除了必要的 IT 相关技术，还要求具备全部的基础设施。其大部分内容是非IT系统（如电话、办公地点等），当大灾难发生后，原有的办公场所都会受到破坏，除了数据和应用的恢复，更需要一个备份的工作场所能够正常的开展业务。</td>
+<td>RTO 最小（若干分钟或者秒）</td>
+<td>最高</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>RTO （Recovery Time Objective）和 RPO（Recovery Point Objective）</strong></li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/20/o7k6O5vtfeIEcUP.png" alt="002.png"></p>
+<h3 id="HA与DR关系"><a href="#HA与DR关系" class="headerlink" title="HA与DR关系"></a>HA与DR关系</h3><h4 id="两者相互关联，互相补充，互有交叉，同时又有显著的区别："><a href="#两者相互关联，互相补充，互有交叉，同时又有显著的区别：" class="headerlink" title="两者相互关联，互相补充，互有交叉，同时又有显著的区别："></a>两者相互关联，互相补充，互有交叉，同时又有显著的区别：</h4><ul>
+<li>HA 往往指本地的高可用系统，表示在多个服务器运行一个或多种应用的情况下，应确保任意服务器出现任何故障时，其运行的应用不能中断，应用程序和系统应能迅速切换到其它服务器上运行，即本地系统集群和热备份。HA 往往是用共享存储，因此往往不会有数据丢失（RPO = 0），更多的是切换时间长度考虑即 RTO。</li>
+<li>DR 是指异地（同城或者异地）的高可用系统，表示在灾害发生时，数据、应用以及业务的恢复能力。异地灾备的数据灾备部分是使用数据复制，根据使用的不同数据复制技术（同步、异步、Strectched Cluster 等），数据往往有损失导致 RPO &gt;0；而异地的应用切换往往需要更长的时间，这样 RT0 &gt;0。 因此，需要结合特定的业务需求，来定制所需要的 RTO 和 RPO，以实现最优的 CTO。</li>
+</ul>
+<h4 id="也可以从别的角度上看待两者的区别："><a href="#也可以从别的角度上看待两者的区别：" class="headerlink" title="也可以从别的角度上看待两者的区别："></a>也可以从别的角度上看待两者的区别：</h4><ul>
+<li>从故障角度，HA 主要处理单组件的故障导致负载在集群内的服务器之间的切换，DR 则是应对大规模的故障导致负载在数据中心之间做切换。</li>
+<li>从网络角度，LAN 尺度的任务是 HA 的范畴，WAN 尺度的任务是 DR 的范围。</li>
+<li>从云的角度看，HA 是一个云环境内保障业务持续性的机制，DR 是多个云环境间保障业务持续性的机制。</li>
+<li>从目标角度，HA 主要是保证业务高可用，DR 是保证数据可靠的基础上的业务可用<br>当前的国内IT对于这两个技术术语有着太多差异化的理解。从个人角度来讲<font color="red" size="5"><strong>容灾更强调业务级，而HA更强调数据的高可用，独立应用的可用性。</strong></font></li>
+</ul>
+<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><p><img src="https://i.loli.net/2019/08/20/eBGgKt6F527nRLf.jpg" alt="HA&amp;DR (2).jpeg"></p>
+<h2 id="Regions-amp-Availability-Zones"><a href="#Regions-amp-Availability-Zones" class="headerlink" title="Regions &amp; Availability Zones"></a>Regions &amp; Availability Zones</h2><ul>
+<li>AWS提供多Region基础架构，并且在一个内具有多个可用区域（AZs），t提供更简易的可以轻松访问冗余部署位置。</li>
+<li>AZ分布在不同的地理位置，其设计与其他AZ物理故障隔离</li>
+<li>区域和AZ在地理上分布应用程序并帮助构建多站点解决方案来帮助实现更高的容错能力</li>
+<li>AZ之间提供低成本，低延迟的网络连接</li>
+<li>将EC2实例放置在多个AZ中，可以保护应用程序免于在单个数据中心发生故障</li>
+<li>在同一区域或另一个区域中的多个AZ中运行独立的应用程序堆栈非常重要，这样，如果一个区域出现故障，另一个区域中的应用程序可以继续运行</li>
+</ul>
+<h2 id="Amazon-Machine-Image-–-AMIs"><a href="#Amazon-Machine-Image-–-AMIs" class="headerlink" title="Amazon Machine Image – AMIs"></a>Amazon Machine Image – AMIs</h2><ul>
+<li>EC2是AWS中提供计算资源的服务</li>
+<li>Amazon机器映像（AMI）提供了可用于定义服务实例的模板</li>
+<li>模板包含软件配置（OS，应用服务和应用程序）并通过实例类型提供服务</li>
+<li>AMI可以包含所有软件、应用程序和内置代码，也可以配置为具有启动时安装的引导脚本</li>
+<li>单一的AMI可用于创建不同的实例类型的服务器，用于创建新实例或更换故障实例</li>
+</ul>
+<h2 id="Auto-Scaling"><a href="#Auto-Scaling" class="headerlink" title="Auto Scaling"></a>Auto Scaling</h2><ul>
+<li>Auto Scaling可根据自定义的规则自动扩展或缩小EC2</li>
+<li>AS除了在响应增大时，增加多个实例; 当不再需要这些实例时，它们将自动终止</li>
+<li>AS可以根据需要终止服务器实例，他们将自动启动替换实例</li>
+<li>AS可以在AWS Region范围内跨AZ部署</li>
+</ul>
+<h2 id="Elastic-Load-Balancing-–-ELB"><a href="#Elastic-Load-Balancing-–-ELB" class="headerlink" title="Elastic Load Balancing – ELB"></a>Elastic Load Balancing – ELB</h2><ul>
+<li>ELB 在单个可用区或多个可用区内的多个目标（Amazon EC2 实例、容器和 IP 地址）之间自动分配流量</li>
+<li>随着创建ELB，会产生一个DNS域名，发送到这个域名的任何请求都会被转发到后端处理实例上</li>
+<li>ELB支持主机上的运行状况检查，在跨多个可用区域的EC2实例的流量分配，根据健康状态检查动态添加和删除EC2主机</li>
+<li>ELB 可以检测无法正常运行的目标、停止向它们发送流量，然后将负载分散到剩余的正常运行的目标上，直至使用AS组无缝地恢复不健康的实例</li>
+<li>AS和ELB是一个理想的组合——ELB为请求提供对外DNS访问域名，ELB自动确保始终有正确数量的健康EC2实例来接受请求处理</li>
+<li>ELB可用于在一个区域的多个AZs中的多个实例之间进行平衡（<font color="red">跨AZ多实例</font>）</li>
+</ul>
+<h2 id="Elastic-IPs-–-EIP"><a href="#Elastic-IPs-–-EIP" class="headerlink" title="Elastic IPs – EIP"></a>Elastic IPs – EIP</h2><ul>
+<li>弹性IP地址是公共静态IP地址，仅在所属区域内的实现地址于实例之间映射</li>
+<li>EIP与AWS账户绑定，而不是与实例关联</li>
+<li>弹性IP地址可用于固定终端服务的需求，例如，主数据库，文件服务器和EC2托管负载平衡器</li>
+<li>可以通过快速将地址重新映射到另一个正在运行的实例或刚刚启动的替换实例，弹性IP地址可用于解决主机或可用区故障（EIP与实例解耦）</li>
+</ul>
+<h2 id="Reserved-Instance"><a href="#Reserved-Instance" class="headerlink" title="Reserved Instance"></a>Reserved Instance</h2><ul>
+<li>预留实例有助于保留并保证计算始终以较低的成本提供</li>
+</ul>
+<h2 id="Elastic-Block-Store-–-EBS"><a href="#Elastic-Block-Store-–-EBS" class="headerlink" title="Elastic Block Store – EBS"></a>Elastic Block Store – EBS</h2><ul>
+<li>弹性块存储（EBS）提供持久的实例存储卷，这些存储卷独立于实例的生命周期而存在，并且比实例存储大多个数量级</li>
+<li>EBS卷以冗余方式存储数据，并在单个可用区内自动复制</li>
+<li>在故障转移场景，如果EC2实例发生故障并需要更换，则EBS卷可以附加到新的EC2实例</li>
+<li>有价值的数据不应该对实例（临时）存储上当没有没有适当的备份，复制或重新创建数据的能力的时候</li>
+</ul>
+<h2 id="EBS-Snapshots"><a href="#EBS-Snapshots" class="headerlink" title="EBS Snapshots"></a>EBS Snapshots</h2><ul>
+<li>EBS卷是高度可靠的，为了进一步减轻故障的可能性并提高数据可靠性性，基于时间点的快照可以存储在S3中，然后将其复制到多个AZ</li>
+<li>快照可用于创建新的EBS卷，这些卷是快照时原始卷的精确副本</li>
+<li>快照提供了一种有效的方法来处理磁盘故障、主机、AZ的故障问题</li>
+<li>快照是增量备份，仅备份自上一个快照以来的更改，因此建议保留最近的快照</li>
+<li><font color="red">快照属于region范围内，而EBS卷属于AZ范围内</font></li>
+</ul>
+<h2 id="Relational-Database-Service-–-RDS"><a href="#Relational-Database-Service-–-RDS" class="headerlink" title="Relational Database Service – RDS"></a>Relational Database Service – RDS</h2><ul>
+<li>RDS是在云上交付的一种数据库服务，并使数据库服务使用变得更加简单</li>
+<li>RDS Multi-AZ部署，在不同的AZ提供数据库的同步备用副本，提高数据库的可用性，并保护数据库不受意外停机的影响</li>
+<li>在出现故障转移的情况下，备用服务器被无缝地提升为主服务器，并将处理数据库操作</li>
+<li>默认情况下，数据库启用的自动备份为数据库实例提供时间点恢复</li>
+<li>RDS将备份数据库和事务日志，并将其存储在用户指定的保留期内</li>
+<li>除自动备份外，还可以执行手动RDS备份，这些备份在明确删除之前一直保留</li>
+<li>备份有助于从更高级别的故障中恢复，例如无意中的数据修改，无论是操作员错误还是应用程序中的错误</li>
+<li>RDS只读副本提供数据库的只读副本，并提供扩展超出单个数据库部署容量的能力，用于读取大量数据库工作负载（<font color="red">注意数据库引擎，不是所有RDS支持</font>）</li>
+<li>RDS只读副本是一种可扩展性而非高可用性解决方案</li>
+</ul>
+<h2 id="S3"><a href="#S3" class="headerlink" title="S3"></a>S3</h2><ul>
+<li>S3提供高度持久，容错和冗余的对象存储</li>
+<li>跨S3区域中的多个设施在多个设备上冗余地存储对象</li>
+<li>S3是作为一个非常理想的存储解决方案，适用于静态或缓慢变化的对象，例如图像，视频和其他静态媒体</li>
+<li>S3结合Amazon CloudFront服务交互来支持静态内容缓存加速和流式数据加速传输</li>
+</ul>
+<h2 id="Simple-Queue-Service-–-SQS"><a href="#Simple-Queue-Service-–-SQS" class="headerlink" title="Simple Queue Service – SQS"></a>Simple Queue Service – SQS</h2><ul>
+<li>简单队列服务（SQS）是一种高度可靠的分布式消息传递系统，作为容错应用程序的主干环节</li>
+<li>SQS旨在提供所有消息的“至少一次”传送</li>
+<li>消息被保证发送到队列被保留长达四天（默认，并且可以扩展高达14天）或直到它们被应用程序读出并删除</li>
+<li>消息可由多个worker轮询并进行处理，而SQS使用称为可见性超时的可配置时间间隔，一次只由一个worker处理请求</li>
+<li>如果队列中的消息数量开始增加，或者处理消息的平均时间变得过高，则可以通过添加额外的EC2实例来向上扩展worker</li>
+</ul>
+<h2 id="Route-53"><a href="#Route-53" class="headerlink" title="Route 53"></a>Route 53</h2><ul>
+<li>Route 53是一种高度可用且可扩展的域名解析 服务</li>
+<li>域名的查询自动路由到最近的DNS服务器，从而提供最佳的性能作了解答</li>
+<li>Route 53支持将域名请求（例如，<a href="http://www.example.com）解析为Elastic" target="_blank" rel="noopener">www.example.com）解析为Elastic</a> Load Balancer地址以及域名root记录（example.com）</li>
+</ul>
+<h2 id="Cloud-Front"><a href="#Cloud-Front" class="headerlink" title="Cloud Front"></a>Cloud Front</h2><ul>
+<li>CloudFront可用于使用全球边缘位置网络提供网站加速访问，包括动态，静态和流媒体内容</li>
+<li>对内容的请求会自动路由到最近的边缘位置，以最佳性能体验</li>
+<li>CloudFront可以与其他AWS（如S3和EC2）配合使用以获得的最好的体验</li>
+<li>CloudFront还可以与任何非AWS原始服务器无缝协作，该服务器存储文件的源目标</li>
+</ul>
+<h2 id="Refer"><a href="#Refer" class="headerlink" title="Refer"></a>Refer</h2><ol>
+<li><a href="https://www.cnblogs.com/sammyliu/p/4741967.html" target="_blank" rel="noopener">https://www.cnblogs.com/sammyliu/p/4741967.html</a></li>
+<li><a href="http://jayendrapatil.com/aws-high-availability-fault-tolerance-architecture-certification/" target="_blank" rel="noopener">http://jayendrapatil.com/aws-high-availability-fault-tolerance-architecture-certification/</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/HA-FT/" rel="tag"># HA,FT</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/19/AWS-Disaster-Recovery/" rel="next" title="AWS Disaster Recovery">
+                <i class="fa fa-chevron-left"></i> AWS Disaster Recovery
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">seven</p>
+              <p class="site-description motion-element" itemprop="description">seven 的精神家园，学习笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="1988xuegang@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#几个概念"><span class="nav-number">1.</span> <span class="nav-text">几个概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HA"><span class="nav-number">1.1.</span> <span class="nav-text">HA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FT"><span class="nav-number">1.2.</span> <span class="nav-text">FT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DR"><span class="nav-number">1.3.</span> <span class="nav-text">DR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HA与DR关系"><span class="nav-number">1.4.</span> <span class="nav-text">HA与DR关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#两者相互关联，互相补充，互有交叉，同时又有显著的区别："><span class="nav-number">1.4.1.</span> <span class="nav-text">两者相互关联，互相补充，互有交叉，同时又有显著的区别：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#也可以从别的角度上看待两者的区别："><span class="nav-number">1.4.2.</span> <span class="nav-text">也可以从别的角度上看待两者的区别：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思维导图"><span class="nav-number">2.</span> <span class="nav-text">思维导图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Regions-amp-Availability-Zones"><span class="nav-number">3.</span> <span class="nav-text">Regions &amp; Availability Zones</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Amazon-Machine-Image-–-AMIs"><span class="nav-number">4.</span> <span class="nav-text">Amazon Machine Image – AMIs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Auto-Scaling"><span class="nav-number">5.</span> <span class="nav-text">Auto Scaling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Elastic-Load-Balancing-–-ELB"><span class="nav-number">6.</span> <span class="nav-text">Elastic Load Balancing – ELB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Elastic-IPs-–-EIP"><span class="nav-number">7.</span> <span class="nav-text">Elastic IPs – EIP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reserved-Instance"><span class="nav-number">8.</span> <span class="nav-text">Reserved Instance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Elastic-Block-Store-–-EBS"><span class="nav-number">9.</span> <span class="nav-text">Elastic Block Store – EBS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EBS-Snapshots"><span class="nav-number">10.</span> <span class="nav-text">EBS Snapshots</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Relational-Database-Service-–-RDS"><span class="nav-number">11.</span> <span class="nav-text">Relational Database Service – RDS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S3"><span class="nav-number">12.</span> <span class="nav-text">S3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Simple-Queue-Service-–-SQS"><span class="nav-number">13.</span> <span class="nav-text">Simple Queue Service – SQS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Route-53"><span class="nav-number">14.</span> <span class="nav-text">Route 53</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cloud-Front"><span class="nav-number">15.</span> <span class="nav-text">Cloud Front</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Refer"><span class="nav-number">16.</span> <span class="nav-text">Refer</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seven</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

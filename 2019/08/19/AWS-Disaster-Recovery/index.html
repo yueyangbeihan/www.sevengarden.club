@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="前言：HA目标保障应用的连续运行（724），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用. 背景知识 AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。 概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践 灾备（D">
+<meta name="description" content="前言：HA目标保障应用的连续运行（7\24），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用. 背景知识 AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。 概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践 灾备（">
 <meta name="keywords" content="Distatster Recovery">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AWS Disaster Recovery">
 <meta property="og:url" content="http://sevengarden.club/2019/08/19/AWS-Disaster-Recovery/index.html">
 <meta property="og:site_name" content="岳阳北寒">
-<meta property="og:description" content="前言：HA目标保障应用的连续运行（724），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用. 背景知识 AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。 概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践 灾备（D">
+<meta property="og:description" content="前言：HA目标保障应用的连续运行（7\24），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用. 背景知识 AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。 概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践 灾备（">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2019/08/19/EXpeLb4d6JwfrgO.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/08/19/IOTGYH4Q9EFVcLB.jpg">
@@ -99,10 +99,10 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/19/UYPvqVmub3FwCnj.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/08/19/EAqiml5hf7Iwp19.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/08/19/lyESjqAcoma8UPg.jpg">
-<meta property="og:updated_time" content="2019-08-19T13:42:27.727Z">
+<meta property="og:updated_time" content="2019-08-20T09:36:26.041Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AWS Disaster Recovery">
-<meta name="twitter:description" content="前言：HA目标保障应用的连续运行（724），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用. 背景知识 AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。 概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践 灾备（D">
+<meta name="twitter:description" content="前言：HA目标保障应用的连续运行（7\24），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用. 背景知识 AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。 概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践 灾备（">
 <meta name="twitter:image" content="https://i.loli.net/2019/08/19/EXpeLb4d6JwfrgO.jpg">
 
 
@@ -375,7 +375,7 @@
       
 
       
-        <p><em>前言：HA目标保障应用的连续运行（7</em>24），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用.</p>
+        <p><em>前言：HA目标保障应用的连续运行（7\</em>24），备份确保数据的安全性，DR确保在距离上主站点故障而其应用、数据都还能够使用.</p>
 <h1 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h1><ul>
 <li>AWS灾难恢复白皮书重点介绍了可用于灾难恢复流程的AWS服务和功能，以显著降低企业或组织的影响，包括数据、系统和业务运营方面。</li>
 <li>概述实现灾难恢复的最佳实践，从最小投资到全面可用性以及容错机制，描述了如何使用AWS服务来降低成本并确保灾难事件后业务连续性的实践</li>
@@ -841,6 +841,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/08/20/AWS-High-Availability-Fault-Tolerance-Architecture/" rel="prev" title="AWS High Availability & Fault Tolerance Architecture">
+                AWS High Availability & Fault Tolerance Architecture <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -916,7 +920,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -938,7 +942,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
