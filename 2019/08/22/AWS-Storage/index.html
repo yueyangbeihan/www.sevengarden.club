@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Storage,S3,Glacier,EFS,FSx,Storage Gateway,Backup,,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="思维导图 Overview AWS提供多种基于云的存储选择，每个服务都具有独特的性能、持久性、可用性、成本和接口，以及其他特性(如可伸缩性和弹性)。在选择存储服务请考虑其适应场景和Anti-Patterns（不推荐）模式。（可参考下图）  本文以下内容不涉及EC2 Instancestore、CloudFront、RDS、ElasticeCache等有关数据的存储，主要是以独立的存储服务提供数据存">
+<meta name="keywords" content="Storage,S3,Glacier,EFS,FSx,Storage Gateway,Backup,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS Storage">
+<meta property="og:url" content="http://sevengarden.club/2019/08/22/AWS-Storage/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="思维导图 Overview AWS提供多种基于云的存储选择，每个服务都具有独特的性能、持久性、可用性、成本和接口，以及其他特性(如可伸缩性和弹性)。在选择存储服务请考虑其适应场景和Anti-Patterns（不推荐）模式。（可参考下图）  本文以下内容不涉及EC2 Instancestore、CloudFront、RDS、ElasticeCache等有关数据的存储，主要是以独立的存储服务提供数据存">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2019/08/20/S5pGc6xsHIB8MlZ.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/08/20/17jtOg8lUSsuWQH.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/20/4ecOy7jliw3dHZr.jpg">
+<meta property="og:updated_time" content="2019-08-21T13:31:11.238Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWS Storage">
+<meta name="twitter:description" content="思维导图 Overview AWS提供多种基于云的存储选择，每个服务都具有独特的性能、持久性、可用性、成本和接口，以及其他特性(如可伸缩性和弹性)。在选择存储服务请考虑其适应场景和Anti-Patterns（不推荐）模式。（可参考下图）  本文以下内容不涉及EC2 Instancestore、CloudFront、RDS、ElasticeCache等有关数据的存储，主要是以独立的存储服务提供数据存">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/20/S5pGc6xsHIB8MlZ.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sevengarden.club/2019/08/22/AWS-Storage/">
+
+
+
+
+
+  <title>AWS Storage | 岳阳北寒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">岳阳北寒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-somrthing">
+          <a href="/有料" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            somrthing
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/22/AWS-Storage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AWS Storage</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-22T21:21:37+08:00">
+                2019-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h1><p><img src="https://i.loli.net/2019/08/20/S5pGc6xsHIB8MlZ.jpg" alt="AWS——Storage (2).jpeg"></p>
+<h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><blockquote>
+<p>AWS提供多种基于云的存储选择，每个服务都具有独特的性能、持久性、可用性、成本和接口，以及其他特性(如可伸缩性和弹性)。在选择存储服务请考虑其适应场景和Anti-Patterns（不推荐）模式。（可参考下图）</p>
+</blockquote>
+<p><img src="https://i.loli.net/2019/08/20/17jtOg8lUSsuWQH.png" alt="002.png"><br><em>本文以下内容不涉及EC2 Instancestore、CloudFront、RDS、ElasticeCache等有关数据的存储，主要是以独立的存储服务提供数据存储与管理的服务组件，因为如instancestore是临时性的，在EC2的生命周期结束之后数据就会被删除，而RDS数据库的数据处理引擎和存储有着比较紧密的耦合度（不是指不可分离），不在这里阐述.</em></p>
+<h1 id="S3-对象存储"><a href="#S3-对象存储" class="headerlink" title="S3(对象存储)"></a>S3(对象存储)</h1><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>高度可扩展，可靠且低延迟的数据存储基础架构，成本极低。</li>
+<li>通过一个简单的Web服务接口，可以在<font color="red">任何时间</font>从EC2内或Web上的<font color="red">任何位置</font>存储和检索<font color="red">任何数量</font>的数据。</li>
+<li>write、read、delete等操作，每个对象大小1byte~5TB之间。</li>
+<li>S3 bucket中的对象数量可以理解为无限的。</li>
+<li>强安全控制，支持静态加密，并提供多种机制来提供对Amazon S3资源访问的细粒度控制（ACL、Policy、IAM）。</li>
+<li>可扩展，允许许多单独的客户端或应用程序线程对Amazon S3数据进行并发读取或写入访问。</li>
+<li>提供数据生命周期管理功能，允许用户定义规则以自动将Amazon S3数据存档到Amazon Glacier，或者在生命周期结束时删除数据。</li>
+</ul>
+<h2 id="使用范例"><a href="#使用范例" class="headerlink" title="使用范例"></a>使用范例</h2><ul>
+<li>存储和分发静态web内容和媒体<ul>
+<li>静态网站托管，并仅为具有静态内容的网站提供高度可用、可扩展的解决方案，支持HTML、图像、视频和客户端脚本（如javascript）。</li>
+<li>适用于快速增长的互联网网站，托管密集型数据，如视频、照片共享网站（Instagram，不需要考虑存储的供给问题）</li>
+<li>每一个content都可以通过对象的唯一HTTP URL访问。</li>
+<li>作为CDN溯源（Origin）站点，如搭配CloudFront会有更好的效果</li>
+<li>借助S3的弹性设计，非常适合承载带宽要求极高的web内容</li>
+</ul>
+</li>
+<li>大型对象数据存储<ul>
+<li>可以与RDS或NoSQL数据库配合，用于存储大型对象，例如 文件或对象，而关联的元数据例（如名称，标签，注释等）可以存储在RDS或NoSQL数据库中，可以对其进行索引和查询，从而更快地访问相关数据。（对象存储系统并不像文件系统一样有自己的索引机制，所以其访问实际是由独立的URL实现的。）</li>
+</ul>
+</li>
+<li>计算和大规模分析的数据存储（计算之后）<ul>
+<li>通常用作计算和大规模分析的数据存储，例如金融交易分析，点击流分析（网站）和媒体转码数据。</li>
+<li>借助其水平伸缩性，同时从多个计算节点访问数据而不受单个连接的限制。</li>
+</ul>
+</li>
+<li>关键数据的备份和归档<ul>
+<li>借助其数据高度持久性、架构可扩展性、数据安全方案，可用作数据备份和归档领域，并未业务连续性提供灾难恢复解决方案</li>
+<li>数据冗余的存储region范围内（即覆盖AZ之间，）提供以上场景所需的高度持久的存储基础设施。</li>
+<li>提供版本控制功能，用于关键数据意外删除。(need enable version  feature)</li>
+</ul>
+</li>
+</ul>
+<h2 id="Anti-Patterns（不建议）"><a href="#Anti-Patterns（不建议）" class="headerlink" title="Anti-Patterns（不建议）"></a>Anti-Patterns（不建议）</h2><ul>
+<li>动态网站<ul>
+<li>S3非常适合托管静态网站，但是无法托管需要服务器端交互，脚本或数据库交互的动态网站，而应该托管在Amazon EC2上。（也就是其本质是WORM属性，适合读场景，并不适合数据变化快的场景）</li>
+</ul>
+</li>
+<li>备份和归档存储<ul>
+<li>不频繁读取访问权限的长期归档存储的数据可以在Glacier中更经济有效地存储。</li>
+</ul>
+</li>
+<li>结构化数据查询<ul>
+<li>Amazon S3不提供查询功能，因此要读取对象，必须知道对象名称和键。相反，将S3与RDS或Dynamo DB配合，以存储、索引和查询关于Amazon S3对象的元数据</li>
+<li>注意:S3现在提供了查询功能，也可以使用Athena（一种交互式查询服务，可使用此服务通过标准 SQL 在 Amazon S3 中轻松分析数据）</li>
+</ul>
+</li>
+<li>快速变化的数据<ul>
+<li>频繁更新的数据，建议使用具有较低读/写延迟的存储解决方案，如Amazon EBS卷、RDS或Dynamo DB。</li>
+</ul>
+</li>
+<li>文件系统<ul>
+<li>S3使用扁平的命名空间，不能作为独立的或通过POSIX兼容文件系统。但是可以通过使用分隔符（通常是’/‘或’’字符），可以构造键值模拟给定存储桶中文件系统的分层文件夹结构。（对象存储系统是扁平的结构，而文件系统是树状结构）</li>
+</ul>
+</li>
+</ul>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><ul>
+<li>在同一region内，EC2访问S3速度很快。</li>
+<li>S3在设计上，相较于Internet网络访问在服务器端延迟是相对很低的。</li>
+<li>S3在扩展性，请求数和用户访问数，支持几乎无限数量的Web级应用程序。</li>
+<li>对于多线程、多应用程序或多客户访问S3，则S3的总吞吐量通常是以线性增加的方式提供服务或响应需求。</li>
+</ul>
+<h2 id="冗余性-amp-可用性"><a href="#冗余性-amp-可用性" class="headerlink" title="冗余性&amp;可用性"></a>冗余性&amp;可用性</h2><ul>
+<li>S3在所选地理范围内，通过多设备和多设施之间自动化、同步机制实现数据存储最高级别的数据持久性和可用性。</li>
+<li>内置数据的纠错机制（Daemon模式）和高可用架构（没有单点故障）。</li>
+<li>设计目标：每个对象99.999999999％（11个9）的持久性和一年内（使用周期内，每个region可能有差异）99.99％的可用性。</li>
+<li>提供版本控制功能，以防意外删除或覆盖。</li>
+<li>支持MFA（多重身份验证）模式控制存储桶的版本控制功能。（双重身份验证）</li>
+<li>非关键和可重复的数据，例如缩略图，转码媒体等，可使用S3 Reduced Redundancy Storage（RRS），以较低的存储成本提供较低的耐用性。</li>
+<li>RRS的设计目标是在给定的一年内为每个对象提供99.99%的耐久性。虽然RRS不如标准的Amazon S3耐用，但它的耐用性仍然是典型磁盘驱动器的400倍。</li>
+</ul>
+<h2 id="扩展性-amp-弹性"><a href="#扩展性-amp-弹性" class="headerlink" title="扩展性&amp;弹性"></a>扩展性&amp;弹性</h2><p>注：Elasticity and Scalability 对比，英文原文如下（个人觉得比较好的解释）</p>
+<ul>
+<li>Scalability is the ability of a system to handle the increased load on its current hardware and software resources. In a highly scalable system it is possible to increase the workload without increasing the resource capacity. Scalability supports any sudden surge in the demand/traffic with current set of resources.（可伸缩性是系统处理其当前硬件和软件资源上增加的负载的能力。 在高度可扩展的系统中，可以在不增加资源容量的情况下增加工作量。 可扩展性支持使用当前资源集的任何突然的需求/流量激增。）</li>
+<li>Elasticity is the ability of a system to increase the workload by increasing the hardware/software resources dynamically. Highly elastic systems can handle the increased demand and traffic by dynamically commission and decommission resources. Elasticity is an important characteristic of Cloud Computing applications. Elasticity means how well your architecture is adaptable to workload in real time.（弹性是系统通过动态增加硬件/软件资源来增加工作负载的能力。 高弹性系统可以通过动态调试和停用资源来处理增加的需求和流量。 弹性是云计算应用程序的一个重要特征，意味着架构能够实时适应工作负载。）</li>
+<li>S3旨在自动提供非常高的伸缩性、弹性。</li>
+<li>S3 bucket几乎可以无限数量的存储对象数据和文件。</li>
+<li>S3将自动管理扩展并将数据的冗余副本分发到同一区域中其他AZ中的存储设备上，所有这些都使用AWS的高性能基础架构。</li>
+</ul>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><ul>
+<li>S3为管理和数据操作提供标准的REST和SOAP Web服务API。（注 -不推荐使用HTTP上的SOAP支持，但仍可通过HTTPS使用它。 SOAP不支持新的Amazon S3功能。建议使用REST API或AWS SDK。）</li>
+<li>S3提供易于使用的高级别的工具包或SDK，封装了包含底层API的不同语言（如Java，.NET，PHP和Ruby）。</li>
+<li>S3命令行界面（CLI）提供一组常见操作的类高级Linux Amazon S3文件命令，例如ls，cp，mv，sync等。还提供执行递归上载和下载的功能使用文件夹级别的S3命令，并支持并行传输。</li>
+<li>管理控制台提供简单的基于Web的用户界面轻松创建和管理Amazon S3存储桶，上载和下载对象以及浏览Amazon S3存储桶内容的功能。</li>
+<li>所有接口都能够将S3对象（文件）存储在唯一命名的存储桶（top-level folders）中，每个对象在该存储桶中的都具有唯一对象标识符（key id）。</li>
+</ul>
+<h1 id="Glacier"><a href="#Glacier" class="headerlink" title="Glacier"></a>Glacier</h1><h2 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>极低成本的存储服务，为数据备份和存档提供高度安全，持久和灵活的存储。</li>
+<li>可靠地存储数据，并且每月只需0.01美元每千兆字节。（价格可能变动）</li>
+<li>将操作和扩展存储的管理负担转移到AWS，例如容量规划、硬件供应、数据复制、硬件故障检测和修复，或耗时的硬件迁移等。（用户只需关注其归档服务即可，其他一概不需要care）</li>
+<li>数据作为归档文件存储在Glacier中，归档文件可以表示单个文件，也可以表示多个文件合成一个归档文件。</li>
+<li>通过IAM控制访问存储在Vault中的存档文件。</li>
+<li>从Vaults检索存档需要启动一个job,并且可能需要大约3-5个小时才能取回数据。</li>
+<li>Glacier通过使用S3数据生命周期管理策略将数据从S3移动到Glacier，从而与Amazon S3无缝集成。<strong>（其实数据是不能直接归档到Glacier的，需要经过S3）</strong></li>
+<li>AWS Import / Export可用于加速使用便携式存储设备将大量数据移动到Amazon Glacier进行存储归档。</li>
+</ul>
+<h2 id="使用范例-1"><a href="#使用范例-1" class="headerlink" title="使用范例"></a>使用范例</h2><ul>
+<li>Glacier是理想的长期档案解决方案，不经常访问的数据存档企业信息，媒体资产，研究和科学数据，数字保存和磁带更换的最佳替换者。（总之一句话，面向归档存储。）</li>
+</ul>
+<h2 id="Anti-Patterns（不建议模式）"><a href="#Anti-Patterns（不建议模式）" class="headerlink" title="Anti-Patterns（不建议模式）"></a>Anti-Patterns（不建议模式）</h2><ul>
+<li>快速变化数据<ul>
+<li>频繁更新的数据，建议使用具有较低读/写延迟的存储解决方案，如Amazon EBS卷、RDS或Dynamo DB。</li>
+</ul>
+</li>
+<li>实时数据访问<ul>
+<li>无法实时访问存储在Glacier中的数据，并且需要启动用于对象检索的job，检索时间范围为3-5小时。若需要立即访问，Amazon S3是更好的选择。</li>
+</ul>
+</li>
+</ul>
+<h2 id="性能-1"><a href="#性能-1" class="headerlink" title="性能"></a>性能</h2><ul>
+<li>Glacier是一种低成本存储服务，旨在存储不经常访问且使用寿命长的数据。</li>
+<li>Glacier的工作通常在3到5个小时内完成（默认）。</li>
+<li>加速检索1<del>5分钟，批量检索5</del>12H（加费用）</li>
+</ul>
+<h2 id="持久性和可用性"><a href="#持久性和可用性" class="headerlink" title="持久性和可用性"></a>持久性和可用性</h2><ul>
+<li>Glacier将数据冗余地存储在多个基础设施中以及每个设施内的多个存储设备上</li>
+<li>Glacier旨在为存档提供99.999999999％（11个9）的平均年度耐久性。</li>
+<li>Glacier会在上传归档返回SUCCESS之前，将数据同步存储在多个设施中以确保数据一致性。</li>
+<li>Glacier定期执行的系统数据完整性检查，并可自动进行自我修复，以确保数据完整性。</li>
+</ul>
+<h2 id="扩展性和弹性"><a href="#扩展性和弹性" class="headerlink" title="扩展性和弹性"></a>扩展性和弹性</h2><ul>
+<li>单个存档文件上限限制为40 TB，但Glacier服务中存储的数据总量没有限制。</li>
+<li>无论是存储数PB还是千兆，Glacier都可以扩展以满足不断增长且通常无法预测的存储容量要求， Glacier会根据需要自动扩展或缩小存储。</li>
+</ul>
+<h2 id="接口-1"><a href="#接口-1" class="headerlink" title="接口"></a>接口</h2><ul>
+<li>Glacier提供标准的原生REST Web服务接口，以及Java和.NET SDK。</li>
+<li>AWS管理控制台或Glacier API可用于创建存储Vault以组织Glacier中的存档。</li>
+<li>Glacier api可用于上传和检索归档文件，监视作业的状态，还可以配置Vault，以便在作业完成时通过Amazon SNS发送通知。</li>
+<li>使用对象生命周期管理，从S3到Glacier提供自动，策略驱动的归档。</li>
+<li>S3 api提供了一个恢复操作，检索过程同样需要3-5个小时。</li>
+<li>在检索时，检索到的对象的副本将放置在S3 RRS存储中（一定的保留期）;原始存档对象仍存储在Amazon Glacier中，仍需要为存储付费，除非删除。</li>
+<li>在S3中使用Amazon Glacier作为存储层（Class）时，使用Amazon S3 API，当使用“native（原生）” Glacier时使用Glacier API。</li>
+<li>通过S3归档到Glacier的对象只能通过Amazon S3 api或AWS管理控制台列出和检索—它们不能作为Glacier vault中的归档文件显示。</li>
+</ul>
+<h1 id="为数据选择合适的S3分类"><a href="#为数据选择合适的S3分类" class="headerlink" title="为数据选择合适的S3分类"></a>为数据选择合适的S3分类</h1><p><img src="https://i.loli.net/2019/08/20/4ecOy7jliw3dHZr.jpg" alt="存储分类-S3.jpeg"></p>
+<h3 id="S3-Standard"><a href="#S3-Standard" class="headerlink" title="S3 Standard"></a>S3 Standard</h3><ul>
+<li>活跃且频繁访问数据</li>
+<li>毫秒访问延迟</li>
+<li>≥3个可用区</li>
+<li>￥0.1755/GB</li>
+</ul>
+<h3 id="S3-Intelligent-tiering-（利用了大数据技术进行分层处理）"><a href="#S3-Intelligent-tiering-（利用了大数据技术进行分层处理）" class="headerlink" title="S3 Intelligent_tiering （利用了大数据技术进行分层处理）"></a>S3 Intelligent_tiering （利用了大数据技术进行分层处理）</h3><ul>
+<li>访问模式不确定数据</li>
+<li>毫秒访问延迟</li>
+<li>≥3个可用区</li>
+<li>￥0.1030/GB~0.1775/GB</li>
+<li>最小存储周期</li>
+</ul>
+<h3 id="S3-Standard-IA"><a href="#S3-Standard-IA" class="headerlink" title="S3 Standard-IA"></a>S3 Standard-IA</h3><ul>
+<li>不频繁访问数据</li>
+<li>毫秒访问延迟</li>
+<li>≥3个可用区</li>
+<li>￥0.1030/GB</li>
+<li>取回成本高（按GB）</li>
+<li>最小存储周期</li>
+<li>最小对象大小</li>
+</ul>
+<h3 id="S3-One-Zone-IA"><a href="#S3-One-Zone-IA" class="headerlink" title="S3 One Zone-IA"></a>S3 One Zone-IA</h3><ul>
+<li>可重建数据</li>
+<li>毫秒访问延迟</li>
+<li>≥3个可用区</li>
+<li>￥0.0824/GB</li>
+<li>取回成本高（按GB）</li>
+<li>最小存储周期</li>
+<li>最小对象大小</li>
+</ul>
+<h3 id="S3-Glacier"><a href="#S3-Glacier" class="headerlink" title="S3 Glacier"></a>S3 Glacier</h3><ul>
+<li>归档数据</li>
+<li>分钟到小时级别恢复时间</li>
+<li>≥3个可用区</li>
+<li>￥0.0300/GB</li>
+<li>取回成本高（按GB）</li>
+<li>最小存储周期</li>
+<li>最小对象大小</li>
+</ul>
+<h3 id="S3-Glacier-Deep-Archive"><a href="#S3-Glacier-Deep-Archive" class="headerlink" title="S3 Glacier Deep Archive"></a>S3 Glacier Deep Archive</h3><ul>
+<li>归档数据</li>
+<li>小时级别恢复时间（12~48）</li>
+<li>≥3个可用区</li>
+<li>￥0.010800/GB</li>
+<li>取回成本高（按GB）</li>
+<li>最小存储周期</li>
+<li>最小对象大小</li>
+</ul>
+<h1 id="EBS"><a href="#EBS" class="headerlink" title="EBS"></a>EBS</h1><h2 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>EBS为EC2实例提供持久的块级存储</li>
+<li>EBS独立于EC2实例，具备生命周期、通过网络连接非依赖实例的存储</li>
+<li>EBS卷通过附加到实例，可以像物理硬盘驱动器一样使用，通过文件系统格式化之后，即可用文件系统的I/O接口实现数据的存储与管理</li>
+<li>EBS卷可用于引导EC2实例(仅Amazon EBS-root ami)，多个Amazon EBS卷可附加到一个EC2实例（多对一）</li>
+<li>EBS卷在单一时间只能挂载一个EC2实例。（不支持1对多挂载）</li>
+<li>EBS提供基于时间点快照的功能，这些快照保存在S3中。快照可用于实例化新的EC2卷并保护数据以实现长期保存</li>
+<li>EBS快照也可以跨AWS区域复制，从而可以更轻松地利用多个AWS区域进行地理扩展，进行数据中心迁移和灾难恢复</li>
+</ul>
+<h2 id="使用范例-2"><a href="#使用范例-2" class="headerlink" title="使用范例"></a>使用范例</h2><ul>
+<li>EBS适用于数据变化相对频繁并且需要长期持久化的场景</li>
+<li>EBS卷提供对裸块级存储的访问，特别适合用作数据库或主文件系统存储</li>
+<li>预配置IOPS卷特别适合与需要速度且具有数据一致性的随机磁盘读写的数据库应用程序一起使用</li>
+</ul>
+<h2 id="Anti-Patterns（不建议模式）-1"><a href="#Anti-Patterns（不建议模式）-1" class="headerlink" title="Anti-Patterns（不建议模式）"></a>Anti-Patterns（不建议模式）</h2><ul>
+<li>临时性数据<ul>
+<li>EBS卷独立于EC2生命周期</li>
+<li>对于cache、buffer、queue等数据，建议使用本地存储，SQS或Elastice cache</li>
+</ul>
+</li>
+<li>持久性数据<ul>
+<li>年持久性可达99.5～99.9%（最近一次修改数据少于20GB的EBS卷），数据修改约频繁，其持久性会下降</li>
+<li>对于数据持久性有更高要求的，建议使用S3或Glacier</li>
+</ul>
+</li>
+<li>静态数据或网站内容<ul>
+<li>对于数据很少更改的静态web内容，使用EC2的EBS卷提供 web服务页面</li>
+<li>S3是存储这种固定信息的更经济有效和可伸缩的解决方案，并且可以直接从S3提供服务。</li>
+</ul>
+</li>
+</ul>
+<h2 id="性能-2"><a href="#性能-2" class="headerlink" title="性能"></a>性能</h2><ul>
+<li>EBS提供两种卷类型：标准卷和预配置IOPS卷，它们在性能和价格模型上有所不同，根据应用程序的需要的存储性能和成本进行选择</li>
+<li>可以使用RAID 0或逻辑卷管理器软件在多个EBS卷之间进行条带EBS卷，从而聚合提高可用的IOPS、吞吐量和卷大小</li>
+<li>标准卷可为普通或突发I / O要求的应用程序提供经济高效的数据吞吐。标准卷也非常适合用作启动卷，其中突发功能提供快速的实例启动时间</li>
+<li>预配置IOPS卷旨在为I / O密集型工作负载（如数据库）提供可预测的高性能。使用预配置IOPS，在创建卷时指定IOPS， EBS在指定的生命周期提供一致数据速率</li>
+<li>EBS卷是通过网络连接挂载的，实例执行的其他网络I / O以及共享网络上的负载会影响EBS卷的性能。启动EBS优化实例，在EC2和EBS之间提供专用的吞吐量，并使实例能够充分利用Amazon EBS卷上提供的IOPS</li>
+<li>根据需求将EBS卷配置为EBS标准或EBS预配置IOPS。或者，也可以对数据进行条带化</li>
+</ul>
+<h2 id="冗余性-amp-可用性-1"><a href="#冗余性-amp-可用性-1" class="headerlink" title="冗余性&amp;可用性"></a>冗余性&amp;可用性</h2><ul>
+<li>EBS卷旨在提供高可用性和可靠性</li>
+<li>EBS卷数据在<strong><font color="red">可用区</font></strong>中的多个服务器之间复制，以防止任何单个组件发生故障而导致数据丢失</li>
+<li>EBS卷的持久性取决于卷的大小以及自上次快照以来更改的数据量。快照是增量的时间点备份，仅包含自上次快照以来更改的数据块。自最近一次快照以来，使用20 GB或更少修改数据运行的EBS卷的年度故障率（AFR）可能在0.1％到0.2％之间。自最近一次快照以来具有超过20 GB修改数据的EBS卷预期有更高的故障率与修改数据的增加大致成比例。因此，建议创建快照的频度更大一些，以最大限度地提高其EBS数据的持久性和可用性</li>
+<li>EBS快照提供更快的磁盘克隆或磁盘映像机制，常用于备份，共享和灾难恢复</li>
+<li>EBS 快照与 Amazon Data Lifecycle Manager (DLM) 策略配合使用，以自动执行快照管理</li>
+</ul>
+<h2 id="可扩展性-amp-弹性"><a href="#可扩展性-amp-弹性" class="headerlink" title="可扩展性&amp;弹性"></a>可扩展性&amp;弹性</h2><ul>
+<li>EBS卷可以通过修改卷的大小（增大）、IOPS，快速地进行配置和发布，以适应不断变化的存储需求</li>
+<li>无法在线缩小卷的大小（不确定是否有更新）</li>
+</ul>
+<h2 id="接口-2"><a href="#接口-2" class="headerlink" title="接口"></a>接口</h2><ul>
+<li>通过SOAP和REST格式为Amazon EBS提供管理API，可用于为<strong><font color="red">EC2实例</font></strong> reate, delete, describe, attach, and detach ，以及从<font color="red"><strong>EBS创建</strong></font>，删除和快照 到S3，将快照从一个区域复制到另一个区域</li>
+<li>AWS管理控制台提供以上相同的功能</li>
+</ul>
+<h1 id="EFS"><a href="#EFS" class="headerlink" title="EFS"></a>EFS</h1><h2 id="特点-3"><a href="#特点-3" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>提供简单，可扩展的文件存储服务，以便与EC2实例一起使用</li>
+<li>存储空间是弹性的，随着文件的添加和删除而自动增长和收缩</li>
+<li>挂载在到EC2实例上时，提供标准文件系统接口和文件系统访问语义</li>
+<li>在共享模式下工作，多个EC2实例可以同时访问EFS文件系统，EFS提供共享数据服务</li>
+<li>可以在EC2实例上并发运行工作负载和应用程序</li>
+<li>使用AWS Direct Connect连接到VPC时，可以在本地数据中心服务器挂载共享文件系统使用</li>
+<li>可以挂载到本地服务器上，以便数据集迁移到EFS，将本地数据备份到EFS</li>
+<li>专为高可用性和耐用性而设计，可为广泛的工作负载和应用程序提供性能，包括大数据和分析，媒体处理工作流，内容管理，Web服务和主目录</li>
+<li>基于 Linux 的工作负载</li>
+</ul>
+<h2 id="使用范例-3"><a href="#使用范例-3" class="headerlink" title="使用范例"></a>使用范例</h2><ul>
+<li>跨可用区、区域和 VPC 访问文件系统，并可以通过 AWS Direct Connect 或 AWS VPN 在数千个 Amazon EC2 实例与本地服务器之间共享文件</li>
+<li>超高吞吐量的高度并行化的横向扩展工作负载到单线程的延迟敏感型工作负载，均适用。直接迁移企业应用程序、大数据分析、Web 服务和内容管理、应用程序开发和测试、媒体和娱乐工作流程、数据库备份和容器存储。<br>直接迁移企业应用程序、大数据分析、Web 服务和内容管理、应用程序开发和测试、媒体和娱乐工作流程、数据库备份和容器存储。</li>
+</ul>
+<h2 id="性能-3"><a href="#性能-3" class="headerlink" title="性能"></a>性能</h2><ul>
+<li>提供标准和不经常访问存储类。标准存储类是为活动文件系统工作负载而设计的，EFS 不频繁访问 (EFS IA) 是一种成本较低的存储类，针对不经常访问的文件进行了成本优化。EFS 文件系统透明地提供来自两个存储类的数据转换。</li>
+<li>所有文件系统的稳定基准性能为每 TB 标准类存储 50MB/s </li>
+<li>EFS 支持一个到数千个EC2 实例同时连接一个文件系统</li>
+<li>性能模式<ul>
+<li>通用性能模式，非常适合对延迟敏感的使用案例，如 Web 服务环境、内容管理系统、主目录和一般文件服务。（默认）</li>
+<li>最大 I/O 性能模式，扩展到更高级别的聚合吞吐量和每秒操作数，但代价是稍高的文件操作延迟。诸如大数据分析、媒体处理和基因组分析等高度并行化的应用程序和工作负载可以受益于这种模式。</li>
+</ul>
+</li>
+<li>吞吐量模式<ul>
+<li>突增吞吐量，Amazon EFS 上的吞吐量将随着标准存储类别中存储的文件系统的增大而增加，都能突增到 100 MB/秒的吞吐量</li>
+<li>预置吞吐量使 Amazon EFS 客户能够预置文件系统的吞吐量（无需考虑存储的数据量），从而优化文件系统的吞吐性能，以满足应用程序的需求</li>
+</ul>
+</li>
+</ul>
+<h2 id="冗余性-amp-可用性-2"><a href="#冗余性-amp-可用性-2" class="headerlink" title="冗余性&amp;可用性"></a>冗余性&amp;可用性</h2><ul>
+<li>每个文件系统对象（即目录、文件和链接）均会在多个可用区中进行冗余存储。此外，文件系统还可以从其所在区域中的各个可用区同时访问，这意味着在构建应用程序时，可以使其从区域中的一个可用区故障转移到其他可用区，从而确保应用程序的高可用性。挂载目标本身即具有高可用性。<br>可扩展性&amp;弹性</li>
+<li>随文件系统增减文件的操作自动进行扩展和收缩，因此不需要进行存储的采购和预配置工作</li>
+</ul>
+<h2 id="接口-3"><a href="#接口-3" class="headerlink" title="接口"></a>接口</h2><ul>
+<li>使用标准 Linux 挂载命令和文件系统的 DNS 名称将文件系统挂载到基于 Linux 的 EC2 实例上</li>
+<li>为了简化对 EFS 文件系统的访问，建议使用 EFS 挂载助手实用程序</li>
+<li>EFS 使用网络文件系统版本 4 (NFS v4) 协议</li>
+<li>DataSync 工具提供将现有文件系统与 Amazon EFS 安全同步，可借助VPN或DX。</li>
+<li>通过 AWS 管理控制台、AWS 命令行界面 (CLI) 或 EFS API（以及各种语言的软件开发工具包）来管理文件系统。通过控制台、API 和软件开发工具包，可以创建和删除文件系统、配置文件系统的访问方式、创建和编辑文件系统标签、启用预置吞吐量和生命周期管理等功能，以及显示文件系统的详细信息。</li>
+</ul>
+<h1 id="Storage-Gateway"><a href="#Storage-Gateway" class="headerlink" title="Storage Gateway"></a>Storage Gateway</h1><h2 id="特点-4"><a href="#特点-4" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>Storage Gateway是一种将本地软硬件设备与基于云的存储相连接的服务，可在本地IT环境与AWS的存储基础架构之间提供无缝，安全的集成。</li>
+<li>Storage Gateway可以将数据安全地存储到AWS云端，以实现可扩展且经济高效的数据存储。</li>
+<li>在本地提供繁的数据访问并保障低延迟，同时还可通过加密将数据安全存储在S3中。</li>
+<li>对于灾难恢复场景，可以作为云托管解决方案与EC2一起联动，镜像生产环境到云端。</li>
+<li>Storage Gateway 可以配置为<ul>
+<li>Gateway-cached volumes<ul>
+<li>网关缓存卷利用S3进行主要数据备份，同时在本地保留经常访问的数据</li>
+<li>最大限度地减少了扩展本地存储基础架构的需求，同时为应用程序提供对其频繁访问的数据的低延迟访问</li>
+<li>写入卷的数据存储在S3中，只有最近写入和最近读取的数据的缓存本地存储在本地存储硬件上</li>
+</ul>
+</li>
+<li>Gateway-stored volumes<ul>
+<li>网关存储的卷在本地存储完整的主要数据，同时异步地将数据备份到AWS</li>
+<li>这些卷为本地应用程序提供了对其整个数据集的低延迟访问，同时提供了持久的异地备份</li>
+<li>写入网关存储卷的数据存储在本地存储硬件上，并以EBS快照的形式异步备份到S3</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用范例-4"><a href="#使用范例-4" class="headerlink" title="使用范例"></a>使用范例</h2><ul>
+<li>企业组织之间文件共享</li>
+<li>将现有的本地备份应用程序备份到S3上的和灾难恢复场景，以及数据镜像到云端</li>
+</ul>
+<h2 id="Anti-Patterns（不建议模式）-2"><a href="#Anti-Patterns（不建议模式）-2" class="headerlink" title="Anti-Patterns（不建议模式）"></a>Anti-Patterns（不建议模式）</h2><ul>
+<li>数据库存储<ul>
+<li>对于数据库存储或备份，使用EBS卷的EC2实例是数据库存储和工作负载的最佳选择</li>
+</ul>
+</li>
+</ul>
+<h2 id="性能-4"><a href="#性能-4" class="headerlink" title="性能"></a>性能</h2><ul>
+<li>由于Storage Gateway VM介于应用程序，本地存储和S3之间，因此所遇到的性能将取决于诸多因素，包括本地磁盘的速度和配置，iSCSI initiator与网关之间的网络带宽，Gateway VM的数量，以及VM和S3的带宽</li>
+<li>对于Gateway-cached volumes，为了提供对本地应用程序的低延迟读访问，重要的是提供足够的本地缓存存储来存储最近访问的数据</li>
+<li>Storage Gateway有效地使用Internet带宽将数据上传到AWS</li>
+<li>Storage Gateway仅传输增量更改（已更改的数据），从而最大限度地减少通过Internet发送的数据量</li>
+<li>通过在AWS和AWS之间建立连接，AWS Direct Connect可用于进一步提高吞吐量并降低网络成本</li>
+</ul>
+<h2 id="冗余性-amp-可用性-3"><a href="#冗余性-amp-可用性-3" class="headerlink" title="冗余性&amp;可用性"></a>冗余性&amp;可用性</h2><ul>
+<li>AWS Storage Gateway通过将数据传输到S3来确保其数据持久性</li>
+<li>S3提供11个9的持久性</li>
+<li>S3定期执行系统的数据完整性检查并自动完成自我修复</li>
+</ul>
+<h2 id="可扩展性-amp-弹性-1"><a href="#可扩展性-amp-弹性-1" class="headerlink" title="可扩展性&amp;弹性"></a>可扩展性&amp;弹性</h2><ul>
+<li>AWS Storage Gateway将数据存储在Amazon S3中，借助S3提供高级别的可扩展性和弹性</li>
+</ul>
+<h2 id="接口-4"><a href="#接口-4" class="headerlink" title="接口"></a>接口</h2><ul>
+<li>通过AWS管理控制台可用于下载AWS Storage Gateway VM映像，在网关缓存或网关存储配置之间进行选择，通过将网关与AWS账户相关联来激活部署，选择AWS区域，以及创建 AWS Storage Gateway卷并将这些卷作为iSCSI设备连接到本地应用程序服务器</li>
+</ul>
+<h1 id="Snow-Family"><a href="#Snow-Family" class="headerlink" title="Snow Family"></a>Snow Family</h1><p>Snow 系列是一系列物理设备，可帮助将大量数据传入和传出云，无需依赖网络。TB数据通过internet传输其稳定性、可靠性、费用、时间都无法和Snow设备相媲美。</p>
+<h2 id="Snowball"><a href="#Snowball" class="headerlink" title="Snowball"></a>Snowball</h2><ul>
+<li>是一种PB级数据传输服务，内置安全如手提箱大小的移动设备，，可快速高效地将数据移入和移出AWS云端</li>
+<li>将数据导入到S3 </li>
+<li>转移数据从开始到结束大约1周</li>
+<li>通常用于传送（移动）TB量级数据，如分析数据、医疗保健和生命科学数据、视频库、图像存储库、备份和存档，作为数据中心停用，磁带数据替换者或大规模应用数据迁移</li>
+</ul>
+<h2 id="Snoaball-Edge"><a href="#Snoaball-Edge" class="headerlink" title="Snoaball Edge"></a>Snoaball Edge</h2><ul>
+<li>设备具有更大的容量和嵌入计算平台，可执行简单的处理任务</li>
+<li>这些设备可以安装在机架上并通过集群化一起使用，以便更轻松地在极其偏远的位置收集和存储数据</li>
+<li>Storage Optimized 和 Compute Optimized类型</li>
+<li>可以在时断时续的环境（例如制造业、工业和运输）中或在极其偏远的位置（例如军事或海事作业）使用这些设备，然后再将其运回 AWS</li>
+<li>Snowball Edge 可使用 AWS Greengrass 和 Lambda 函数在网络边缘提供无服务器计算应用程序。</li>
+<li>常见使用案例包括 IoT 传感器流捕获、动态媒体转码、图像压缩、指标聚合以及工业控制信令与警报。</li>
+</ul>
+<h2 id="Snowmobile"><a href="#Snowmobile" class="headerlink" title="Snowmobile"></a>Snowmobile</h2><ul>
+<li>Snowmobile 是一个 45 英尺长的坚固集装箱，可迁移高达 100PB 的数据（相当于 1250 台 AWS Snowball 设备），非常适合数 PB 级或 EB 级数字媒体迁移和数据中心关闭的情况。</li>
+<li>Snowmobile 在抵达客户站点后显示为网络连接数据存储，可实现更加安全的高速数据传输。将数据传输到 Snowmobile 后，Snowmobile 会被运回 AWS 区域，而数据会加载到 Amazon S3 中。</li>
+<li>Snowmobile 防篡改、防水，具有温度控制，配备有多层逻辑和物理安全机制，包括加密、消防、专职安全人员、GPS 跟踪、警报监控、全天候视频监控以及运输过程中的护送安全车辆。</li>
+</ul>
+<h2 id="功能场景"><a href="#功能场景" class="headerlink" title="功能场景"></a>功能场景</h2><table>
+<thead>
+<tr>
+<th>—</th>
+<th>Snowball</th>
+<th>SnowballEdge</th>
+<th>Snowmobile</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>使用情景</td>
+<td>数据迁移</td>
+<td>通过板载设备迁移数据预处理选项</td>
+<td>数据迁移</td>
+</tr>
+<tr>
+<td>存储容量</td>
+<td>50TB 和 80TB</td>
+<td>100TB</td>
+<td>100PB</td>
+</tr>
+<tr>
+<td>板载计算选项</td>
+<td>不适用</td>
+<td>AWS Lambda| AMI</td>
+<td>不适用</td>
+</tr>
+<tr>
+<td>加密</td>
+<td>有，256 位</td>
+<td>有，256 位</td>
+<td>有，256 位</td>
+</tr>
+<tr>
+<td>通过 NFS 传输</td>
+<td>不适用</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>通过 HDFS 传输</td>
+<td>是</td>
+<td>不适用</td>
+<td>不适用</td>
+</tr>
+<tr>
+<td>通过 S3 API 传输</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>集群</td>
+<td>不适用</td>
+<td>是，最多 20 个节点</td>
+<td>不适用</td>
+</tr>
+<tr>
+<td>可安装机架</td>
+<td>架子</td>
+<td>是</td>
+<td>不适用</td>
+</tr>
+<tr>
+<td>符合 HIPAA 要求</td>
+<td>是，符合要求</td>
+<td>是，符合要求</td>
+<td>否</td>
+</tr>
+<tr>
+<td>常规作业生命周期</td>
+<td>数天-数周</td>
+<td>数据迁移：数天-数周本地计算：数周-数月</td>
+<td>数周-数月</td>
+</tr>
+<tr>
+<td>最长作业时间</td>
+<td>90 天</td>
+<td>数据迁移：90 天；本地计算：120 天</td>
+<td>120-360 天</td>
+</tr>
+</tbody></table>
+<h2 id="性能-5"><a href="#性能-5" class="headerlink" title="性能"></a>性能</h2><ul>
+<li>Snowball 拥有 10Gbps 的网络接口，配有 RJ45、SFP+ 铜缆和 SFP+ 光学网络接口</li>
+<li>Snowball 客户端将以条件允许的最快速度将数据复制到 Snowball（例如，不到一天就可以复制 48TB 的数据，具体取决于本地环境）</li>
+</ul>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
+<li>云迁移</li>
+<li>灾难恢复</li>
+<li>数据中心停用</li>
+<li>内容分配（定期接收或需要与客户、消费者或业务伙伴共享大量数据）</li>
+</ul>
+<h2 id="可扩展性-amp-冗余性"><a href="#可扩展性-amp-冗余性" class="headerlink" title="可扩展性&amp;冗余性"></a>可扩展性&amp;冗余性</h2><ul>
+<li>单个 Snowball 设备可以传输数 TB 的数据，并且可以并行使用多台设备将数 PB 的数据传入或传出 Amazon S3 存储桶；或者在设置生命周期管理策略时，单个 Snowball 设备可以自动将数据从 S3 分层到 Amazon Glacier </li>
+<li>多台 Snowball Edge 设备可以充当一个可扩展存储与计算池，持久性更高</li>
+<li>一台 Snowmobile 一次可以传输高达 100PB 的数据，这相当于大约 1250 台 AWS Snowball 设备传输的数据量</li>
+<li>数据持久性借助S3或Glacier提供11个9的持久性。</li>
+</ul>
+<h2 id="接口-5"><a href="#接口-5" class="headerlink" title="接口"></a>接口</h2><ul>
+<li>使用 AWS 管理控制台创建一项或多项任务，申请一台或多台 Snowball 设备（具体取决于需要传输的数据量），然后下载并安装 Snowball 客户端（简称“客户端”）。当设备抵达后，将其连接到本地网络，手动或使用 DHCP 设置 IP 地址，然后使用客户端确定要复制的目录。客户端会自动加密数据并将其复制到设备，然后在传输作业完成时通知。</li>
+<li>Snowball 任务管理 API 提供对 Snowball 任务创建和管理功能的编程式访问。这是一种基于标准的简单 REST Web 服务接口，旨在与任何 Internet 开发环境配合使用。</li>
+<li>S3 SDK Adapter for Snowball 可以为 Snowball 客户端提供兼容 S3 的接口，以便在 Snowball 上读取和写入数据。</li>
+</ul>
+<h1 id="AWS-Backup"><a href="#AWS-Backup" class="headerlink" title="AWS Backup"></a>AWS Backup</h1><blockquote>
+<p><strong>注：此处的备份服务并不是通常意义的特定应用程序及其数据备份，AWS提供的备份服务都是基于以上存储服务自身提供的备份服务，和NBU、Commvault、Veeam等专用备份有着很大区别。</strong></p>
+</blockquote>
+<p>AWS Backup 是一种完全托管的备份服务，使用 AWS Storage Gateway 轻松地集中自动管理云中以及本地的各种 AWS 服务的数据备份工作。支持集中配置备份策略并监控<font color="orange" size="2"> EBS 卷（快照）、RDS 数据库（不含Aurora，快照）、DynamoDB 表、EFS 文件系统和 Storage Gateway 卷(快照)。</font></p>
+<h2 id="特点-5"><a href="#特点-5" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>集中式备份管理</li>
+<li>基于策略的备份（即通常意义上的备份计划）</li>
+<li>基于标记的备份策略（AWS 资源进行标记来对其应用备份计划）</li>
+<li>备份活动监控（提供dashboard 审核备份和还原备份活动）</li>
+<li>支持生命周期策略，可以将备份存储转移到冷存储层中</li>
+<li>支持独立于源数据的备份数据存储和加密，以及基于资源的访问策略</li>
+</ul>
+<h2 id="使用范例-5"><a href="#使用范例-5" class="headerlink" title="使用范例"></a>使用范例</h2><ul>
+<li>业务和法规备份合规性要求</li>
+<li>原生云备份</li>
+<li>混合备份，云中和本地的应用程序数据备份，结合Storage Gateway集成</li>
+</ul>
+<h2 id="接口-6"><a href="#接口-6" class="headerlink" title="接口"></a>接口</h2><ul>
+<li>AWS集中的备份控制台、备份 API 以及 AWS Command Line Interface (AWS CLI)，用于管理备份</li>
+</ul>
+<h1 id="Instance-Store-Volumes"><a href="#Instance-Store-Volumes" class="headerlink" title="Instance Store Volumes"></a>Instance Store Volumes</h1><h2 id="特点-6"><a href="#特点-6" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>实例存储卷（临时卷）提供临时块级存储，与EC2实例位于同一物理服务器上的预配置和连接的磁盘存储块组成</li>
+<li>实例存储的存储量取决于实例类型，较大的实例同时提供更多和更大的实例存储卷。较小的实例类型(如微实例)只能用于卷启动。</li>
+<li>存储优化实例提供针对例如特定用途的特殊用途实例存储。 如HI1提供非常快速的固态驱动器（SSD）支持的实例存储，能够支持超过120,000随机读取IOPS，针对非常高的随机I / O性能和低IOPS成本进行了优化。 同时，HS1实例针对非常高的存储密度，低存储成本和高顺序I / O性能进行了优化。</li>
+<li>与EBS卷不同，实例存储卷不能分离或附加到另一个实例</li>
+</ul>
+<h2 id="使用范例-6"><a href="#使用范例-6" class="headerlink" title="使用范例"></a>使用范例</h2><ul>
+<li>EC2本地实例存储卷提供快速，免费（即包含在EC2实例的价格中）“临时卷”最适合存储不断变化的临时数据，例如buffers，cache，暂存数据或者可重新生成数据，或者为了持久性而复制的数据</li>
+<li>高I / O实例提供SSD支持的实例存储卷，非常适合许多高性能数据库工作负载。 如应用程序包括像Cassandra和MongoDB这样的NoSQL数据库。</li>
+<li>高存储实例支持每个EC2实例更高的存储密度，非常适合在非常大的数据集中受益于高顺序I / O性能的应用程序。 例如应用程序包括数据仓库，Hadoop存储节点，地震分析，群集文件系统等。<br>Anti-Patterns（不建议模式）</li>
+<li>持久性数据<ul>
+<li>对于持久性虚拟磁盘存储，类似于物理磁盘驱动器，用于文件或其他必须持续时间超过EC2实例生命周期的数据， EBS卷或S3更合适。</li>
+</ul>
+</li>
+<li>关系型数据库数据<ul>
+<li>在大多数情况下，关系数据库要求存储在EC2实例的生命周期之后持续存在，这使得EBS卷成为更好的选择。</li>
+</ul>
+</li>
+<li>共享数据存储<ul>
+<li>实例存储卷专用于单个EC2实例，无法与其他系统或用户共享。如果需要可以从一个实例分离并连接到其他实例的存储，或者需要能够轻松共享数据，那么S3或EBS卷是更好的选择。</li>
+</ul>
+</li>
+<li>快照<ul>
+<li>如果要使用基于时间点磁盘快照的便利性，长期持久性，可用性和可共享性，则EBS卷是更好的选择。</li>
+</ul>
+</li>
+</ul>
+<h2 id="性能-6"><a href="#性能-6" class="headerlink" title="性能"></a>性能</h2><ul>
+<li>在大多数EC2实例家族中，非基于ssd的实例存储卷具有与标准EBS卷类似的性能</li>
+<li>EC2实例和本地实例存储卷位于同一物理服务器中，与存储的交互非常快，尤其是对于顺序访问</li>
+<li>提高聚合IOPS或提高顺序磁盘吞吐量，可以使用RAID 0（磁盘条带化）软件将多个实例存储卷组合在一起</li>
+<li>由于磁盘的带宽不受网络限制，因此多个实例卷的聚合顺序吞吐量可能高于相同容量的EBS卷</li>
+<li>EC2高I / O实例中的SSD实例存储卷可提供数万至数十万随机IOPS，低延迟，4 KB</li>
+<li>由于SSD设备的I/O特性，写性能在生命周期是是可变的</li>
+<li>EC2高存储实例上的实例存储卷提供非常高的存储密度和高顺序读写性能。当使用块大小为2 MB时，高存储实例能够提供2.6 GB/秒的顺序读写性能</li>
+</ul>
+<h2 id="冗余性-amp-可用性-4"><a href="#冗余性-amp-可用性-4" class="headerlink" title="冗余性&amp;可用性"></a>冗余性&amp;可用性</h2><ul>
+<li>不应用作持久磁盘存储，并且仅在关联EC2实例的生命周期内持续存在</li>
+</ul>
+<h2 id="可扩展性-amp-弹性-2"><a href="#可扩展性-amp-弹性-2" class="headerlink" title="可扩展性&amp;弹性"></a>可扩展性&amp;弹性</h2><ul>
+<li>本地实例存储卷绑定到特定的EC2实例，并且对于给定的EC2实例类型，本地实例存储卷的数量和大小是固定的，因此该存储的可伸缩性和弹性绑定到EC2实例的规格限制</li>
+</ul>
+<h2 id="接口-7"><a href="#接口-7" class="headerlink" title="接口"></a>接口</h2><ul>
+<li>使用EC2 API和AWS管理控制台的块设备映射功能指定实例存储卷</li>
+<li>对于EC2实例，实例存储卷的显示方式与本地磁盘驱动器类似。写入实例存储卷并从中读取数据，请使用所选操作系统的本地文件系统I / O接口</li>
+</ul>
+<h1 id="Reffer"><a href="#Reffer" class="headerlink" title="Reffer"></a>Reffer</h1><ol>
+<li><a href="http://jayendrapatil.com/" target="_blank" rel="noopener">http://jayendrapatil.com/</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Storage-S3-Glacier-EFS-FSx-Storage-Gateway-Backup/" rel="tag"># Storage,S3,Glacier,EFS,FSx,Storage Gateway,Backup,</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/20/AWS-High-Availability-Fault-Tolerance-Architecture/" rel="next" title="AWS High Availability & Fault Tolerance Architecture">
+                <i class="fa fa-chevron-left"></i> AWS High Availability & Fault Tolerance Architecture
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">seven</p>
+              <p class="site-description motion-element" itemprop="description">seven 的精神家园，学习笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="1988xuegang@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#思维导图"><span class="nav-number">1.</span> <span class="nav-text">思维导图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Overview"><span class="nav-number">2.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#S3-对象存储"><span class="nav-number">3.</span> <span class="nav-text">S3(对象存储)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点"><span class="nav-number">3.1.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用范例"><span class="nav-number">3.2.</span> <span class="nav-text">使用范例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Anti-Patterns（不建议）"><span class="nav-number">3.3.</span> <span class="nav-text">Anti-Patterns（不建议）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能"><span class="nav-number">3.4.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#冗余性-amp-可用性"><span class="nav-number">3.5.</span> <span class="nav-text">冗余性&amp;可用性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展性-amp-弹性"><span class="nav-number">3.6.</span> <span class="nav-text">扩展性&amp;弹性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口"><span class="nav-number">3.7.</span> <span class="nav-text">接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Glacier"><span class="nav-number">4.</span> <span class="nav-text">Glacier</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点-1"><span class="nav-number">4.1.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用范例-1"><span class="nav-number">4.2.</span> <span class="nav-text">使用范例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Anti-Patterns（不建议模式）"><span class="nav-number">4.3.</span> <span class="nav-text">Anti-Patterns（不建议模式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能-1"><span class="nav-number">4.4.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久性和可用性"><span class="nav-number">4.5.</span> <span class="nav-text">持久性和可用性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展性和弹性"><span class="nav-number">4.6.</span> <span class="nav-text">扩展性和弹性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口-1"><span class="nav-number">4.7.</span> <span class="nav-text">接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为数据选择合适的S3分类"><span class="nav-number">5.</span> <span class="nav-text">为数据选择合适的S3分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#S3-Standard"><span class="nav-number">5.0.1.</span> <span class="nav-text">S3 Standard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#S3-Intelligent-tiering-（利用了大数据技术进行分层处理）"><span class="nav-number">5.0.2.</span> <span class="nav-text">S3 Intelligent_tiering （利用了大数据技术进行分层处理）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#S3-Standard-IA"><span class="nav-number">5.0.3.</span> <span class="nav-text">S3 Standard-IA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#S3-One-Zone-IA"><span class="nav-number">5.0.4.</span> <span class="nav-text">S3 One Zone-IA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#S3-Glacier"><span class="nav-number">5.0.5.</span> <span class="nav-text">S3 Glacier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#S3-Glacier-Deep-Archive"><span class="nav-number">5.0.6.</span> <span class="nav-text">S3 Glacier Deep Archive</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#EBS"><span class="nav-number">6.</span> <span class="nav-text">EBS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点-2"><span class="nav-number">6.1.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用范例-2"><span class="nav-number">6.2.</span> <span class="nav-text">使用范例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Anti-Patterns（不建议模式）-1"><span class="nav-number">6.3.</span> <span class="nav-text">Anti-Patterns（不建议模式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能-2"><span class="nav-number">6.4.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#冗余性-amp-可用性-1"><span class="nav-number">6.5.</span> <span class="nav-text">冗余性&amp;可用性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可扩展性-amp-弹性"><span class="nav-number">6.6.</span> <span class="nav-text">可扩展性&amp;弹性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口-2"><span class="nav-number">6.7.</span> <span class="nav-text">接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#EFS"><span class="nav-number">7.</span> <span class="nav-text">EFS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点-3"><span class="nav-number">7.1.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用范例-3"><span class="nav-number">7.2.</span> <span class="nav-text">使用范例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能-3"><span class="nav-number">7.3.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#冗余性-amp-可用性-2"><span class="nav-number">7.4.</span> <span class="nav-text">冗余性&amp;可用性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口-3"><span class="nav-number">7.5.</span> <span class="nav-text">接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Storage-Gateway"><span class="nav-number">8.</span> <span class="nav-text">Storage Gateway</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点-4"><span class="nav-number">8.1.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用范例-4"><span class="nav-number">8.2.</span> <span class="nav-text">使用范例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Anti-Patterns（不建议模式）-2"><span class="nav-number">8.3.</span> <span class="nav-text">Anti-Patterns（不建议模式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能-4"><span class="nav-number">8.4.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#冗余性-amp-可用性-3"><span class="nav-number">8.5.</span> <span class="nav-text">冗余性&amp;可用性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可扩展性-amp-弹性-1"><span class="nav-number">8.6.</span> <span class="nav-text">可扩展性&amp;弹性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口-4"><span class="nav-number">8.7.</span> <span class="nav-text">接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Snow-Family"><span class="nav-number">9.</span> <span class="nav-text">Snow Family</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Snowball"><span class="nav-number">9.1.</span> <span class="nav-text">Snowball</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Snoaball-Edge"><span class="nav-number">9.2.</span> <span class="nav-text">Snoaball Edge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Snowmobile"><span class="nav-number">9.3.</span> <span class="nav-text">Snowmobile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#功能场景"><span class="nav-number">9.4.</span> <span class="nav-text">功能场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能-5"><span class="nav-number">9.5.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用场景"><span class="nav-number">9.6.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可扩展性-amp-冗余性"><span class="nav-number">9.7.</span> <span class="nav-text">可扩展性&amp;冗余性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口-5"><span class="nav-number">9.8.</span> <span class="nav-text">接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AWS-Backup"><span class="nav-number">10.</span> <span class="nav-text">AWS Backup</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点-5"><span class="nav-number">10.1.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用范例-5"><span class="nav-number">10.2.</span> <span class="nav-text">使用范例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口-6"><span class="nav-number">10.3.</span> <span class="nav-text">接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Instance-Store-Volumes"><span class="nav-number">11.</span> <span class="nav-text">Instance Store Volumes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点-6"><span class="nav-number">11.1.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用范例-6"><span class="nav-number">11.2.</span> <span class="nav-text">使用范例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能-6"><span class="nav-number">11.3.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#冗余性-amp-可用性-4"><span class="nav-number">11.4.</span> <span class="nav-text">冗余性&amp;可用性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可扩展性-amp-弹性-2"><span class="nav-number">11.5.</span> <span class="nav-text">可扩展性&amp;弹性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口-7"><span class="nav-number">11.6.</span> <span class="nav-text">接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reffer"><span class="nav-number">12.</span> <span class="nav-text">Reffer</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seven</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
