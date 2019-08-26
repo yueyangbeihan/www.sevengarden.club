@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Route 53,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Amazon Route 53 是一种具有很高可用性和可扩展性的域名系统 (DNS) Web 服务。可以使用 Route 53 以任意组合执行三个主要功能：域注册、DNS 路由和运行状况检查。  域名注册  将Internet路由到域名  域名解析到正确的IP地址 使用权威DNS服务器的全局网络响应DNS查询，从而减少延迟 将Internet流量路由到CloudFront，Elastic Bean">
+<meta name="keywords" content="Route 53">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS Route 53">
+<meta property="og:url" content="http://sevengarden.club/2019/08/26/AWS-Route-53/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="Amazon Route 53 是一种具有很高可用性和可扩展性的域名系统 (DNS) Web 服务。可以使用 Route 53 以任意组合执行三个主要功能：域注册、DNS 路由和运行状况检查。  域名注册  将Internet路由到域名  域名解析到正确的IP地址 使用权威DNS服务器的全局网络响应DNS查询，从而减少延迟 将Internet流量路由到CloudFront，Elastic Bean">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2019/08/26/7PEZxyOBLbNWR3h.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/26/UPLo5bKJQHVxmIw.png">
+<meta property="og:updated_time" content="2019-08-26T11:19:38.809Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWS Route 53">
+<meta name="twitter:description" content="Amazon Route 53 是一种具有很高可用性和可扩展性的域名系统 (DNS) Web 服务。可以使用 Route 53 以任意组合执行三个主要功能：域注册、DNS 路由和运行状况检查。  域名注册  将Internet路由到域名  域名解析到正确的IP地址 使用权威DNS服务器的全局网络响应DNS查询，从而减少延迟 将Internet流量路由到CloudFront，Elastic Bean">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/26/7PEZxyOBLbNWR3h.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sevengarden.club/2019/08/26/AWS-Route-53/">
+
+
+
+
+
+  <title>AWS Route 53 | 岳阳北寒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">岳阳北寒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-somrthing">
+          <a href="/有料" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            somrthing
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/26/AWS-Route-53/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AWS Route 53</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-26T19:15:38+08:00">
+                2019-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Amazon Route 53 是一种具有很高可用性和可扩展性的域名系统 (DNS) Web 服务。可以使用 Route 53 以任意组合执行三个主要功能：域注册、DNS 路由和运行状况检查。</p>
+<ol>
+<li><p>域名注册</p>
+</li>
+<li><p>将Internet路由到域名</p>
+<ul>
+<li>域名解析到正确的IP地址</li>
+<li>使用权威DNS服务器的全局网络响应DNS查询，从而减少延迟</li>
+<li>将Internet流量路由到CloudFront，Elastic Beanstalk，ELB或S3。 对这些资源进行DNS查询是免费的</li>
+</ul>
+</li>
+<li><p>检查资源的运行状况</p>
+<ul>
+<li>可以监控Web和电子邮件服务器等资源的运行状况。</li>
+<li>通过Internet向应用程序发送自动请求</li>
+<li>验证它是否可访问，可用且功能正常</li>
+<li>可以为运行状况检查配置CloudWatch警报，以便在资源不可用时发送通知。</li>
+<li>可以配置为将Internet流量路由远离不可用的资源</li>
+</ul>
+<h2 id="支持的DNS记录类型"><a href="#支持的DNS记录类型" class="headerlink" title="支持的DNS记录类型"></a>支持的DNS记录类型</h2></li>
+</ol>
+<ul>
+<li><p>A（IPv4地址记录）</p>
+</li>
+<li><p>AAAA（IPv6 地址记录）</p>
+</li>
+<li><p>CNAME（规范名称记录）</p>
+<ul>
+<li>格式与域名相同</li>
+<li>DNS协议不允许为DNS命名空间的顶级节点创建CNAME记录，也称为区域顶点（例如，区域顶点）。 DNS名称example.com注册，区域顶点是example.com，无法创建example.com的CNAME记录，但可以为<a href="http://www.example.com，newproduct.example.com等创建CNAME记录。" target="_blank" rel="noopener">www.example.com，newproduct.example.com等创建CNAME记录。</a></li>
+<li>如果为子域创建了CNAME记录，则无法为该子域创建该子域的任何其他资源记录集。如果为<a href="http://www.example.com创建了CNAME，而不是可以创建名称字段值为www.example.com的其他资源记录集" target="_blank" rel="noopener">www.example.com创建了CNAME，而不是可以创建名称字段值为www.example.com的其他资源记录集</a></li>
+</ul>
+</li>
+<li><p>CAA (认证机构授权)</p>
+</li>
+<li><p>MX (邮件交换记录)</p>
+</li>
+<li><p>NAPTR（命名授权指针记录）</p>
+</li>
+<li><p>NS（名称服务器记录）</p>
+<ul>
+<li>NS记录标识托管区域的名称服务器。 NS记录的值是名称服务器的域名。</li>
+</ul>
+</li>
+<li><p>PTR（指针记录）</p>
+</li>
+<li><p>SOA（起始授权记录）</p>
+</li>
+<li><p>SPF（发件人策略框架）</p>
+</li>
+<li><p>SRV（服务定位器）</p>
+</li>
+<li><p>TXT（文本记录）</p>
+</li>
+<li><p>Amazon Route 53 还提供别名记录，这些记录是 Amazon Route 53 专用的 DNS 扩展。</p>
+</li>
+</ul>
+<h2 id="Alias-记录类型"><a href="#Alias-记录类型" class="headerlink" title="Alias 记录类型"></a>Alias 记录类型</h2><ul>
+<li>Route　53支持别名资源记录集，可以将查询路由到CloudFront分配，Elastic Beanstalk，ELB，配置为静态网站的S3存储桶或其他Route 53资源记录集</li>
+<li>别名记录不是DNS RFC的标准，是Route 53的扩展功能</li>
+<li>别名记录类似于CNAME记录，但可以为根域或顶点域、子域创建别名记录，而cname只能用于记录子域</li>
+<li>Route 53自动识别别名记录资源所引用的资源记录的变化，如对于指向ELB的指导年，若负载均衡的IP发生变化，则Route 53将自动在DNS的回应中反映这些变化，而不对包含资源记录集的托管区域进行任何更改</li>
+<li>若alias记录集指向CloudFront、ELB或S3，则无法设置TTL；Route 53使用cloudfront、LB或者S3的TTL</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>NAME 记录</th>
+<th>别名记录</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CNAME 记录可以将 DNS 查询重定向到任何 DNS 记录。例如，可以创建一条 CNAME 记录，该记录将查询从 acme.example.com 重定向到 zenith.example.com 或 acme.example.org。不需要使用 Route 53 作为您要将查询重定向到的域的 DNS 服务。</td>
+<td>别名记录只能将查询重定向到选定的 AWS 资源，例如：Amazon S3 存储桶 ;CloudFront 分配;其中创建别名记录的 Route 53 托管区域中的其他记录;例如，可以创建一个名为 acme.example.com 的别名记录，该记录将查询重定向到 Amazon S3 存储桶（也称为 acme.example.com.）。还可以创建一个 acme.example.com 别名记录，该记录将查询重定向到 example.com 托管区域中名为 zenith.example.com 的记录。</td>
+</tr>
+<tr>
+<td>不能创建与托管区域（区域 APEX）同名的 CNAME 记录。对于域名 (example.com) 的托管区域和子域 (zenith.example.com) 的托管区域都是如此。</td>
+<td>在大多数配置中，您可以创建一个与托管区域（区域 APEX）同名的别名记录。一个例外情况是，当您要将来自区域 APEX（如 example.com）的查询重定向到具有类型 CNAME（如 zenith.example.com）的同一托管区域中的记录时。别名记录必须与您要将流量路由到的目标记录具有相同的类型，而为顶级域名创建 CNAME 记录的做法不受支持，即使对于别名记录也是如此。</td>
+</tr>
+<tr>
+<td>Route 53 收取 CNAME 查询费用。</td>
+<td>对于 AWS 资源的别名查询，Route 53 不收费。有关更多信息，请参阅 Amazon Route 53 定价。</td>
+</tr>
+<tr>
+<td>无论记录类型如何，CNAME 记录都会重定向对记录名称（如 A 或 AAAA）的 DNS 查询。</td>
+<td>仅当别名记录的名称（如 acme.example.com）和别名记录的类型（如 A 或 AAAA）与 DNS 查询中的名称和类型匹配时，Route 53 才响应 DNS 查询。</td>
+</tr>
+<tr>
+<td>CNAME 记录在响应 dig 或 nslookup 查询时显示为 CNAME 记录。</td>
+<td>别名记录显示为您在创建记录时指定的记录类型，例如 A 或 AAAA。别名属性仅在 Route 53 控制台中或在响应以编程方式发出的请求时可见，例如 AWS CLI list-resource-record-sets 命令。</td>
+</tr>
+</tbody></table>
+<h2 id="托管区域"><a href="#托管区域" class="headerlink" title="托管区域"></a>托管区域</h2><ul>
+<li>托管区域是一个记录容器，记录中包含的信息说明您希望如何路由特定域（如 example.com）及其子域（acme.example.com、zenith.example.com）的流量。</li>
+<li>管区域与相应域具有相同的名称。</li>
+<li>有两种类型的托管区域：<ul>
+<li>公有托管区域 包含指定了如何路由 Internet 流量的记录。</li>
+<li>私有托管区域 包含指定了如何在 Amazon VPC 中路由流量的记录。</li>
+</ul>
+</li>
+<li>在托管区域中创建记录<ul>
+<li>记录定义了为每个域名或子域名路由路由的位置。</li>
+<li>托管区域中每条记录的名称必须以托管区域的名称结尾。</li>
+</ul>
+</li>
+</ul>
+<h2 id="Route-53-Split-view-Split-horizon-DNS"><a href="#Route-53-Split-view-Split-horizon-DNS" class="headerlink" title="Route 53 Split-view(Split-horizon) DNS"></a>Route 53 Split-view(Split-horizon) DNS</h2><ul>
+<li>允许公开使用的相同域名访问网站的内部版本</li>
+<li>使用Route 53 Spilt-view 为DNS维护具有相同域名的私有和公共托管区域</li>
+<li>确保在VPC上启用DNS解析和DNS主机名</li>
+<li>DNS查询将根据请求的来源回答答案。 在VPC内，答案将来自私有托管区域，而公共查询将从公共托管区域返回答案。</li>
+</ul>
+<h1 id="DNS-路由策略"><a href="#DNS-路由策略" class="headerlink" title="DNS 路由策略"></a>DNS 路由策略</h1><h2 id="简单路由策略"><a href="#简单路由策略" class="headerlink" title="简单路由策略"></a>简单路由策略</h2><ul>
+<li>简单路由策略是一种简单的循环策略，可以在有单个资源为域执行功能时应用。如为网站提供内容的服务器</li>
+<li>AWS Route 53基于资源记录集中的值来响应DNS查询。 如A记录中的IP地址</li>
+</ul>
+<h2 id="加权轮询（WRR）"><a href="#加权轮询（WRR）" class="headerlink" title="加权轮询（WRR）"></a>加权轮询（WRR）</h2><ul>
+<li>加权路由策略使路由53能够以指定的比例（权重）将流量路由到不同的资源，例如，75％的一个服务器和25％的另一个服务器</li>
+<li>可以为权重指定0到255之间的任何数字</li>
+<li>当存在多个执行相同功能的资源（例如，服务于相同站点的web服务器）时，可以应用加权路由策略</li>
+<li>加权资源记录集允许您将多个资源与单个DNS名称相关联</li>
+<li>常见用例包括<ul>
+<li>负载均衡</li>
+<li>A / B测试和试用新版软件</li>
+</ul>
+</li>
+<li>创建一组加权资源记录集，可以创建具有相同DNS名称和类型组合的两个或更多资源记录集，并且为每个资源记录集分配唯一标识符和相对权重</li>
+<li>处理DNS查询时，Route 53搜索具有指定名称和类型的资源记录集或一组资源记录集</li>
+<li>Route 53从组中选择一个。选择任何一个资源记录集的概率取决于其权重作为该组中所有资源记录集的总权重的比例，例如，假设<a href="http://www.example.com具有三个权重为1的资源记录集（20％）" target="_blank" rel="noopener">www.example.com具有三个权重为1的资源记录集（20％）</a> ），1（20％）和3（60％）（总和= 5）。平均而言，Route 53在五分之一的时间中选择前两个资源记录集中的每一个，并且返回三分之三的时间的第三资源记录集。</li>
+</ul>
+<h2 id="基于延迟的路由（LBR）"><a href="#基于延迟的路由（LBR）" class="headerlink" title="基于延迟的路由（LBR）"></a>基于延迟的路由（LBR）</h2><ul>
+<li>基于延迟的路由策略使Route 53能够根据哪个数据中心为用户提供最低的网络延迟来响应DNS查询</li>
+<li>当有多个资源执行相同的功能时，可以使用基于延迟的路由策略，并且Route 53需要配置为使用提供最快响应和最低延迟的资源来响应DNS查询</li>
+<li>可以为托管应用程序的每个区域中的EC2资源创建延迟资源记录集。当Route 53收到对应域的查询时，它会选择为EC2区域设置的延迟资源记录，为用户提供最低延迟。然后，Route 53以与该资源记录集相关联的值进行响应，例如，您能在爱尔兰和东京的EC2数据中心中具有example.com的Web服务器。当用户从新加坡浏览example.com时，Route 53将从用户位置获取具有最低延迟的数据中心（东京）</li>
+<li><strong>由于网络连接和路由的变化，Internet上主机之间的延迟可能会随着时间的推移而发生变化。基于延迟的路由基于在一段时间内执行的等待时间测量，并且测量结果反映了这些变化。</strong>如果新加坡用户到爱尔兰的延迟有所改善，用户可以路由到爱尔兰</li>
+<li>基于延迟的路由不能保证来自相同地理位置的用户出于任何合规性原因将从同一位置提供服务</li>
+<li>可以使用Route 53支持的除NS或SOA之外的任何记录类型来创建延迟资源记录集</li>
+</ul>
+<h2 id="故障转移策略（Failover）"><a href="#故障转移策略（Failover）" class="headerlink" title="故障转移策略（Failover）"></a>故障转移策略（Failover）</h2><ul>
+<li>故障转移路由策略允许主动 - 被动故障转移配置，其中一个资源在可用时占用所有流量，而另一个资源在第一个资源不可用时占用所有流量。</li>
+<li>Route 53运行状况检查代理将监视应用程序的每个位置/端点以确定可用性。</li>
+<li>故障转移路由策略仅适用于公共托管区域</li>
+</ul>
+<h2 id="地理位置路由策略（Geo-DNS）"><a href="#地理位置路由策略（Geo-DNS）" class="headerlink" title="地理位置路由策略（Geo DNS）"></a>地理位置路由策略（Geo DNS）</h2><ul>
+<li>地理位置路由策略使路由53能够根据用户的地理位置（即DNS查询源自的位置）响应DNS查询</li>
+<li>常见用例包括<ul>
+<li>内容的本地化和以用户语言呈现部分或全部网站</li>
+<li>限制内容的分发仅限于您拥有发行权的位置。</li>
+<li>以可预测，易于管理的方式平衡端点之间的负载，以便每个用户位置始终路由到同一端点。</li>
+</ul>
+</li>
+<li>地理位置路由策略允许按洲，国家或州（仅在美国）指定地理位置</li>
+<li>地理定位记录集，如果创建的话，用于例如重叠的地理区域。非洲大陆，然后是同一大洲的国家，优先考虑最小的地理区域，这允许将一个大陆的一些查询路由到一个资源，并查询该大陆上的选定国家的不同资源</li>
+<li>地理定位的工作原理是将IP地址映射到位置，这些位置可能未映射到确切的地理位置</li>
+<li>可以创建默认资源记录集来处理这些查询，也可以创建没有创建显式记录集的查询</li>
+<li>如果未创建默认资源记录集，则Route 53对来自这些位置的查询返回“无应答”响应</li>
+<li>无法创建指定相同地理位置的两个地理位置资源记录集</li>
+<li>Route 53支持EDNS0的edns-client-subnet扩展（EDNS0为DNS协议添加了几个可选扩展。）以提高地理定位路由的准确性</li>
+</ul>
+<h1 id="AWS-Route-53-Resolver"><a href="#AWS-Route-53-Resolver" class="headerlink" title="AWS Route 53 Resolver"></a>AWS Route 53 Resolver</h1><h2 id="解析VPC和本地网络之间的DNS查询"><a href="#解析VPC和本地网络之间的DNS查询" class="headerlink" title="解析VPC和本地网络之间的DNS查询"></a>解析VPC和本地网络之间的DNS查询</h2><ul>
+<li>Route 53 Resolver在VPC内提供自动DNS解析</li>
+<li>默认情况下，Resolver会回答VPC域名的DNS查询，例如EC2实例或ELB负载均衡器的域名</li>
+<li>Resolver对所有其他域名的公共名称服务器执行递归查找</li>
+<li>但是，本地实例无法解析Route 53 DNS条目，而Route 53无法解析本地DNS条目</li>
+<li>可以通过Direct Connect或VPN连接配置AWS VPC与本地网络之间的DNS解析</li>
+<li>Route 53 Resolver是区域性的</li>
+<li>要使用入站或出站转发，请在VPC中创建解析器端点</li>
+<li>作为端点定义的一部分，指定要将入站DNS查询转发到的IP地址或要从其发出的出站查询的IP地址。 对于指定的每个IP地址，Resolver会自动创建VPC弹性网络接口</li>
+</ul>
+<h2 id="将-DNS-查询从网络上的解析程序转发到-Route-53-解析程序"><a href="#将-DNS-查询从网络上的解析程序转发到-Route-53-解析程序" class="headerlink" title="将 DNS 查询从网络上的解析程序转发到 Route 53 解析程序"></a>将 DNS 查询从网络上的解析程序转发到 Route 53 解析程序</h2><p><img src="https://i.loli.net/2019/08/26/7PEZxyOBLbNWR3h.png" alt="Resolver-inbound-endpoint.png"></p>
+<ul>
+<li>本地网络上的DNS解析器可以将DNS查询转发到指定VPC中的解析器。</li>
+<li>这使DNS解析器能够轻松解析AWS资源的域名，例如EC2实例或Route 53私有托管区域中的记录。</li>
+</ul>
+<h2 id="将查询从-VPC-有条件地转发到您网络上的解析程序"><a href="#将查询从-VPC-有条件地转发到您网络上的解析程序" class="headerlink" title="将查询从 VPC 有条件地转发到您网络上的解析程序"></a>将查询从 VPC 有条件地转发到您网络上的解析程序</h2><p><img src="https://i.loli.net/2019/08/26/UPLo5bKJQHVxmIw.png" alt="Resolver-outbound-endpoint.png"></p>
+<ul>
+<li>配置解析程序，将它从 VPC中EC2实例收到的查询转发到您网络上的 DNS 解析程序</li>
+<li>要转发选定的查询，可以创建解析程序规则，指定要转发的 DNS 查询的域名（例如 example.com），以及希望将查询转发到网络上的 DNS 解析程序的 IP 地址</li>
+<li>如果查询与多个规则匹配（example.com、acme.example.com），解析程序会选择匹配最具体的规则 (acme.example.com) 并将查询转发到该规则中指定的IP地址</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Route-53/" rel="tag"># Route 53</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/22/AWS-Storage/" rel="next" title="AWS Storage">
+                <i class="fa fa-chevron-left"></i> AWS Storage
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/26/札记/" rel="prev" title="札记">
+                札记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">seven</p>
+              <p class="site-description motion-element" itemprop="description">seven 的精神家园，学习笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="1988xuegang@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#支持的DNS记录类型"><span class="nav-number">1.</span> <span class="nav-text">支持的DNS记录类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Alias-记录类型"><span class="nav-number">2.</span> <span class="nav-text">Alias 记录类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#托管区域"><span class="nav-number">3.</span> <span class="nav-text">托管区域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Route-53-Split-view-Split-horizon-DNS"><span class="nav-number">4.</span> <span class="nav-text">Route 53 Split-view(Split-horizon) DNS</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#DNS-路由策略"><span class="nav-number"></span> <span class="nav-text">DNS 路由策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单路由策略"><span class="nav-number">1.</span> <span class="nav-text">简单路由策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加权轮询（WRR）"><span class="nav-number">2.</span> <span class="nav-text">加权轮询（WRR）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于延迟的路由（LBR）"><span class="nav-number">3.</span> <span class="nav-text">基于延迟的路由（LBR）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#故障转移策略（Failover）"><span class="nav-number">4.</span> <span class="nav-text">故障转移策略（Failover）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地理位置路由策略（Geo-DNS）"><span class="nav-number">5.</span> <span class="nav-text">地理位置路由策略（Geo DNS）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AWS-Route-53-Resolver"><span class="nav-number"></span> <span class="nav-text">AWS Route 53 Resolver</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解析VPC和本地网络之间的DNS查询"><span class="nav-number">1.</span> <span class="nav-text">解析VPC和本地网络之间的DNS查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将-DNS-查询从网络上的解析程序转发到-Route-53-解析程序"><span class="nav-number">2.</span> <span class="nav-text">将 DNS 查询从网络上的解析程序转发到 Route 53 解析程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将查询从-VPC-有条件地转发到您网络上的解析程序"><span class="nav-number">3.</span> <span class="nav-text">将查询从 VPC 有条件地转发到您网络上的解析程序</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seven</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

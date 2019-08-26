@@ -273,6 +273,657 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/26/札记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/26/札记/" itemprop="url">札记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-26T19:23:57+08:00">
+                2019-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="数字化转型（金融）"><a href="#数字化转型（金融）" class="headerlink" title="数字化转型（金融）"></a>数字化转型（金融）</h2><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="left"><strong>信息化模型</strong></th>
+<th align="left"><strong>数字化模型</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">使用模式</td>
+<td align="left">专线支持的网点、ATM、POS机等客户场景</td>
+<td align="left">互联网生态及自有APP的用户场景、无人银行</td>
+</tr>
+<tr>
+<td align="center">人员思维</td>
+<td align="left">项目经理思维，架构师思维</td>
+<td align="left">产品思维、数据思维</td>
+</tr>
+<tr>
+<td align="center">产品形态</td>
+<td align="left">以金融机构为视角的专业化产品</td>
+<td align="left">以客户体验为核心的生态化产品</td>
+</tr>
+<tr>
+<td align="center">开发模式</td>
+<td align="left">基于完整需求进行瀑布式开发</td>
+<td align="left">基于体验点进行敏捷开发</td>
+</tr>
+<tr>
+<td align="center">合作模式</td>
+<td align="left">业务部门定义产品，科技部门实现产品</td>
+<td align="left">业务部门和科技部门共同定义产品</td>
+</tr>
+<tr>
+<td align="center">团队组织</td>
+<td align="left">由项目经理、架构师、领域开发人员组成的开发中心、测试中心、数据中心</td>
+<td align="left">包含项目经理、产品经理、全栈开发组成</td>
+</tr>
+<tr>
+<td align="center">技术平台</td>
+<td align="left">自建、私有云</td>
+<td align="left">自建+ 租用 私有云+公有云</td>
+</tr>
+<tr>
+<td align="center">数据架构</td>
+<td align="left">大数据</td>
+<td align="left">数据湖</td>
+</tr>
+<tr>
+<td align="center">应用架构</td>
+<td align="left">MVC/三层</td>
+<td align="left">现代化应用</td>
+</tr>
+<tr>
+<td align="center">开发运维工具</td>
+<td align="left">开发工具/运维工具</td>
+<td align="left">DevOps、AIoPS</td>
+</tr>
+<tr>
+<td align="center">自动化程度</td>
+<td align="left">实现“人管机器”的技术自动化</td>
+<td align="left">业务自动化</td>
+</tr>
+</tbody></table>
+<h4 id="分布式存储"><a href="#分布式存储" class="headerlink" title="分布式存储"></a>分布式存储</h4><ul>
+<li>I/O路经长</li>
+<li>latency 大（网络抖动、多副本处理）</li>
+</ul>
+<p>优化时延主要方法：</p>
+<ul>
+<li>硬件升级，诸如NVME、RDMA</li>
+<li>优化I/O路径，通信框架</li>
+<li>优化每个模块的处理时间</li>
+<li>优化磁盘布局</li>
+<li>增加数据缓存层</li>
+</ul>
+<h4 id="数据仓库-vs-数据湖"><a href="#数据仓库-vs-数据湖" class="headerlink" title="数据仓库 vs 数据湖"></a>数据仓库 vs 数据湖</h4><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="left"></th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">数据</td>
+<td align="left">来自食物系统、运营数据库、业务应用程序</td>
+<td align="left">IoT设备、网络、移动应用程序、社交媒体（非关系）</td>
+</tr>
+<tr>
+<td align="center">Schema</td>
+<td align="left">写入型Schema</td>
+<td align="left">写入分析时（读取型 Schema）</td>
+</tr>
+<tr>
+<td align="center">性价比</td>
+<td align="left">更快查询结果成本高</td>
+<td align="left">更快查询结果较低存储成本</td>
+</tr>
+<tr>
+<td align="center">数据质量</td>
+<td align="left">可作为重要事实依据的高度监管数据</td>
+<td align="left">任何可以或无法进行监管数据</td>
+</tr>
+<tr>
+<td align="center">用户</td>
+<td align="left">业务分析师</td>
+<td align="left">数据科学家、数据开发人员和业务分析师</td>
+</tr>
+<tr>
+<td align="center">分析</td>
+<td align="left">批处理、BI、可视化</td>
+<td align="left">机器学习、预测成本、数据发现和分析</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>数据湖概念：</p>
+</blockquote>
+<p> <em>在保障数据持久性和安全性的前提下，存储任何量级的各种数据（结构化、非结构化、半结构化），并对其运用不同的分析手段（查询、统计、挖掘），以获得数据内在价值并指导业务发展</em></p>
+<h1 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h1><ul>
+<li>InnoDB的行锁匙实现在索引上的</li>
+<li>并发控制保证数据一致性常见手段<ul>
+<li>锁（locking）</li>
+<li>数据多版本（multi versioning）</li>
+</ul>
+</li>
+<li>共享锁（share lock ）,读数据枷锁</li>
+<li>排他锁（exclusive lock），修改数据加X锁</li>
+<li>写事务未提交，读相关数据select阻塞</li>
+<li>由锁机制延伸出数据多版本</li>
+</ul>
+<p>核心原理</p>
+<ul>
+<li>写任务发生时，将数据克隆一份，以版本号区别</li>
+<li>写人物操作新克隆的数据，直至提交</li>
+<li>并发读可以继续读取旧版本数据，不至于阻塞</li>
+</ul>
+<ul>
+<li>普通锁串行，读写锁读读并行，数据多版本读写并行</li>
+<li>Redo日志保证已提交事务的ACID特性，设计思路是通过顺序写代替随机写，提高并发</li>
+<li>redo 日志保证未提交事务的ACID特性，存储在回滚段中</li>
+<li>InnoDB是基于MVCC的存储引擎，利用存储在回滚段里undo日志，即数据的旧版本提高并发 </li>
+<li>InnoDB 之所以并发高，快照读不加锁</li>
+<li>InnoDB 所有的普通Select 都是快照读</li>
+</ul>
+<p>InnoDB 存储引擎</p>
+<ol>
+<li>重做日志 redo log 用于实力故障恢复是，继续那些已经commit 但尚未完全回写到磁盘的事务</li>
+<li>回滚日志 undo log 用于在实例故障恢复时，借助undo log将尚未commit的食物，回滚到事务开始前的状态</li>
+</ol>
+<p>总结：redo log 可以保证事务的原子性和持久性，undo log可以保证事务的一致性（事务的隔离性是由锁来实现的）<br>redo和undo 都可以视作一种恢复操作，redo恢复提交事务修改的页操作，记录的内容是物理日志，记录的是页的物理修改操作；而undo回滚行记录到某个特定的版本，记录的是逻辑日志，根据每行记录进行记录。</p>
+<p>数据库索引</p>
+<ol>
+<li>B+ 树 数据结构：高度平衡的多叉树，叶子节点保存所有数据。（注意B+树的非聚集索引的叶子节点并不是直接存放的给定键值的行，而是数据行所在的页，然后数据库通过把页读入内存，再在内存中查找）</li>
+<li>B+ 树数据结构应用在数据库的索引实现中，具有高度的扇出性，一般B+树的高度都在2～4层，也就是说查找某一键值的行记录时最多只需要2～4此IO</li>
+</ol>
+<p>B+树索引可以分为聚集索引（主键索引，已主键作为key的索引）和辅助索引（非聚集索引）。</p>
+<ul>
+<li>聚集索引的叶子节点保存的是数据，即行记录；</li>
+<li>InnoDB的主键索引的排序查找和范围查找非常快；</li>
+</ul>
+<p>InnoDB的数据文件本身就是索引文件。MyISAM索引文件爱你和数据文件是分离的，索引文件仅保存数据记录的地址。而在InnoDB中，表数据文件本身就是按B+Tree组织的一个索引仅够，这棵树的叶节点data域保存了完整的数据记录。这个索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引。</p>
+<p>InnoDB的辅助索引data域存储相应记录主键的值而不是地址，InnoDB的所有辅助索引引用主键作为data域。<br>聚集索引这种实现方式使得按主键的搜索十分高效，但是辅助索引搜索需要检索两边索引：首先检索辅助索引获得主键，然后哦用主键到主索引中检索获得记录。</p>
+<p>数据库事务隔离级别</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left"></th>
+<th align="left"></th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>隔离级别</strong></td>
+<td align="left"><strong>脏读（Dirty Read）</strong></td>
+<td align="left"><strong>不可重复读（NonRepeattable Read）</strong></td>
+<td align="left"><strong>幻读（Phantom Read）</strong></td>
+</tr>
+<tr>
+<td align="left">未提交读 （Read uncommited）</td>
+<td align="left">可能</td>
+<td align="left">可能</td>
+<td align="left">可能</td>
+</tr>
+<tr>
+<td align="left">已提交读（Read commited）</td>
+<td align="left">不可能</td>
+<td align="left">可能</td>
+<td align="left">可能</td>
+</tr>
+<tr>
+<td align="left">可重复读（Repeatable read）</td>
+<td align="left">不可能</td>
+<td align="left">不可能</td>
+<td align="left">可能</td>
+</tr>
+<tr>
+<td align="left">可串行化（Serializable）</td>
+<td align="left">不可能</td>
+<td align="left">不可能</td>
+<td align="left">不可能</td>
+</tr>
+</tbody></table>
+<ul>
+<li>未提交读（Read Uncommited）：允许脏读，也就是可能读取到其他会话中未提交事务修改的数据</li>
+<li>提交读（Read Committed）：只能读取到已经提交的数据。Oracle等多数据默认都是该级别（不重复读）</li>
+<li>可重复读（RepeatedRead）：可重复读。在同一个事务内的查询都是事务开始时刻是一致的，InnoDB默认级别。在SQL标准中，该隔离级别消除了不可重复读，但是还存在幻想读。</li>
+<li>串行读（Serializable）：完全串行化的读，每次读都需要获得表级共享锁，读写相互都会阻塞</li>
+</ul>
+<p>MySQL尽量避免使用NULL（空值）列，其使得索引、索引统计和值都比较复杂</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/26/AWS-Route-53/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/26/AWS-Route-53/" itemprop="url">AWS Route 53</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-26T19:15:38+08:00">
+                2019-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Amazon Route 53 是一种具有很高可用性和可扩展性的域名系统 (DNS) Web 服务。可以使用 Route 53 以任意组合执行三个主要功能：域注册、DNS 路由和运行状况检查。</p>
+<ol>
+<li><p>域名注册</p>
+</li>
+<li><p>将Internet路由到域名</p>
+<ul>
+<li>域名解析到正确的IP地址</li>
+<li>使用权威DNS服务器的全局网络响应DNS查询，从而减少延迟</li>
+<li>将Internet流量路由到CloudFront，Elastic Beanstalk，ELB或S3。 对这些资源进行DNS查询是免费的</li>
+</ul>
+</li>
+<li><p>检查资源的运行状况</p>
+<ul>
+<li>可以监控Web和电子邮件服务器等资源的运行状况。</li>
+<li>通过Internet向应用程序发送自动请求</li>
+<li>验证它是否可访问，可用且功能正常</li>
+<li>可以为运行状况检查配置CloudWatch警报，以便在资源不可用时发送通知。</li>
+<li>可以配置为将Internet流量路由远离不可用的资源</li>
+</ul>
+<h2 id="支持的DNS记录类型"><a href="#支持的DNS记录类型" class="headerlink" title="支持的DNS记录类型"></a>支持的DNS记录类型</h2></li>
+</ol>
+<ul>
+<li><p>A（IPv4地址记录）</p>
+</li>
+<li><p>AAAA（IPv6 地址记录）</p>
+</li>
+<li><p>CNAME（规范名称记录）</p>
+<ul>
+<li>格式与域名相同</li>
+<li>DNS协议不允许为DNS命名空间的顶级节点创建CNAME记录，也称为区域顶点（例如，区域顶点）。 DNS名称example.com注册，区域顶点是example.com，无法创建example.com的CNAME记录，但可以为<a href="http://www.example.com，newproduct.example.com等创建CNAME记录。" target="_blank" rel="noopener">www.example.com，newproduct.example.com等创建CNAME记录。</a></li>
+<li>如果为子域创建了CNAME记录，则无法为该子域创建该子域的任何其他资源记录集。如果为<a href="http://www.example.com创建了CNAME，而不是可以创建名称字段值为www.example.com的其他资源记录集" target="_blank" rel="noopener">www.example.com创建了CNAME，而不是可以创建名称字段值为www.example.com的其他资源记录集</a></li>
+</ul>
+</li>
+<li><p>CAA (认证机构授权)</p>
+</li>
+<li><p>MX (邮件交换记录)</p>
+</li>
+<li><p>NAPTR（命名授权指针记录）</p>
+</li>
+<li><p>NS（名称服务器记录）</p>
+<ul>
+<li>NS记录标识托管区域的名称服务器。 NS记录的值是名称服务器的域名。</li>
+</ul>
+</li>
+<li><p>PTR（指针记录）</p>
+</li>
+<li><p>SOA（起始授权记录）</p>
+</li>
+<li><p>SPF（发件人策略框架）</p>
+</li>
+<li><p>SRV（服务定位器）</p>
+</li>
+<li><p>TXT（文本记录）</p>
+</li>
+<li><p>Amazon Route 53 还提供别名记录，这些记录是 Amazon Route 53 专用的 DNS 扩展。</p>
+</li>
+</ul>
+<h2 id="Alias-记录类型"><a href="#Alias-记录类型" class="headerlink" title="Alias 记录类型"></a>Alias 记录类型</h2><ul>
+<li>Route　53支持别名资源记录集，可以将查询路由到CloudFront分配，Elastic Beanstalk，ELB，配置为静态网站的S3存储桶或其他Route 53资源记录集</li>
+<li>别名记录不是DNS RFC的标准，是Route 53的扩展功能</li>
+<li>别名记录类似于CNAME记录，但可以为根域或顶点域、子域创建别名记录，而cname只能用于记录子域</li>
+<li>Route 53自动识别别名记录资源所引用的资源记录的变化，如对于指向ELB的指导年，若负载均衡的IP发生变化，则Route 53将自动在DNS的回应中反映这些变化，而不对包含资源记录集的托管区域进行任何更改</li>
+<li>若alias记录集指向CloudFront、ELB或S3，则无法设置TTL；Route 53使用cloudfront、LB或者S3的TTL</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>NAME 记录</th>
+<th>别名记录</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CNAME 记录可以将 DNS 查询重定向到任何 DNS 记录。例如，可以创建一条 CNAME 记录，该记录将查询从 acme.example.com 重定向到 zenith.example.com 或 acme.example.org。不需要使用 Route 53 作为您要将查询重定向到的域的 DNS 服务。</td>
+<td>别名记录只能将查询重定向到选定的 AWS 资源，例如：Amazon S3 存储桶 ;CloudFront 分配;其中创建别名记录的 Route 53 托管区域中的其他记录;例如，可以创建一个名为 acme.example.com 的别名记录，该记录将查询重定向到 Amazon S3 存储桶（也称为 acme.example.com.）。还可以创建一个 acme.example.com 别名记录，该记录将查询重定向到 example.com 托管区域中名为 zenith.example.com 的记录。</td>
+</tr>
+<tr>
+<td>不能创建与托管区域（区域 APEX）同名的 CNAME 记录。对于域名 (example.com) 的托管区域和子域 (zenith.example.com) 的托管区域都是如此。</td>
+<td>在大多数配置中，您可以创建一个与托管区域（区域 APEX）同名的别名记录。一个例外情况是，当您要将来自区域 APEX（如 example.com）的查询重定向到具有类型 CNAME（如 zenith.example.com）的同一托管区域中的记录时。别名记录必须与您要将流量路由到的目标记录具有相同的类型，而为顶级域名创建 CNAME 记录的做法不受支持，即使对于别名记录也是如此。</td>
+</tr>
+<tr>
+<td>Route 53 收取 CNAME 查询费用。</td>
+<td>对于 AWS 资源的别名查询，Route 53 不收费。有关更多信息，请参阅 Amazon Route 53 定价。</td>
+</tr>
+<tr>
+<td>无论记录类型如何，CNAME 记录都会重定向对记录名称（如 A 或 AAAA）的 DNS 查询。</td>
+<td>仅当别名记录的名称（如 acme.example.com）和别名记录的类型（如 A 或 AAAA）与 DNS 查询中的名称和类型匹配时，Route 53 才响应 DNS 查询。</td>
+</tr>
+<tr>
+<td>CNAME 记录在响应 dig 或 nslookup 查询时显示为 CNAME 记录。</td>
+<td>别名记录显示为您在创建记录时指定的记录类型，例如 A 或 AAAA。别名属性仅在 Route 53 控制台中或在响应以编程方式发出的请求时可见，例如 AWS CLI list-resource-record-sets 命令。</td>
+</tr>
+</tbody></table>
+<h2 id="托管区域"><a href="#托管区域" class="headerlink" title="托管区域"></a>托管区域</h2><ul>
+<li>托管区域是一个记录容器，记录中包含的信息说明您希望如何路由特定域（如 example.com）及其子域（acme.example.com、zenith.example.com）的流量。</li>
+<li>管区域与相应域具有相同的名称。</li>
+<li>有两种类型的托管区域：<ul>
+<li>公有托管区域 包含指定了如何路由 Internet 流量的记录。</li>
+<li>私有托管区域 包含指定了如何在 Amazon VPC 中路由流量的记录。</li>
+</ul>
+</li>
+<li>在托管区域中创建记录<ul>
+<li>记录定义了为每个域名或子域名路由路由的位置。</li>
+<li>托管区域中每条记录的名称必须以托管区域的名称结尾。</li>
+</ul>
+</li>
+</ul>
+<h2 id="Route-53-Split-view-Split-horizon-DNS"><a href="#Route-53-Split-view-Split-horizon-DNS" class="headerlink" title="Route 53 Split-view(Split-horizon) DNS"></a>Route 53 Split-view(Split-horizon) DNS</h2><ul>
+<li>允许公开使用的相同域名访问网站的内部版本</li>
+<li>使用Route 53 Spilt-view 为DNS维护具有相同域名的私有和公共托管区域</li>
+<li>确保在VPC上启用DNS解析和DNS主机名</li>
+<li>DNS查询将根据请求的来源回答答案。 在VPC内，答案将来自私有托管区域，而公共查询将从公共托管区域返回答案。</li>
+</ul>
+<h1 id="DNS-路由策略"><a href="#DNS-路由策略" class="headerlink" title="DNS 路由策略"></a>DNS 路由策略</h1><h2 id="简单路由策略"><a href="#简单路由策略" class="headerlink" title="简单路由策略"></a>简单路由策略</h2><ul>
+<li>简单路由策略是一种简单的循环策略，可以在有单个资源为域执行功能时应用。如为网站提供内容的服务器</li>
+<li>AWS Route 53基于资源记录集中的值来响应DNS查询。 如A记录中的IP地址</li>
+</ul>
+<h2 id="加权轮询（WRR）"><a href="#加权轮询（WRR）" class="headerlink" title="加权轮询（WRR）"></a>加权轮询（WRR）</h2><ul>
+<li>加权路由策略使路由53能够以指定的比例（权重）将流量路由到不同的资源，例如，75％的一个服务器和25％的另一个服务器</li>
+<li>可以为权重指定0到255之间的任何数字</li>
+<li>当存在多个执行相同功能的资源（例如，服务于相同站点的web服务器）时，可以应用加权路由策略</li>
+<li>加权资源记录集允许您将多个资源与单个DNS名称相关联</li>
+<li>常见用例包括<ul>
+<li>负载均衡</li>
+<li>A / B测试和试用新版软件</li>
+</ul>
+</li>
+<li>创建一组加权资源记录集，可以创建具有相同DNS名称和类型组合的两个或更多资源记录集，并且为每个资源记录集分配唯一标识符和相对权重</li>
+<li>处理DNS查询时，Route 53搜索具有指定名称和类型的资源记录集或一组资源记录集</li>
+<li>Route 53从组中选择一个。选择任何一个资源记录集的概率取决于其权重作为该组中所有资源记录集的总权重的比例，例如，假设<a href="http://www.example.com具有三个权重为1的资源记录集（20％）" target="_blank" rel="noopener">www.example.com具有三个权重为1的资源记录集（20％）</a> ），1（20％）和3（60％）（总和= 5）。平均而言，Route 53在五分之一的时间中选择前两个资源记录集中的每一个，并且返回三分之三的时间的第三资源记录集。</li>
+</ul>
+<h2 id="基于延迟的路由（LBR）"><a href="#基于延迟的路由（LBR）" class="headerlink" title="基于延迟的路由（LBR）"></a>基于延迟的路由（LBR）</h2><ul>
+<li>基于延迟的路由策略使Route 53能够根据哪个数据中心为用户提供最低的网络延迟来响应DNS查询</li>
+<li>当有多个资源执行相同的功能时，可以使用基于延迟的路由策略，并且Route 53需要配置为使用提供最快响应和最低延迟的资源来响应DNS查询</li>
+<li>可以为托管应用程序的每个区域中的EC2资源创建延迟资源记录集。当Route 53收到对应域的查询时，它会选择为EC2区域设置的延迟资源记录，为用户提供最低延迟。然后，Route 53以与该资源记录集相关联的值进行响应，例如，您能在爱尔兰和东京的EC2数据中心中具有example.com的Web服务器。当用户从新加坡浏览example.com时，Route 53将从用户位置获取具有最低延迟的数据中心（东京）</li>
+<li><strong>由于网络连接和路由的变化，Internet上主机之间的延迟可能会随着时间的推移而发生变化。基于延迟的路由基于在一段时间内执行的等待时间测量，并且测量结果反映了这些变化。</strong>如果新加坡用户到爱尔兰的延迟有所改善，用户可以路由到爱尔兰</li>
+<li>基于延迟的路由不能保证来自相同地理位置的用户出于任何合规性原因将从同一位置提供服务</li>
+<li>可以使用Route 53支持的除NS或SOA之外的任何记录类型来创建延迟资源记录集</li>
+</ul>
+<h2 id="故障转移策略（Failover）"><a href="#故障转移策略（Failover）" class="headerlink" title="故障转移策略（Failover）"></a>故障转移策略（Failover）</h2><ul>
+<li>故障转移路由策略允许主动 - 被动故障转移配置，其中一个资源在可用时占用所有流量，而另一个资源在第一个资源不可用时占用所有流量。</li>
+<li>Route 53运行状况检查代理将监视应用程序的每个位置/端点以确定可用性。</li>
+<li>故障转移路由策略仅适用于公共托管区域</li>
+</ul>
+<h2 id="地理位置路由策略（Geo-DNS）"><a href="#地理位置路由策略（Geo-DNS）" class="headerlink" title="地理位置路由策略（Geo DNS）"></a>地理位置路由策略（Geo DNS）</h2><ul>
+<li>地理位置路由策略使路由53能够根据用户的地理位置（即DNS查询源自的位置）响应DNS查询</li>
+<li>常见用例包括<ul>
+<li>内容的本地化和以用户语言呈现部分或全部网站</li>
+<li>限制内容的分发仅限于您拥有发行权的位置。</li>
+<li>以可预测，易于管理的方式平衡端点之间的负载，以便每个用户位置始终路由到同一端点。</li>
+</ul>
+</li>
+<li>地理位置路由策略允许按洲，国家或州（仅在美国）指定地理位置</li>
+<li>地理定位记录集，如果创建的话，用于例如重叠的地理区域。非洲大陆，然后是同一大洲的国家，优先考虑最小的地理区域，这允许将一个大陆的一些查询路由到一个资源，并查询该大陆上的选定国家的不同资源</li>
+<li>地理定位的工作原理是将IP地址映射到位置，这些位置可能未映射到确切的地理位置</li>
+<li>可以创建默认资源记录集来处理这些查询，也可以创建没有创建显式记录集的查询</li>
+<li>如果未创建默认资源记录集，则Route 53对来自这些位置的查询返回“无应答”响应</li>
+<li>无法创建指定相同地理位置的两个地理位置资源记录集</li>
+<li>Route 53支持EDNS0的edns-client-subnet扩展（EDNS0为DNS协议添加了几个可选扩展。）以提高地理定位路由的准确性</li>
+</ul>
+<h1 id="AWS-Route-53-Resolver"><a href="#AWS-Route-53-Resolver" class="headerlink" title="AWS Route 53 Resolver"></a>AWS Route 53 Resolver</h1><h2 id="解析VPC和本地网络之间的DNS查询"><a href="#解析VPC和本地网络之间的DNS查询" class="headerlink" title="解析VPC和本地网络之间的DNS查询"></a>解析VPC和本地网络之间的DNS查询</h2><ul>
+<li>Route 53 Resolver在VPC内提供自动DNS解析</li>
+<li>默认情况下，Resolver会回答VPC域名的DNS查询，例如EC2实例或ELB负载均衡器的域名</li>
+<li>Resolver对所有其他域名的公共名称服务器执行递归查找</li>
+<li>但是，本地实例无法解析Route 53 DNS条目，而Route 53无法解析本地DNS条目</li>
+<li>可以通过Direct Connect或VPN连接配置AWS VPC与本地网络之间的DNS解析</li>
+<li>Route 53 Resolver是区域性的</li>
+<li>要使用入站或出站转发，请在VPC中创建解析器端点</li>
+<li>作为端点定义的一部分，指定要将入站DNS查询转发到的IP地址或要从其发出的出站查询的IP地址。 对于指定的每个IP地址，Resolver会自动创建VPC弹性网络接口</li>
+</ul>
+<h2 id="将-DNS-查询从网络上的解析程序转发到-Route-53-解析程序"><a href="#将-DNS-查询从网络上的解析程序转发到-Route-53-解析程序" class="headerlink" title="将 DNS 查询从网络上的解析程序转发到 Route 53 解析程序"></a>将 DNS 查询从网络上的解析程序转发到 Route 53 解析程序</h2><p><img src="https://i.loli.net/2019/08/26/7PEZxyOBLbNWR3h.png" alt="Resolver-inbound-endpoint.png"></p>
+<ul>
+<li>本地网络上的DNS解析器可以将DNS查询转发到指定VPC中的解析器。</li>
+<li>这使DNS解析器能够轻松解析AWS资源的域名，例如EC2实例或Route 53私有托管区域中的记录。</li>
+</ul>
+<h2 id="将查询从-VPC-有条件地转发到您网络上的解析程序"><a href="#将查询从-VPC-有条件地转发到您网络上的解析程序" class="headerlink" title="将查询从 VPC 有条件地转发到您网络上的解析程序"></a>将查询从 VPC 有条件地转发到您网络上的解析程序</h2><p><img src="https://i.loli.net/2019/08/26/UPLo5bKJQHVxmIw.png" alt="Resolver-outbound-endpoint.png"></p>
+<ul>
+<li>配置解析程序，将它从 VPC中EC2实例收到的查询转发到您网络上的 DNS 解析程序</li>
+<li>要转发选定的查询，可以创建解析程序规则，指定要转发的 DNS 查询的域名（例如 example.com），以及希望将查询转发到网络上的 DNS 解析程序的 IP 地址</li>
+<li>如果查询与多个规则匹配（example.com、acme.example.com），解析程序会选择匹配最具体的规则 (acme.example.com) 并将查询转发到该规则中指定的IP地址</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/22/AWS-Storage/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3072,6 +3723,12 @@
 <li>架构的本质并非时要解决领域内的具体问题，而是复杂度管理，用于将所面对的复杂度客观对象。问题和解决方案的复杂度进行有效的分解和管理，并尽量减轻内外变化所产生影响。</li>
 <li>领域问题的解决方案靠的时相关的解决方案，同样的一个问题可以有不同的解决方案，虽然他们的目标时一致的，但由于各架构的不同，各个结局方案的灵活性、坚固性和扩展性不同，因而我们在为解决方案选择架构的时候关注的并不是其是否可以解决问题，更多的是对架构所带来的灵活性、坚固性和扩展性于相应的成本之间进行权衡。</li>
 </ul>
+<ol>
+<li>根据要解决的问题，对目标系统的边界进行界定</li>
+<li>并对目标系统按某个原则进行切分。切分的原则，要适于不同的角色，对切分出来的部分，并行或串行开展工作，一般并行才能减少时间</li>
+<li>并对切分出来的部分，设立沟通机制</li>
+<li>根据3，使得这些部分之间能够进行有机联系，合并组装成为一个整体，完成目标系统所有工作<br>核心：对问题的分析，以及解决问题方案<br>目标问题是<font color="red">谁</font>的问题    问题的主体（隐含边界）<br>问题不是解决方案</li>
+</ol>
 <h3 id="企业架构"><a href="#企业架构" class="headerlink" title="企业架构"></a>企业架构</h3><ul>
 <li><strong>物理架构</strong>：包括IDC机房、机房之间访问关系、机房内机器物理部署图、机房与业务分布、网络架构、数据库架构、集群清单和域名清单</li>
 <li><strong>应用架构</strong>：应用+架构，应用时系统的最小单元，应用分类和应用编排则构成了应用关系即应用架构</li>
@@ -3089,11 +3746,30 @@
 <li>运维要为应用服务，应用要为业务服务，业务为客户服务</li>
 </ul>
 <h2 id="PaaS"><a href="#PaaS" class="headerlink" title="PaaS"></a>PaaS</h2><ul>
-<li>与当前的<strong>传统客户</strong>谈PaaS，其不可避免的要谈到应用的解构和重构，而这是当前国内非常难做的，并不像IaaS基础资源已经融入到用户的实际生产、测试环境中。</li>
+<li><p>与当前的<strong>传统客户</strong>谈PaaS，其不可避免的要谈到应用的解构和重构，而这是当前国内非常难做的，并不像IaaS基础资源已经融入到用户的实际生产、测试环境中。</p>
+</li>
+<li><p>开源社区做的是项目，不是产品，尤其不是企业级产品</p>
+</li>
+<li><p>私有云严格来说不是云，至少缺乏云应有的规模和弹性</p>
+</li>
+<li><p>现有的企业私有云或公有云一资源为中心，而PaaS要以应用为中心</p>
+</li>
+<li><p>伤员不能只是资源上云，上云更应是一种理念。上云至少还包括开发上云（面向云开发、DevOps、CI/CD）、应用上云（面向云定制应用的云上架构）</p>
+</li>
+<li><p>面向业务运维，而不是面向资源运维</p>
+</li>
+<li><p>企业用户需求：</p>
+<ul>
+<li>关注稳定、数据安全、现有DC打通、迁移成本、是否要更改应用架构才能上云、现有运维整合</li>
+</ul>
+</li>
+<li><p>2B和2C产品经理区别：前者关注企业用户需求，后者关注产品运营、用户体验</p>
+</li>
 </ul>
 <h2 id="摘抄"><a href="#摘抄" class="headerlink" title="摘抄"></a>摘抄</h2><ul>
 <li>国内的互联网巨头成就了体量和估值，却没有创造出来真正的商业文明和伦理。</li>
 <li>后摇，将这份寄生在我们身上的痛苦，化为一面镜子，我们赤裸地站在面前，审视在镜中同样赤裸的自己，打破、流血、痛哭、沉默、颓唐、寂灭，我们被迫接受现实，寄生于身上的痛苦，不过是被生命的贪婪所灼伤。</li>
+<li>骄傲是对自己拥有某一方面突出价值的确信，但虚荣则试图在别人那里唤起自己对此的确信。</li>
 </ul>
 
           
@@ -4716,787 +5392,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/12/Kubernetes-架构/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/12/Kubernetes-架构/" itemprop="url">Kubernetes 架构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-12T18:51:51+08:00">
-                2019-08-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/K8S/" itemprop="url" rel="index">
-                    <span itemprop="name">K8S</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Kubernetes-架构"><a href="#Kubernetes-架构" class="headerlink" title="Kubernetes 架构"></a>Kubernetes 架构</h1><p> Kubernetes借鉴了Brog的设计理念，比如Pod、Service、Lables和单Pod单IP等。整体架构如下所示</p>
-<p><img src="https://i.loli.net/2019/08/12/Wcv4PLCFgJ26imV.png" alt="assets_-LDAOok5ngY4pc1lEDes_-La8Wy3SQAP-8onLZ7uT_-La8X6lf7UjRFyBsrhpw_components.png"></p>
-<ul>
-<li><p>etcd保存了集群的状态信息</p>
-</li>
-<li><p>kube-apiserver 提供了资源操作的唯一入口，并提供认证、授权、访问控制、API注册和发现机制</p>
-</li>
-<li><p>kube-controller-manager 负责维护集群的状态，比如故障检测、自动扩展、滚动更新等</p>
-</li>
-<li><p>kube-scheduler 负责资源的调度，按照预定的调度策略将 Pod 调度到相应的机器上</p>
-</li>
-<li><p>kubelet 负责维持容器的生命周期，同时也负责 Volume（CVI）和网络（CNI）的管理</p>
-</li>
-<li><p>Container runtime 负责镜像管理以及 Pod 和容器的真正运行（CRI），默认的容器运行时为 Docker；</p>
-</li>
-<li><p>kube-proxy 负责为 Service 提供 cluster 内部的服务发现和负载均衡</p>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/12/WyA6Jpo52BINwm8.png" alt="assets_-LDAOok5ngY4pc1lEDes_-La8Wy3SQAP-8onLZ7uT_-La8X6ljrf3pM1bbtQ_0_core-packages.png"></p>
-<p>除了核心组件，还有一些推荐的 Add-ons：</p>
-<ul>
-<li><p>kube-dns 负责为整个集群提供 DNS 服务</p>
-</li>
-<li><p>Ingress Controller 为服务提供外网入口</p>
-</li>
-<li><p>Heapster 提供资源监控</p>
-</li>
-<li><p>Dashboard 提供 GUI</p>
-</li>
-<li><p>Federation 提供跨可用区的集群</p>
-</li>
-<li><p>Fluentd-elasticsearch 提供集群日志采集、存储与查询</p>
-</li>
-</ul>
-<h2 id="分层架构"><a href="#分层架构" class="headerlink" title="分层架构"></a>分层架构</h2><p><img src="https://i.loli.net/2019/08/12/xEBCcQ1YHAhqgP3.png" alt="assets_-LDAOok5ngY4pc1lEDes_-La8Wy3SQAP-8onLZ7uT_-La8X6lnG-e8vfXmSbwl_core-ecosystem.png"></p>
-<ul>
-<li>核心层：Kubernetes 最核心的功能，对外提供 API 构建高层的应用，对内提供插件式应用执行环境</li>
-<li>应用层：部署（无状态应用、有状态应用、批处理任务、集群应用等）和路由（服务发现、DNS 解析等）</li>
-<li>管理层：系统度量（如基础设施、容器和网络的度量），自动化（如自动扩展、动态 Provision 等）以及策略管理（RBAC、Quota、PSP、NetworkPolicy 等）</li>
-<li>接口层：kubectl 命令行工具、客户端 SDK 以及集群联邦</li>
-<li>生态系统：在接口层之上的庞大容器集群管理调度的生态系统，可以划分为两个范畴<ul>
-<li>Kubernetes 外部：日志、监控、配置管理、CI、CD、Workflow、FaaS、OTS 应用、ChatOps 等</li>
-<li>Kubernetes 内部：CRI、CNI、CVI、镜像仓库、Cloud Provider、集群自身的配置和管理等</li>
-</ul>
-</li>
-</ul>
-<h2 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h2><p><img src="https://i.loli.net/2019/08/12/vmC7XRnEJpOoHzb.png" alt="assets_-LDAOok5ngY4pc1lEDes_-La8Wy3SQAP-8onLZ7uT_-La8X6llZfuE65sGzUkc_core-apis.png"></p>
-<h2 id="核心API"><a href="#核心API" class="headerlink" title="核心API"></a>核心API</h2><p><img src="https://i.loli.net/2019/08/12/BXUHhx5ofuyJsL2.jpg" alt="assets_-LDAOok5ngY4pc1lEDes_-La8Wy3SQAP-8onLZ7uT_-La8X6lhezSJ3ufUcmlH_14937095836427.jpg"></p>
-<h2 id="生态系统"><a href="#生态系统" class="headerlink" title="生态系统"></a>生态系统</h2><p><img src="https://i.loli.net/2019/08/12/PO76KHBXYpUveaW.png" alt="assets_-LDAOok5ngY4pc1lEDes_-La8Wy3SQAP-8onLZ7uT_-La8X6ldNQWZNfl3OJ9M_architecture.png"></p>
-<h1 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h1><h2 id="API设计原则"><a href="#API设计原则" class="headerlink" title="API设计原则"></a>API设计原则</h2><ol>
-<li><p>所有API都是声明式</p>
-</li>
-<li><p>API对象比西湖不而且可组合</p>
-</li>
-<li><p>高层API以操作意图为基础设计</p>
-</li>
-<li><p>底层API更具高层API的控制需要设计</p>
-</li>
-<li><p>尽量避免简单封装，不要有外部API无法显式知道内部隐藏的机制</p>
-</li>
-<li><p>API操作复杂度与对象数量成正比</p>
-</li>
-<li><p>API对象状态不能依赖于网络连接状态</p>
-</li>
-<li><p>尽量避免让操作机制依赖于全局状态，分布式系统中要保证全局状态的同步是非常困难的</p>
-<h2 id="控制设计原则"><a href="#控制设计原则" class="headerlink" title="控制设计原则"></a>控制设计原则</h2></li>
-</ol>
-<ul>
-<li>控制逻辑只依赖于当前状态</li>
-<li>假设任何错误的可能，并做容错助理</li>
-<li>尽量避免复杂状态机制，控制逻辑不要依赖无法监控的内部状态</li>
-<li>假设任何操作都可能被任何操作对象拒绝，甚至错误解析</li>
-<li>每个模块都可以在出错之后自动恢复</li>
-<li>每个模块都可以在必要时优雅地降级服务<h2 id="架构设计原则"><a href="#架构设计原则" class="headerlink" title="架构设计原则"></a>架构设计原则</h2></li>
-<li>只有apiserver可以直接访问etcd存储，其他服务必须通过KubernetesAPI来访问集群状态</li>
-<li>单点故障不影响集群状态</li>
-<li>在没有新请求的情况下，所有组件应该在故障恢复后继续执行上次最后收到的请求（比如网络分区或服务重启等）</li>
-<li>所有组件都应该在内存中保持所需要的状态，apiserver将状态写入etcd存储，而其他组件则通过apiserver更新并监听所有的变化</li>
-<li>优先使用事件监听而不是轮询<h1 id="核心技术概念和API对象"><a href="#核心技术概念和API对象" class="headerlink" title="核心技术概念和API对象"></a>核心技术概念和API对象</h1></li>
-</ul>
-<p>API对象是K8s集群中的管理操作单元。K8s集群系统每支持一项新功能，引入一项新技术，一定会新引入对应的API对象，支持对该功能的管理操作。例如副本集Replica Set对应的API对象是RS。</p>
-<p>每个API对象都有3大类属性：<font color="red"><strong>元数据metadata、规范spec和状态status</strong></font>。元数据是用来标识API对象的，每个对象都至少有3个元数据：namespace，name和uid；除此以外还有各种各样的标签labels用来标识和匹配不同的对象，例如用户可以用标签env来标识区分不同的服务部署环境，分别用env=dev、env=testing、env=production来标识开发、测试、生产的不同服务。规范描述了用户期望K8s集群中的分布式系统达到的理想状态（Desired State），例如用户可以通过复制控制器Replication Controller设置期望的Pod副本数为3；status描述了系统实际当前达到的状态（Status），例如系统当前实际的Pod副本数为2；那么复本控制器当前的程序逻辑就是自动启动新的Pod，争取达到副本数为3。</p>
-<p>K8s中所有的配置都是通过API对象的spec去设置的，也就是用户通过配置系统的理想状态来改变系统，这是k8s重要设计理念之一，即所有的操作都是声明式（Declarative）的而不是命令式（Imperative）的。声明式操作在分布式系统中的好处是稳定，不怕丢操作或运行多次，例如设置副本数为3的操作运行多次也还是一个结果，而给副本数加1的操作就不是声明式的，运行多次结果就错了。</p>
-<h2 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h2><ul>
-<li>Master是集群控制节点，每个K8S集群里需要Master负责整个集群的管理和控制，K8S所有控制命令都是发给它，由其负责具体执行和调度。</li>
-<li>Master上运行的关键进程<ul>
-<li>Kubernetes API Server（Kube-apiserver）,提供哦你了HTTP Rest接口的关键服务进程，是K8S里所有资源的增、删、改、查等操作的唯一入口，也是集群控制的入口进程</li>
-<li>Kubernetes Controller Manager（kube-controller-manager）,K8S里所有资源对象的自动化控制中心，资源对象的“大总管”</li>
-<li>Kubernetes Scheduler（kube-scheduler）,负责资源调度（Pod调度）的进程，相当于“调度室；</li>
-<li>etcd Server进程，K8S集群资源对象的数据全部保存在etcd中<h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2></li>
-</ul>
-</li>
-<li>Node节点是K8S集群中工作负载节点，每个Node都会被Master分配相应的工作负载</li>
-<li>Node节点上运行的关键进程<ul>
-<li>kubelet:负责Pod对应的容器创建、启停等任务，同时与Master节点密切协作，实现集群管理的基本功能</li>
-<li>kube-proxy:实现K8S Service的通信与负载均衡机制的重要组件</li>
-<li>Docker Engine: Docker引擎，负责容器的创建和管理工作<h2 id="POD"><a href="#POD" class="headerlink" title="POD"></a>POD</h2></li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/12/3TdApJyxroRDPg9.png" alt="assets_-LDAOok5ngY4pc1lEDes_-LM_rqip-tinVoiFZE0I_-LM_sIwx4E3-69Ml-jNW_pod.png"></p>
-<ul>
-<li>Pod是在K8s集群中运行部署应用或服务的最小单元，它是可以支持多容器的。Pod的设计理念是支持多个容器在一个Pod中共享网络地址和文件系统，可以通过进程间通信和文件共享这种简单高效的方式组合完成服务。Pod对多容器的支持是K8s最基础的设计理念。</li>
-<li>Pod是K8s集群中所有业务类型的基础，可以看作运行在K8s集群中的小机器人，不同类型的业务就需要不同类型的小机器人去执行。</li>
-<li>目前K8s中的业务主要可以分为长期伺服型（long-running）、批处理型（batch）、节点后台支撑型（node-daemon）和有状态应用型（stateful application）；分别对应的小机器人控制器为Deployment、Job、DaemonSet和StatefulSet。<h2 id="Replication-controller（RC）"><a href="#Replication-controller（RC）" class="headerlink" title="Replication controller（RC）"></a>Replication controller（RC）</h2></li>
-<li>RC是K8S系统中核心概念之一，定义了一个期望的场景，即生命某种Pod的副本数量在任意时刻都符合某个预期值。通过监控运行中的Pod来保证集群中运行指定数目的Pod副本。</li>
-<li>RC的都能够以包括如下<ul>
-<li>Pod期待的副本数（replicas）</li>
-<li>用于筛选目标Pod的Label Selector</li>
-<li>当Pod的副本书两小于预期数量的时候，用于创建新Pod的Pod模板（template）</li>
-</ul>
-</li>
-<li>RC是K8s较早期的技术概念，<font color="green"><strong>只适用于长期伺服型的业务类型</strong></font>，比如控制小机器人提供高可用的Web服务。<h2 id="Replica-Set（RS）"><a href="#Replica-Set（RS）" class="headerlink" title="Replica Set（RS）"></a>Replica Set（RS）</h2></li>
-<li>RS 是新一代RC，提供同样的高可用能力，能够支持更多种类的匹配模式。RS对象一般不单独使用，而是作为Deployment的理想状态参数使用。<h2 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h2></li>
-<li>解决Pod的编排问题</li>
-<li>部署是一个比RS应用模式更广的API对象，可以是创建一个服务，更新一个服务，或者滚动升级一个服务（滚动升级实际是创建新的RS，然后逐渐在新的RS中副本增加到理想状态，然后逐步将旧的RS中的副本减少到0）</li>
-</ul>
-<h2 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h2><p> <img src="https://i.loli.net/2019/08/12/wlO8dfNvkq3r9sy.png" alt="assets_-LDAOok5ngY4pc1lEDes_-LM_rqip-tinVoiFZE0I_-LM_sIx5Qc9S275Z49_6_14731220608865.png"></p>
-<ul>
-<li>RC、RS和Deployment只是保证了支撑服务的微服务Pod的数量，但是没有解决如何访问这些服务的问题。一个Pod只是一个运行服务的实例，随时可能在一个节点上停止，在另一个节点以一个新的IP启动一个新的Pod，因此不能以确定的IP和端口号提供服务。</li>
-<li>要稳定地提供服务需要服务发现和负载均衡能力。服务发现完成的工作，是针对客户端访问的服务，找到对应的后端服务实例。在K8S集群中，客户端需要访问的服务就是Service对象。</li>
-<li><strong>每个Service会对应一个集群内部有效的虚拟IP，集群内部通过虚拟IP访问一个服务</strong></li>
-<li>*<em>在K8S集中微服务的负载均衡是由Kube-proxy实现的 *</em></li>
-<li>Kube-proxy是K8s集群内部的负载均衡器。它是一个分布式代理服务器，在K8s的每个节点上都有一个；这一设计体现了它的伸缩性优势，需要访问服务的节点越多，提供负载均衡能力的Kube-proxy就越多，高可用节点也随之增多<h2 id="Job"><a href="#Job" class="headerlink" title="Job"></a>Job</h2></li>
-<li>Job是K8s用来控制批处理型任务的API对象。批处理业务与长期伺服业务的主要区别是批处理业务的运行有头有尾，而长期伺服业务在用户不停止的情况下永远运行。Job管理的Pod根据用户的设置把任务成功完成就自动退出了。成功完成的标志根据不同的spec.completions策略而不同：单Pod型任务有一个Pod成功就标志完成；定数成功型任务保证有N个任务全部成功；工作队列型任务根据应用确认的全局成功而标志成功。<h2 id="DaemonSet"><a href="#DaemonSet" class="headerlink" title="DaemonSet"></a>DaemonSet</h2></li>
-<li>后台支撑型服务的核心关注点在K8s集群中的节点（物理机或虚拟机），要保证每个节点上都有一个此类Pod运行。节点可能是所有集群节点也可能是通过nodeSelector选定的一些特定节点。</li>
-<li>典型的后台支撑型服务包括，存储，日志和监控等在每个节点上支撑K8s集群运行的服务<h2 id="StatefulSett"><a href="#StatefulSett" class="headerlink" title="StatefulSett"></a>StatefulSett</h2></li>
-<li>RC和RS主要是控制提供无状态服务的，其所控制的Pod的名字是随机设置的，一个Pod出故障了就被丢弃掉，在另一个地方重启一个新的Pod，名字变了、名字和启动在哪儿都不重要，重要的只是Pod总数。</li>
-<li>StatefulSet是用来控制有状态服务，StatefulSet中的每个Pod的名字都是事先确定的，不能更改</li>
-<li>对于RC和RS中的Pod，一般不挂载存储或者挂载共享存储，保存的是所有Pod共享的状态，Pod像牲畜一样没有分别（这似乎也确实意味着失去了人性特征）</li>
-<li>对于StatefulSet中的Pod，每个Pod挂载自己独立的存储，如果一个Pod出现故障，从其他节点启动一个同样名字的Pod，要挂载上原来Pod的存储继续以它的状态提供服务</li>
-<li>适合于StatefulSet的业务包括数据库服务MySQL和PostgreSQL，集群化管理服务Zookeeper、etcd等有状态服务</li>
-</ul>
-<h2 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h2><ul>
-<li>Pod中能够被多个容器访问的共享目录，与Pod生命周期相同，与容器生命周期不相关</li>
-<li>类型：<ol>
-<li>emptyDir ：初始内容为空，无需指定宿主机上对应目录文件，临时空间</li>
-<li>hostpath ：Pod上挂载宿主机上的文件或目录</li>
-<li>gcePersistentDisk:Pod上的内容会被永久保存，即使Pod删除（node节点在GCE环境）</li>
-<li>awsElasticBlockStore:同上，AWS云环境</li>
-<li>NFS</li>
-<li>其他类型：iscsi、glusterfs、rbd、gitRepo、flocker、secret(加密)</li>
-</ol>
-</li>
-</ul>
-<h2 id="Persistent-Volume"><a href="#Persistent-Volume" class="headerlink" title="Persistent Volume"></a>Persistent Volume</h2><ul>
-<li>PV只能是网络存储，不属于任何Node，但可以在每个Node上访问</li>
-<li>PV并不定义在Pod上，而是独立于Pod之外定义</li>
-<li>PV目前只有几种类型：GCE Persistent Disks、NFS、RBD、iSCSI、AWSEBS、GlusterFS等</li>
-</ul>
-<h2 id="Namespace"><a href="#Namespace" class="headerlink" title="Namespace"></a>Namespace</h2><ul>
-<li>集群内部的资源对象”分配“到不同的Namespace中，形成逻辑上分组的不同项目、小组或用户组，便于不同的分组在共享使用整个集群的资源同时还能被分别管理</li>
-</ul>
-<h2 id="Label（标签）"><a href="#Label（标签）" class="headerlink" title="Label（标签）"></a>Label（标签）</h2><ul>
-<li>Label是一个Key=value的键值对，key和value由用户自己定义。Label可以附加到各种资源对象上，例如Node、Pod、Service、RS等，一个资源对象可以定义任意数量的Label，同一label也可以被添加到任意数量的资源对象上，label可以在定义资源对象是创建，也可以创建后动态添加或删除</li>
-<li>通过LabelSelector(标签选择器)查询和筛选，K8S通过这种方式实现类似SQL的简单又通用的对象查询机制</li>
-</ul>
-<h2 id="Horizontal-Pod-Autoscaler（HPA）"><a href="#Horizontal-Pod-Autoscaler（HPA）" class="headerlink" title="Horizontal Pod Autoscaler（HPA）"></a>Horizontal Pod Autoscaler（HPA）</h2><ul>
-<li>Pod横向自动扩容，通过追踪分析RS控制的所有目标Pod的负载变化情况，确定是否需要针对性调整目标Pod的副本数</li>
-<li>度量指标<ul>
-<li>CPUUtilizationPercentage （需要部署安装Heapster）</li>
-<li>应用程序自定义的度量指标，比如服务在每秒内的相应的请求数（TPS或QPS）</li>
-</ul>
-</li>
-</ul>
-<h2 id="RBAC访问授权"><a href="#RBAC访问授权" class="headerlink" title="RBAC访问授权"></a>RBAC访问授权</h2><ul>
-<li>基于角色的访问控制（Role-based Access Control，RBAC）的授权模式</li>
-</ul>
-<h1 id="核心组件-1"><a href="#核心组件-1" class="headerlink" title="核心组件"></a>核心组件</h1><p> ##组件通信<br>   K8S多组件之间通信原理</p>
-<p><img src="https://i.loli.net/2019/08/12/GzcCtOFyV7pnHBX.png" alt="assets_-LDAOok5ngY4pc1lEDes_-LM_rqip-tinVoiFZE0I_-LM_sEq_NuMALezRGMtG_workflow.png"></p>
-<ul>
-<li>apiserver 负责etcd存储的所有操作，且只有apiserver才直接操作etcd集群</li>
-<li>apiserver 对内（集群中的其他组件）和对外（用户）提供统一的REST API，其他组件均通过apiserver进行通信<ul>
-<li>controller manager、scheduler、kube-proxy和kubelet等均通过apiserver watch API检测资源变化情况，并对资源作相应的操作</li>
-<li>所有需要更新资源状态的操作均通过apiserver的REST API进行</li>
-</ul>
-</li>
-<li>apiserver也会直接调用kubelet API（如logs,exec,attach等），默认不校验kubelet证书，看可以通过–kubelet-certificate-autprity开启开启（GKE通过SSH隧道保护他们之间通信）<br>比如典型的创建Podcast的流程为</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/12/eg53NY8LvBa91q7.png" alt="assets_-LDAOok5ngY4pc1lEDes_-LM_rqip-tinVoiFZE0I_-LM_sEqUTx_-gUuaPyw1_components.png"></p>
-<ol>
-<li><p>用户通过REST API创建一个Pod </p>
-</li>
-<li><p>apiserver 将其写入etcd</p>
-</li>
-<li><p>scheduler检测到未绑定Node的Pod，开始调度并更新Pod的Node绑定</p>
-</li>
-<li><p>kubelet检测到有新的Podcast调度过来，通过container runtime运行该Pod</p>
-</li>
-<li><p>kubelet通过container runtime取到Pod状态，并更新到apiserver中</p>
-<h2 id="端口号"><a href="#端口号" class="headerlink" title="端口号"></a>端口号</h2></li>
-</ol>
-<h3 id="Master-1"><a href="#Master-1" class="headerlink" title="Master"></a>Master</h3><table>
-<thead>
-<tr>
-<th align="center"><strong>Protocol</strong></th>
-<th align="center"><strong>Direction</strong></th>
-<th align="center"><strong>PortRange</strong></th>
-<th align="center"><strong>Purpose</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">6443*</td>
-<td align="center">Kubernetes API server</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">8080</td>
-<td align="center">Kubernetes API insecure server</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">2379-2380</td>
-<td align="center">etcd server client API</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">10250</td>
-<td align="center">Kubelet API</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">10251</td>
-<td align="center">kube-scheduler healthz</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">10252</td>
-<td align="center">kube-controller-manager healthz</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">10253</td>
-<td align="center">cloud-controller-manager healthz</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">10255</td>
-<td align="center">Read-only Kubelet API</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">10256</td>
-<td align="center">kube-proxy healthz</td>
-</tr>
-</tbody></table>
-<h3 id="Worker"><a href="#Worker" class="headerlink" title="Worker"></a>Worker</h3><table>
-<thead>
-<tr>
-<th align="center"><strong>Protocol</strong></th>
-<th align="center"><strong>Direction</strong></th>
-<th align="center"><strong>PortRange</strong></th>
-<th align="center"><strong>Purpose</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">4194</td>
-<td align="center">Kubelet cAdvisor</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">10248</td>
-<td align="center">Kubelethealthz</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">10249</td>
-<td align="center">kube-proxy metrics</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">10250</td>
-<td align="center">Kubelet API</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">10255</td>
-<td align="center">Read-only Kubelet API</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">10256</td>
-<td align="center">kube-proxy healthz</td>
-</tr>
-<tr>
-<td align="center">TCP</td>
-<td align="center">Inbound</td>
-<td align="center">30000-32767</td>
-<td align="center">NodePort Services**</td>
-</tr>
-</tbody></table>
-<h2 id="etcd"><a href="#etcd" class="headerlink" title="etcd"></a>etcd</h2><p>Etcd 是 CoreOS 基于 Raft 开发的分布式 key-value 存储，可用于服务发现、共享配置以及一致性保障（如数据库选主、分布式锁等）。</p>
-<h2 id="kube-controller-manager"><a href="#kube-controller-manager" class="headerlink" title="kube-controller-manager"></a>kube-controller-manager</h2><p><img src="https://i.loli.net/2019/08/12/RyPTzkrf1qw5VKg.png" alt="assets_-LDAOok5ngY4pc1lEDes_-L_kZB_hPn0h_fskH43w_-L_kZGkSetdfkFl6OL6N_post-ccm-arch.png"></p>
-<p>Controller Manager 由 kube-controller-manager 和 cloud-controller-manager 组成，是 Kubernetes 的大脑，它通过 apiserver 监控整个集群的状态，并确保集群处于预期的工作状态。<br>Kube-controller-manager 由一系列的控制器组成<br><img src="https://i.loli.net/2019/08/13/5GwXKSWfODuFaVt.png" alt="20170721232653797.png"></p>
-<ul>
-<li>Replication Controller</li>
-<li>Node Controller</li>
-<li>CronJob Controller</li>
-<li>Daemon Controller</li>
-<li>Deployment Controller</li>
-<li>Endpoint Controller</li>
-<li>Garbage Collector</li>
-<li>Namespace Controller</li>
-<li>Job Controller</li>
-<li>Pod AutoScaler</li>
-<li>RelicaSet</li>
-<li>Service Controller</li>
-<li>ServiceAccount Controller</li>
-<li>StatefulSet Controller</li>
-<li>Volume Controller</li>
-<li>Resource quota Controller<br>cloud-controller-manager 在 Kubernetes 启用 Cloud Provider 的时候才需要，用来配合云服务提供商的控制，也包括一系列的控制器，如</li>
-<li>Node Controller</li>
-<li>Route Controller</li>
-<li>Service Controller<h2 id="kube-scheduler"><a href="#kube-scheduler" class="headerlink" title="kube-scheduler"></a>kube-scheduler</h2>kube-scheduler 负责分配调度 Pod 到集群内的节点上，它监听 kube-apiserver，查询还未分配 Node 的 Pod，然后根据调度策略为这些 Pod 分配节点（更新 Pod 的 NodeName 字段）<br>调度器需要充分考虑诸多的因素：</li>
-<li>公平调度</li>
-<li>资源高效利用</li>
-<li>QoS</li>
-<li>affinity 和 anti-affinity</li>
-<li>数据本地化（data locality）</li>
-<li>内部负载干扰（inter-workload interference）</li>
-<li>deadlines<br>有三种方式指定 Pod 只运行在指定的 Node 节点上</li>
-<li>nodeSelector：只调度到匹配指定 label 的 Node 上</li>
-<li>nodeAffinity：功能更丰富的 Node 选择器，比如支持集合操作</li>
-<li>podAffinity：调度到满足条件的 Pod 所在的 Node 上<h2 id="kube-apiserver"><a href="#kube-apiserver" class="headerlink" title="kube-apiserver"></a>kube-apiserver</h2></li>
-<li>提供集群管理的 REST API 接口，包括认证授权、数据校验以及集群状态变更等</li>
-<li>提供其他模块之间的数据交互和通信的枢纽（其他模块通过 API Server 查询或修改数据，只有 API Server 才直接操作 etcd）<h2 id="kubelet"><a href="#kubelet" class="headerlink" title="kubelet"></a>kubelet</h2>每个节点上都运行一个 kubelet 服务进程，默认监听 10250 端口，接收并执行 master 发来的指令，管理 Pod 及 Pod 中的容器。每个 kubelet 进程会在 API Server 上注册节点自身信息，定期向 master 节点汇报节点的资源使用情况，并通过 cAdvisor 监控节点和容器的资源。<h3 id="节点管理"><a href="#节点管理" class="headerlink" title="节点管理"></a>节点管理</h3>节点管理主要是节点自注册和节点装填更新：<ul>
-<li>Kubelet可以通过设置启动参数–register-node来确定是否向API Server注册</li>
-<li>如果Kubelet没有选择自注册模式，则需要用户自己配置Node资源信息，同时需要告知Kubelet集群上的API Server的位置</li>
-<li>Kubelet在启动时通过API Server注册节点信息，并定时向API Server发送节点新消息，API Server在接受到新消息后，将信息写入etcd<h3 id="Pod管理"><a href="#Pod管理" class="headerlink" title="Pod管理"></a>Pod管理</h3></li>
-<li>Kubelet 以 PodSpec 的方式工作。PodSpec 是描述一个 Pod 的 YAML 或 JSON 对象。 kubelet 采用一组通过各种机制提供的 PodSpecs（主要通过 apiserver），并确保这些 PodSpecs 中描述的 Pod 正常健康运行<h3 id="Static-Pod"><a href="#Static-Pod" class="headerlink" title="Static Pod"></a>Static Pod</h3></li>
-<li>静态Pod是由kubelet进行管理的仅存在于特定Node上的Pod。不能通过API Server进行管理，无法与RC、Deployment或者DaemonSet进行管理，并且kubelet无法对其进行健康检查。</li>
-<li>静态Pod总是由kubelet进行创建，并且总是在kuelet所在的Node上运行</li>
-<li>所有以非 API Server 方式创建的 Pod 都叫 Static Pod。Kubelet 将 Static Pod 的状态汇报给 API Server，API Server 为该 Static Pod 创建一个 Mirror Pod 和其相匹配。Mirror Pod 的状态将真实反映 Static Pod 的状态。当 Static Pod 被删除时，与之相对应的 Mirror Pod 也会被删除。</li>
-<li><h3 id="容器健康检查"><a href="#容器健康检查" class="headerlink" title="容器健康检查"></a>容器健康检查</h3></li>
-</ul>
-</li>
-</ul>
-<ol>
-<li>LivenessProbe 探针：用于判断容器是否健康，告诉 Kubelet 一个容器什么时候处于不健康的状态。如果 LivenessProbe 探针探测到容器不健康，则 Kubelet 将删除该容器，并根据容器的重启策略做相应的处理。如果一个容器不包含 LivenessProbe 探针，那么 Kubelet 认为该容器的 LivenessProbe 探针返回的值永远是 “Success”</li>
-<li>ReadinessProbe：用于判断容器是否启动完成且准备接收请求。如果 ReadinessProbe 探针探测到失败，则 Pod 的状态将被修改。Endpoint Controller 将从 Service 的 Endpoint 中删除包含该容器所在 Pod 的 IP 地址的 Endpoint 条目。<br>livenessProbe 包含如下三种实现方式：</li>
-</ol>
-<ul>
-<li><p>ExecAction：在容器内部执行一个命令，如果该命令的退出状态码为 0，则表明容器健康；</p>
-</li>
-<li><p>TCPSocketAction：通过容器的 IP 地址和端口号执行 TCP 检查，如果端口能被访问，则表明容器健康；</p>
-</li>
-<li><p>HTTPGetAction：通过容器的 IP 地址和端口号及路径调用 HTTP GET 方法，如果响应的状态码大于等于 200 且小于 400，则认为容器状态健康。</p>
-<h3 id="cAdvisor-资源监控"><a href="#cAdvisor-资源监控" class="headerlink" title="cAdvisor 资源监控"></a>cAdvisor 资源监控</h3><p>Kubernetes集群中，应用程序的执行情况可以在不同的级别上检测到，包括：容器、Pod、Servvice和整个集群。Heapster项目为K8S提供了一个基本监控平台，它是集群级别的监控事件数据集成器（Aggregator）.Heapster以Pod的方式运行在集群中，Heapster通过Kubelet发现所有运行在集群中的节点，并查看这些节点的资源使用情况。Kubelet通过cAdvisor获取其所在节点及容器的数据。</p>
-<ul>
-<li>cAdvisor 是一个开源的分析容器资源使用率和性能特性的代理工具，已集成到 Kubernetes 代码中。</li>
-<li>cAdvisor 自动查找所有在其所在节点上的容器，自动采集 CPU、内存、文件系统和网络使用的统计信息。</li>
-<li>cAdvisor 通过它所在节点机的 Root 容器，采集并分析该节点机的全面使用情况。</li>
-<li>cAdvisor 通过其所在节点机的 4194 端口暴露一个简单的 UI<h3 id="Container-Runtime"><a href="#Container-Runtime" class="headerlink" title="Container Runtime"></a>Container Runtime</h3>负责真正管理镜像和容器的生命周期。Kubelet通过Container Runtime Interface（CRI）与容器云形式交互，以管理镜像和容器。</li>
-<li>拆分成Sandbox和Container的gPRC接口，并将镜像管理和容器管理分离到不同的服务</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/13/FDv8ZWuRi3X5SCg.png" alt="assets_-LDAOok5ngY4pc1lEDes_-LOmrfw3UHfIY1g0xnLo_-LOmroTRjl0FBixIYL5x_cri.png"></p>
-<h2 id="kube-proxy"><a href="#kube-proxy" class="headerlink" title="kube-proxy"></a>kube-proxy</h2></li>
-</ul>
-<ul>
-<li>每台node上都运行一个kube-proxy服务，监听API server和endpoint的变化情况，并通过iptables等来为服务配置负载均衡（仅支持TCP和UDP）</li>
-<li>kube-proxy可以直接运行在物理机上，也可以在static pod或者daemonset的方式运行</li>
-<li>实现方式<ul>
-<li>userspace:用户控件监听端口，所有服务通过iptables转发到这个端口，然后在其内部负载均衡到实际pod</li>
-<li>iptables:完全以iptables规则的方式实现service负载均衡（服务多的时候，产生太多iptables规则）</li>
-<li>ipvs：解决iptables模式性能问题，增量式更新，保证service更新期间连接不断开</li>
-<li>应用层的转发机制通过services是无法实现的，需要借助Ingress将不同URL的访问请求转发到后端不同的service<h2 id="kube-dns"><a href="#kube-dns" class="headerlink" title="kube-dns"></a>kube-dns</h2></li>
-</ul>
-</li>
-<li>目前推荐CoreDNS替代kube-dns(skydns)</li>
-<li>DNS 格式<ul>
-<li>Service <ul>
-<li>A record (cluster IP 或Pod IP列表)</li>
-<li>SRV record</li>
-</ul>
-</li>
-<li>Pod<ul>
-<li>A record:</li>
-<li>指定hostname和subdomain</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>工作原理<ul>
-<li>kube-dns：DNS 服务的核心组件，主要由 KubeDNS 和 SkyDNS 组成<ul>
-<li>KubeDNS 负责监听 Service 和 Endpoint 的变化情况，并将相关的信息更新到 SkyDNS 中</li>
-<li>SkyDNS 负责 DNS 解析，监听在 10053 端口 (tcp/udp)，同时也监听在 10055 端口提供 metrics</li>
-<li>kube-dns 还监听了 8081 端口，以供健康检查使用</li>
-</ul>
-</li>
-<li>dnsmasq-nanny：负责启动 dnsmasq，并在配置发生变化时重启 dnsmasq<ul>
-<li>dnsmasq 的 upstream 为 SkyDNS，即集群内部的 DNS 解析由 SkyDNS 负责</li>
-</ul>
-</li>
-<li>sidecar：负责健康检查和提供 DNS metrics（监听在 10054 端口）</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/13/kV82oOjNUX6dQzC.png" alt="assets_-LDAOok5ngY4pc1lEDes_-LM_tX5rWaCuzsx7xEcz_-LM_t_Oxw2Twn_BSf7GQ_kube-dns.png"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/11/AWS-Direct-Connect-Overview/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/11/AWS-Direct-Connect-Overview/" itemprop="url">AWS Direct Connect Overview</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-11T13:45:05+08:00">
-                2019-08-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AWS/" itemprop="url" rel="index">
-                    <span itemprop="name">AWS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Direct-Connect-Overview"><a href="#Direct-Connect-Overview" class="headerlink" title="Direct Connect Overview"></a>Direct Connect Overview</h2><ul>
-<li>AWS Direct Connect是一种网络服务，它是一种替代Internet来利用AWS云服务的一种方案</li>
-<li>通过标准的以太网光纤电缆将内部网络链接到 AWS Direct Connect 位置。电缆的一端接到用户侧路由器，另一端接到 AWS Direct Connect 路由器</li>
-<li>可以使用1Gbps和10Gbps端口建立直接连接。可以从任何支持AWS Direct Connect的APN合作伙伴订购50Mbps，100Mbps，200Mbps，300Mbps，400Mbps和500Mbps的速度</li>
-<li>有了此连接以后，可以创建直接连接到公共 AWS 服务（如 Amazon S3）或 Amazon VPC 的虚拟接口，从而绕过网络路径中的 Internet 服务提供商</li>
-<li>AWS Direct Connect位置提供对与其关联的区域中的Amazon Web Services的访问，以及对其他美国区域的访问（如果是美国地区的Direct Connect）。例如，可以为美国的任何AWS Direct Connect位置配置单个连接，并使用它来访问所有美国区域和AWS GovCloud（美国）中的公共AWS服务。</li>
-<li>每个AWS Direct Connect位置都可以连接到地理位置最近的AWS区域内的所有可用区</li>
-<li>公有区域或AWS GovCloud (US)中的 AWS Direct Connect 位置可以访问任何其他公有区域（不包括中国(北京和宁夏)）中的公有服务<br><img src="https://i.loli.net/2019/08/11/ab2uJTrhVCylmHW.png" alt="direct_connect_overview.png"></li>
-</ul>
-<h2 id="Direct-Connect-Advantages"><a href="#Direct-Connect-Advantages" class="headerlink" title="Direct Connect Advantages"></a>Direct Connect Advantages</h2><ul>
-<li>降低带宽成本<ul>
-<li>所有通过专用连接传输的数据均按AWS直接连接数据传输速率(而不是Internet数据传输速率)的，从而节省成本</li>
-<li>在AWS之间传输数据直接减少了Internet服务提供商的带宽承诺</li>
-</ul>
-</li>
-<li>一致的网络性能<ul>
-<li>与互联网的网络变化（抖动、延迟）相比，Direct Connect提供专用连接和更一致的网络性能体验</li>
-</ul>
-</li>
-<li>AWS 服务兼容性<ul>
-<li>Direct Connect是一种网络服务，可与S3，EC2和VPC等所有AWS服务配合使用</li>
-</ul>
-</li>
-<li>VPC的专用连接<ul>
-<li>使用直接连接专用虚拟接口（Private virtual interface）可以在网络和VPC之间建立专用的专用高带宽网络连接</li>
-</ul>
-</li>
-<li>弹性<ul>
-<li>使用更高带宽的连接或建立多个连接，可以轻松扩展直接连接以满足需求</li>
-</ul>
-</li>
-</ul>
-<h1 id="Direct-Connect-vs-IPSec-VPN-Connections"><a href="#Direct-Connect-vs-IPSec-VPN-Connections" class="headerlink" title="Direct Connect vs IPSec VPN Connections"></a>Direct Connect vs IPSec VPN Connections</h1><ul>
-<li>VPC VPN连接通过IPSec在Internet上建立内部网和Amazon VPC之间的加密网络连接</li>
-<li>VPN连接可以在几分钟内进行配置，而对于需要一个具有低到适度的带宽需求，并能容忍在基于互联网连接的内在变化</li>
-<li>AWS Direct Connect不涉及Internet; 相反，它使用Intranet和Amazon VPC之间的专用专用网络连接</li>
-<li>与Direct Connect连接相比，VPN连接非常便宜，因为它需要实际的硬件和基础设施，可能需要数千个</li>
-</ul>
-<h1 id="Direct-Connect-Anatomy"><a href="#Direct-Connect-Anatomy" class="headerlink" title="Direct Connect Anatomy"></a>Direct Connect Anatomy</h1><p><img src="https://i.loli.net/2019/08/11/GumT4j7R1sLoiHE.png" alt="screen-shot-2016-05-17-at-1-56-15-pm.png"></p>
-<ul>
-<li>亚马逊在不同地点维护AWS Direct Connect PoP（称为主机托管设施），这与AWS区域不同</li>
-<li>AWS本身维护从AWS Direct Connect PoP到AWS区域的连接</li>
-<li>消费者，既可以购买机架空间，也可以使用任何已在主机托管设施中拥有基础架构的AWS APN合作伙伴并配置客户网关</li>
-<li>Direct Connect PoP与Colocation Facility内的Customer网关之间的连接称为Cross Connect</li>
-<li>可以使用任何服务提供商网络建立从客户网关到客户数据中心的连接</li>
-<li>使用AWS创建直接连接连接后，将收到LOA-CFA（授权书 - 连接设施分配）。</li>
-<li>LOA-CFA可以切换到主机托管设施或APN合作伙伴以建立交叉连接</li>
-<li>一旦建立了Cross Connect以及CGW和Customer DataCenter之间的连接，就可以创建虚拟接口</li>
-<li>AWS Direct Connect需要VGW才能访问AWS VPC</li>
-<li>虚拟接口<ul>
-<li>每个AWS Direct Connect连接都需要一个虚拟接口</li>
-<li>每个AWS Direct Connect连接都可以配置一个或多个虚拟接口。</li>
-<li>可以创建公共虚拟接口（public virtual interface）以连接到例如公共资源。 SQS，S3，EC2，Glacier等只能公开到达</li>
-<li>可以创建专用虚拟接口以连接到例如VPC私有IP地址的实例</li>
-<li>每个虚拟接口都需要VLAN ID，接口IP地址，ASN和BGP密钥</li>
-</ul>
-</li>
-<li>要将AWS Direct Connect连接与其他AWS账户一起使用，可以为该账户创建托管虚拟接口。 这些托管虚拟接口与标准虚拟接口的工作方式相同，可以连接到公共资源或VPC。</li>
-</ul>
-<h1 id="Direct-Connect-Redundancy"><a href="#Direct-Connect-Redundancy" class="headerlink" title="Direct Connect Redundancy"></a>Direct Connect Redundancy</h1><p><img src="https://i.loli.net/2019/08/11/WU7kjK2xcd3uslJ.png" alt="screen-shot-2016-05-17-at-1-57-22-pm.png"></p>
-<ul>
-<li>直接连接不提供冗余，并且有多个单点故障，因为每个连接都包含路由器端口和Amazon路由器之间的单个专用连接</li>
-<li>冗余连接<ul>
-<li>建立第二个DX，最好使用不同的路由器和AWS Direct Connect PoP在不同的主机托管设施中建立连接</li>
-<li>客户DC与VGW之间的IPsec VPN连接</li>
-</ul>
-</li>
-<li>对于在同一AWS Direct Connect位置中请求的多个端口，Amazon本身确保在冗余Amazon路由器上配置它们以防止硬件故障的影响</li>
-</ul>
-<h1 id="Direct-Connect-LAG"><a href="#Direct-Connect-LAG" class="headerlink" title="Direct Connect LAG"></a>Direct Connect LAG</h1><ul>
-<li>链接聚合组 (LAG) 是一个逻辑接口，使用链接聚合控制协议 (LACP) 在一个 AWS Direct Connect 终端节点处聚合多个连接，从而允许将这些连接视为一个托管连接</li>
-<li>可从现有连接创建 LAG，也可配置新连接</li>
-<li>在创建 LAG 之后，可将现有连接 (无论是独立连接还是其他 LAG 的一部分) 与 LAG 关联</li>
-<li>LAG遵循以下规则<ul>
-<li>LAG 中的所有连接都必须使用相同的带宽</li>
-<li>LAG 中最多可有 4 个连接。LAG 中的每个连接都会计入区域的整体连接限制</li>
-<li>LAG 中的所有连接都必须终止于同一 AWS Direct Connect 终端节点<h4 id="refer"><a href="#refer" class="headerlink" title="refer"></a>refer</h4></li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>AWS Direct Connect user guide</li>
-<li><a href="http://jayendrapatil.com/aws-direct-connect-dx" target="_blank" rel="noopener">http://jayendrapatil.com/aws-direct-connect-dx</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -5547,7 +5442,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -5569,7 +5464,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
