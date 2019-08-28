@@ -6,10 +6,10 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -48,9 +48,9 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -119,7 +119,7 @@
 
 
 
-  <link rel="canonical" href="http://sevengarden.club/page/2/">
+  <link rel="canonical" href="http://sevengarden.club/page/2/"/>
 
 
 
@@ -154,7 +154,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">岳阳北寒</span>
         <span class="logo-line-after"><i></i></span>
@@ -184,7 +184,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
@@ -194,7 +194,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
           </a>
@@ -204,7 +204,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
           </a>
@@ -214,7 +214,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
           </a>
@@ -224,7 +224,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
@@ -234,7 +234,7 @@
         <li class="menu-item menu-item-somrthing">
           <a href="/有料" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
             
             somrthing
           </a>
@@ -273,11 +273,694 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/17/CDN技术详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/17/CDN技术详解/" itemprop="url">CDN技术详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-17T19:56:45+08:00">
+                2019-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CDN/" itemprop="url" rel="index">
+                    <span itemprop="name">CDN</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p><em>摘自《CDN技术详解》</em></p>
+</blockquote>
+<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><ul>
+<li>广义互联网，两层组成<ul>
+<li>以TCP/IP为代表的网络层（狭义的互联网），网络的基础，一般说TCP/IP网络；将各种信息的数据报文以极低的成本进行进行传输，俗称“管道”，所有信息都在这一管道中传送</li>
+<li>以万维网（WWW）为代表的应用层，是广义互联网的上层。包括各种类型的流量和应用，邮件、软件、在线影视、游戏、电子商务等</li>
+</ul>
+</li>
+<li>“第一公里”是指万维网流量向用户传送的第一个出口，是网站服务器接入互联网的链路所能提供的带宽。这个带宽决定了一个 网站能为用户提供的访问速度和并发访问量。如果业务繁忙，用户的访问数越多，拥塞越严重，网站会在最需要向用户提供服务时失去用户。（还有“中间一公里” 和“最后一公里”分别代表互联网传输传输和万维网流量向用户传送的最后一段接入链路）</li>
+<li>从互联网的架构来看，不同网络之间的互联互通带宽，对任何一个运营商网络的流量来说，占比都比较小，收敛比是非常高的，因此这里通常都是互联网传输中的拥堵点（运营商互联互通的问题）</li>
+<li>其次是骨干网堵塞问题，由于互联网上的绝大部分流量都要通过骨干网络进行传输，这就要求骨干网络的承载能力必须与互联网 的应用同步发展，但实际上两者并不是同步的，当骨干网络的升级和扩容滞后于互联网之上的应用的发展时，就会阶段性地使得大型骨干网的承载能力成为影响互联 网性能的瓶颈（区域互联互通问题，骨干网带宽瓶颈）</li>
+<li>服务响应时间由服务响应时间和网络时延组成。网站到用户之间要经过IDC、骨干网、用户所在的局域网、用户所在的接入网</li>
+<li>在互联网领域有一个“8秒定律”，用户访问一个网站时，如果等待网页打开的时间超过8秒，会有超过30%的用户放弃等待</li>
+<li>CDN技术在网络传输上利用缓存技术使得Web服务数据流能就近访问，是优化网络数据传输非常有效的技术，从而获得高速的体验和品质保证</li>
+<li>CDN的全称是Content Delivery Network，即内容分发网络。其目的是通过在现有的Internet中增加一层新的网络架构，将网站的内容发布到最接近用户的网络”边缘”，使用户可以就近取得所需的内容，解决Internet网络拥塞状况，提高用户访问网站的响应速度。从技术上全面解决由于网络带宽小、用户访问量大、网点分布不均等原因，解决用户访问网站的响应速度慢的根本原因</li>
+<li>CDN工作原理<div align="center">
+<a href="https://sm.ms/image/M7J4bgop89NzVOs" target="_blank"><img src="https://i.loli.net/2019/08/17/M7J4bgop89NzVOs.png" alt="ScreenShot_20190804144149.png"></a>
+</div>
+</li>
+</ul>
+<ol>
+<li>当用户点击网站页面上的内容URL，经过本地DNS系统解析，DNS系统会最终将域名的解析权交给CNAME指向的CDN专用DNS服务器</li>
+<li>CDN的DNS服务器将CDN的全局负载均衡设备IP地址返回用户</li>
+<li>用户向CDN的全局负载均衡设备发起内容URL访问请求</li>
+<li>CDN全局负载均衡设备根据用户IP地址，以及用户请求的内容URL，选择一台用户所属区域的区域负载均衡设备，告诉用户向这台设备发起请求</li>
+<li>区域负载均衡设备会为用户选择一台合适的缓存服务器提供服务，选择的依据包括：根据用户IP地址，判断哪一台服务器距用户最近；根据用户所请求的URL中携带的内容名称，判断哪一台服务器上用户所需内容；查询各个服务器当前的负载情况，判断哪一台服务器尚有服务能力。基于以上这些条件综合分析之后，区域负载均衡设备返回一台缓存服务器的IP地址。</li>
+<li>全局负载均衡设备把服务器的IP地址返回给用户</li>
+<li>用户向缓存服务器发起请求，缓存服务器响应用户请求，将用户所需内容传送到用户终端。如果这台缓存服务器并没有用户想要的内容，而区域均衡设备依然将它分配给用户，那么这台服务器就要向它的上一级缓存服务器请求内容，直至追溯到网站的源服务器将内容拉到本地</li>
+</ol>
+<ul>
+<li>DNS服务器根据用户IP地址，将域名解析成相应节点的缓存服务器IP地址，实现用户就近访问。使用CDN服务的网站，只需要将域名解析权交给CDN的GSLB设备，将需要分发的内容注入CDN，就可以实现内容加速了</li>
+</ul>
+<h1 id="CDN技术"><a href="#CDN技术" class="headerlink" title="CDN技术"></a>CDN技术</h1><ul>
+<li>CDN提供一种机制，当用户请求内容时，该内容能够由以最快速度交付的Cache来向用户提供，这个挑选“最优”的过程就叫做负载均衡</li>
+<li>CDN系统架构</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/17/Ns9kElYohHR8OxB.png" alt="ScreenShot_20190804145702.png"></p>
+<ul>
+<li><strong>分发服务系统</strong>：最基本的工作单元就是Cache设备，cache（边缘cache）负责直接响应最终用户的访问请求，把缓存在本地的内容快速地提供给用 户。同时cache还负责与源站点进行内容同步，把更新的内容以及本地没有的内容从源站点获取并保存在本地。Cache设备的数量、规模、总服务能力是衡 量一个CDN系统服务能力的最基本的指标</li>
+<li><strong>负载均衡系统</strong>：主要功能是负责对所有发起服务请求的用户进行访问调度，确定提供给用户的最终实际访问地址。两级调度体系分为全局负载均衡（GSLB）和本 地负载均衡（SLB）。GSLB主要根据用户就近性原则，通过对每个服务节点进行“最优”判断，确定向用户提供服务的cache的物理位置。SLB主要负 责节点内部的设备负载均衡</li>
+<li><strong>运营管理系统</strong>：分为运营管理和网络管理子系统，负责处理业务层面的与外界系统交互所必须的收集、整理、交付工作，包含客户管理、产品管理、计费管理、统计分析等功能。<h2 id="China-Cache-CDN-系统架构图"><a href="#China-Cache-CDN-系统架构图" class="headerlink" title="China Cache CDN 系统架构图"></a>China Cache CDN 系统架构图</h2><img src="https://i.loli.net/2019/08/17/vKr6QbXO5fjk8ZP.png" alt="ScreenShot_20190804150239.png"></li>
+<li>部署架构<ul>
+<li>节点是CDN系统中最基本的部署的单元，一个CDN系统由大量、地理位置分散的POP节点组成，为用户提供就近的内容访问服务。</li>
+<li>CDN节点 网络主要包含CDN骨干节点和POP节点。</li>
+<li>中心和区域节点一般称之为骨干姐点，主要作为内容分发和边缘未命中时的服务点；边缘节点被称之为POP（point-of-presence）节点，pop节点主要作为直接向用户提供服务的节点。</li>
+<li>从节点构成来讲，无论是骨干节点还是pop节点，都有Cache设备和本地负载均衡设备构成</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/17/ew6baKtMBGnJCHO.png" alt="ScreenShot_20190804150754.png"></p>
+<ul>
+<li>基于承载内容类型<ul>
+<li>网页加速：网页静态内容</li>
+<li>流媒体加速：直播和点播</li>
+<li>文件传输加速：软件下载、更新等</li>
+<li>应用协议加速：企业应用加速主要是动态加速和SSL加速</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>SSL应用加速：由于需要大量的加密解密运算，SSL应用对服务器端的资源消耗是非常巨大的。CDN提供SSL应用加速后，由CDN的专用SSL加速硬件来完成加密解密运算工作</li>
+<li>网页压缩：HTTP1.1提出对网页压缩的支持。在服务器端可以先对网页数据进行压缩，然后将压缩后的文件提供给访问用户，最后在用户浏览器端解压显示（但要衡量加解压时间）（HTTP2.0支持压缩）</li>
+</ol>
+<ul>
+<li>基于内容生成机制的分类和分层加速服务<ul>
+<li>静态内容：网页HTML文件提供，任何人在任何时间浏览静态内容看到的都是一样的内容</li>
+<li>动态内容：不同的访问者在不同时间访问同一个web页面时可能得到不同的页面内容，内容具有实时性，访问过程具有交互性；同时还需要采用数据管理系统和业务逻辑程序来使网站具有更多自动和高级功能</li>
+</ul>
+</li>
+</ul>
+<h1 id="内容缓存工作原理"><a href="#内容缓存工作原理" class="headerlink" title="内容缓存工作原理"></a>内容缓存工作原理</h1><ul>
+<li>缓存技术（caching）：缓存代理缓存被访问过的内容，后续的相同内容访问直接通过缓存代理获得服务；CDN是缓存技术的基础上发展起来的，是缓存的分布式集群实现</li>
+<li>Web架构的精华有三处：<ul>
+<li>超文本技术HTML实现信息与信息的连接；</li>
+<li>统一资源标志符URI实现全球信息的精确定位</li>
+<li>应用层协议HTTP实现分布式的信息共享</li>
+</ul>
+</li>
+<li>TCP连接在每一次HTTP（HTTP 1.0）请求和响应完成后就关闭，如果客户端还要请求其他对象，需要重新为每个对象建立TCP连接。当一个Web页面内包含多个对象并全部显示时，客户端需要与服务器建立的TCP连接数较多，对整个时延和网络流量造成了较大的影响</li>
+<li>HTTP1.1采用了效率更高 的持续连接机制，即客户端和服务器端建立TCP连接后，后续相关联的HTTP请求可以重复利用已经建立起来的TCP连接，不仅整个Web页面（包括基本的 HTML文件和其他对象）可以使用这个持续的TCP连接来完成HTTP请求和响应，而且同一个服务器内的多个Web页面也可以通过同一个持续TCP连接来 请求和响应。通常情况下，这个持续的TCP连接会在空闲一段特定的时间后关闭，而这个最大空闲时间时可以设置的（连接复用）。</li>
+<li>HTTP协议中的缓存技术：新 鲜度（时间值）和验证（验证信息如ETag或last-modified）时确定内容可否直接提供服务的最重要依据。如果缓存内容足够新鲜，缓存的内容就 能直接满足HTTP访问的需求了；如果内容过期，而经源服务器验证后发现内容没有发生变化，缓存服务器也会避免将内容从源服务器重新传输一遍</li>
+<li>如果要通过META标签来控制页面不缓存，一般情况下会在Web页面的<head><meta name="generator" content="Hexo 3.9.0">区域中增加”pragma:no-cache”</head></li>
+<li>验证的目的就是检验缓存内容是否可用。当中间缓存存在一个过期的缓存内容，并且对应的访问请求到达时，缓存应该首先向源服务器或者其他保存有未过期的缓存服务器请求验证来确定本地的缓存内容是否可用。（缓存内容过期，但源服务器没有更新内容，即缓存内容仍可用</li>
+<li>HTTP1.1介绍了cache-control显示指令来让网站发布者可以更全面地控制他们的内容，并对过期时间进行限制（控制是否缓存，怎么缓存）</li>
+<li>HTTP gzip压缩：大多数情况需要压缩的文件时网页中出现最频繁的HTML、CSS、javascript、XML等文件，这类本身是没有经过压缩的文本文件，可以取得较好的压缩效果</li>
+<li>HTTP与TCP关系</li>
+</ul>
+<div align="center"> ![ScreenShot_20190804162308.png](https://i.loli.net/2019/08/17/EHS8wOft6PdhmZb.png)</div>
+
+<ul>
+<li>HTTP通常时架构在TCP传输协议之上，出于安全考虑，HTTP还需要经过TLS或SSL层封装</li>
+<li>HTTP客户端（浏览器）首先发起建立于服务器的TCP连接，然后客户端于服务器的HTTP进程就可以通过各自的套接字（socket）来下层的TCP</li>
+<li>HTTP协议是无状态协议，每次请求和响应都是独立的<ul>
+<li>Web通过cookie和session 解决无状态带来的问题</li>
+</ul>
+</li>
+<li>Cookie在客户端存放</li>
+<li>Session，保持用户的状态访问，服务器侧（Http cookie机制或者URL重写）<ul>
+<li>安全控制通过HTTPS协议实现</li>
+<li>Web cache关键技术性能指标</li>
+</ul>
+</li>
+<li>并发量</li>
+<li>吞吐率</li>
+<li>命中率</li>
+<li>响应时间和丢包率（DNS解析、建立连接时间、重定向时间、收到第一个包时间、图片下载时间、页面下载总时间）<ul>
+<li>内容更新机制</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>若HTTP响应头信息告诉cache不需要缓存，那么cache就不会缓存相应内容</li>
+<li>若对某内容的请求信息是需要认证或安全加密的，cache也不会缓存相应内容</li>
+<li>若HTTP相应中没有Etag或者Last-modified头信息，cache会认为缺乏直接的更新信息，默认该内容不可缓存（last-modified 时间精度上有一定缺陷）</li>
+<li>一个缓存的副本若含有一下信息，cache会认为它是足够新的，会直接从缓存中送出，不会向源服务器发送请求<br>含有完整的过期时间和寿命控制的头信息，并且内容仍在生存期内<br>浏览器已经使用过这个缓存副本，并且在同一个会话中已经检查过内容的新鲜度</li>
+<li>若缓存的内容副本已经过时，cache将向源站服务器请求校验，用于确定是否可以继续使用当前版本继续服务。若经校验发现副本的原件没有变化，cache会避免从源站获取副本，通常来讲，HTML文件、图片、css、xml、js、音频、流媒体等静态资源会被缓存，而动态地址、asp、py、jsp、php等动态资源不被缓存<ul>
+<li>Web cache优化</li>
+</ul>
+</li>
+<li>HTTP链接聚合</li>
+<li>HTTP Gzip压缩</li>
+</ol>
+<h1 id="集群服务与负载均衡"><a href="#集群服务与负载均衡" class="headerlink" title="集群服务与负载均衡"></a>集群服务与负载均衡</h1><ul>
+<li>web集群是由多个同时运行同一个web应用的服务器组成，在外界看来就像一个服务器一样，这多台服务器共同来为客户提供更高性能的服务。集群更标准的定义是：一组相互独立的服务器在网络中表现为单一的系统，并以单一系统的模式加以管理，此单一系统为客户工作站提供高可靠性的服务。</li>
+<li>而负载均衡的任务就是负责多个服务器之 间（集群内）实现合理的任务分配，使这些服务器（集群）不会出现因某一台超负荷、而其他的服务器却没有充分发挥处理能力的情况。负载均衡有两个方面的含 义：首先，把大量的并发访问或数据流量分担到多台节点上分别处理，减少用户等待响应的时间；其次，单个高负载的运算分担到多台节点上做并行处理，每个节点 设备处理结束后，将结果汇总，再返回给用户，使得信息系统处理能力可以得到大幅度提高</li>
+<li>高可用性集群(HA Cluster)</li>
+<li>指为了使群集的整体服务尽可能可用，减少服务宕机时间为目的的集群技术。如果高可用性集群中的某节点发生了故障，那么这段时间内将由其他节点代替它的工作。当然对于其他节点来讲，负载相应的就增加了。</li>
+<li>为了提高整个系统的可用性，除了提高计算机各个部件的可靠性以外，一般情况下都会采用该集群的方案。</li>
+<li>对于该集群方案，一般会有两种工作方式：</li>
+</ul>
+<ol>
+<li>主-主(Active-Active)工作方式<ul>
+<li>这是最常用的集群模型，它提供了高可用性，并且在只有一个节点时也能提供可以接受的性能，该模型允许最大程度的利用硬件资源。每个节点都通过网络对客户机 提供资源，每个节点的容量被定义好，使得性能达到最优，并且每个节点都可以在故障转移时临时接管另一个节点的工作。所有的服务在故障转移后仍保持可用，但 是性能通常都会下降。</li>
+<li>这是目前运用最为广泛的双节点双应用的Active/Active模式。</li>
+<li>支撑用户业务的应用程序在正常状态下分别在两台节点上运行，各自有自己的资源，比如IP地址、磁盘阵列上的卷或者文件系统。当某一方的系统或者资源出现故障时，就会将应用和相关资源切换到对方的节点上。</li>
+<li>这种模式的最大优点是不会有服务器的“闲置”，两台服务器在正常情况下都在工作。但如果有故障发生导致切换，应用将放在同一台服务器上运行，由于服务器的处理能力有可能不能同时满足数据库和应用程序的峰值要求，这将会出现处理能力不够的情况，降低业务响应水平。</li>
+</ul>
+</li>
+<li>主-从(Active-Standby)工作方式<ul>
+<li>为了提供最大的可用性，以及对性能最小的影响，主-从工作方式需要一个在正常工作时处于备用状态的节点，主节点处理客户机的请求，而备用节点处于空闲状态，当主节点出现故障时，备用节点会接管主节点的工作，继续为客户机提供服务，并且不会有任何性能上影响。</li>
+<li>两节点的Active/Standby模式是HA中最简单的一种，两台服务器通过双心跳线路组成一个集群。应用Application联合各个可选的系统组件如：外置共享的磁盘阵列、文件系统和浮动IP地址等组成业务运行环境。</li>
+<li>此环境提供了完全冗余的服务器配置。这种模式的优缺点：</li>
+<li>缺点：Node2在Node1正常工作时是处于“闲置”状态，造成服务器资源的浪费。</li>
+<li>优点：当Node1发生故障时，Node2能完全接管应用，并且能保证应用运行时的对处理能力要求</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>高可扩展性集群<ul>
+<li>这里指带有负载均衡策略（算法）的服务器群集技术。带负载均衡集群为企业需求提供了更实用的方案，它使负载可以在计算机集群中尽可能平均地分摊处理。而需 要均衡的可能是应用程序处理负载或是网络流量负载。该方案非常适合于运行同一组应用程序的节点。每个节点都可以处理一部分负载，并且可以在节点之间动态分 配负载， 以实现平衡。对于网络流量也是如此。通常，单个节点对于太大的网络流量无法迅速处理，这就需要将流量发送给在其它节点。还可以根据每个节点上不同的可用资 源或网络的特殊环境来进行优化。</li>
+<li>负载均衡集群在多节点之间按照一定的策略（算法）分发网络或计算处理负载。负载均衡建立在现有网络结构之上，它提供了一种廉价有效的方法来扩展服务器带宽，增加吞吐量，提高数据处理能力，同时又可以避免单点故障。</li>
+</ul>
+</li>
+<li>web 负载均衡的作用就是把请求均匀的分配给各个节点，它是一种动态均衡，通过一些工具实时地分析数据包，掌握网络中的数据流量状况，把请求理分配出去。对于不 同的应用环境（如电子商务网站，它的计 算负荷大；再如网络数据库应用，读写频繁，服务器的存储子系统系统面临很大压力；再如视频服务应用，数据传输量大，网络接口负担重压。），使用的均衡策略 (算法)是不同的。 所以均衡策略（算法）也就有了多种多样的形式，广义上的负载均衡既可以设置专门的网关、负载均衡器，也可以通过一些专用软件与协议来实现。在OSI七层协 议模型中的第二（数据链路层）、第三（网络层）、第四（传输层）、第七层（应用层）都有相应的负载均衡策略（算法），在数据链路层上实现负载均衡的原理是 根据数据包的目的MAC地址选择不同的路径；在网络层上可利用基于IP地址的分配方式将数据流疏通到多个节点；而传输层和应用层的交换（Switch）， 本身便是一种基于访问流量的控制方式，能够实现负载均衡。</li>
+<li>目前，基于负载均衡的算法主要有三种：轮循（Round-Robin）、最小连接数（Least Connections First），和快速响应优先（Faster Response Precedence）。<ol>
+<li>轮循算法，就是将来自网络的请求依次分配给集群中的节点进行处理。</li>
+<li>最小连接数算法，就是为集群中的每台服务器设置一个记数器，记录每个服务器当前的连接数，负载均衡系统总是选择当前连接数最少的服务器分配任务。 这要比”轮循算法”好很多，因为在有些场合中，简单的轮循不能判断哪个节点的负载更低，也许新的工作又被分配给了一个已经很忙的服务器了。</li>
+<li>快速响应优先算法，是根据群集中的节点的状态（CPU、内存等主要处理部分）来分配任务。 这一点很难做到，事实上到目前为止，采用这个算法的负载均衡系统还很少。尤其对于硬件负载均衡设备来说，只能在TCP/IP协议方面做工作，几乎不可能深入到服务器的处理系统中进行监测。但是它是未来发展的方向。</li>
+</ol>
+</li>
+<li>上面是负载均衡常用的算法，基于以上负载均衡算法的使用方式上，又分为如下几种：<ol>
+<li>DNS轮询<br>最早的负载均衡技术是通过DNS来实现的，在DNS中为多个地址配置同一个名字，因而查询这个名字的客户机将得到其中一个地址，从而使得不同的客户访问不同的服务器，达到负载均衡的目的。<br>DNS负载均衡是一种简单而有效的方法，但是它不能区分服务器的差异，也不能反映服务器的当前运行状态。当使用DNS负载均衡的时候，必须尽量保证不同的 客户计算机能均匀获得不同的地址。由于DNS数据具备刷新时间标志，一旦超过这个时间限制，其他DNS服务器就需要和这个服务器交互，以重新获得地址数 据，就有可能获得不同IP地址。因此为了使地址能随机分配，就应使刷新时间尽量短，不同地方的DNS服务器能更新对应的地址，达到随机获得地址，然而将过 期时间设置得过短，将使DNS流量大增，而造成额外的网络问题。DNS负载均衡的另一个问题是，一旦某个服务器出现故障，即使及时修改了DNS设置，还是 要等待足够的时间（刷新时间）才能发挥作用，在此期间，保存了故障服务器地址的客户计算机将不能正常访问服务器</li>
+<li>反向代理服务器<br>使用代理服务器，可以将请求转发给内部的服务器，使用这种加速模式显然可以提升静态网页的访问速度。然而，也可以考虑这样一种技术，使用代理服务器将请求均匀转发给多台服务器，从而达到负载均衡的目的。<br>　  这种代理方式与普通的代理方式有所不同，标准代理方式是客户使用代理访问多个外部服务器，而这种代理方式是代理多个客户访问内部服务器，因此也被称为反向代理模式。虽然实现这个任务并不算是特别复杂，然而由于要求特别高的效率，实现起来并不简单。<br>　使用反向代理的好处是，可以将负载均衡和代理服务器的高速缓存技术结合在一起，提供有益的性能。然而它本身也存在一些问题，首先就是必须为每一种服务都专门开发一个反向代理服务器，这就不是一个轻松的任务。<br>　代理服务器本身虽然可以达到很高效率，但是针对每一次代理，代理服务器就必须维护两个连接，一个对外的连接，一个对内的连接，因此对于特别高的连接请求， 代理服务器的负载也就非常之大。反向代理方式下能应用优化的负载均衡策略，每次访问最空闲的内部服务器来提供服务。但是随着并发连接数量的增加，代理服务 器本身的负载也变得非常大，最后反向代理服务器本身会成为服务的瓶颈。 <ol start="3">
+<li>地址转换网关<br>支持负载均衡的地址转换网关，可以将一个外部IP地址映射为多个内部IP地址，对每次TCP连接请求动态使用其中一个内部地址，达到负载均衡的目的。很多 硬件厂商将这种技术集成在他们的交换机中，作为他们第四层交换的一种功能来实现，一般采用随机选择、根据服务器的连接数量或者响应时间进行选择的负载均衡 策略来分配负载。由于地址转换相对来讲比较接近网络的低层，因此就有可能将它集成在硬件设备中，通常这样的硬件设备是局域网交换机.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="全局负载均衡"><a href="#全局负载均衡" class="headerlink" title="全局负载均衡"></a>全局负载均衡</h1><ul>
+<li>全局负载均衡（GSLB）的负载均衡主要是在多个节点之间进行均衡，其结果可能直接终结负载均衡过程，也可能将用户访问交付下一层次的（区域或本地）负载均衡系统进行处理。GSLB最通用的是基于DNS解析方式，还有HTTP重定向、IP路由等方法</li>
+<li>当需要访问abc.com这个站点时，实际上我们想要浏览的网页内容都存放在互联网中对应某个IP的服务器上，而浏览器的任务就是找到我们想要访问的这台服务器的IP地址，然后向它请求内容。</li>
+<li>本地DNS服务器（local DNS server）是用户所在局域网或ISP网络中的域名服务器。当客户端在浏览器里请求abc.com时，浏览器会首先向本地DNS服务器请求将 abc.com解析成IP地址，本地DNS服务器再向整个DNS系统查询，直到找到解析结果。客户端可以配置DNS服务器或通过DHCP来分配</li>
+<li>DNS给使用它的互联网应用带来额外的时延，有时时延还比较大，为了解决问题，需要引入“缓存”机制。缓存是指DNS查 询结果在主机（local DNS server）中缓存。在区内主机对某个域名发起第一次查询请求时，负责处理递归查询的DNS服务器要发送好几次查询（先查.root，再查.com之 类，再定位IP地址等）才能找到结果，不过在这过程中它也得到了许多信息，比如各区域权威DNS服务器（就是告诉你最终abc.com在哪里的DNS服务 器）和它们的地址、域名解析最终结果。他会把这些信息保存起来，当其他主机向它发起查询请求时，它就直接向主机返回缓存中能够找到的结果，直到数据过期</li>
+<li>客户端浏览器也可以缓存DNS响应信息</li>
+<li>Internet类资源记录分为<ul>
+<li>A记录（address）：域名-&gt;多个IP的映射。对同一个域名，可以有多条A记录</li>
+<li>NS记录（name server）：指定由哪台DNS服务器来解析</li>
+<li>SOA记录（start of authority）：指定该区域的权威域名服务器</li>
+<li>CNAME记录（canonical name）：多个域名-&gt;服务器的映射</li>
+<li>PTR记录（pointer record）：IP-&gt;域名的映射</li>
+</ul>
+</li>
+<li>DNS系统本身是具备简单负载分配能力的，这是基于DNS的轮询机制。如果有多台Web服务器（多源）同时为站点 abc.com提供服务，abc.com的权威服务器可能会解析出一个或多个IP地址。权威域名服务器还可以调整响应中IP地址的排列方式，即在每次响应 中将不同的IP地址置于首位（取决于可服务能力和服务质量），通过这种方式实现对这些Web服务器的负载均衡</li>
+<li>通过CNAME方式实现负载均衡：域名服务器获得CNAME记录后，就会用记录中的别名来替换查找的域名或主机名（实现多个域名-&gt;服务器映射）。后面会查询这个别名的A记录来获取相应的IP地址。</li>
+<li>具体操作为：先将GSLB的主机名定义为所查询域名的权威DNS服务器的别名，然后将GSLB主机名添加多条A记录，分别对应多个服务器的IP地址。这样，本地DNS服务器会向客户端返回多个IP地址作为域名的查询结果，并且这些IP地址的排列顺序是轮换的。客户端一般会选择首个IP地址进行访问</li>
+<li>负载均衡器作为权威DNS服务器：负载均衡器就会接收所有对这个域名的DNS请求，从而能够根据预先设置的一些策略来提 供对域名的智能DNS解析。F5的DNS具有完整的DNS功能以及增强的GSLB特性，Foundry、Nortel、Cisco和Radware的产品 能实现部分DNS功能</li>
+<li>负载均衡作为代理DNS服务器：负载均衡器被注册为一个域名空间的权威DNS服务器，而真正的权威域名服务器则部署在负 载均衡器后面。所有的DNS请求都会先到达负载均衡器，由负载均衡器转发到真正的权威DNS服务器，然后修改权威DNS服务器返回的响应信息。真正的权威 DNS服务器正常响应浏览器的DNS请求，返回域名解析结果列表，这个响应会先发送到负载均衡器，而负载均衡器会根据自己的策略选择一个性能最好的服务器 IP并修改需要实现GSLB的域名的DNS查询响应，对其他请求透明转发，这样就不会影响整个域名空间的解析性能。</li>
+<li>在基于DNS方式下无论采用何 种工作方式，都会有一些请求不会到达GSLB，这是DNS系统本身的缓存机制在起作用。当用户请求的域名在本地DNS或本机（客户端浏览器）得到了解析结 果，这些请求就不会达到GSLB。Cache更新时间越短，用户请求达到GSLB的几率越大。由于DNS的缓存机制屏蔽掉相当一部分用户请求，从而大大减 轻了GSLB处理压力，使得系统抗流量冲击能力显著提升，这也是很多商业CDN选择DNS机制做全局负载均衡的原因之一。但弊端在于，如果在DNS缓存刷 新间隔之内系统发生影响用户服务的变化，比如某个节点故障，某个链路拥塞等，用户依然会被调度到故障部位去</li>
+<li>智能DNS功能，它在向本地DNS返回应答之前会先根据一些静态或动态策略进行智能计算。<ul>
+<li>服务器的“健康状况”</li>
+<li>地理区域距离</li>
+<li>会话保持</li>
+<li>响应时间</li>
+<li>IP地址权重</li>
+<li>会话能力阈值</li>
+<li>往返时间（TTL）</li>
+<li>其他信息，包括服务器当前可用会话数、最少选择次数、轮询等</li>
+</ul>
+</li>
+</ul>
+<h2 id="关于GSLB的部署问题"><a href="#关于GSLB的部署问题" class="headerlink" title="关于GSLB的部署问题"></a>关于GSLB的部署问题</h2><ul>
+<li>关于内容的缓存问题（如何智能调度最有效）和配置</li>
+<li>在有些CDN中（用于视频网站加速的情况较多），网站需要加速的内容全部先缓存在OCS（内容中心），然后再将一部分 （通常是热门的内容）分发到个POP节点（Cache边缘集群），所以POP节点在某些时候会出现本地不命中而需要回OCS取内容或者从其他POP节点取 内容的情况</li>
+<li>纯粹基于DNS方式的GSLB只能完成就近性判断。为实现智能调度，大多数解决方案需要在GSLB设备附近以旁路的方式 部署一台辅助设备（为方便描述，我们可称之为GRM——全局资源管理设备），用以实现和各POP节点的本地资源管理设备进行通信，完成CDN对各POP节 点的状态检查，并根据POP节点的状态和流量情况，重新制订用户调度策略，将策略实时发送到GSLB中去执行</li>
+<li>因为DNS服务采用以UDP为基础的、默认无连接的访问方式，给分布式攻击（DDoS）带来了更大的便利。（有DNSSEC可以提供某程度的DDoS攻擊保護）</li>
+<li>隐藏节点的存在很大程度上可以避免GSLB被攻击致瘫痪的机会，实际隐藏节点的实现方法就是在实际组网时除了部署正常工作的GSLB以外，再部署一台备份的GSLB设备，并将这一备份GSLB设备隐藏起来，不对外公布。</li>
+<li>HTTP重定向（CDN GSLB用302重定向）：在HTTP协议中，有三类重定向状态吗：301永久性转移（permanently moved）、302暂时转移（temporarily moved）、meta fresh在特定时间后重定向到新的网页</li>
+<li>HTTP重定向只适用于HTTP应用，不适用于任何其他应用。比如微软的MMS协议，RTSP协议，就不能使用这种方式 进行重定向。其次，由于HTTP重定向过程需要额外解析域名URL，还需要与URL建立TCP连接并且发送HTTP请求，使得响应时间加长。第三，不同于 DNS方式，没有任何用户请求能被外部系统终结（不能缓存），所有请求都必须进入GSLB系统，这将成为性能和可靠性的瓶颈。（流媒体用的比较多）</li>
+<li>基于IP路由的GSLB</li>
+<li>基于路由协议算法选择一条路由到达这两个本地均衡器中的一个。因为每次访问请求的终端IP地址不同，路由条件也不同，所以在多个路由器上优选的路由不同，从统计复用的角度来看基本是在负载均衡器1和2之间均匀分布的。</li>
+<li>IP路由在多个POP点之间实现的负载均衡是一种概率上的均衡，而不是真正的均衡（没做智能调度）</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>比较项</strong></th>
+<th><strong>基于DNS解析方式</strong></th>
+<th><strong>基于HTTP重定向方式</strong></th>
+<th><strong>基于IP路由方式</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>性能</td>
+<td>本地DNS服务器和用户终端DNS缓存能力使GSLB的负载得到有效分担</td>
+<td>GSLB处理压力大，容易成为系统性能的瓶颈</td>
+<td>借助IP网络设备完成负载均衡，没有单点性能瓶颈</td>
+</tr>
+<tr>
+<td>准确度</td>
+<td>定位准确度取决于本地DNS覆盖范围，本地DNS设置错误会造成定位不准确</td>
+<td>在对用户IP地址数据进行有效维护的前提下，定位准确且精度高</td>
+<td>就近性调度准确，但对设备健康性等动态信息响应会有延迟</td>
+</tr>
+<tr>
+<td>效率</td>
+<td>效率约等于DNS系统本身处理效率</td>
+<td>依靠服务器做处理，对硬件资源的要求高</td>
+<td>效率约等于IP设备本身效率</td>
+</tr>
+<tr>
+<td>扩展性</td>
+<td>扩展性和通用性好</td>
+<td>扩展性较差，需对各种应用协议进行定制开发</td>
+<td>通用性好，但适用范围有限</td>
+</tr>
+<tr>
+<td>商用性</td>
+<td>在Web加速领域使用较多</td>
+<td>国内流媒体CDN应用较多</td>
+<td>尚无商用案例</td>
+</tr>
+</tbody></table>
+<h1 id="流媒体CDN系统的组成"><a href="#流媒体CDN系统的组成" class="headerlink" title="流媒体CDN系统的组成"></a>流媒体CDN系统的组成</h1><ul>
+<li>流媒体业务是一种对实时性、连续性、时序性要求非常高的业务，无论从带宽消耗上还是质量保障上来说，对best-effort的IP网络都是一个不小的冲击<ul>
+<li>高带宽要求</li>
+<li>高QoS要求</li>
+<li>组播、广播要求（目前IP网络无法实现端到端的组播业务）</li>
+</ul>
+</li>
+<li>播放一个视频分为以下四个步骤<ul>
+<li>Access</li>
+<li>Demux（音视频分离）</li>
+<li>Decode（解码解压缩）</li>
+<li>Output</li>
+</ul>
+</li>
+<li>RTP、RTCP、RTSP、RTMP的关系：RTSP协议用来实现远程播放控制，RTP用来提供时间信息和实现流同步，RTCP协助RTP完成传输质量控制&lt;=（播放控制），</li>
+<li>=&gt;（传输控制）RTMP和HTTP streaming则是将流同步、播放控制、质量控制集成起来的企业自有流媒体传送协议</li>
+<li>RTMP是adobe的传输协议。RTMP的基本通信单元：消息块（chunk）和消息（message）</li>
+<li>RTMP协议架构在TCP层之上，但RTMP消息并不是直接封装在TCP中，而是通过一个被称为消息块的封装单元进行传输。消息在网络上发送之前往往需要分割成多个较小的部分，这样较小的部分就是消息块，属于不同消息流的消息块可以在网络上交叉发送。</li>
+<li>RTSP/RTP和HTTP streaming是目前应用最广泛的流化协议，目前电信运营商在IPTV（特殊通道的基于IP的流媒体播放）的流化上主要以RTSP/RTP技术为主，而互联网视频网站（点播/直播）则多倾向于使用HTTP streaming的流化技术。</li>
+<li>HTTP streaming前身是progressive download（渐进式下载：边下载边播放，直到下载完）。HTTP streaming首先会将视频数据（包括直播的视频流和点播的视频文件）在服务器上进行编码，然后将编码后的数据进行更细粒度的分片，再把每个分片通过 HTTP协议传输到客户端。HTTP streaming的客户端需要对视频文件的每个分片都发出一个HTTP请求，这样，在视频播放速度低于下载速度的情况下，客户端可以灵活控制HTTP请 求的发出速度，从而保证用户在中途退出时不会出现下载浪费。另外，因为采用分片的特点，HTTP streaming还可以实现媒体播放过程中的码率切换（码率自适应），结合网络带宽资源，为用户提供更好的体验。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>HTTP streaming</strong></th>
+<th><strong>Progressive download</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>支持点播、直播</td>
+<td>仅支持点播</td>
+</tr>
+<tr>
+<td>可对分片文件加密，保证数字版权</td>
+<td>直接把媒体文件分割成多个小文件分片，无法保障版权所有</td>
+</tr>
+<tr>
+<td>因为分片传输，故支持码率自适应</td>
+<td>只支持固定码率</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>HTTP streaming</strong></th>
+<th><strong>RTSP/RTP</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>基于TCP，更高可靠性，也可以直接利用TCP的流控机制来适应带宽的变化</td>
+<td>基于UDP</td>
+</tr>
+<tr>
+<td>可将播放过的内容保存在客户端</td>
+<td>不能保存在客户端</td>
+</tr>
+<tr>
+<td>使用80端口，能穿越防火墙</td>
+<td>使用特殊端口</td>
+</tr>
+<tr>
+<td>采用标准的HTTP协议来传输，只需要标准的HTTP服务器支撑</td>
+<td>需要特殊的流媒体服务器</td>
+</tr>
+</tbody></table>
+<ul>
+<li>HTTP streaming的几个主流阵营：<ul>
+<li>3GPP adaptive HTTP Streaming</li>
+<li>Microsoft IIS Smooth Streaming</li>
+<li>Adobe HTTP Dynamic Streaming (HDS)</li>
+<li>Apple HTTP Live Streaming (HLS)</li>
+</ul>
+</li>
+<li>HLS流化技术主要分三个部分：服务器组件、分发组件和客户端软件<ul>
+<li>服务器组件主要负责从原始的音视频设备捕捉相应的音视频流，并对这些输入的媒体流进行编码，然后进行封装和分片，最后交付给分发组件来进行传送；</li>
+<li>分发组件主要负责接收客户端发送的请求，然后将封装的流媒体分片文件连同相关的索引文件一起发送给客户端。对于没有采用CDN服务的源服务器，标准的 Web服务器就是一个分发组件，而对于大型的视频网站或者类似的大规模应用平台，分发组件还应包括支持RTMP协议的CDN；</li>
+<li>客户端软件负责确定应该请求的具体媒体流，下载相关资源，并在下载后通过拼接分片将流媒体重新展现给用户</li>
+</ul>
+</li>
+<li>HLS音视频流或流媒体文件在经过编码、封装和分片后，变成多个以.ts结尾的分片文件。流分割器产生的索引文件是以.M3U8为后缀的，用户可以直接通过Web访问来获取</li>
+<li>分发组件负责将分片文件和索引文件通过HTTP的方式发送给客户端，无须对现有的Web服务器和Cache设备进行额外的扩展、配置和升级</li>
+<li>客户端组件根据URL来获取这个视频的索引文件。索引文件包含了可提供分片文件的具体位置、解密密钥以及可用的替换流。</li>
+<li>HDS，点播内容是通过一个简单的预编码生成MP4片段以及Manifest清单文件；直播的内容准备工作流程相对复杂一点，在播放的过程中生成MP4.（直播推荐用RTMP，使用FMS推流器）</li>
+<li>MPEG-2 TS是指TS格式封装的、MPEG-2编码格式的媒体流。大多数IPTV系统使用这种内容源。H.264这一层完成原始文件的压缩编码，TS这一层负责音 视频的复用以及同步，RTP这一层负责流的顺序传输，UDP这一层负责数据包的交付，IP层负责传输路由选择</li>
+<li>流媒体加速的回源要求：因为流媒体文件传送带宽需求高，而且往往需要维持TCP长连接，所以一旦CDN回源比例过高，源 站服务器I/O将不堪负荷。CDN对内容采取分发方式分为pull和push两种。Pull是被动下拉的方式，push是主动推送的方式。对于流媒体内 容，系统一般会选择对热点内容采取push方式的预分发，而普通的网页内容几乎100%是pull方式的。</li>
+<li>在流媒体CDN系统中，用户访问的调度会更多考虑内容命中，主要是因为流媒体内容文件体积大，业务质量要求高，如果从其 他节点拉内容再向用户提供服务会带来额外的延迟，影响用户体验。为进一步提高命中率，流媒体CDN系统普遍采用了对热点内容实施预先push的内容分发策 略</li>
+<li>在流媒体服务系统中，主要关注的技术是对不同流媒体协议、不同编码格式、不同播放器、不同业务质量要求等的适应。</li>
+<li>流媒体CDN与Web CDN的对比（业务差异）</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>主要差异点</strong></th>
+<th><strong>流媒体CDN</strong></th>
+<th><strong>Web CDN</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内容类型</td>
+<td>大文件、实时流、QoS要求高</td>
+<td>小文件、固定大小、QoS要求低</td>
+</tr>
+<tr>
+<td>用户行为</td>
+<td>拖曳、暂停等播放控制</td>
+<td>下载后浏览</td>
+</tr>
+<tr>
+<td>内容管理</td>
+<td>内容冷热度差异明显（对命中率要求高），内容生命周期长</td>
+<td>内容冷热度差异不明显，内容生命周期短</td>
+</tr>
+<tr>
+<td>回源要求</td>
+<td>回源比例小</td>
+<td>回源比例大</td>
+</tr>
+</tbody></table>
+<ul>
+<li>现在已经投入商用的CDN系统，基本都是同时提供Web CDN能力和流媒体CDN能力的，而且这两种能力的实现在系统内部几乎都是互相隔离的，从调度系统到节点设备都没有交叉互用</li>
+<li>流媒体CDN与Web CDN的设计差异（设计差异）</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>主要差异点</strong></th>
+<th><strong>流媒体CDN</strong></th>
+<th><strong>Web CDN</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cache</td>
+<td>支持多种流化协议，硬件配置大存储、高I/O</td>
+<td>支持多协议（HTTP、FTP等）硬件配置小存储、高性能CPU</td>
+</tr>
+<tr>
+<td>负载均衡</td>
+<td>DNS+HTTP重定向方式</td>
+<td>DNS方式</td>
+</tr>
+<tr>
+<td>内容分发方式</td>
+<td>热片PUSH，冷片PULL</td>
+<td>全PULL方式</td>
+</tr>
+<tr>
+<td>组网</td>
+<td>多级组网，可能要求组播、单播混合组网</td>
+<td>两级组网</td>
+</tr>
+</tbody></table>
+<ul>
+<li>流媒体CDN的Cache设备与Web Cache无论在软件实现还是硬件要求上差异都很大，我们很少看到这两种业务共用同一台设备</li>
+<li>当用户请求的内容在Cache上命中时，Cache直接向用户提供流服务，此时Cache设备充当流媒体服务器的角色； 当用户请求内容未能在Cache上命中时，Cache会从上一级Cache（二级缓存设备或中间缓存设备）或者源站服务器获取内容，再提供给用户。 Cache在用户与另一个流媒体服务器之间扮演代理的角色</li>
+<li>分布式存储技术因其大容量、低成本的特点，目前也被业界关注和研究作为流媒体CDN系统的存储解决方案之一。常用的分布 式存储技术包括分布式文件系统和分布式数据库，由于采用了数据副本冗余（每份数据复制2~3份）、磁盘冗余（Raid1、Raid10、Raid5）等技 术，通常可以提供良好的数据容错机制，当单台存储设备断电或者单个存储磁盘失效时，整个存储系统仍能正常工作</li>
+<li>负载均衡设备在进行用户访问调度时，会综合考虑很多静态的、动态的参数，包括IP就近性、连接保持、内容命中、响应速 度、连接数等。但没有哪个CDN会考虑所有参数，而是会根据业务特点进行一些取舍，否则均衡系统就太复杂了。而流媒体CDN在进行用户访问调度时，会更多 考虑内容命中这一参数</li>
+<li>有两种GSLB实现方式，一种是基于DNS的，一种是基于应用层重定向的</li>
+<li>PUSH方式适合内容访问比较集中的情况，如热点的影视流媒体内容，PULL方式比较适合内容访问分散的情况</li>
+<li>对使用CDN服务的SP来说，CDN的作用在于尽量就近为用户提供服务，帮助SP解决长距离IP传输和跨域传输带来的种 种业务质量问题（通过空间换取时间）。因此，为用户提供服务的Cache设备一定部署在离用户比较近的地方。另一方面，CDN的建设者从成本角度考虑，又 不能把所有内容都存放在这些离用户最近的节点中，这会消耗大量存储成本，所以这些提供服务的Cache设备会根据需要从源站服务器或者其他Cache获取 内容。这样就形成了CDN网络分层部署的概念。</li>
+<li>从网络分层上看，Web CDN通常是两级架构（也有三级架构以减少回源），即中心-边缘。而流媒体CDN通常有三级以上架构，即中心-区域-边缘。产生这种区别的原因在于流媒体 回源成本比较高，源站服务器响应一次流媒体内容回源请求，要比Web内容回源消耗更多资源。尤其对于流媒体直播业务来说，只要直播节目没结束，服务器就需 要长时间持续吐流，如果没有第二层节点作为中继，那么中心节点的压力将是不可想象的。</li>
+<li>分层部署的方式，对点播业务而言的主要意义是节省存储成本，对直播业务而言在于减少带宽成本。在点播业务中，边缘Cache只需存储用户访问量大的内容或者内容片断，其余内容存储在区域Cache中。</li>
+<li>在直播业务中，边缘Cache从区域中心获取直播流，而不需要直接向中心节点（源站）获取，从而节省了区域中心到中心节点这一段的大部分带宽。因为直播流在各个Cache中都不需要占用很大的存储空间，只需少量缓存空间即可，所以直播业务方面并不用注重考虑存储成本</li>
+<li>考虑到电信运营商的IP拓扑和流量模型，区域中心Cache通常部署在重点城市的城域网出口的位置，以保障向各个边缘 Cache的链路通畅。边缘Cache的位置选择则以整个节点能够提供的并发能力为主要依据，依据业务并发数收敛比，计算出单个Cache需要覆盖的用户 规模，从而选择一个合适的部署位置。当然，边缘Cache离用户越近，服务质量越好，但覆盖的用户数越少，部署成本越高。</li>
+<li>内容文件预处理</li>
+<li>是指视频内容进入CDN以后，进入内容分发流程之前，CDN系统对内容进行的一系列处理过程。这个预处理过程的目的有几个：<ul>
+<li>为全网内容管理提供依据，比如对内容进行全网唯一标识，对内容基础信息进行记录等</li>
+<li>为提高CDN服务效率或降低系统成本提供手段，比如内容切片</li>
+<li>为满足业务要求提供能力，比如对同一内容进行多种码率的转换以满足动态带宽自适应或三屏互动业务要求</li>
+</ul>
+</li>
+<li>视频转码(video transcoding)</li>
+<li>码率转换<ul>
+<li>空间分辨率转换</li>
+<li>时间分辨率转换</li>
+<li>编码格式转换。编码格式主要包括H.264、MPEG-4、MPEG-2、VC-1、REAL、H.263、WMV。通常是把其他编码格式转换成H.264</li>
+</ul>
+</li>
+<li>文件切片<ul>
+<li>是指按照一定的规则把一个完整的文件切成大小一致的若干个小文件；由于流媒体CDN需要提供的内容体积越来越大，传统整片存储带来的成本消耗超出了CDN服务商的承受范围；切片的另一个目的是，使边缘Cache能够支持自适应码率业务</li>
+</ul>
+</li>
+<li>防盗链机制和实现<ul>
+<li>基于IP的黑白名单</li>
+<li>利用HTTP header的referer字段</li>
+<li>使用动态密钥（随机生成的key通过算法生成新的url）</li>
+<li>在内容中插入数据（对有版权内容进行加密（DRM），如Microsoft的playready，Google的Widevine）</li>
+<li>打包下载：在原文件的基础上进一步封装，使得资源的hash 值改变</li>
+</ul>
+</li>
+</ul>
+<h1 id="动态内容加速服务的实现"><a href="#动态内容加速服务的实现" class="headerlink" title="动态内容加速服务的实现"></a>动态内容加速服务的实现</h1><ul>
+<li>随着Web2.0的兴起，产生了动态网页、个性化内容、电子交易数据等内容的加速，这些就涉及了动态内容加速技术。</li>
+<li>静态内容的加速，都是对于表现层的加速，对于动态页面等内容的加速，则要涉及逻辑层和数据访问层的加速技术</li>
+<li>动态内容的提供不仅仅是HTML页面的设计及编辑，它还需要有后台数据库、应用逻辑程序的支持，以实现与用户的动态交互。</li>
+<li>Web系统由表现层、业务逻辑层、数据访问层+用户数据层</li>
+<li>表现层是Web系统与外部系统的交互界面，这一层通常由HTTP服务器组成，负责接收用户端的HTTP内容访问请求，从文件系统中读取静态文件</li>
+<li>业务逻辑层负责处理所有业务逻辑和动态内容的生成</li>
+<li>数据访问层位于系统的后端，负责管理Web系统的主要信息和数据存储，通常由数据库服务器和存储设备组成</li>
+<li>用户数据层负责存储用户信息数据和关联关系，内容来自用户提供和用户行为分析结果</li>
+<li>Web网站借助CDN技术能够获得更好的扩展性和高性能，核心在于CDN采用的缓存（caching）和复制（replication）机制，其中缓存是将最近经常被访问的源服务器拥有的内容复制到边缘服务器上，可被视为具有特定策略的复制。</li>
+<li>CDN的复制机制是指将源Web系统逻辑架构的各个层次的相应功用复制到边缘服务器上实现，以缓解源系统的处理压力。<ul>
+<li>Web系统表现层的复制，就是静态内容的复制。边缘服务器又被称为代理服务器，通过反向代理加速静态文件的交付</li>
+<li>Web系统业务逻辑层的复制。CDN被用于改进动态生成内容的交付性能。即将应用程序和业务组件直接在CDN的边缘服务器中计算，从而直接在靠近用户的地方生成动态Web内容</li>
+<li>– Akamai边缘计算部署模型，包括用户（使用浏览器）、企业J2EE应用系统（运行业务逻辑、原有系统、数据库等）、分布式网络服务器（Edge computing平台）运行支持J2EE应用编程模型的WebSphere或者Tomcat应用服务器</li>
+<li>Web系统数据访问层复制。CDN边缘服务器能够具备生成动态内容和掌管内容生成数据的能力</li>
+<li>– 利用边缘服务器代替源钻Web系统的后台数据访问层中的数据库系统，及时响应业务逻辑层提出的数据查询需求。</li>
+<li>Web系统用户文件的复制。</li>
+</ul>
+</li>
+<li>应用加速技术实际上是传统的网络负载均衡的升级和扩展，综合使用了负载均衡（智能调度）、TCP优化管理（TCP keep-alive connection，更激进的TCP窗口策略，基于HTTP1.1），链接管理（routing）、SSL VPN、压缩优化（代码压缩，图片压缩）、智能网络地址（NAT-公私网IP转换）、高级路由、智能端口镜像等技术。）</li>
+<li>TCP的问题<ul>
+<li>TCP窗口大小的限制（TCP窗口大小随传输成功而变大，而一旦发生传输失败，其窗口大小会立即缩小）</li>
+<li>TCP协议慢启动（三握手）和拥塞控制</li>
+</ul>
+</li>
+<li>广域网加速关键技术</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>针对层次</strong></th>
+<th><strong>优化技术</strong></th>
+<th><strong>优化原理</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>传输发起端</td>
+<td>原始数据优化</td>
+<td>通过压缩、重复数据删除和字典等技术，可节省绝大多数传输数据量，节约带宽，提高服务器性能</td>
+</tr>
+<tr>
+<td>数据缓存技术</td>
+<td>将类HTTP的业务、图片、文字等缓存在本地，只传输动态内容，减少带宽占用</td>
+<td></td>
+</tr>
+<tr>
+<td>物理层（硬件）</td>
+<td>提升设备性能</td>
+<td>基于现有TCP/IP，通过硬件方式提高性能，提高大量TCP并发连接和会话重组等处理能力</td>
+</tr>
+<tr>
+<td>网络层（IP）</td>
+<td>QoS和流量控制</td>
+<td>通过协议识别，实现在同一端口中不同应用的真正区分，进而通过分流实现时延敏感应用的带宽保障</td>
+</tr>
+<tr>
+<td>传输层（TCP）</td>
+<td>代理设备</td>
+<td>在传输两端各架设代理设备，所有的响应报文都在本地完成，只有真正发起请求时才通过链路，相当于同时在服务器和客户端进行协议欺骗</td>
+</tr>
+<tr>
+<td></td>
+<td>TCP协议优化</td>
+<td>通过在广域网两端部署专用设备，在不影响基本传输情况下，通过各种手段对TCP窗口、响应、启动等机制进行改进，从而提高协议机制的效率</td>
+</tr>
+<tr>
+<td>应用层</td>
+<td>应用代理（缓存）</td>
+<td>将常用的应用程序缓存在本地并配置好，用户可不用在本地等待类似于认证等会话过程，而是直接开始下一个应用，实现流水作业</td>
+</tr>
+</tbody></table>
+<ul>
+<li>数据碎片化，就是在应用层将数据分成一个个小的数据块，便于后续的数据比对使用。广域网加速设备在传输数据前会将缓存中的数据与数据切块进行对比，从而找出那些数据是重复数据，不再发送，哪些数据是新鲜的、需要传输的数据。</li>
+<li>数据压缩和指针技术一般是放在一起使用的，在对数据分段后，会对每一段数据生成一个数据指针，对于重复内容，只传输指针。在压缩算法设计上，要求同时兼顾数据压缩比和压缩/解压缩时间。</li>
+<li>高速TCP传输技术<ul>
+<li>自适应拥塞窗口</li>
+<li>有限制地快速重传</li>
+<li>连接池：通过维护一个预先建立好的TCP连接池，当有数据传输需求时，从连接池中挑选一条可用连接传输。</li>
+</ul>
+</li>
+<li>SSL加速技术<ul>
+<li>SSL加密是一种处理器密集型加密算法，如果用服务器软件处理会消耗大量CPU资源，一般会在提供业务能力的服务器外围部署专门的SSL加速设备，采用硬解密方式实现</li>
+<li>SSL加密分对称秘钥和非对称秘钥（计算资源消耗更大）</li>
+</ul>
+</li>
+<li>SSL的基本原理和实现<ul>
+<li>可认证性（authentication）</li>
+<li>隐私性（privacy）</li>
+<li>完整性（integrity）</li>
+<li>不可抵赖性（undeniability）：发送者不能自称没有发出过接受者从他那里收到的内容</li>
+</ul>
+</li>
+<li>SSL加速<ul>
+<li>通常是基于硬件的SSL加速</li>
+<li>通过在服务器上安装一块SSL加速板卡，可有效分担服务器CPU处理SSL事务的压力</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/12/Kubernetes-架构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -315,7 +998,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -985,7 +1668,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -1023,7 +1706,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -1210,7 +1893,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -1248,7 +1931,7 @@
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -1940,7 +2623,7 @@ table tr:hover {
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -1978,7 +2661,7 @@ table tr:hover {
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -2617,7 +3300,7 @@ table tr:hover {
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -2655,7 +3338,7 @@ table tr:hover {
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -2920,7 +3603,7 @@ table tr:hover {
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -2958,7 +3641,7 @@ table tr:hover {
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -3277,7 +3960,7 @@ table tr:hover {
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -3315,7 +3998,7 @@ table tr:hover {
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -3684,7 +4367,7 @@ table tr:hover {
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -3722,7 +4405,7 @@ table tr:hover {
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -4176,7 +4859,7 @@ table tr:hover {
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -4214,7 +4897,7 @@ table tr:hover {
           </span>
 
           
-            <span class="post-category">
+            <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
             
@@ -4641,233 +5324,6 @@ table tr:hover {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/09/14/YARN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/14/YARN/" itemprop="url">YARN</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-14T19:14:41+08:00">
-                2018-09-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bigdata/" itemprop="url" rel="index">
-                    <span itemprop="name">Bigdata</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="MapReduce-1-0-缺陷"><a href="#MapReduce-1-0-缺陷" class="headerlink" title="MapReduce 1.0 缺陷"></a>MapReduce 1.0 缺陷</h2><ol>
-<li>存在单点故障</li>
-<li>JobTracker“大包大揽”导致任务过重（任务多时内存开销大，上限4000节点）</li>
-<li>容易出现内存溢出（分配资源只考虑MapReduce任务数，不考虑CPU、内存）</li>
-<li>资源划分不合理（强制划分为slot ，包括Map slot和Reduce slot）<br><img src="https://i.loli.net/2019/08/14/N3suO6efTaCHiRJ.png" alt="MapReduce.png"><h2 id="YARN设计思路"><a href="#YARN设计思路" class="headerlink" title="YARN设计思路"></a>YARN设计思路</h2><img src="https://i.loli.net/2019/08/14/a3U6zutpq842PxB.jpg" alt="YARN思想.jpg"></li>
-</ol>
-<ul>
-<li>MapReduce1.0既是一个计算框架，也是一个资源管理调度框架</li>
-<li>到了Hadoop2.0以后，MapReduce1.0中的资源管理调度功能，被单独分离出来形成了YARN，它是一个<strong><font color="red">纯粹的资源管理调度框架</font></strong>，而不是一个计算框架</li>
-<li>被剥离了资源管理调度功能的MapReduce 框架就变成了MapReduce2.0，它是运行在YARN之上的一个纯粹的计算框架，不再自己负责资源调度管理服务，而是由YARN为其提供资源管理调度服务<h2 id="YARN体系结构"><a href="#YARN体系结构" class="headerlink" title="YARN体系结构"></a>YARN体系结构</h2></li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/14/3PfAOUQlqIabNdg.jpg" alt="YARN体系结构.jpg"></p>
-<ul>
-<li>ResourceManager<ul>
-<li>处理客户端请求</li>
-<li>启动/监控ApplicationMaster</li>
-<li>监控NodeManager</li>
-<li>资源分配与调度</li>
-</ul>
-</li>
-<li>ApplicationMaster<ul>
-<li>为应用程序申请资源，并分配给内部任务</li>
-<li>任务调度、监控与容错</li>
-</ul>
-</li>
-<li>NodeManager<ul>
-<li>单个节点上的资源管理</li>
-<li>处理来自ResourceManger的命令</li>
-<li>处理来自ApplicationMaster的命令</li>
-</ul>
-</li>
-</ul>
-<h3 id="ResourceManager"><a href="#ResourceManager" class="headerlink" title="ResourceManager"></a>ResourceManager</h3><ul>
-<li>ResourceManager（RM）是一个全局的资源管理器，负责整个系统的资源管理和分配，主要包括两个组件，即调度器（Scheduler）和应用程序管理器（Applications Manager）</li>
-<li>调度器接收来自ApplicationMaster的应用程序资源请求，把集群中的资源以“容器”的形式分配给提出申请的应用程序，容器的选择通常会考虑应用程序所要处理的数据的位置，进行就近选择，从而实现“计算向数据靠拢”</li>
-<li>容器（Container）作为动态资源分配单位，每个容器中都封装了一定数量的CPU、内存、磁盘等资源，从而限定每个应用程序可以使用的资源量</li>
-<li>调度器被设计成是一个可插拔的组件，YARN不仅自身提供了许多种直接可用的调度器，也允许用户根据自己的需求重新设计调度器</li>
-<li>应用程序管理器（Applications Manager）负责系统中所有应用程序的管理工作，主要包括应用程序提交、与调度器协商资源以启动ApplicationMaster、监控ApplicationMaster运行状态并在失败时重新启动等</li>
-</ul>
-<h3 id="ApplicatonMaster"><a href="#ApplicatonMaster" class="headerlink" title="ApplicatonMaster"></a>ApplicatonMaster</h3><p>ResourceManager接收用户提交的作业，按照作业的上下文信息以及从NodeManager收集来的容器状态信息，启动调度过程，为用户作业启动一个ApplicationMaster</p>
-<ol>
-<li>当用户作业提交时，ApplicationMaster与ResourceManager协商获取资源，ResourceManager会以容器的形式为ApplicationMaster分配资源；</li>
-<li>把获得的资源进一步分配给内部的各个任务（Map任务或Reduce任务），实现资源的“二次分配”；</li>
-<li>与NodeManager保持交互通信进行应用程序的启动、运行、监控和停止，监控申请到的资源的使用情况，对所有任务的执行进度和状态进行监控，并在任务发生失败时执行失败恢复（即重新申请资源重启任务）；</li>
-<li>定时向ResourceManager发送“心跳”消息，报告资源的使用情况和应用的进度信息；</li>
-<li>当作业完成时，ApplicationMaster向ResourceManager注销容器，执行周期完成。</li>
-</ol>
-<h3 id="NodeManager"><a href="#NodeManager" class="headerlink" title="NodeManager"></a>NodeManager</h3><p>NodeManager是驻留在一个YARN集群中的每个节点上的代理，主要负责：</p>
-<ul>
-<li>容器生命周期管理</li>
-<li>监控每个容器的资源（CPU、内存等）使用情况</li>
-<li>跟踪节点健康状况</li>
-<li>以“心跳”的方式与ResourceManager保持通信</li>
-<li>向ResourceManager汇报作业的资源使用情况和每个容器的运行状态</li>
-<li>接收来自ApplicationMaster的启动/停止容器的各种请求<br> 需要说明的是，NodeManager主要负责管理抽象的容器，只处理与容器相关的事情，而不具体负责每个任务（Map任务或Reduce任务）自身状态的管理，因为这些管理工作是由ApplicationMaster完成的，ApplicationMaster会通过不断与NodeManager通信来掌握各个任务的执行状态</li>
-</ul>
-<h3 id="部署方式"><a href="#部署方式" class="headerlink" title="部署方式"></a>部署方式</h3><p>在集群部署方面，YARN的各个组件是和Hadoop集群中的其他组件进行统一部署的<br><img src="https://i.loli.net/2019/08/14/e4LE8oCTpHQXWDa.jpg" alt="YARN部署.jpg"></p>
-<h2 id="YARN工作流程"><a href="#YARN工作流程" class="headerlink" title="YARN工作流程"></a>YARN工作流程</h2><p><img src="https://i.loli.net/2019/08/14/yrhHzDjPWkf64bZ.jpg" alt="YARN工作流程.jpg"></p>
-<ol>
-<li>用户编写客户端应用程序，向YARN提交应用程序，提交的内容包括ApplicationMaster程序、启动ApplicationMaster的命令、用户程序等</li>
-<li>YARN中的ResourceManager负责接收和处理来自客户端的请求，为应用程序分配一个容器，在该容器中启动一个ApplicationMaster</li>
-<li>ApplicationMaster被创建后会首先向ResourceManager注册</li>
-<li>ApplicationMaster采用轮询的方式向ResourceManager申请资源</li>
-<li>ResourceManager以“容器”的形式向提出申请的ApplicationMaster分配资源</li>
-<li>在容器中启动任务（运行环境、脚本）</li>
-<li>各个任务向ApplicationMaster汇报自己的状态和进度</li>
-<li>应用程序运行完成后，ApplicationMaster向ResourceManager的应用程序管理器注销并关闭自己</li>
-</ol>
-<h2 id="YARN框架与MapReduce1-0框架的对比分析"><a href="#YARN框架与MapReduce1-0框架的对比分析" class="headerlink" title="YARN框架与MapReduce1.0框架的对比分析"></a>YARN框架与MapReduce1.0框架的对比分析</h2><ul>
-<li>从MapReduce1.0框架发展到YARN框架，客户端并没有发生变化，其大部分调用API及接口都保持兼容，因此，原来针对Hadoop1.0开发的代码不用做大的改动，就可以直接放到Hadoop2.0平台上运行</li>
-<li>总体而言，YARN相对于MapReduce1.0来说具有以下优势：<ul>
-<li>大大减少了承担中心服务功能的ResourceManager的资源消耗</li>
-<li>ApplicationMaster来完成需要大量资源消耗的任务调度和监控</li>
-<li>多个作业对应多个ApplicationMaster，实现了监控分布化</li>
-</ul>
-</li>
-<li>MapReduce1.0既是一个计算框架，又是一个资源管理调度框架，但是，只能支持MapReduce编程模型。而YARN则是一个纯粹的资源调度管理框架，在它上面可以运行包括MapReduce在内的不同类型的计算框架，只要编程实现相应的ApplicationMaster</li>
-<li>YARN中的资源管理比MapReduce1.0更加高效<ul>
-<li>以容器为单位，而不是以slot为单位<h2 id="YARN的发展目标"><a href="#YARN的发展目标" class="headerlink" title="YARN的发展目标"></a>YARN的发展目标</h2><img src="https://i.loli.net/2019/08/14/wzSyC8bfdBp6iMI.jpg" alt="YARN上各种计算框架.jpg"></li>
-</ul>
-</li>
-<li><strong>YARN的目标就是实现“一个集群多个框架”</strong>即在一个集群上部署一个统一的资源调度管理框架YARN，在YARN之上可以部署其他各种计算框架</li>
-<li>由YARN为这些计算框架提供统一的资源调度管理服务，并且能够根据各种计算框架的负载需求，调整各自占用的资源，实现集群资源共享和资源弹性收缩</li>
-<li>可以实现一个集群上的不同应用负载混搭，有效提高了集群的利用率</li>
-<li>不同计算框架可以共享底层存储，避免了数据集跨集群移动</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -4918,7 +5374,7 @@ table tr:hover {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -4940,7 +5396,7 @@ table tr:hover {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
