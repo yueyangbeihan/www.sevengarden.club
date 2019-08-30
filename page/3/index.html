@@ -273,6 +273,980 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/09/27/NoSQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/27/NoSQL/" itemprop="url">NoSQL</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-27T19:28:50+08:00">
+                2018-09-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Bigdata/" itemprop="url" rel="index">
+                    <span itemprop="name">Bigdata</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="NoSQL兴起原因"><a href="#NoSQL兴起原因" class="headerlink" title="NoSQL兴起原因"></a>NoSQL兴起原因</h1><ol>
+<li>关系数据库已经无法满足Web2.0的需求。主要表现在以下几个方面：<ul>
+<li>无法满足海量数据的管理需求</li>
+<li>无法满足数据高并发的需求</li>
+<li>无法满足高可扩展性和高可用性的需求</li>
+</ul>
+</li>
+<li>One size fits all”模式很难适用于截然不同的业务场景<ul>
+<li>关系模型作为统一的数据模型既被用于数据分析，也被用于在线业务。但这两者一个强调高吞吐，一个强调低延时，已经演化出完全不同的架构。用同一套模型来抽象显然是不合适的</li>
+<li>Hadoop就是针对数据分析</li>
+<li>MongoDB、Redis等是针对在线业务，两者都抛弃了关系模型</li>
+</ul>
+</li>
+<li>关系数据库的关键特性包括完善的事务机制和高效的查询机制。但是，关系数据库引以为傲的两个关键特性，到了Web2.0时代却成了鸡肋，主要表现在以下几个方面：<ul>
+<li>Web2.0网站系统通常不要求严格的数据库事务</li>
+<li>Web2.0并不要求严格的读写实时性</li>
+<li>Web2.0通常不包含大量复杂的SQL查询（去结构化，存储空间换取更好的查询性能）</li>
+</ul>
+</li>
+</ol>
+<h1 id="NoSQL与关系型数据库的比较"><a href="#NoSQL与关系型数据库的比较" class="headerlink" title="NoSQL与关系型数据库的比较"></a>NoSQL与关系型数据库的比较</h1><table>
+<thead>
+<tr>
+<th align="left">比较标准</th>
+<th align="left">RDBMS</th>
+<th align="left">NoSQL</th>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">数据库原理</td>
+<td align="left">完全支持</td>
+<td align="left">部分支持</td>
+<td align="left">RDBMS有关系代数理论作为基础,NoSQL没有统一的理论基础</td>
+</tr>
+<tr>
+<td align="left">数据规模</td>
+<td align="left">大</td>
+<td align="left">超大</td>
+<td align="left">RDBMS很难实现横向扩展，纵向扩展的空间也比较有限，性能会随着数据规模的增大而降低,NoSQL可以很容易通过添加更多设备来支持更大规模的数据</td>
+</tr>
+<tr>
+<td align="left">数据库模式</td>
+<td align="left">固定</td>
+<td align="left">灵活</td>
+<td align="left">RDBMS需要定义数据库模式，严格遵守数据定义和相关约束条件,NoSQL不存在数据库模式，可以自由灵活定义并存储各种不同类型的数据</td>
+</tr>
+<tr>
+<td align="left">查询效率</td>
+<td align="left">快</td>
+<td align="left">可以实现高效的简单查询，但是不具备高度结构化查询等特性，复杂查询的性能不尽人意</td>
+<td align="left">RDBMS借助于索引机制可以实现快速查询（包括记录查询和范围查询）NoSQL数据库没有面向复杂查询的索引，虽然NoSQL可以使用MapReduce来加速查询，但是，在复杂查询方面的性能仍然不如RDBMS</td>
+</tr>
+<tr>
+<td align="left">一致性</td>
+<td align="left">强一致性</td>
+<td align="left">弱一致性</td>
+<td align="left">RDBMS严格遵守事务ACID模型，可以保证事务强一致性,很多NoSQL数据库放松了对事务ACID四性的要求，而是遵守BASE模型，只能保证最终一致性</td>
+</tr>
+<tr>
+<td align="left">数据完整性</td>
+<td align="left">容易实现</td>
+<td align="left">很难实现</td>
+<td align="left">任何一个RDBMS都可以很容易实现数据完整性，比如通过主键或者非空约束来实现实体完整性，通过主键、外键来实现参照完整性，通过约束或者触发器来实现用户自定义完整性,但是，在NoSQL数据库却无法实现</td>
+</tr>
+<tr>
+<td align="left">扩展性</td>
+<td align="left">一般</td>
+<td align="left">好</td>
+<td align="left">RDBMS很难实现横向扩展，纵向扩展的空间也比较有限,NoSQL在设计之初就充分考虑了横向扩展的需求，可以很容易通过添加廉价设备实现扩展</td>
+</tr>
+<tr>
+<td align="left">可用性</td>
+<td align="left">好</td>
+<td align="left">很好</td>
+<td align="left">RDBMS在任何时候都以保证数据一致性为优先目标，其次才是优化系统性能，随着数据规模的增大，RDBMS为了保证严格的一致性，只能提供相对较弱的可用性,大多数NoSQL都能提供较高的可用性</td>
+</tr>
+<tr>
+<td align="left">标准化</td>
+<td align="left">是</td>
+<td align="left">否</td>
+<td align="left">RDBMS已经标准化（SQL）,NoSQL还没有行业标准，不同的NoSQL数据库都有自己的查询语言，很难规范应用程序接口,StoneBraker认为：NoSQL缺乏统一查询语言，将会拖慢NoSQL发展</td>
+</tr>
+<tr>
+<td align="left">技术支持</td>
+<td align="left">高</td>
+<td align="left">低</td>
+<td align="left">RDBMS经过几十年的发展，已经非常成熟，Oracle等大型厂商都可以提供很好的技术支持,NoSQL在技术支持方面仍然处于起步阶段，还不成熟，缺乏有力的技术支持</td>
+</tr>
+<tr>
+<td align="left">可维护性</td>
+<td align="left">复杂</td>
+<td align="left">复杂</td>
+<td align="left">RDBMS需要专门的数据库管理员(DBA)维护 ,NoSQL数据库虽然没有DBMS复杂，也难以维护</td>
+</tr>
+</tbody></table>
+<p><strong>总结</strong></p>
+<ol>
+<li>关系数据库<br>优势：以完善的关系代数理论作为基础，有严格的标准，支持事务ACID四性，借助索引机制可以实现高效的查询，技术成熟，有专业公司的技术支持<br>劣势：可扩展性较差，无法较好支持海量数据存储，数据模型过于死板、无法较好支持Web2.0应用，事务机制影响了系统的整体性能等</li>
+<li>NoSQL数据库<br>优势：可以支持超大规模数据存储，灵活的数据模型可以很好地支持Web2.0应用，具有强大的横向扩展能力等<br>劣势：缺乏数学理论基础，复杂查询性能不高，大都不能实现事务强一致性，很难实现数据完整性，技术尚不成熟，缺乏专业团队的技术支持，维护较困难等</li>
+</ol>
+<ul>
+<li>关系数据库应用场景：电信、银行等领域的关键业务系统，需要保证强事务一致性</li>
+<li>NoSQL数据库应用场景：互联网企业、传统企业的非关键业务（比如数据分析）</li>
+<li>采用混合架构</li>
+<li>案例：亚马逊公司就使用不同类型的数据库来支撑它的电子商务应用<ul>
+<li>对于“购物篮”这种临时性数据，采用键值存储会更加高效</li>
+<li>当前的产品和订单信息则适合存放在关系数据库中</li>
+<li>大量的历史订单信息则适合保存在类似MongoDB的文档数据库中</li>
+</ul>
+</li>
+</ul>
+<h1 id="NoSQL的四大类型"><a href="#NoSQL的四大类型" class="headerlink" title="NoSQL的四大类型"></a>NoSQL的四大类型</h1><blockquote>
+<p>NoSQL数据库虽然数量众多，但是，归结起来，典型的NoSQL数据库通常包括键值数据库、列族数据库、文档数据库和图形数据库.</p>
+</blockquote>
+<p><img src="https://i.loli.net/2019/08/14/kMvYIWtdT8xOosR.png" alt="NoSQL-1.png"><br><img src="https://i.loli.net/2019/08/14/p5rvDxPIwzKhVAa.png" alt="NoSQL-2.png"><br><img src="https://i.loli.net/2019/08/14/OseyBMhXY2QZjl9.jpg" alt="四类数据库.jpg"></p>
+<h2 id="键值数据库"><a href="#键值数据库" class="headerlink" title="键值数据库"></a>键值数据库</h2><table>
+<thead>
+<tr>
+<th>相关产品</th>
+<th>Redis、Riak、SimpleDB、Chordless、Scalaris、Memcached</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据模型</td>
+<td>键/值对,键是一个字符串对象,值可以是任意类型的数据，比如整型、字符型、数组、列表、集合等</td>
+</tr>
+<tr>
+<td>典型应用</td>
+<td>涉及频繁读写、拥有简单数据模型的应用 ,内容缓存，比如会话、配置文件、参数、购物车等,存储配置和用户数据信息的移动应用</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>扩展性好，灵活性好，大量写操作时性能高</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>无法存储结构化信息，条件查询效率较低</td>
+</tr>
+<tr>
+<td>不适用情形</td>
+<td>不是通过键而是通过值来查：键值数据库根本没有通过值查询的途径 ,要存储数据之间的关系：在键值数据库中，不能通过两个或两个以上的键来关联数据 需要事务的支持,在一些键值数据库中，产生故障时，不可以回滚</td>
+</tr>
+<tr>
+<td>使用者</td>
+<td>(Redis）、GitHub（Riak）、BestBuy（Riak）、Twitter（Redis和Memcached）、StackOverFlow（Redis）、Instagram （Redis）、Youtube（Memcached）、Wikipedia（Memcached）</td>
+</tr>
+</tbody></table>
+<p><img src="https://i.loli.net/2019/08/14/MFu8kUZoDWVYthr.png" alt="键值数据库成为理想的缓冲层解决方案.png"><br>Redis有时候会被人们称为“强化版的Memcached” 支持持久化、数据恢复、更多数据类型</p>
+<h2 id="列族数据库"><a href="#列族数据库" class="headerlink" title="列族数据库"></a>列族数据库</h2><table>
+<thead>
+<tr>
+<th>相关产品</th>
+<th>BigTable、HBase、Cassandra、HadoopDB、GreenPlum、PNUTS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据模型</td>
+<td>列族</td>
+</tr>
+<tr>
+<td>典型应用</td>
+<td>“分布式数据存储与管理,数据在地理上分布于多个数据中心的应用程序,可以容忍副本中存在短期不一致情况的应用程序,拥有动态字段的应用程序 拥有潜在大量数据的应用程序，大到几百TB的数据</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>查找速度快，可扩展性强，容易进行分布式扩展，复杂性低</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>功能较少，大都不支持强事务一致性</td>
+</tr>
+<tr>
+<td>不适用情形</td>
+<td>需要ACID事务支持的情形，Cassandra等产品就不适用</td>
+</tr>
+<tr>
+<td>使用者</td>
+<td>Ebay（Cassandra）、Instagram（Cassandra）、NASA（Cassandra）、Twitter（Cassandra and HBase）、Facebook（HBase）、Yahoo!（HBase）</td>
+</tr>
+</tbody></table>
+<h2 id="文档数据库"><a href="#文档数据库" class="headerlink" title="文档数据库"></a>文档数据库</h2><blockquote>
+<p>“文档”其实是一个数据记录，这个记录能够对包含的数据类型和内容进行“自我描述”。XML文档、HTML文档和JSON 文档就属于这一类。SequoiaDB就是使用JSON格式的文档数据库，它的存储的数据是这样的：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> &quot;ID&quot;:1,</span><br><span class="line"> &quot;NAME&quot;:&quot;SequiaDB&quot;,</span><br><span class="line"> &quot;Tel&quot;: &#123;</span><br><span class="line">      &quot;Office&quot;:&quot;123456&quot;,&quot;Tel&quot;：“1273928”</span><br><span class="line">        &#125;</span><br><span class="line">   &quot;Addr&quot;: &quot;China,GZ&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>关系数据库：<br>必须有schema信息才能理解数据的含义，如学生（学号，姓名，性别，年龄，系，年级）<br>（1001，张三，男，20，计算机，2002）</p>
+</li>
+<li><p>一个XML文档：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.rootdir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://localhost:9000/hbase<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数据是不规则的，每一条记录包含了所有的有关“SequoiaDB”的信息而没有任何外部的引用，这条记录就是“自包含”的</p>
+</li>
+<li><p>这使得记录很容易完全移动到其他服务器，因为这条记录的所有信息都包含在里面了，不需要考虑还有信息在别的表没有一起迁移走</p>
+</li>
+<li><p>同时，因为在移动过程中，只有被移动的那一条记录（文档）需要操作，而不像关系型中每个有关联的表都需要锁住来保证一致性，这样一来ACID的保证就会变得更快速，读写的速度也会有很大的提升</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>相关产品</th>
+<th>MongoDB、CouchDB、Terrastore、ThruDB、RavenDB、SisoDB、RaptorDB、CloudKit、Perservere、Jackrabbit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据模型</td>
+<td>键/值,值（value）是版本化的文档</td>
+</tr>
+<tr>
+<td>典型应用</td>
+<td>存储、索引并管理面向文档的数据或者类似的半结构化数据,比如，用于后台具有大量读写操作的网站、使用JSON数据结构的应用、使用嵌套结构等非规范化数据的应用程序</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>性能好（高并发），灵活性高，复杂性低，数据结构灵活,提供嵌入式文档功能，将经常查询的数据存储在同一个文档中,既可以根据键来构建索引，也可以根据内容构建索引</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>缺乏统一的查询语法</td>
+</tr>
+<tr>
+<td>不适用情形</td>
+<td>在不同的文档上添加事务。文档数据库并不支持文档间的事务，如果对这方面有需求则不应该选用这个解决方案</td>
+</tr>
+<tr>
+<td>使用者</td>
+<td>（MongoDB）、SAP （MongoDB）、Codecademy （MongoDB）、Foursquare （MongoDB）、NBC News （RavenDB）</td>
+</tr>
+</tbody></table>
+<h2 id="图数据库"><a href="#图数据库" class="headerlink" title="图数据库"></a>图数据库</h2><table>
+<thead>
+<tr>
+<th>相关产品</th>
+<th>Neo4J、OrientDB、InfoGrid、Infinite Graph、GraphDB</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据模型</td>
+<td>图结构</td>
+</tr>
+<tr>
+<td>典型应用</td>
+<td>专门用于处理具有高度相互关联关系的数据，比较适合于社交网络、模式识别、依赖分析、推荐系统以及路径寻找等问题</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>灵活性高，支持复杂的图形算法，可用于构建复杂的关系图谱</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>复杂性高，只能支持一定的数据规模</td>
+</tr>
+<tr>
+<td>使用者</td>
+<td>Adobe（Neo4J）、Cisco（Neo4J）、T-Mobile（Neo4J）</td>
+</tr>
+</tbody></table>
+<h1 id="NoSQL的三大基石"><a href="#NoSQL的三大基石" class="headerlink" title="NoSQL的三大基石"></a>NoSQL的三大基石</h1><p><img src="https://i.loli.net/2019/08/14/3PKEurnWJwMZlqf.png" alt="NoSQL三大基石.png"></p>
+<h2 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h2><ul>
+<li><strong>C（Consistency）</strong>：一致性，是指任何一个读操作总是能够读到之前完成的写操作的结果，也就是在分布式环境中，多点的数据是一致的，或者说，所有节点在同一时间具有相同的数据</li>
+<li><strong>A:（Availability）</strong>：可用性，是指快速获取数据，可以在确定的时间内返回操作结果，保证每个请求不管成功或者失败都有响应；</li>
+<li><strong>P（Tolerance of Network Partition）</strong>：分区容忍性，是指当出现网络分区的情况时（即系统中的一部分节点无法和其他节点进行通信），分离的系统也能够正常运行，也就是说，系统中任意信息的丢失或失败不会影响系统的继续运作。</li>
+</ul>
+<blockquote>
+<p>CAP理论告诉我们，一个分布式系统不可能同时满足一致性、可用性和分区容忍性这三个需求，最多只能同时满足其中两个，正所谓“鱼和熊掌不可兼得”。</p>
+</blockquote>
+<p><img src="https://i.loli.net/2019/08/14/xeFK2I74shtjcyA.png" alt="CAP.png"></p>
+<ol>
+<li>CA：也就是强调一致性（C）和可用性（A），放弃分区容忍性（P），最简单的做法是把所有与事务相关的内容都放到同一台机器上。很显然，这种做法会严重影响系统的可扩展性。传统的关系数据库（MySQL、SQL Server和PostgreSQL），都采用了这种设计原则，因此，扩展性都比较差</li>
+<li>CP：也就是强调一致性（C）和分区容忍性（P），放弃可用性（A），当出现网络分区的情况时，受影响的服务需要等待数据一致，因此在等待期间就无法对外提供服务</li>
+<li>AP：也就是强调可用性（A）和分区容忍性（P），放弃一致性（C），允许系统返回不一致的数据<br><img src="https://i.loli.net/2019/08/14/nJDRbsSMBaPUmhX.png" alt="不同产品在CAP理论下的不同设计原则 .png"></li>
+</ol>
+<h2 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h2><blockquote>
+<p>说起BASE（Basically Availble, Soft-state, Eventual consistency），不得不谈到ACID。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>ACID</th>
+<th>BASE</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原子性(Atomicity)</td>
+<td>基本可用(Basically Available)</td>
+</tr>
+<tr>
+<td>一致性(Consistency)</td>
+<td>软状态/柔性事务(Soft state)</td>
+</tr>
+<tr>
+<td>隔离性(Isolation)</td>
+<td>最终一致性 (Eventual consistency)</td>
+</tr>
+<tr>
+<td>持久性 (Durable)</td>
+<td></td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>一个数据库事务具有ACID四性：</p>
+<ul>
+<li>A（Atomicity）：原子性，是指事务必须是原子工作单元，对于其数据修改，要么全都执行，要么全都不执行</li>
+<li>C（Consistency）：一致性，是指事务在完成时，必须使所有的数据都保持一致状态</li>
+<li>I（Isolation）：隔离性，是指由并发事务所做的修改必须与任何其它并发事务所做的修改隔离</li>
+<li>D（Durability）：持久性，是指事务完成之后，它对于系统的影响是永久性的，该修改即使出现致命的系统故障也将一直保持</li>
+</ul>
+</li>
+<li><p>BASE的基本含义是基本可用（Basically Availble）、软状态（Soft-state）和最终一致性（Eventual consistency）：</p>
+<ul>
+<li>基本可用<ul>
+<li>基本可用，是指一个分布式系统的一部分发生问题变得不可用时，其他部分仍然可以正常使用，也就是允许分区失败的情形出现</li>
+</ul>
+</li>
+<li>软状态<ul>
+<li>“软状态（soft-state）”是与“硬状态（hard-state）”相对应的一种提法。数据库保存的数据是“硬状态”时，可以保证数据一致性，即保证数据一直是正确的。“软状态”是指状态可以有一段时间不同步，具有一定的滞后性</li>
+</ul>
+</li>
+<li>最终一致性<ul>
+<li>一致性的类型包括强一致性和弱一致性，二者的主要区别在于高并发的数据访问操作下，后续操作是否能够获取最新的数据。对于强一致性而言，当执行完一次更新操作后，后续的其他读操作就可以保证读到更新后的最新数据；反之，如果不能保证后续访问读到的都是更新后的最新数据，那么就是弱一致性。而最终一致性只不过是弱一致性的一种特例，允许后续的访问操作可以暂时读不到更新后的数据，但是经过一段时间之后，必须最终读到更新后的数据。</li>
+<li>最常见的实现最终一致性的系统是DNS（域名系统）。一个域名更新操作根据配置的形式被分发出去，并结合有过期机制的缓存；最终所有的客户端可以看到最新的值。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="最终一致性"><a href="#最终一致性" class="headerlink" title="最终一致性"></a>最终一致性</h2><blockquote>
+<p>最终一致性根据更新数据后各进程访问到数据的时间和方式的不同，又可以区分为：</p>
+</blockquote>
+<ul>
+<li>因果一致性：如果进程A通知进程B它已更新了一个数据项，那么进程B的后续访问将获得A写入的最新值。而与进程A无因果关系的进程C的访问，仍然遵守一般的最终一致性规则</li>
+<li>“读己之所写”一致性：可以视为因果一致性的一个特例。当进程A自己执行一个更新操作之后，它自己总是可以访问到更新过的值，绝不会看到旧值</li>
+<li>单调读一致性：如果进程已经看到过数据对象的某个值，那么任何后续访问都不会返回在那个值之前的值</li>
+<li>会话一致性：它把访问存储系统的进程放到会话（session）的上下文中，只要会话还存在，系统就保证“读己之所写”一致性。如果由于某些失败情形令会话终止，就要建立新的会话，而且系统保证不会延续到新的会话</li>
+<li>单调写一致性：系统保证来自同一个进程的写操作顺序执行。系统必须保证这种程度的一致性，否则就非常难以编程了</li>
+</ul>
+<h3 id="对于分布式数据系统："><a href="#对于分布式数据系统：" class="headerlink" title="对于分布式数据系统："></a>对于分布式数据系统：</h3><ul>
+<li>N — 数据复制的份数</li>
+<li>W — 更新数据是需要保证写完成的节点数</li>
+<li>R — 读取数据的时候需要读取的节点数<ul>
+<li>如果W+R&gt;N，写的节点和读的节点重叠，则是强一致性。例如对于典型的一主一备同步复制的关系型数据库，N=2,W=2,R=1，则不管读的是主库还是备库的数据，都是一致的。一般设定是R＋W = N+1，这是保证强一致性的最小设定</li>
+<li>如果W+R&lt;=N，则是弱一致性。例如对于一主一备异步复制的关系型数据库，N=2,W=1,R=1，则如果读的是备库，就可能无法读取主库已经更新过的数据，所以是弱一致性。</li>
+</ul>
+</li>
+<li>对于分布式系统，为了保证高可用性，一般设置N&gt;=3。不同的N,W,R组合，是在可用性和一致性之间取一个平衡，以适应不同的应用场景。</li>
+<li>如果N=W,R=1，任何一个写节点失效，都会导致写失败，因此可用性会降低，但是由于数据分布的N个节点是同步写入的，因此可以保证强一致性。</li>
+<li>实例：HBase是借助其底层的HDFS来实现其数据冗余备份的。HDFS采用的就是强一致性保证。在数据没有完全同步到N个节点前，写操作是不会返回成功的。也就是说它的W＝N，而读操作只需要读到一个值即可，也就是说它R＝1。</li>
+<li>像Voldemort，Cassandra和Riak这些类Dynamo的系统，通常都允许用户按需要设置N，R，W三个值，即使是设置成W＋R&lt;= N也是可以的。也就是说他允许用户在强一致性和最终一致性之间自由选择。而在用户选择了最终一致性，或者是W&lt;N的强一致性时，则总会出现一段“各个节点数据不同步导致系统处理不一致的时间”。为了提供最终一致性的支持，这些系统会提供一些工具来使数据更新被最终同步到所有相关节点。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/09/23/HBase/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/23/HBase/" itemprop="url">HBase</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-23T19:19:04+08:00">
+                2018-09-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Bigdata/" itemprop="url" rel="index">
+                    <span itemprop="name">Bigdata</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
+<p>HBase是一个高可靠、高性能、面向列、可伸缩的分布式数据库，是谷歌BigTable的开源实现，主要用来存储非结构化和半结构化的松散数据。HBase的目标是处理非常庞大的表，可以通过水平扩展的方式，利用廉价计算机集群处理由超过10亿行数据和数百万列元素组成的数据表 </p>
+<ul>
+<li>Hadoop可以很好地解决大规模数据的离线批量处理问题，但是，受限于Hadoop MapReduce编程框架的高延迟数据处理机制，使得Hadoop无法满足大规模数据实时处理应用的需求</li>
+<li>HDFS面向批量访问模式，不是随机访问模式</li>
+<li>传统的通用关系型数据库无法应对在数据规模剧增时导致的系统扩展性和性能问题（分库分表也不能很好解决）</li>
+<li>传统关系数据库在数据结构变化时一般需要停机维护；空列浪费存储空间</li>
+<li>因此，业界出现了一类面向半结构化数据存储和处理的高可扩展、低写入/查询延迟的系统，例如，键值数据库、文档数据库和列族数据库（如BigTable和HBase等）</li>
+<li>HBase已经成功应用于互联网服务领域和传统行业的众多在线式数据分析处理系统中</li>
+</ul>
+</blockquote>
+<h2 id="HBase与传统关系数据库的对比分析"><a href="#HBase与传统关系数据库的对比分析" class="headerlink" title="HBase与传统关系数据库的对比分析"></a>HBase与传统关系数据库的对比分析</h2><ol>
+<li>数据类型：关系数据库采用关系模型，具有丰富的数据类型和存储方式，HBase则采用了更加简单的数据模型，它把数据存储为未经解释的字符串</li>
+<li>数据操作：关系数据库中包含了丰富的操作，其中会涉及复杂的多表连接。HBase操作则不存在复杂的表与表之间的关系，只有简单的插入、查询、删除、清空等，因为HBase在设计上就避免了复杂的表和表之间的关系</li>
+<li>存储模式：关系数据库是基于行模式存储的。HBase是基于列存储的，每个列族都由几个文件保存，不同列族的文件是分离的</li>
+<li>数据索引：关系数据库通常可以针对不同列构建复杂的多个索引，以提高数据访问性能。HBase只有一个索引——行键，通过巧妙的设计，HBase中的所有访问方法，或者通过行键访问，或者通过行键扫描，从而使得整个系统不会慢下来</li>
+<li>数据维护：在关系数据库中，更新操作会用最新的当前值去替换记录中原来的旧值，旧值被覆盖后就不会存在。而在HBase中执行更新操作时，并不会删除数据旧的版本，而是生成一个新的版本，旧有的版本仍然保留</li>
+<li>可伸缩性：关系数据库很难实现横向扩展，纵向扩展的空间也比较有限。相反，HBase和BigTable这些分布式数据库就是为了实现灵活的水平扩展而开发的，能够轻易地通过在集群中增加或者减少硬件数量来实现性能的伸缩</li>
+</ol>
+<h1 id="HBase访问接口"><a href="#HBase访问接口" class="headerlink" title="HBase访问接口"></a>HBase访问接口</h1><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>特点</th>
+<th>场合</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Native Java API</td>
+<td>最常规和高效的访问方式</td>
+<td>适合Hadoop MapReduce作业并行批处理HBase表数据</td>
+</tr>
+<tr>
+<td>HBase Shell</td>
+<td>HBase的命令行工具，最简单的接口</td>
+<td>适合HBase管理使用</td>
+</tr>
+<tr>
+<td>Thrift Gateway</td>
+<td>利用Thrift序列化技术，支持C++、PHP、Python等多种语言</td>
+<td>适合其他异构系统在线访问HBase表数据</td>
+</tr>
+<tr>
+<td>REST Gateway</td>
+<td>解除了语言限制</td>
+<td>支持REST风格的Http API访问HBase</td>
+</tr>
+<tr>
+<td>Pig</td>
+<td>使用Pig Latin流式编程语言来处理HBase中的数据</td>
+<td>适合做数据统计</td>
+</tr>
+<tr>
+<td>Hive</td>
+<td>简单</td>
+<td>当需要以类似SQL语言方式来访问HBase的时候</td>
+</tr>
+</tbody></table>
+<h1 id="Hbase数据模型"><a href="#Hbase数据模型" class="headerlink" title="Hbase数据模型"></a>Hbase数据模型</h1><h2 id="数据模型概述"><a href="#数据模型概述" class="headerlink" title="数据模型概述"></a>数据模型概述</h2><ul>
+<li>HBase是一个稀疏、多维度、排序的映射表，这张表的索引是行键、列族、列限定符和时间戳</li>
+<li>每个值是一个未经解释的字符串，没有数据类型</li>
+<li>用户在表中存储数据，每一行都有一个可排序的行键和任意多的列</li>
+<li>表在水平方向由一个或者多个列族组成，一个列族中可以包含任意多个列，同一个列族里面的数据存储在一起</li>
+<li>列族支持动态扩展，可以很轻松地添加一个列族或列，无需预先定义列的数量以及类型，所有列均以字符串形式存储，用户需要自行进行据类型转换</li>
+<li>HBase中执行更新操作时，并不会删除数据旧的版本，而是生成一个新的版本，旧有的版本仍然保留（这是和HDFS只允许追加不允许修改的特性相关的）<h2 id="数据模型相关概念"><a href="#数据模型相关概念" class="headerlink" title="数据模型相关概念"></a>数据模型相关概念</h2><img src="https://i.loli.net/2019/08/14/N3DW2LA4kxIYuFa.png" alt="HBase数据模型.png"></li>
+<li>表：HBase采用表来组织数据，表由行和列组成，列划分为若干个列族</li>
+<li>行：每个HBase表都由若干行组成，每个行由行键（row key）来标识。</li>
+<li>列族：一个HBase表被分组成许多“列族”（Column Family）的集合，它是基本的访问控制单元</li>
+<li>列限定符：列族里的数据通过列限定符（或列）来定位</li>
+<li>单元格：在HBase表中，通过行、列族和列限定符确定一个“单元格”（cell），单元格中存储的数据没有数据类型，总被视为字节数组byte[]</li>
+<li>时间戳：每个单元格都保存着同一份数据的多个版本，这些版本采用时间戳进行索引</li>
+</ul>
+<h2 id="数据坐标"><a href="#数据坐标" class="headerlink" title="数据坐标"></a>数据坐标</h2><ul>
+<li>HBase中需要根据行键、列族、列限定符和时间戳来确定一个单元格，因此，可以视为一个“四维坐标”，即[行键, 列族, 列限定符, 时间戳]<table>
+<thead>
+<tr>
+<th><strong>键</strong></th>
+<th><strong>值</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>[“201505003”, “Info”, “email”, 1174184619081]</td>
+<td>“xie@qq.com”</td>
+</tr>
+<tr>
+<td>[“201505003”, “Info”, “email”, 1174184620720]</td>
+<td>“you@163.com”</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="概念视图"><a href="#概念视图" class="headerlink" title="概念视图"></a>概念视图</h2><table>
+<thead>
+<tr>
+<th>行键</th>
+<th>时间戳</th>
+<th>列族contents</th>
+<th>列族anchor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“com.cnn.www”</td>
+<td>t5</td>
+<td>anchor:cnnsi.com=”CNN”</td>
+<td></td>
+</tr>
+<tr>
+<td>t4</td>
+<td>anchor:my.look.ca=”CNN.com”</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>t3</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>t2</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>t1</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="物理视图"><a href="#物理视图" class="headerlink" title="物理视图"></a>物理视图</h2><table>
+<thead>
+<tr>
+<th>行键</th>
+<th>时间戳</th>
+<th>列族contents</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“com.cnn.www”</td>
+<td>t3</td>
+<td>contents:html=”<html>...“</html></td>
+</tr>
+<tr>
+<td>t2</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+</tr>
+<tr>
+<td>t1</td>
+<td>contents:html=”<html>...“</html></td>
+<td></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>行键</th>
+<th>时间戳</th>
+<th>列族anchor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“com.cnn.www”</td>
+<td>t5</td>
+<td>anchor:cnnsi.com=”CNN”</td>
+</tr>
+<tr>
+<td>t4</td>
+<td>anchor:my.look.ca=”CNN.com”</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="面向列的存储"><a href="#面向列的存储" class="headerlink" title="面向列的存储"></a>面向列的存储</h2><p><img src="https://i.loli.net/2019/08/14/CrtHkdTRqnQeKZ3.png" alt="面向列的存储.png"><br><img src="https://i.loli.net/2019/08/14/296eZVrmyGhSgE8.png" alt="列式存储.png"><br><img src="https://i.loli.net/2019/08/14/Pun632tgqSbTJpM.png" alt="行式存储.png"></p>
+<h1 id="HBase实现原理"><a href="#HBase实现原理" class="headerlink" title="HBase实现原理"></a>HBase实现原理</h1><h2 id="HBase-功能组件"><a href="#HBase-功能组件" class="headerlink" title="HBase 功能组件"></a>HBase 功能组件</h2><ul>
+<li>HBase的实现包括三个主要的功能组件：<ol>
+<li>库函数：链接到每个客户端</li>
+<li>一个Master主服务器</li>
+<li>许多个Region服务器</li>
+</ol>
+</li>
+<li>主服务器Master负责管理和维护HBase表的分区信息，维护Region服务器列表，分配Region，负载均衡</li>
+<li>Region服务器负责存储和维护分配给自己的Region，处理来自客户端的读写请求</li>
+<li>客户端并不是直接从Master主服务器上读取数据，而是在获得Region的存储位置信息后，直接从Region服务器上读取数据</li>
+<li>客户端并不依赖Master，而是通过Zookeeper来获得Region位置信息，大多数客户端甚至从来不和Master通信，这种设计方式使得Master负载很小 </li>
+</ul>
+<h2 id="表和Region"><a href="#表和Region" class="headerlink" title="表和Region"></a>表和Region</h2><ul>
+<li>开始只有一个Region，后来不断分裂</li>
+<li>Region拆分操作非常快，接近瞬间，因为拆分之后的Region读取的仍然是原存储文件，直到“合并”过程把存储文件异步地写到独立的文件之后，才会读取新文件<br><img src="https://i.loli.net/2019/08/14/67qygZGCpdfDHY4.jpg" alt="Region表.jpg"><br><img src="https://i.loli.net/2019/08/14/kKYREnvAGqcCP65.jpg" alt="Region表分裂.jpg"></li>
+<li>每个Region默认大小是100MB到200MB（2006年以前的硬件配置）<ul>
+<li>每个Region的最佳大小取决于单台服务器的有效处理能力</li>
+<li>目前每个Region最佳大小建议1GB-2GB（2013年以后的硬件配置）</li>
+</ul>
+</li>
+<li>同一个Region不会被分拆到多个Region服务器</li>
+<li>每个Region服务器存储10-1000个Region<br><img src="https://i.loli.net/2019/08/14/kDWwbKAnXqZs1xI.jpg" alt="Region表分布.jpg"></li>
+</ul>
+<h2 id="Region-定位"><a href="#Region-定位" class="headerlink" title="Region 定位"></a>Region 定位</h2><ul>
+<li>元数据表，又名.META.表，存储了Region和Region服务器的映射关系</li>
+<li>当HBase表很大时， .META.表也会被分裂成多个Region</li>
+<li>根数据表，又名-ROOT-表，记录所有元数据的具体位置</li>
+<li>-ROOT-表只有唯一一个Region，名字是在程序中被写死的</li>
+<li>Zookeeper文件记录了-ROOT-表的位置<br><img src="https://i.loli.net/2019/08/14/Z3FcJ1iXt7xrKTq.jpg" alt="HBase三层结构1.jpg"></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第一层</td>
+<td>Zookeeper文件</td>
+<td>记录了-ROOT-表的位置信息</td>
+</tr>
+<tr>
+<td>第二层</td>
+<td>-ROOT-表</td>
+<td>记录了.META.表的Region位置信息</td>
+</tr>
+<tr>
+<td>-ROOT-表只能有一个Region。通过-ROOT-表，就可以访问.META.表中的数据</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>第三层</td>
+<td>.META.表</td>
+<td>记录了用户数据表的Region位置信息，.META.表可以有多个Region，保存了HBase中所有用户数据表的Region位置信息</td>
+</tr>
+</tbody></table>
+<ul>
+<li>为了加快访问速度，.META.表的全部Region都会被保存在内存中</li>
+<li>假设.META.表的每行（一个映射条目）在内存中大约占用1KB，并且每个Region限制为128MB，那么，上面的三层结构可以保存的用户数据表的Region数目的计算方法是：</li>
+<li>（-ROOT-表能够寻址的.META.表的Region个数）×（每个.META.表的 Region可以寻址的用户数据表的Region个数）</li>
+<li>一个-ROOT-表最多只能有一个Region，也就是最多只能有128MB，按照每行（一个映射条目）占用1KB内存计算，128MB空间可以容纳128MB/1KB=217行，也就是说，一个-ROOT-表可以寻址217个.META.表的Region。</li>
+<li>同理，每个.META.表的 Region可以寻址的用户数据表的Region个数是128MB/1KB=217。</li>
+<li>最终，三层结构可以保存的Region数目是(128MB/1KB) × (128MB/1KB) = 234个Region</li>
+</ul>
+<h3 id="客户端访问数据时的“三级寻址”"><a href="#客户端访问数据时的“三级寻址”" class="headerlink" title="客户端访问数据时的“三级寻址”"></a>客户端访问数据时的“三级寻址”</h3><ul>
+<li>为了加速寻址，客户端会缓存位置信息，同时，需要解决缓存失效问题</li>
+<li>寻址过程客户端只需要询问Zookeeper服务器，不需要连接Master服务器</li>
+</ul>
+<h1 id="HBase运行机制"><a href="#HBase运行机制" class="headerlink" title="HBase运行机制"></a>HBase运行机制</h1><h2 id="HBase系统架构"><a href="#HBase系统架构" class="headerlink" title="HBase系统架构"></a>HBase系统架构</h2><p><img src="https://i.loli.net/2019/08/14/68D2kyjXOWYxwRQ.jpg" alt="HBase系统架构.jpg"></p>
+<ol>
+<li>客户端</li>
+</ol>
+<ul>
+<li>客户端包含访问HBase的接口，同时在缓存中维护着已经访问过的Region位置信息，用来加快后续数据访问过程</li>
+</ul>
+<ol start="2">
+<li>Zookeeper服务器</li>
+</ol>
+<ul>
+<li>Zookeeper可以帮助选举出一个Master作为集群的总管，并保证在任何时刻总有唯一一个Master在运行，这就避免了Master的“单点失效”问题</li>
+<li>Zookeeper是一个很好的集群管理工具，被大量用于分布式计算，提供配置维护、域名服务、分布式同步、组服务等。</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/14/nd9wWM5jDcLrSGF.jpg" alt="Zookeeper .jpg"></p>
+<ol start="3">
+<li>Master</li>
+</ol>
+<ul>
+<li>主服务器Master主要负责表和Region的管理工作：<ul>
+<li>管理用户对表的增加、删除、修改、查询等操作</li>
+<li>实现不同Region服务器之间的负载均衡</li>
+<li>在Region分裂或合并后，负责重新调整Region的分布</li>
+<li>对发生故障失效的Region服务器上的Region进行迁移</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>Region服务器</li>
+</ol>
+<ul>
+<li>Region服务器是HBase中最核心的模块，负责维护分配给自己的Region，并响应用户的读写请求</li>
+</ul>
+<h2 id="Region服务器工作原理"><a href="#Region服务器工作原理" class="headerlink" title="Region服务器工作原理"></a>Region服务器工作原理</h2><p><img src="https://i.loli.net/2019/08/14/zRVdymofpnXAkY6.jpg" alt="Region服务器向HDFS文件系统中读写数据 .jpg"></p>
+<ol>
+<li>用户读写数据过程<ul>
+<li>用户写入数据时，被分配到相应Region服务器去执行</li>
+<li>用户数据首先被写入到MemStore和Hlog中</li>
+<li>只有当操作写入Hlog之后，commit()调用才会将其返回给客户端</li>
+<li>当用户读取数据时，Region服务器会首先访问MemStore缓存，如果找不到，再去磁盘上面的StoreFile中寻找</li>
+</ul>
+</li>
+<li>缓存的刷新<ul>
+<li>系统会周期性地把MemStore缓存里的内容刷写到磁盘的StoreFile文件中，清空缓存，并在Hlog里面写入一个标记</li>
+<li>每次刷写都生成一个新的StoreFile文件，因此，每个Store包含多个StoreFile文件</li>
+<li>每个Region服务器都有一个自己的HLog 文件，每次启动都检查该文件，确认最近一次执行缓存刷新操作之后是否发生新的写入操作；如果发现更新，则先写入MemStore，再刷写到StoreFile，最后删除旧的Hlog文件，开始为用户提供服务</li>
+</ul>
+</li>
+<li>StoreFile的合并<ul>
+<li>每次刷写都生成一个新的StoreFile，数量太多，影响查找速度</li>
+<li>调用Store.compact()把多个合并成一个</li>
+<li>合并操作比较耗费资源，只有数量达到一个阈值才启动合并</li>
+</ul>
+</li>
+</ol>
+<h2 id="Store工作原理"><a href="#Store工作原理" class="headerlink" title="Store工作原理"></a>Store工作原理</h2><ul>
+<li>Store是Region服务器的核心</li>
+<li>多个StoreFile合并成一个</li>
+<li>单个StoreFile过大时，又触发分裂操作，1个父Region被分裂成两个子Region<br><img src="https://i.loli.net/2019/08/14/8O5SjMrPXwiKYtB.jpg" alt="Store是Region服务器的核心 .jpg"></li>
+</ul>
+<h2 id="HLog工作原理"><a href="#HLog工作原理" class="headerlink" title="HLog工作原理"></a>HLog工作原理</h2><ul>
+<li>分布式环境必须要考虑系统出错。HBase采用HLog保证系统恢复</li>
+<li>HBase系统为每个Region服务器配置了一个HLog文件，它是一种预写式日志（Write Ahead Log）</li>
+<li>用户更新数据必须首先写入日志后，才能写入MemStore缓存，并且，直到MemStore缓存内容对应的日志已经写入磁盘，该缓存内容才能被刷写到磁盘</li>
+<li>Zookeeper会实时监测每个Region服务器的状态，当某个Region服务器发生故障时，Zookeeper会通知Master</li>
+<li>Master首先会处理该故障Region服务器上面遗留的HLog文件，这个遗留的HLog文件中包含了来自多个Region对象的日志记录</li>
+<li>系统会根据每条日志记录所属的Region对象对HLog数据进行拆分，分别放到相应Region对象的目录下，然后，再将失效的Region重新分配到可用的Region服务器中，并把与该Region对象相关的HLog日志记录也发送给相应的Region服务器</li>
+<li>Region服务器领取到分配给自己的Region对象以及与之相关的HLog日志记录以后，会重新做一遍日志记录中的各种操作，把日志记录中的数据写入到MemStore缓存中，然后，刷新到磁盘的StoreFile文件中，完成数据恢复</li>
+<li>共用日志优点：提高对表的写操作性能；缺点：恢复时需要分拆日志</li>
+</ul>
+<h1 id="HBase应用方案"><a href="#HBase应用方案" class="headerlink" title="HBase应用方案"></a>HBase应用方案</h1><h2 id="HBase实际应用中的性能优化方法"><a href="#HBase实际应用中的性能优化方法" class="headerlink" title="HBase实际应用中的性能优化方法"></a>HBase实际应用中的性能优化方法</h2><h3 id="行健（Row-Key）"><a href="#行健（Row-Key）" class="headerlink" title="行健（Row Key）"></a>行健（Row Key）</h3><ul>
+<li>行键是按照字典序存储，因此，设计行键时，要充分利用这个排序特点，将经常一起读取的数据存储到一块，将最近可能会被访问的数据放在一块。</li>
+<li>举个例子：如果最近写入HBase表中的数据是最可能被访问的，可以考虑将时间戳作为行键的一部分，由于是字典序排序，所以可以使用Long.MAX_VALUE - timestamp作为行键，这样能保证新写入的数据在读取时可以被快速命中。<h3 id="Inmemory"><a href="#Inmemory" class="headerlink" title="Inmemory"></a>Inmemory</h3></li>
+<li>创建表的时候，可以通过HColumnDescriptor.setInMemory(true)将表放到Region服务器的缓存中，保证在读取的时候被cache命中。<h3 id="Max-Version"><a href="#Max-Version" class="headerlink" title="Max Version"></a>Max Version</h3></li>
+<li>创建表的时候，可以通过HColumnDescriptor.setMaxVersions(int maxVersions)设置表中数据的最大版本，如果只需要保存最新版本的数据，那么可以设置setMaxVersions(1)。<h3 id="Time-To-Live"><a href="#Time-To-Live" class="headerlink" title="Time To Live"></a>Time To Live</h3></li>
+<li>创建表的时候，可以通过HColumnDescriptor.setTimeToLive(int timeToLive)设置表中数据的存储生命期，过期数据将自动被删除，例如如果只需要存储最近两天的数据，那么可以设置setTimeToLive(2 * 24 * 60 * 60)。<h2 id="HBase性能监视"><a href="#HBase性能监视" class="headerlink" title="HBase性能监视"></a>HBase性能监视</h2></li>
+<li>Master-status(自带)</li>
+<li>Ambari</li>
+<li>OpenTSDB</li>
+<li>Ganglia<h2 id="在HBase之上构建SQL引擎"><a href="#在HBase之上构建SQL引擎" class="headerlink" title="在HBase之上构建SQL引擎"></a>在HBase之上构建SQL引擎</h2></li>
+<li>Hive整合HBase</li>
+<li>Phoenix<h2 id="构建HBase二级索引"><a href="#构建HBase二级索引" class="headerlink" title="构建HBase二级索引"></a>构建HBase二级索引</h2></li>
+<li>HBase只有一个针对行健的索引，访问HBase表中的行，只有三种方式：<ul>
+<li>通过单个行健访问</li>
+<li>通过一个行健的区间来访问</li>
+<li>全表扫描</li>
+</ul>
+</li>
+<li>二级索引延展<ul>
+<li>Hindex二级索引</li>
+<li>HBase+Redis</li>
+<li>HBase+solr</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/09/14/YARN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1471,7 +2445,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1493,7 +2467,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

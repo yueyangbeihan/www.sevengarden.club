@@ -273,6 +273,978 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/30/AWS-DynamoDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/30/AWS-DynamoDB/" itemprop="url">AWS DynamoDB</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-30T21:23:32+08:00">
+                2019-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>DynamoDB</p>
+<ul>
+<li>Amazon DynamoDB 是一种完全托管的 NoSQL 数据库服务，提供快速且可预测的性能，同时还能够实现无缝扩展</li>
+<li>DynamoDB使客户能够将操作和扩展分布式数据库的管理负担卸载到AWS，而无需担心硬件配置，设置和配置，复制，软件修补或群集扩展。</li>
+<li>DynamoDB表没有固定的模式，表由项组成，每个项可能具有不同数量的属性。</li>
+<li>DynamoDB在AWS区域中的三个设施之间同步复制数据，从而提供高可用性和数据持久性。</li>
+<li>DynamoDB支持快速就地更新。 可以使用单个API调用连续递增或递减数字属性</li>
+<li>DynamoDB使用经过验证的加密方法来安全地验证用户身份并防止未经授权的数据访问</li>
+<li>内置耐用性，性能，可靠性和安全性，具有SSD（固态驱动器）存储和自动3向复制。</li>
+<li>DynamoDB吞吐量和单位数毫秒级延迟使其非常适合游戏，广告技术，移动和许多其他应用程序</li>
+<li>ElastiCache可以在DynamoDB之前使用，以便为非频繁更改的数据卸载大量读取</li>
+</ul>
+<h2 id="DynamoDB-核心组件"><a href="#DynamoDB-核心组件" class="headerlink" title="DynamoDB 核心组件"></a>DynamoDB 核心组件</h2><ul>
+<li>在 DynamoDB 中，表、项目和属性是使用的核心组件。表 是项目 的集合，而每个项目是属性 的集合。</li>
+<li>DynamoDB 使用主键来唯一标识表中的每个项目，并且使用二级索引来提供更大的查询灵活性。</li>
+<li>可以使用 DynamoDB 流 捕获 DynamoDB 表中的数据修改事件</li>
+</ul>
+<h3 id="表、项目和属性"><a href="#表、项目和属性" class="headerlink" title="表、项目和属性"></a>表、项目和属性</h3><ul>
+<li>表 – 类似于其他数据库系统，DynamoDB 将数据存储在表中。表 是数据的集合。例如，请参阅名为 People 的示例表，该表可用于存储有关好友、家人或关注的任何其他人的个人联系信息。也可以建立一个 Cars 表，存储有关人们所驾驶的车辆的信息。</li>
+<li>项目 – 每个表包含零个或更多个项目。项目 是一组属性，具有不同于所有其他项目的唯一标识。在 People 表中，每个项目表示一位人员。在 Cars 表中，每个项目代表一种车。DynamoDB 中的项目在很多方面都类似于其他数据库系统中的行、记录或元组。在 DynamoDB 中，对表中可存储的项目数没有限制。</li>
+<li>属性 – 每个项目包含一个或多个属性。属性 是基础的数据元素，无需进一步分解。例如，People 表中的一个项目包含名为 PersonID、LastName、FirstName 等的属性。对于 Department 表，项目可能包含 DepartmentID、Name、Manager 等属性。DynamoDB 中的属性在很多方面都类似于其他数据库系统中的字段或列。</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/30/C9BSzdZ574DRbKr.png" alt="HowItWorksPeople.png"></p>
+<ul>
+<li>表中的每个项目都有一个唯一的标识符或主键，用于将项目与表中的所有其他内容区分开来。在 People 表中，主键包含一个属性 (PersonID)。</li>
+<li>与主键不同，People 表是无架构的，这表示属性及其数据类型都不需要预先定义。每个项目都能拥有其自己的独特属性。</li>
+<li>大多数属性是标量 类型的，这表示它们只能具有一个值。字符串和数字是标量的常见示例。</li>
+<li>某些项目具有嵌套属性 (Address)。DynamoDB 支持最高 32 级深度的嵌套属性。<br><img src="https://i.loli.net/2019/08/30/GSYNeTnXLj5ECK6.png" alt="HowItWorksMusic.png"></li>
+<li>Music 的主键包含两个属性（Artist 和 SongTitle）。表中的每个项目必须具有这两个属性。Artist 和 SongTitle 的属性组合用于将表中的每个项目与所有其他内容区分开来。</li>
+<li>与主键不同，Music 表是无架构的，这表示属性及其数据类型都不需要预先定义。每个项目都能拥有其自己的独特属性。</li>
+<li>其中一个项目具有嵌套属性 PromotionInfo，该属性包含其他嵌套属性。DynamoDB 支持最高 32 级深度的嵌套属性。</li>
+</ul>
+<h3 id="主键"><a href="#主键" class="headerlink" title="主键"></a>主键</h3><p>DynamoDB 支持两种不同类型的主键：</p>
+<ul>
+<li><p>分区键 – 由一个名为 partition key 的属性构成的简单主键。</p>
+<ul>
+<li>DynamoDB 使用分区键的值作为内部散列函数的输入。来自散列函数的输出决定了项目将存储到的分区 (DynamoDB 内部的物理存储)。</li>
+<li>在只有分区键的表中，任何两个项目都不能有相同的分区键值。</li>
+<li>表、项目和属性 中所述的 People 表是带简单主键 (PersonID) 的示例表。可以直接访问 People 表中的任何项目，方法是提供该项目的 PersonId 值。</li>
+</ul>
+</li>
+<li><p>分区键和排序键 – 称为复合主键，此类型的键由两个属性组成。第一个属性是分区键，第二个属性是排序键。</p>
+<ul>
+<li>DynamoDB 使用分区键值作为对内部散列函数的输入。来自散列函数的输出决定了项目将存储到的分区 (DynamoDB 内部的物理存储)。具有相同分区键值的所有项目按排序键值的排序顺序存储在一起。</li>
+<li>在具有分区键和排序键的表中，两个项目可能具有相同的分区键值。但是，这两个项目必须具有不同的排序键值。</li>
+<li>表、项目和属性中所述的 Music 表是包含一个复合主键（Artist 和 SongTitle）的表的示例。可以直接访问 Music 表中的任何项目，方法是提供该项目的 Artist 和 SongTitle 值。</li>
+<li>在查询数据时，复合主键可让获得额外的灵活性。例如，如果仅提供了 Artist 的值，则 DynamoDB 将检索该艺术家的所有歌曲。要仅检索特定艺术家的一部分歌曲，可以提供一个 Artist 值和一系列 SongTitle 值。</li>
+</ul>
+</li>
+<li><p>项目的分区键也称为其哈希属性。哈希属性 一词源自 DynamoDB 中使用的内部哈希函数，以基于数据项目的分区键值实现跨多个分区的数据项目平均分布。</p>
+</li>
+<li><p>项目的排序键也称为其范围属性。范围属性 一词源自 DynamoDB 存储项目的方式，它按照排序键值有序地将具有相同分区键的项目存储在互相紧邻的物理位置。</p>
+</li>
+<li><p>每个主键属性必须为标量 (表示它只能具有一个值)。主键属性唯一允许的数据类型是字符串、数字和二进制。对于其他非键属性没有任何此类限制。</p>
+</li>
+</ul>
+<h3 id="二级索引"><a href="#二级索引" class="headerlink" title="二级索引"></a>二级索引</h3><ul>
+<li>DynamoDB 支持两种索引：<ul>
+<li>Global secondary index – 一种带有可能与表中不同的分区键和排序键的索引。</li>
+<li>本地二级索引 – 分区键与表中的相同但排序键与表中的不同的索引。</li>
+</ul>
+</li>
+<li>DynamoDB 中的每个表具有 20 个全局二级索引（默认限制）和 5 个本地二级索引的限制。</li>
+<li>在前面显示的示例 Music 表中，可以按 Artist（分区键）或按 Artist 和 SongTitle（分区键和排序键）查询数据项。如果还想要按 Genre 和 AlbumTitle 查询数据，该怎么办？ 若要达到此目的，可在 Genre 和 AlbumTitle 上创建一个索引，然后通过与查询 Music 表相同的方式查询索引。</li>
+<li>下图显示了示例 Music 表，该表包含一个名为 GenreAlbumTitle 的新索引。在索引中，Genre 是分区键，AlbumTitle 是排序键。<br><img src="https://i.loli.net/2019/08/30/YkLegfJ5RuO6cI4.png" alt="HowItWorksGenreAlbumTitle.png"><ul>
+<li>每个索引属于一个表（称为索引的基表）。在上述示例中，Music 是 GenreAlbumTitle 索引的基表。</li>
+<li>DynamoDB 将自动维护索引。当添加、更新或删除基表中的某个项目时，DynamoDB 会添加、更新或删除属于该表的任何索引中的对应项目。</li>
+<li>当创建索引时，可指定哪些属性将从基表复制或投影 到索引。DynamoDB 至少会将键属性从基表投影到索引中。对于 GenreAlbumTitle 也是如此，只不过此时只有 Music 表中的键属性会投影到索引中。</li>
+<li>可以查询 GenreAlbumTitle 索引以查找某个特定流派的所有专辑（例如，所有 Rock 专辑）。还可以查询索引以查找特定流派中具有特定专辑名称的所有专辑（例如，名称以字母 H 开头的所有 Country 专辑）。</li>
+</ul>
+</li>
+</ul>
+<h2 id="DynamoDB-流"><a href="#DynamoDB-流" class="headerlink" title="DynamoDB 流"></a>DynamoDB 流</h2><ul>
+<li>DynamoDB 流 是一项可选功能，用于捕获 DynamoDB 表中的数据修改事件。有关这些事件的数据将以事件发生的顺序近乎实时地出现在流中。</li>
+<li>每个事件由一条流记录 表示。如果对表启用流，则每当以下事件之一发生时，DynamoDB 流 都会写入一条流记录：<ul>
+<li>向表中添加了新项目：流将捕获整个项目的映像，包括其所有属性。</li>
+<li>更新了项目：流将捕获项目中已修改的任何属性的“之前”和“之后”映像。</li>
+<li>从表中删除了项目：流将在整个项目被删除前捕获其映像。</li>
+</ul>
+</li>
+<li>每条流记录还包含表的名称、事件时间戳和其他元数据。流记录具有 24 个小时的生命周期；在此时间过后，它们将从流中自动删除。</li>
+</ul>
+<h2 id="DynamoDB-性能"><a href="#DynamoDB-性能" class="headerlink" title="DynamoDB 性能"></a>DynamoDB 性能</h2><ul>
+<li>自动水平缩放</li>
+<li>固态硬盘（SSD）上运行<ul>
+<li>SSD有助于实现可预测的低延迟响应时间的设计目标，以便以任何规模存储和访问数据。</li>
+<li>SSD高I / O性能使其能够经济高效地为大规模请求工作负载提供服务，并以低请求定价传递此效率</li>
+</ul>
+</li>
+<li>允许配置读写速率<ul>
+<li>按需扩大吞吐量</li>
+<li>每个UTC日历可以缩减吞吐量</li>
+</ul>
+</li>
+<li>自动分区，重新分配和重新分区数据，并提供额外的服务器容量<ul>
+<li>随着表的增大</li>
+<li>预配置吞吐量增加</li>
+</ul>
+</li>
+<li>全局二级索引<ul>
+<li>可以预先创建或稍后添加</li>
+</ul>
+</li>
+</ul>
+<h2 id="DynamDB-一致性"><a href="#DynamDB-一致性" class="headerlink" title="DynamDB 一致性"></a>DynamDB 一致性</h2><ul>
+<li>每个DynamoDB表自动存储在三个分散的地理位置，以确保数据一致性；</li>
+<li>读取一致性表示在同一项的后续读取操作中反映数据项的成功写入或更新的方式和时间</li>
+<li>DynamoDB 支持最终一致性 和强一致性 读取。<ul>
+<li>最终一致性读取<ul>
+<li>最终一致性选项可最大化读取吞吐量。</li>
+<li>所有副本的一致性通常在一秒钟内达到</li>
+<li>但是，最终一致的读取可能不会反映最近完成的写入的结果。</li>
+<li>短时间后重复读取应返回更新的数据。 </li>
+</ul>
+</li>
+<li>强一致性读取<ul>
+<li>强一致性读取返回的结果反映了在读取之前收到成功响应的所有写入</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Query，GetItem和BatchGetItem操作默认执行最终一致的读取<ul>
+<li>Query和GetItem操作可以强制一致</li>
+<li>查询操作无法对全局二级索引执行强一致性读取</li>
+<li>可以强制BatchGetItem操作在每个表的基础上强一致</li>
+</ul>
+</li>
+</ul>
+<h2 id="DynamoDB-安全"><a href="#DynamoDB-安全" class="headerlink" title="DynamoDB 安全"></a>DynamoDB 安全</h2><ul>
+<li>细粒度访问控制（FGAC）可以高度控制表中的数据</li>
+<li>FGAC帮助控制谁（调用者）可以访问表的哪些项或属性并执行哪些操作（读/写功能）</li>
+<li>FGAC与IAM集成，后者管理安全凭证和相关权限</li>
+</ul>
+<h2 id="DynamoDB跨区域复制"><a href="#DynamoDB跨区域复制" class="headerlink" title="DynamoDB跨区域复制"></a>DynamoDB跨区域复制</h2><ul>
+<li><p>DynamoDB跨区域复制允许在一个或多个AWS区域中维护DynamoDB表（称为主表）的相同副本（称为副本）</p>
+</li>
+<li><p>对表的写入将自动传播到所有副本</p>
+</li>
+<li><p>跨区域复制当前支持单主模式。单主具有一个主表和一个或多个副本表</p>
+</li>
+<li><p>读取副本将异步更新，因为一旦主表接受了写入操作，DynamoDB就会将写入操作确认为成功。然后，写入将稍微延迟地传播到每个副本</p>
+</li>
+<li><p>跨区域复制在一下场景中很有用</p>
+<ul>
+<li>如果发生数据中心故障，则进行快速灾难恢复</li>
+<li>通过从最近的AWS数据中心读取DynamoDB表，更快地提供数据，从而更快地为多个地区的客户进行读取。</li>
+<li>更轻松的流量管理，可以跨表分配读取工作负载，从而在主表中消耗更少的读取容量。</li>
+<li>通过提升读取副本成主来轻松实现区域迁移</li>
+<li>实时数据迁移，复制数据以及表同步时，切换应用程序以写入目标区域</li>
+</ul>
+</li>
+<li><p>跨区域复制成本取决于</p>
+<ul>
+<li>预配置吞吐量（写入和读取）</li>
+<li>存储副本表的大小</li>
+<li>跨地区的数据传输</li>
+<li>从DynamoDB Streams读取数据以使表保持同步</li>
+<li>根据实例类型和区域配置EC2实例的成本，以承载复制过程。</li>
+</ul>
+<p>注意：已执行DynamoDB上的跨区域复制，定义AWS Data Pipeline作业，该作业在DynamoDB流和开箱即用跨区域复制支持之前在内部使用EMR传输数据</p>
+<h2 id="全局表"><a href="#全局表" class="headerlink" title="全局表"></a>全局表</h2><ul>
+<li>Amazon DynamoDB 全局表 为部署多区域、多主机数据库提供了完全托管的解决方案，而不必构建和维护自己的复制解决方案。</li>
+<li>可支持数据访问位置和数据库工作负载的区域容错</li>
+<li>应用程序现在可以在世界各地的AWS区域中对DynamoDB执行读取和写入操作，任何区域中的更改都会传播到复制表的每个区域</li>
+<li>全局表有助于构建应用程序以利用数据局部性来减少总体延迟。</li>
+<li>全局表确保最终的一致性</li>
+<li>全局表在单个AWS账户内的区域之间复制数据，目前不支持跨账户访问</li>
+</ul>
+<h2 id="DynamoDB-Streams"><a href="#DynamoDB-Streams" class="headerlink" title="DynamoDB Streams"></a>DynamoDB Streams</h2><ul>
+<li>AWS 为 DynamoDB 和 DynamoDB 流 维护单独的终端节点。要使用数据库表和索引，应用程序需要访问 DynamoDB 终端节点。要读取和处理 DynamoDB 流 记录，应用程序需要访问相同区域内的 DynamoDB 流 终端节点</li>
+<li>DynamoDB Streams提供按时间排序的项目级更改序列，在过去24小时内对表中的数据进行更改，之后将其删除</li>
+<li>DynamoDB Streams维护每个项目的有序事件序列，但不维护项目例</li>
+<li>例如，假设有一个DynamoDB表跟踪游戏的高分，并且表中的每个项目代表一个单独的玩家。如果按此顺序进行以下三次更新：  <ul>
+<li>更新1：将玩家1的高分改为100分  </li>
+<li>更新2：将玩家2的高分改为50分</li>
+<li>更新3：将玩家1的高分改为125分</li>
+<li>DynamoDB Streams将维护Player 1得分事件的顺序。但是，它不会维持玩家之间的秩序。因此，在2个玩家1事件之间无法保证玩家2得分事件</li>
+</ul>
+</li>
+<li>DynamoDB 流 确保以下内容：<ul>
+<li>每个流记录仅在流中显示一次。</li>
+<li>对于 DynamoDB 表中修改的每个项目，流记录将按照对该项目进行的实际修改的顺序显示</li>
+</ul>
+</li>
+<li>DynamoDB流可用于多区域复制，以使其他数据存储与DynamoDB的最新更改保持同步，或根据对表所做的更改执行操作</li>
+<li>DynamoDB Streams API可帮助开发人员在更改项目之前和之后使用更新并接收项目级数据 </li>
+<li>DynamoDB Streams允许读取速度高达DynamoDB表的预配置写入容量的两倍</li>
+<li>必须基于每个表启用DynamoDB Streams</li>
+</ul>
+<h2 id="DynamoDB-触发器"><a href="#DynamoDB-触发器" class="headerlink" title="DynamoDB 触发器"></a>DynamoDB 触发器</h2><ul>
+<li>DynamoDB触发器（就像数据库trigger）是一种允许基于表上的项级更新执行自定义操作的功能</li>
+<li>DynamoDB触发器可用于发送通知，更新聚合表以及将DynamoDB表连接到其他数据源等方案</li>
+<li>DynamoDB触发器流程<ul>
+<li>DynamoDB触发器的自定义逻辑作为代码存储在AWS Lambda函数中。</li>
+<li>可以通过将AWS Lambda函数与表上的流（通过DynamoDB Streams）相关联来创建给定表的触发器。</li>
+<li>更新表后，更新将发布到DynamoDB Streams。</li>
+<li>反过来，AWS Lambda从关联的流中读取更新并执行函数中的代码。</li>
+</ul>
+</li>
+</ul>
+<h2 id="DynamoDB-Accelerator-DAX"><a href="#DynamoDB-Accelerator-DAX" class="headerlink" title="DynamoDB Accelerator DAX"></a>DynamoDB Accelerator DAX</h2><ul>
+<li>DynamoDB Accelerator（DAX）是DynamoDB的完全托管，高可用性内存缓存，可提供高达10倍的性能提升 - 从毫秒到微秒 - 甚至可达到每秒数百万个请求。</li>
+<li>DAX完成了向表中添加内存加速所需的所有繁重工作，而无需开发人员管理缓存失效，数据填充或集群管理。</li>
+<li>DAX具有容错性和可扩展性。</li>
+<li>DAX群集具有主节点和零个或多个读副本节点。 当主节点发生故障时，DAX将自动进行故障转移并选择新的主节点。 对于缩放，添加或删除只读副本</li>
+</ul>
+<h2 id="VPC端点"><a href="#VPC端点" class="headerlink" title="VPC端点"></a>VPC端点</h2><ul>
+<li>DynamoDB的VPC端点通过在VPC内启用对DynamoDB的私有访问，而无需Internet网关或NAT网关，从而提高了隐私和安全性，尤其是那些处理具有合规性和审计要求的敏感工作负载的端点。</li>
+<li>DynamoDB的VPC端点支持IAM策略以简化DynamoDB访问控制，其中访问可以限制为特定的VPC端点。</li>
+<li>只能为与VPC位于同一AWS区域中的Amazon DynamoDB表创建VPC端点</li>
+<li>无法使用DynamoDB的VPC端点访问DynamoDB Streams</li>
+</ul>
+<h2 id="DynamoDB-加密"><a href="#DynamoDB-加密" class="headerlink" title="DynamoDB 加密"></a>DynamoDB 加密</h2><ul>
+<li>传输加密<ul>
+<li>可以通过在客户端加密敏感数据或使用加密连接（TLS）来完成</li>
+</ul>
+</li>
+<li>静态加密<ul>
+<li>存储在 Amazon DynamoDB 中的所有用户数据完全处于静态加密之中</li>
+<li>DynamoDB 静态加密通过在加密表中保护数据来提供额外的一层数据保护，包括其主键、本地和全局二级索引、流、全局表、备份和 DynamoDB Accelerator (DAX) 集群</li>
+<li>静态加密与 AWS KMS 集成，以管理用于加密表的加密密钥。</li>
+<li>只能为新表启用静态加密，而不能为现有表启用加密</li>
+<li>一旦为表启用加密，就无法禁用</li>
+<li>DynamoDB Streams不支持加密</li>
+<li>使用S3的服务器端加密对加密的DynamoDB表的按需备份进行加密</li>
+<li>静态加密使用256位AES加密对数据进行加密。</li>
+</ul>
+</li>
+</ul>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><ul>
+<li>使用的表的数量保持最小值</li>
+<li>在DynamoDB中存储元数据，在Amazon S3中存储大型BLOB</li>
+<li>使用每天，每周，每月等表来存储时间序列数据</li>
+<li>使用条件或乐观并发控制（OCC）更新</li>
+<li>乐观并发控制就像RDMS中的乐观锁定一样</li>
+<li>OCC通常用于数据争用较少的环境，冲突很少，可以完成事务而无需管理锁和事务</li>
+<li>OCC假设可以经常完成多个交易而不会相互干扰</li>
+<li>使用数据资源执行事务，而不获取对这些资源的锁定并等待清除其他事务锁定</li>
+<li>在提交事务之前，将验证数据是否被任何其他事务修改。如果是这样，它将被回滚并需要使用更新的数据重新启动</li>
+<li>与其他并发控制方法（如悲观锁定）相比，OCC导致更高的吞吐量，因为即使在避免死锁时，锁定也会极大地限制有效并发性</li>
+<li>避免热键和热分区</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/30/AWS-CloudFront/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/30/AWS-CloudFront/" itemprop="url">AWS CloudFront</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-30T19:44:53+08:00">
+                2019-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="CloudFront-overview"><a href="#CloudFront-overview" class="headerlink" title="CloudFront overview"></a>CloudFront overview</h2><ul>
+<li>Amazon CloudFront 是一个 Web 服务，它加快将静态和动态 Web 内容（如 .html、.css、.js 和图像文件）分发到用户的速度</li>
+<li>CloudFront 通过全球数据中心网络传输内容，这些数据中心称为边缘站点。当用户请求用 CloudFront 提供的内容时，用户被路由到提供最低延迟 (时间延迟) 的边缘站点，从而以尽可能最佳的性能传送内容</li>
+<li>CloudFront通过将每个用户请求路由到最能为内容提供服务的边缘位置来加速内容的分发，从而提供最低的延迟</li>
+<li>CloudFront可显着减少用户请求必须通过的网络跃点数，从而有助于提高性能，提供更低的延迟和更高的数据传输速率</li>
+<li>CloudFront是分发经常访问的静态内容的最好选择，这些内容受益于边缘交付 - 如流行的网站图像，视频，媒体文件或软件下载</li>
+</ul>
+<h2 id="CloudFront-Benefits"><a href="#CloudFront-Benefits" class="headerlink" title="CloudFront Benefits"></a>CloudFront Benefits</h2><ul>
+<li>CloudFront消除了在互联网上多个站点中进行缓存服务器网络的费用和复杂性，以及过度配置容量的需要，以便在潜在的流量爆发中也能提供服务</li>
+<li>提供数据更高的可靠性和可用性，对象的副本保存在世界各地的边缘位置</li>
+<li>CloudFront与源服务器保持持久连接，以便可以尽快从源服务器获取这些文件</li>
+<li>在诸如多个用户同时在边缘位置同时获取相同源文件请求中，折叠请求次数，减少对源站点的负载</li>
+<li>CloudFront与AWS WAF集成，后者一种web应用程序防火墙，允许通过基于IP地址，HTTP标头和自定义URL字符串配置的规则来保护web应用</li>
+</ul>
+<h2 id="Configuration-amp-Content-Delivery"><a href="#Configuration-amp-Content-Delivery" class="headerlink" title="Configuration &amp; Content Delivery"></a>Configuration &amp; Content Delivery</h2><ul>
+<li>Configuration<ol>
+<li>指定源服务器以获取要分发的文件。源服务器将存储对象的原始最终版本。如果通过 HTTP 提供内容，源服务器将为 Amazon S3 存储桶或 HTTP 服务器；使用 Adobe Media Server RTMP 协议按需分发媒体文件，则源服务器始终为 Amazon S3 存储桶</li>
+<li>添加/上载到源服务器上的文件请使用公共读取权限或限制性OAI权限</li>
+<li>创建一个 CloudFront 分配，在用户通过网站或应用程序请求文件时，这会指示 CloudFront 从哪些源服务器中获取文件</li>
+<li>CloudFront 将分配的配置（而不是的内容）发送到它的所有边缘站点，边缘站点是位于地理位置分散的数据中心（CloudFront 在其中缓存对象的副本）的服务器集合</li>
+<li>网站可与CloudFront提供的域名或自定义备用域名一起使用</li>
+<li>Origin服务器可以配置为限制访问协议，缓存行为，向文件添加标头以添加TTL或到期时间</li>
+</ol>
+</li>
+<li>Content delivery to users<ol>
+<li>当用户访问网站时，DNS将请求路由指向到CloudFront边缘站点，该位置可以最低的延迟响应用户对网站文件或对象的访问</li>
+<li>如果请求对象存在于edge 位置缓存中，则cloudfront会立即返回该对象</li>
+<li>如果请求对象不在edge位置缓存中，则cloudfront会从origin服务器请求对象，并在它开始接收数据事就返回给用户</li>
+<li>当对象到达其TTL值时，对于任何新请求，cloudfront会向origin服务器检查任何新版本，若有则更新，若没有则继续当前版本</li>
+</ol>
+</li>
+</ul>
+<h2 id="Delivery-Methods"><a href="#Delivery-Methods" class="headerlink" title="Delivery Methods"></a>Delivery Methods</h2><h3 id="Web-分发"><a href="#Web-分发" class="headerlink" title="Web 分发"></a>Web 分发</h3><ul>
+<li>支持静态或动态内容，例如使用HTTP或HTTPS的html、css、js、图像等</li>
+<li>多媒体内容支持HLS或渐进式下载使用<ul>
+<li>对于按需流式传输，可以使用 CloudFront 以常见格式（如 MPEG DASH、Apple HLS、Microsoft 平滑流和 CMAF）将内容流式传输到任何设备。</li>
+<li>对于广播实时流，可以在边缘站点缓存媒体片段，以便将按正确顺序传输片段的清单文件的多个请求组合起来，从而减小源服务器的负载</li>
+</ul>
+</li>
+<li>只是实时活动内容，如会议、音乐会、演唱会等。对于实时数据流，可以使用AWS Cloudformation堆栈自动创建分发</li>
+<li>源站可以是S3或HTTP服务器，如web server或ELB</li>
+</ul>
+<h3 id="RTMP分发"><a href="#RTMP分发" class="headerlink" title="RTMP分发"></a>RTMP分发</h3><ul>
+<li>支持使用Adobe Media Server和Adobe实时消息传递协议（RTMP）传输媒体文件</li>
+<li>必须使用S3作为源站</li>
+<li>使用cloudfront流逝传输媒体文件，需要一下支持<ul>
+<li>媒体文件</li>
+<li>媒体播放器，JW Player，Flowplayer或Adobe Flash</li>
+</ul>
+</li>
+<li>最终用户使用提供的媒体播放器查看媒体文件，而不是本地安装的播放器</li>
+<li>用户使用流逝传输媒体文件时，一边播放一遍下载</li>
+<li>媒体文件并不存放于本地存储系统上</li>
+<li>需要创建两个cloudfront分配，媒体播放器的web分发和媒体文件的RMTP分发</li>
+<li>媒体播放器和媒体文件可以存储在同一个源S3或不同bucket中</li>
+</ul>
+<h3 id="源"><a href="#源" class="headerlink" title="源"></a>源</h3><ul>
+<li>源站可以是S3或者HTTP服务器</li>
+<li>HTTP服务器作为源站，需要映射其资源的域名，且文件必须是公共可读的</li>
+<li>对于使用S3 作为源站，使用bucket地址或静态网址端点地址，文件需要公开读取或OAI受限保护</li>
+<li>可以使用Origin Access Identity配置源限制访问（仅限S3），以防止直接访问S3对象</li>
+<li>每个存储同，支持分配多个源，并将其用户请求分配到不同的缓存规则上。缓存行为中的路径模式决定哪些请求路由到与缓存行为关联的源(S3 bucket)</li>
+</ul>
+<h2 id="Cache-behavior"><a href="#Cache-behavior" class="headerlink" title="Cache behavior"></a>Cache behavior</h2><p>缓存行为为网站上文件的特定 URL 路径模式配置各种 CloudFront 功能</p>
+<ul>
+<li>路径模式。</li>
+<li>如果为 CloudFront 分配配置了多个源，希望 CloudFront 将的请求转发到哪个源。</li>
+<li>是否将查询字符串转发到源。</li>
+<li>是否访问指定文件需要签名 URL。</li>
+<li>是否要求用户使用 HTTPS 访问那些文件。</li>
+<li>那些文件保留在 CloudFront 缓存中的最小时间长度，不管源添加到文件中的任何 Cache-Control 标头的值。</li>
+</ul>
+<h2 id="Vuewer-Protocol-Policy"><a href="#Vuewer-Protocol-Policy" class="headerlink" title="Vuewer Protocol Policy"></a>Vuewer Protocol Policy</h2><blockquote>
+<p>可以配置查看器协议策略以定义允许的访问协议。 可以是HTTP和HTTPS，也可以是仅HTTPS或HTTP重定向到HTTPS</p>
+</blockquote>
+<h3 id="HTTPS-connection"><a href="#HTTPS-connection" class="headerlink" title="HTTPS connection"></a>HTTPS connection</h3><ul>
+<li>在CloudFront和Viewers之间，可以将缓存分发配置为允许HTTP或HTTPS请求，或仅使用HTTPS，或将所有HTTP请求重定向到HTTPS</li>
+<li>在CloudFront和Origin之间，可以将缓存分布配置为要求CloudFront使用HTTPS从源中提取对象，或者CloudFront使用查看器用于请求对象的协议。</li>
+<li>S3 作为源站<ul>
+<li>对于网站，协议必须是HTTP，因为不支持HTTPS</li>
+<li>对于S3存储桶，默认的Origin协议策略是Match Viewer，无法更改。 因此，当CloudFront配置为在查看器和CloudFront之间需要HTTPS时，它会自动使用HTTPS与S3通信。</li>
+</ul>
+</li>
+<li>通过使用以下方法，还可以将CloudFront配置为使用HTTPS处理备用域名： <ul>
+<li>使用专用IP地址提供HTTPS请求</li>
+<li>CloudFront将备用域名与专用IP地址相关联，并且证书与IP地址关联。 当从DNS服务器收到IP地址的请求时，</li>
+<li>CloudFront使用IP地址标识分发和SSL / TLS证书以返回给查看者</li>
+<li>无论用户使用何种浏览器或其他查看器，此方法都适用于每个HTTPS请求。</li>
+<li>使用专用IP地址会产生额外的每月费用</li>
+</ul>
+</li>
+<li>使用SNI提供HTTPS请求<ul>
+<li>SNI自定义SSL依赖于TLS协议的SNI扩展，它允许通过包含主机名在同一IP地址上提供多个域</li>
+<li>使用SNI方法，CloudFront将IP地址与备用域名相关联，但IP地址不是专用的</li>
+<li>CloudFront无法根据IP地址确定请求所针对的域，因为IP地址不是专用的 </li>
+<li>支持SNI的浏览器会自动从请求URL获取域名，并将其添加到请求标头中的新字段。</li>
+<li>当CloudFront从支持SNI的浏览器收到HTTPS请求时，它会在请求标头中找到域名，并使用适用的SSL / TLS证书响应该请求。</li>
+<li>Viewer和CloudFront执行SSL协商，CloudFront将请求的内容返回给查看器。</li>
+<li>较旧的浏览器不支持它</li>
+<li>除标准CloudFront数据传输和请求费用外，SNI Custom SSL无需额外费用</li>
+</ul>
+</li>
+<li>对于端到端HTTPS连接，需要在Viewers和CloudFront＆CloudFront和Origin之间应用证书，并满足以下要求<ul>
+<li>查看者和CloudFront之间的HTTPS<ul>
+<li>由受信任的证书颁发机构（CA）（如Comodo，DigiCert或Symantec）颁发的证书;</li>
+<li>由AWS Certificate Manager（ACM）提供的证书;</li>
+<li>自签名证书。</li>
+<li>CloudFront与自定义源之间的HTTPS</li>
+<li>如果源不是ELB负载平衡器，则证书必须由受信任的CA（如Comodo，DigiCert或Symantec）颁发。</li>
+<li>对于ELB负载平衡器，可以使用ACM提供的证书</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="允许的HTTP-方法"><a href="#允许的HTTP-方法" class="headerlink" title="允许的HTTP 方法"></a>允许的HTTP 方法</h3><ul>
+<li>CloudFront支持GET，HEAD，OPTIONS，PUT，POST，PATCH，DELETE来获取，添加，更新和删除对象，以及获取对象标头。</li>
+<li>GET，HEAD，OPTIONS方法仅使用CloudFront获取对象，对象标题或检索从源支持的选项列表</li>
+<li>POST，PUT操作也可以用于加速，例如PUT操作，从Web表单提交数据，这些数据直接代理回原始服务器</li>
+<li>CloudFront仅缓存对GET和HEAD请求以及（可选）OPTIONS请求的响应。 CloudFront不会缓存对PUT，POST，PATCH，DELETE请求方法的响应，并且这些请求将定向到源</li>
+<li>PUT，POST http方法也有助于加速内容上传，因为这些操作将被发送到源，例如S3通过CloudFront边缘位置，提高效率，减少延迟，并允许应用程序受益于CloudFront从边缘位置到源服务器维护的受监视的持久连接</li>
+</ul>
+<h3 id="优化缓存和可用性"><a href="#优化缓存和可用性" class="headerlink" title="优化缓存和可用性"></a>优化缓存和可用性</h3><ul>
+<li>控制cache max-age<ul>
+<li>要增加缓存命中率，可以将origin配置为向对象添加Cache-Control max-age指令。</li>
+<li>间隔越长，从原点检索的频率越低</li>
+</ul>
+</li>
+<li>针对查询字符串参数进行缓存<ul>
+<li>对于Web分发，可以将CloudFront配置为基于查询参数进行缓存</li>
+<li>缓存性能可以提高<ul>
+<li>将CloudFront配置为仅转发源将返回唯一对象的查询字符串。</li>
+<li>对于例如参数值使用相同的情况。 参数值A或a，即使返回的响应或对象相同，CloudFront也会将相同的请求缓存两次</li>
+<li>使用相同的参数顺序，例如 对于请求a = x＆b = y和b = y＆a = x，即使返回的响应或对象相同，CloudFront也会缓存相同的请求两次</li>
+<li>对于RTMP分发，当CloudFront从源服务器请求对象时，它会删除任何查询字符串参数。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>基于Cookie值的缓存<ul>
+<li>对于Web分发，可以将CloudFront配置为基于cookie值进行缓存。</li>
+<li>默认情况下，它在边缘位置缓存时不考虑cookie</li>
+<li>缓存性能可以通过以下提高<ul>
+<li>将 CloudFront 配置为仅转发指定的 Cookie 而不是转发所有 Cookie。对于配置 CloudFront 以转发到源的 Cookie，CloudFront 转发 Cookie 名称和值的所有组合，并分别缓存源返回的对象，即使这些对象完全相同。例如，如果请求包含2个包含3个可能值的cookie，则即使响应考虑了单个cookie，CloudFront也会缓存所有可能的组合，Cookie名称和值都区分大小写，因此最好坚持使用相同的大小写<ul>
+<li>为静态和动态内容创建单独的缓存行为，并将CloudFront配置为仅将Cookie转发到源，例如用于动态内容。对于css文件，cookie没有意义，因为对象不会随cookie值而改变</li>
+</ul>
+</li>
+<li>如果可能，为动态内容创建单独的缓存行为，对于每个用户，cookie值是唯一的（例如用户ID），动态内容根据较少数量的唯一值而变化，从而减少组合的数量</li>
+</ul>
+</li>
+<li>对于RTMP分发，无法配置CloudFront进行处理cookie<ul>
+<li>当CloudFront从源服务器请求对象时，它会在将请求转发到源之前删除所有cookie。 如果源返回任何cookie以及对象CloudFront在将对象返回给查看器之前删除它们。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>请求标头进行缓存<ul>
+<li>默认情况下，CloudFront在边缘位置缓存对象时不考虑标头。</li>
+<li>CloudFront配置为基于请求标头进行缓存，不会更改CloudFront转发的标头，只会更改CloudFront是否根据标头值缓存对象</li>
+<li>通过以下方式提高缓存性能<ul>
+<li>将 CloudFront 配置为仅基于指定标头进行转发和缓存，而不是基于所有标头转发和缓存</li>
+<li>尝试避免基于具有大量唯一值的请求标头进行缓存</li>
+<li>CloudFront配置为将所有标头转发到源，CloudFront不会缓存与此缓存行为关联的对象。 相反，它将每个请求发送到原点</li>
+<li>CloudFront基于标头值进行缓存，它不考虑标题名称的情况，但考虑标题值的情况</li>
+</ul>
+</li>
+<li>对于RTMP分发，无法将CloudFront配置为基于标头值进行缓存。</li>
+</ul>
+</li>
+</ul>
+<h3 id="对象缓存和过期"><a href="#对象缓存和过期" class="headerlink" title="对象缓存和过期"></a>对象缓存和过期</h3><ul>
+<li>对象到期时间即对象在从Origin再次获取之前保留在CloudFront缓存中的时间</li>
+<li>低过期时间有助于提供频繁更改的内容，长过期时间有助于提高性能并减少原始负载</li>
+<li>到期时间后，CloudFront会检查它是否仍具有最新版本</li>
+<li>到期时间后，CloudFront会检查它是否仍具有最新版本<ul>
+<li>如果缓存已具有最新版本，则origin返回304状态代码（未修改）。</li>
+<li>如果CloudFront缓存没有最新版本，则原点返回200状态代码（OK）和对象的最新版本</li>
+</ul>
+</li>
+<li>如果不经常请求边缘位置中的对象，CloudFront可能会逐出该对象，在其到期日期之前删除该对象，以便为最近请求的对象腾出空间。</li>
+<li>默认情况下，每个对象在24小时后自动过期</li>
+<li>对于Web分发，可以通过更改默认行为<ul>
+<li>对于整个路径模式，可以通过设置Minimum TTL，Maximum TTL和Default TTL值来配置缓存行为</li>
+<li>对于单个对象，可以将origin配置为向对象添加Cache-Control max-age或Cache-Control s-maxage指令或Expires头字段。</li>
+<li>AWS建议在Expires标头上使用Cache-Control max-age指令来控制对象缓存行为</li>
+<li>如果同时指定了Cache-Control max-age指令和Expires标头，则CloudFront仅使用<strong>Cache-Control max-age</strong>的值</li>
+<li>来自查看器的GET请求中的HTTP Cache-Control或Pragma标头字段不能用于强制CloudFront返回到对象的源服务器</li>
+<li>默认情况下，当原始返回HTTP 4xx或5xx状态代码时，CloudFront会将这些错误响应缓存五分钟，然后将该对象的下一个请求提交到原点以查看是否请求的对象可用</li>
+</ul>
+</li>
+<li>对于RTMP分发<ul>
+<li>可以将Cache-Control或Expires标头添加到对象，以更改CloudFront在将另一个请求转发到源之前将对象保留在边缓存中的时间。</li>
+<li>最短持续时间为3600秒（一小时）。如果指定较低的值，CloudFront将使用3600秒。  </li>
+</ul>
+</li>
+</ul>
+<h2 id="配置安全访问和限制对内容的访问"><a href="#配置安全访问和限制对内容的访问" class="headerlink" title="配置安全访问和限制对内容的访问"></a>配置安全访问和限制对内容的访问</h2><h3 id="提供私有内容"><a href="#提供私有内容" class="headerlink" title="提供私有内容"></a>提供私有内容</h3><ul>
+<li>可采用两种方式控制用户对私有内容的访问，如下图所示：<ul>
+<li>限制对 CloudFront 边缘缓存中的文件的访问</li>
+<li>通过执行下列操作之一，限制对源中文件的访问：<ul>
+<li>为 Amazon S3 存储桶（除非已将其配置为网站终端节点）设置源访问身份 (OAI)</li>
+<li>为私有 HTTP 服务器配置自定义标头或者将 Amazon S3 存储桶配置作为网站终端节点<br><img src="https://i.loli.net/2019/08/30/d2QlFRyZ4nkm6c8.png" alt="001.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>创建签名 URL 或签名 Cookie 以控制对文件的访问时，可以指定以下限制：<ul>
+<li>结束日期和时间，在此之后，URL 不再有效</li>
+<li>（可选）URL 生效的日期和时间</li>
+<li>（可选）可用于访问内容的 IP 地址或计算机的地址范围</li>
+</ul>
+</li>
+<li>选择保护 Amazon S3 存储桶中的内容，以便用户可以通过 CloudFront 访问内容，但无法使用 Amazon S3 URL 直接访问内容。这可防止其他人绕过 CloudFront 并使用 Amazon S3 URL 访问希望限制访问的内容。虽然此步骤未要求使用签名 URL，但我们建议使用。</li>
+<li>签名URL或签名Cookie可以使用HTTP服务器作为源，与CloudFront一起使用。 它要求内容可公开访问，并且应注意不要共享内容的直接URL</li>
+<li>源端限制可适用于<ul>
+<li>对于S3，使用Origin Access Identity仅使用Bucket策略或Object ACL授予CloudFront访问权限，以及删除任何其他访问权限</li>
+<li>对于HTTP服务器，可以通过CloudFront添加自定义标头，可以在Origin使用它来验证请求来自CloudFront</li>
+</ul>
+</li>
+</ul>
+<h3 id="可信签署人"><a href="#可信签署人" class="headerlink" title="可信签署人"></a>可信签署人</h3><ul>
+<li>要创建签名 URL 或签名 Cookie，至少需要一个具有有效 CloudFront 密钥对的 AWS 账户。该账户被称为可信签署人。</li>
+<li>只要将可信签署人的 AWS 账户 ID 添加到分配中，CloudFront 就会立即开始要求用户使用签名 URL 或签名 Cookie 访问文件</li>
+<li>创建签名 URL 或签名 Cookie 时，使用可信签署人的私有密钥来签署 URL 或 Cookie 的一部分。当某人请求限制的文件时，CloudFront 会比较 URL 或 Cookie 的已签名部分与未签名部分，以确认 URL 或 Cookie 未被篡改。CloudFront 还会验证 URL 或 Cookie 是否有效，例如是否未超过过期日期和时间</li>
+<li>指定可信签署人时，还会间接指定要求签名 URL 或签名 Cookie 的文件：<ul>
+<li>Web 分配 – 将可信签署人添加到缓存行为中。如果分配只有一个缓存行为，用户则必须使用签名 URL 或签名 Cookie 访问与该分配关联的任何文件。如果创建了多个缓存行为，并将可信签署人添加到某些缓存行为中而没有添加到其他缓存行为中，则可要求用户使用签名 URL 或签名 Cookie 访问某些文件而不是其他文件。</li>
+<li>RTMP 分配（仅签名 URL） – 将可信签署人添加到分配中。在将可信签署人添加到 RTMP 分配后，用户必须使用签名 URL 访问与该分配相关联的任何文件。</li>
+</ul>
+</li>
+<li>用于创建CloudFront签名URL或签名cookie的每个可信签署者AWS账户必须拥有自己的活动CloudFront密钥对，应该经常轮换</li>
+<li>每个缓存行为或RTMP分配最多可以分配5个可信签名者</li>
+</ul>
+<h3 id="签名URL-vs-签名cookie"><a href="#签名URL-vs-签名cookie" class="headerlink" title="签名URL vs 签名cookie"></a>签名URL vs 签名cookie</h3><ul>
+<li>在以下情况下使用签名 URL：<ul>
+<li>希望使用 RTMP 分配。RTMP 分配不支持签名 Cookie。</li>
+<li>希望限制对单个文件的访问，例如应用程序的安装程序下载。</li>
+<li>用户使用不支持 Cookie 的客户端 (例如，自定义 HTTP 客户端)。</li>
+</ul>
+</li>
+<li>在以下情况下使用签名 Cookie：<ul>
+<li>希望提供对多个限制文件的访问，例如，HLS 格式视频的所有文件或者网站订户区域中的所有文件。</li>
+<li>不希望更改当前 URL。</li>
+</ul>
+</li>
+</ul>
+<h3 id="标准策略-vs-自定义策略"><a href="#标准策略-vs-自定义策略" class="headerlink" title="标准策略 vs 自定义策略"></a>标准策略 vs 自定义策略</h3><ul>
+<li>创建签名 URL 时，需要编写 JSON 格式的策略声明，以指定对签名 URL 的限制，例如，URL 的有效期。可以使用标准策略或自定义策略。以下是标准策略和自定义策略的比较</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>描述</th>
+<th>标准策略</th>
+<th>自定义策略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>可对多个文件重复使用策略声明。要重复使用策略声明，必须在 Resource 对象中使用通配符。有关更多信息，请参阅 在使用自定义策略的签名 URL 的策略声明中指定的值。)</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可指定用户开始访问内容的日期和时间。</td>
+<td>否</td>
+<td>是（可选）</td>
+</tr>
+<tr>
+<td>可指定用户无法再访问内容的日期和时间。</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可指定能够访问内容的用户的 IP 地址或 IP 地址范围。</td>
+<td>否</td>
+<td>是（可选）</td>
+</tr>
+<tr>
+<td>签名 URL 包括策略的 Base64 编码版本，这会导致更长的 URL。</td>
+<td>否</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<ul>
+<li>CloudFront 何时检查签名 URL 中的过期日期和时间来确定该 URL 是否仍有效，取决于该 URL 是用于 Web 分配还是用于 RTMP 分配<ul>
+<li>Web 分配 – 在发出 HTTP 请求时，CloudFront 检查签名 URL 中的过期日期和时间。如果客户端刚好在过期时间之前开始下载大型文件，即使在下载过程中到了过期时间，该下载也应该完成。如果客户端使用 Range GET 来获取较小的文件，在过期时间到期后发生的任何 GET 请求将会失败。</li>
+<li>RTMP分配 - 播放事件开始时，CloudFront 检查签名 URL 中的过期时间。如果客户端在过期时间到期之前开始播放媒体文件，CloudFront 将允许播放整个媒体文件。然而，根据媒体播放器，暂停和重新开始可能触发另一个播放事件。跳到媒体文件中另一个位置将触发另一个播放事件。如果在过期时间到期后发生播放事件，CloudFront 不会提供媒体文件。</li>
+</ul>
+</li>
+</ul>
+<h3 id="提供压缩"><a href="#提供压缩" class="headerlink" title="提供压缩"></a>提供压缩</h3><ul>
+<li>将 CloudFront 配置为在查看器请求的请求标头中包含 Accept-Encoding: gzip 时自动压缩某些类型的文件，并提供压缩文件</li>
+<li>在压缩内容时，由于文件更小，因此下载速度更快，在某些情况下，大小不到原件的四分之一。—特别是对于 JavaScript 和 CSS 文件，更快的下载转化为向用户更快地提供网页。</li>
+<li>查看器请求必须在请求标头中包含 Accept-Encoding: gzip，否则，CloudFront 不会压缩请求的文件</li>
+<li>如果使用自定义或 Amazon S3 源，可以将源配置为使用或不使用 CloudFront 压缩功能压缩文件。源可以压缩 CloudFront 无法压缩的文件类型。</li>
+<li>如果源向 CloudFront 返回压缩文件，CloudFront 将根据 Content-Encoding 标头值检测到已压缩该文件，而不会再次压缩该文件。</li>
+<li>使用 CloudFront 压缩内容<ol>
+<li>创建或更新 CloudFront 分配，并配置 CloudFront 以压缩内容。</li>
+<li>查看器请求文件。查看器将 Accept-Encoding: gzip 标头添加到请求中。这表示查看器支持压缩的内容。</li>
+<li>在边缘站点，CloudFront 将在缓存中检查请求中引用的文件的压缩版本。</li>
+<li>如果压缩的文件已在缓存中，则 CloudFront 将文件返回到查看器并跳过剩余步骤。</li>
+<li>如果压缩文件没有位于缓存中，则 CloudFront 将请求转发到源服务器，它可以是 Amazon S3 存储桶或自定义源。</li>
+<li>源服务器将请求文件的未压缩版本返回到 CloudFront。</li>
+<li>CloudFront 确定文件是否可压缩：<ul>
+<li>文件必须是 CloudFront 可压缩的类型。</li>
+<li>文件大小必须介于 1000 和 10000000 字节之间。</li>
+<li>响应必须包含 Content-Length 标头，以便 CloudFront 可以确定文件大小是否在 CloudFront 压缩的范围内。如果缺少    </li>
+<li>Content-Length 标头，则 CloudFront 不会压缩文件。</li>
+<li>该响应不得包含 Content-Encoding 标头。</li>
+</ul>
+<ol start="8">
+<li>如果文件是可压缩的，则 CloudFront 将压缩文件，将压缩后的文件返回到查看器并将它添加到缓存中。</li>
+<li>查看器将解压缩文件。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="Distribution-Details"><a href="#Distribution-Details" class="headerlink" title="Distribution Details"></a>Distribution Details</h2><h3 id="替代域名（CNAME）"><a href="#替代域名（CNAME）" class="headerlink" title="替代域名（CNAME）"></a>替代域名（CNAME）</h3><ul>
+<li>默认情况下，CloudFront为分发分配域名，例如d111111abcdef8.cloudfront.net</li>
+<li>备用域名（也称为CNAME）可用于将自己的自定义域名用于指向对象的链接</li>
+<li>Web和RTMP分发都支持备用域名。</li>
+<li>CloudFront在域名开头支持*通配符，而不是单独指定子域。</li>
+<li>但是，通配符不能替换部分子域名，例如， * domain.example.com，或者不能替换域名中间的子域名，例如子域.*.example.com</li>
+</ul>
+<h3 id="限制内容的地理分配"><a href="#限制内容的地理分配" class="headerlink" title="限制内容的地理分配"></a>限制内容的地理分配</h3><ul>
+<li>当用户请求内容时，CloudFront 通常会提供请求的内容，而不考虑用户所在的位置。如果需要阻止特定国家/地区的用户访问内容，可以使用 CloudFront 地理限制功能来执行下列操作之一：<ul>
+<li>仅当用户位于批准的国家/地区白名单中的某个国家/地区时，才允许他们访问内容。</li>
+<li>当用户位于阻止的国家/地区黑名单中的某个国家/地区时，阻止他们访问内容。<blockquote>
+<p>CloudFront 使用第三方 GeoIP 数据库确定用户的位置。IP 地址和国家/地区之间映射的准确性因区域而异。根据最近的测试，整体准确性为 99.8%。请注意，如果 CloudFront 无法确定用户的位置，CloudFront 将提供用户请求的内容。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="CloudFront与Amazon-S3"><a href="#CloudFront与Amazon-S3" class="headerlink" title="CloudFront与Amazon S3"></a>CloudFront与Amazon S3</h3><ul>
+<li>CloudFront可用于分发S3存储桶中的内容</li>
+<li>对于RTMP分发，S3存储区是唯一受支持的源，并且不能使用自定义源</li>
+<li>在S3上使用CloudFront具有以下优势<ul>
+<li>如果在更高的使用频率下频繁访问对象，则可以更具成本效益，CloudFront数据传输的价格远低于S3数据传输的价格。</li>
+<li>CloudFront的下载速度比单独使用S3更快，因为对象存储的距离更接近用户</li>
+<li>当使用S3作为分发的原点并将存储桶移动到其他区域时，如果满足以下两个条件，则CloudFront最多可能需要一个小时来更新其记录以包括区域更改：<ul>
+<li>源访问标识（OAI）用于限制对存储桶的访问</li>
+<li>存储桶被移动到需要签名版本4进行身份验证的S3区域</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="源站访问识别"><a href="#源站访问识别" class="headerlink" title="源站访问识别"></a>源站访问识别</h3><ul>
+<li>以S3为源站，S3中的对象必须被授予公共读取权限，因此可以从S3和CloudFront访问对象</li>
+<li>尽管CloudFront不公开底层S3 URL，但如果直接共享或由应用程序使用，则可以为用户所知</li>
+<li>要使用CloudFront签名URL或签名cookie来提供对对象的访问，有必要阻止用户直接访问S3对象</li>
+<li>直接访问S3对象会导致 <ul>
+<li>绕过CloudFront签名URL或签名cookie提供的控制，例如，控制用户无法再访问内容的日期时间，并且IP地址可用于访问内容</li>
+<li>CloudFront访问日志不太有用，因为它们不完整。</li>
+</ul>
+</li>
+<li>源访问标识（OAI）可用于防止用户直接从S3访问对象</li>
+<li>可以创建原始访问标识（一种特殊的CloudFront用户）并将其与分发相关联。</li>
+<li>需要将S3存储桶/对象权限配置为仅提供对源访问标识的访问</li>
+<li>当用户从CloudFront访问该对象时，它使用OAI代表用户获取内容，同时限制对S3对象的直接访问</li>
+</ul>
+<h3 id="使用对象"><a href="#使用对象" class="headerlink" title="使用对象"></a>使用对象</h3><ul>
+<li>CloudFront可以配置为包括自定义标头或修改现有标头，只要它将请求转发到源</li>
+<li>验证用户没有直接访问源，绕过CDN</li>
+<li>如果用户使用不支持CORS的查看器，请配置CloudFront以将Origin标头转发到源。 这将导致origin为每个请求返回Access-Control-Allow-Origin标头</li>
+</ul>
+<h3 id="添加和更新对象"><a href="#添加和更新对象" class="headerlink" title="添加和更新对象"></a>添加和更新对象</h3><ul>
+<li>只需要将对象添加爱到Origin，CloudFront将在访问时开发分发他们</li>
+<li>通过以下方式更新<ul>
+<li>覆盖原始对象</li>
+<li>创建不同的版本并更新向用户公开的链接</li>
+</ul>
+</li>
+<li>为了更新对象，建议使用版本控制，例如拥有文件或带有版本的整个文件夹，因此在更新对象时强制刷新可以更改链接</li>
+<li>版本控制<ul>
+<li>在CloudFront开始提供新版本之前，没有时间等待对象过期</li>
+<li>从边缘提供的对象的一致性没有差异</li>
+<li>支付对象失效不涉及任何费用。</li>
+</ul>
+</li>
+</ul>
+<h3 id="删除-使对象无效"><a href="#删除-使对象无效" class="headerlink" title="删除/使对象无效"></a>删除/使对象无效</h3><ul>
+<li>默认情况下，对象将在到期时被删除（TTL），并且最新的对象将从Origin获取</li>
+<li>对象也可以在到期之前从边缘缓存中删除<ul>
+<li>更改对象名称（版本控制）已提供具有不同名称的对象的不同版本</li>
+<li>在边缘缓存中使对象失效，对于下一个请求，cloudfront返回到Origin以获取对象</li>
+</ul>
+</li>
+<li>Web分发<ul>
+<li>如果需要频繁更新对象，则建议更改对象名称（版本控制），而不是像对象那样更改对象<ul>
+<li>即使用户在本地或在缓存代理后面缓存了版本，也可以控制请求返回的对象。如果对象无效，则用户可能会继续查看旧版本，直到它们从这些缓存过期。</li>
+<li>由于CloudFront访问日志包含对象的名称，因此可以更轻松地分析对象更改的结果</li>
+<li>提供了向不同用户提供不同版本的方法。</li>
+<li>简化了对象修订之间的前滚和后退。</li>
+<li>更便宜，因为没有收取使对象无效的费用。</li>
+<li>例如将header-v1.jpg更改为header-v2.jpg</li>
+</ul>
+</li>
+<li>使缓存中的对象失效<ul>
+<li>缓存中的对象可以在它们到期之前显式无效以强制刷新</li>
+<li>允许使所选对象无效</li>
+<li>允许使多个对象无效，例如如果目录中的对象或名称以相同字符开头的所有对象，则可以在失效路径的末尾包含*通配符</li>
+<li>无效路径可以用于例如单个对象。 /js/ab.js或多个对象，例如： / js / <em>并且即使</em>通配符请求可能使数千个对象无效，也会被计为单个请求</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对于RTMP分发，对象不能无效</li>
+</ul>
+<h3 id="Range-GETS"><a href="#Range-GETS" class="headerlink" title="Range GETS"></a>Range GETS</h3><ul>
+<li>在GET请求中使用Range标头的部分请求有助于以较小的单位下载对象，从而提高部分下载的效率和部分失败的传输的恢复。</li>
+<li>对于partial get 请求，cloudfront <ul>
+<li>检查边缘位置中的缓存是否包含请求的范围或整个对象，如果存在，则立即提供</li>
+<li>如果请求的范围不存在，它会将请求转发到源，并且可能请求比客户端请求更大的范围以优化性能</li>
+<li>如果origin支持范围标头，则返回请求的对象范围，CloudFront将其返回给查看器</li>
+<li>如果原点不支持范围标题，则返回完整对象，CloudFront将为整个对象提供服务并将其缓存以备将来使用。</li>
+<li>CloudFront使用缓存的整个对象来提供任何未来范围的GET标头请求</li>
+</ul>
+</li>
+</ul>
+<h2 id="访问日志"><a href="#访问日志" class="headerlink" title="访问日志"></a>访问日志</h2><ul>
+<li>可以将CloudFront配置为创建包含有关CloudFront接收的每个用户请求的详细信息的日志文件</li>
+<li>可用于Web和RTMP分发</li>
+<li>启用日志记录后，可以指定一个S3存储桶，CloudFront将保存文件</li>
+<li>CloudFront定期为分发提供访问日志，最多可达一小时几次</li>
+<li>CloudFront通常会在日志中显示的事件的一小时内将该时间段的日志文件传递到S3存储桶。 但请注意，某段时间内的某些或所有日志文件条目有时可能会延迟最多24小时</li>
+</ul>
+<h2 id="CloudFront-费用"><a href="#CloudFront-费用" class="headerlink" title="CloudFront 费用"></a>CloudFront 费用</h2><ol>
+<li>数据传输到Internet<ul>
+<li>对于从CloudFront边缘位置传输的数据量，将收取费用，以GB为单位</li>
+<li>不再收取从AWS源（例如，S3，EC2等）到CloudFront的数据传输。</li>
+<li>适用于从所有AWS区域到所有全球CloudFront边缘位置的数据传输</li>
+</ul>
+</li>
+<li>HTTP/HTTPS 请求<ul>
+<li>为内容进行的HTTP / HTTPS请求数</li>
+</ul>
+</li>
+<li>失效请求<ul>
+<li>无效请求中的每个路径</li>
+<li>失效请求中列出的路径表示要从CloudFront缓存中失效的对象的URL（如果路径包含通配符，则为多个URL）</li>
+</ul>
+</li>
+<li>与Cloudfront分配相关联的专用IP 自定义SSL证书</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/28/AWS-Elastic-LoadBalancer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4452,1102 +5424,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/18/思考心得/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/18/思考心得/" itemprop="url">思考心得</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-18T18:29:45+08:00">
-                2019-08-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/思考心得/" itemprop="url" rel="index">
-                    <span itemprop="name">思考心得</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="思考心得"><a href="#思考心得" class="headerlink" title="思考心得"></a>思考心得</h1><h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><ul>
-<li>架构的本质并非时要解决领域内的具体问题，而是复杂度管理，用于将所面对的复杂度客观对象。问题和解决方案的复杂度进行有效的分解和管理，并尽量减轻内外变化所产生影响。</li>
-<li>领域问题的解决方案靠的时相关的解决方案，同样的一个问题可以有不同的解决方案，虽然他们的目标时一致的，但由于各架构的不同，各个结局方案的灵活性、坚固性和扩展性不同，因而我们在为解决方案选择架构的时候关注的并不是其是否可以解决问题，更多的是对架构所带来的灵活性、坚固性和扩展性于相应的成本之间进行权衡。</li>
-</ul>
-<ol>
-<li>根据要解决的问题，对目标系统的边界进行界定</li>
-<li>并对目标系统按某个原则进行切分。切分的原则，要适于不同的角色，对切分出来的部分，并行或串行开展工作，一般并行才能减少时间</li>
-<li>并对切分出来的部分，设立沟通机制</li>
-<li>根据3，使得这些部分之间能够进行有机联系，合并组装成为一个整体，完成目标系统所有工作<br>核心：对问题的分析，以及解决问题方案<br>目标问题是<font color="red">谁</font>的问题    问题的主体（隐含边界）<br>问题不是解决方案</li>
-</ol>
-<h3 id="企业架构"><a href="#企业架构" class="headerlink" title="企业架构"></a>企业架构</h3><ul>
-<li><strong>物理架构</strong>：包括IDC机房、机房之间访问关系、机房内机器物理部署图、机房与业务分布、网络架构、数据库架构、集群清单和域名清单</li>
-<li><strong>应用架构</strong>：应用+架构，应用时系统的最小单元，应用分类和应用编排则构成了应用关系即应用架构</li>
-<li><strong>企业商务模型</strong>：静态商务业务主体、组织架构、动态的商务运作模型、业务流程</li>
-<li><strong>信息系统模型</strong>：功能架构、应用架构、数据设计和物理架构</li>
-</ul>
-<blockquote>
-<p>应用架构从单一应用角度出发，其主要时从应用的功能触发，即从应用的数据、展现方式和业务逻辑等方面来制定应用的结构和构造方法</p>
-</blockquote>
-<blockquote>
-<p>企业架构则从企业战略和整体业务触发，从技术上制定用以支持企业和战略的各种应用、数据和基础设施</p>
-</blockquote>
-<p> <em>软件本身并不能解决企业问题，只有配套的架构、流程、制度与意识才能发挥软件的功效</em></p>
-<ul>
-<li>运维要为应用服务，应用要为业务服务，业务为客户服务</li>
-</ul>
-<h2 id="PaaS"><a href="#PaaS" class="headerlink" title="PaaS"></a>PaaS</h2><ul>
-<li><p>与当前的<strong>传统客户</strong>谈PaaS，其不可避免的要谈到应用的解构和重构，而这是当前国内非常难做的，并不像IaaS基础资源已经融入到用户的实际生产、测试环境中。</p>
-</li>
-<li><p>开源社区做的是项目，不是产品，尤其不是企业级产品</p>
-</li>
-<li><p>私有云严格来说不是云，至少缺乏云应有的规模和弹性</p>
-</li>
-<li><p>现有的企业私有云或公有云一资源为中心，而PaaS要以应用为中心</p>
-</li>
-<li><p>伤员不能只是资源上云，上云更应是一种理念。上云至少还包括开发上云（面向云开发、DevOps、CI/CD）、应用上云（面向云定制应用的云上架构）</p>
-</li>
-<li><p>面向业务运维，而不是面向资源运维</p>
-</li>
-<li><p>企业用户需求：</p>
-<ul>
-<li>关注稳定、数据安全、现有DC打通、迁移成本、是否要更改应用架构才能上云、现有运维整合</li>
-</ul>
-</li>
-<li><p>2B和2C产品经理区别：前者关注企业用户需求，后者关注产品运营、用户体验</p>
-</li>
-</ul>
-<h2 id="摘抄"><a href="#摘抄" class="headerlink" title="摘抄"></a>摘抄</h2><ul>
-<li>国内的互联网巨头成就了体量和估值，却没有创造出来真正的商业文明和伦理。</li>
-<li>后摇，将这份寄生在我们身上的痛苦，化为一面镜子，我们赤裸地站在面前，审视在镜中同样赤裸的自己，打破、流血、痛哭、沉默、颓唐、寂灭，我们被迫接受现实，寄生于身上的痛苦，不过是被生命的贪婪所灼伤。</li>
-<li>骄傲是对自己拥有某一方面突出价值的确信，但虚荣则试图在别人那里唤起自己对此的确信。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/18/AWS-RDS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/18/AWS-RDS/" itemprop="url">AWS RDS </a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-18T10:39:26+08:00">
-                2019-08-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AWS/" itemprop="url" rel="index">
-                    <span itemprop="name">AWS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="AWS-Relation-Database-Service"><a href="#AWS-Relation-Database-Service" class="headerlink" title="AWS Relation Database Service"></a>AWS Relation Database Service</h1><ul>
-<li>Amazon Relational Database Service (Amazon RDS) 是一项 Web 服务，让用户能够在云中更轻松地设置、操作和扩展关系数据库。</li>
-<li>它可以经济有效的为用户提供一个容量可调的行业标准的关系数据库，并承担常见的数据库管理任务。</li>
-<li>RDS 功能及优势<ul>
-<li>CPU，内存，存储和IOPS可以独立扩展</li>
-<li>Amazon RDS 可以管理备份、软件修补、自动故障检测和恢复</li>
-<li>可以在需要时执行自动备份，也可以手动创建备份快照。可以使用这些备份还原数据库。Amazon RDS 还原过程将可靠且高效地工作</li>
-<li>通过主实例和在发生问题时可向其执行故障转移操作的同步辅助实例实现高可用性。还可以使用 MySQL、MariaDB 或 PostgreSQL 只读副本扩展读取, 从而提供弹性和可伸缩性。</li>
-<li>支持MySQL，MariaDB，PostgreSQL，Oracle，Microsoft SQL Server以及与MySQL兼容的全新Amazon Aurora数据库引擎</li>
-<li>除了数据库包中的安全性之外，IAM用户和权限还可以帮助控制谁有权访问RDS数据库服务</li>
-<li>数据库可以通过将它们放在VPC中进行进一步保护，使用SSL传输数据并对其余数据进行加密</li>
-<li>由于它是托管服务，因此不提供对数据库实例的shell（root ssh）访问，这限制了对需要高级权限的某些系统过程和表的访问</li>
-</ul>
-</li>
-</ul>
-<h2 id="RDS-Components"><a href="#RDS-Components" class="headerlink" title="RDS Components"></a>RDS Components</h2><h3 id="DB-Instance"><a href="#DB-Instance" class="headerlink" title="DB Instance"></a>DB Instance</h3><ul>
-<li>数据库实例的基本构建块</li>
-<li>数据库实例是在云中运行的独立数据库环境</li>
-<li>每个数据库实例均运行一个数据库引擎。Amazon RDS 当前支持 MySQL、MariaDB、PostgreSQL、Oracle 和 Microsoft SQL Server 数据库引擎</li>
-<li>AWS Command Line Interface、Amazon RDS、API 或 AWS 管理控制台 创建和修改数据库实例</li>
-<li>数据库实例的计算和内存容量由数据库实例类决定。选择最能满足需求的数据库实例。</li>
-<li>数据库实例存储有三种类型：磁性、通用型 (SSD) 和配置的 IOPS (PIOPS)</li>
-<li><font color="red">对于每个数据库实例，可以选择5 GB到6 TB的关联存储容量（会时常更新，目前最大容量可达64TB）</font></li>
-<li>每个数据库实例都有一个数据库实例标识符，该标识符是客户提供的名称，对于AWS区域中的该客户必须是唯一的。它在与Amazon RDS API和AWS CLI命令交互时唯一标识数据库实例</li>
-<li>每个数据库实例可以托管多个数据库，也可以托管具有多个模式的单个Oracle数据库。</li>
-<li>建议托管在AWS VPC环境中以获得更好的控制</li>
-</ul>
-<h3 id="区域和可用区"><a href="#区域和可用区" class="headerlink" title="区域和可用区"></a>区域和可用区</h3><ul>
-<li>Amazon 云计算资源安置在世界不同地区 (例如：北美、欧洲或亚洲) 的高度可用的数据中心设施内。每个数据中心位置称为一个地区</li>
-<li>每个地区包含很多称为可用区或 AZ 的不同位置。每个可用区都被设计成不受其他可用区故障的影响，并提供低价、低延迟的网络连接，以连接到同一地区其他可用区。</li>
-<li>可以在多个可用区运行数据库实例，此选项称为多可用区部署。<ul>
-<li>Amazon 会自动在不同的可用区预配置和维护辅助备用数据库实例</li>
-<li>主数据库实例可以跨可用区同步复制到辅助实例，从而在系统备份期间提供数据冗余、故障转移支持、消除 I/O 冻结和最大程度地降低延迟峰值</li>
-</ul>
-</li>
-<li>安全组<ul>
-<li>安全组通过允许访问指定的IP地址范围或EC2实例来控制对数据库实例的访问</li>
-</ul>
-</li>
-<li>DB 参数组<ul>
-<li>包含可应用于同一实例类型的一个或多个数据库实例的引擎配置值</li>
-</ul>
-</li>
-<li>DB选项组<ul>
-<li>一些数据库引擎提供的工具可以简化数据库管理并为数据库提供更多安全保护。</li>
-<li>亚马逊RDS通过选项组提供此类工具，例如 Oracle Application Express（APEX），SQL Server透明数据加密和MySQL memcached支持</li>
-</ul>
-</li>
-<li>RDS  接口<ul>
-<li>AWS RDS 控制台</li>
-<li>CLI</li>
-<li>SDK、RDS API</li>
-</ul>
-</li>
-</ul>
-<h1 id="RDS-Replication-–-Multi-AZ-amp-Read-Replica"><a href="#RDS-Replication-–-Multi-AZ-amp-Read-Replica" class="headerlink" title="RDS Replication – Multi-AZ &amp; Read Replica"></a>RDS Replication – Multi-AZ &amp; Read Replica</h1><ul>
-<li>数据库实例副本可通过多可用区部署或只读副本方式创建</li>
-<li>多可用区部署<ul>
-<li>多可用区部署提供高可用性和故障转移支持</li>
-<li>RDS自动在不同的AZ（物理上独立的位置中的独立基础架构）中配置和管理同步备用副本</li>
-<li>RDS会自动故障转移到备用数据库，以便数据库操作可以在没有干预的情况下快速恢复<ol>
-<li>计划数据库维护</li>
-<li>软件修补</li>
-<li>重新启动主实例</li>
-<li>主数据库实例连接或主机故障，或</li>
-<li>可用区失败</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>只读副本<ul>
-<li>Amazon RDS 还使用 MariaDB、MySQL、Oracle 和 PostgreSQL 数据库引擎的内置复制功能来从源数据库实例创建一个特殊类型的数据库实例，称为只读副本</li>
-<li>对源数据库实例的更新将异步复制到只读副本。可以将应用程序发出的读取查询路由到只读副本，以减轻源数据库实例上的负载。</li>
-<li>利用只读副本，可针对进行大量读取操作的数据库负载灵活地进行扩展，突破单个数据库实例的容量限制。</li>
-</ul>
-</li>
-</ul>
-<h2 id="Multi-AZ-deployment"><a href="#Multi-AZ-deployment" class="headerlink" title="Multi-AZ deployment"></a>Multi-AZ deployment</h2><ul>
-<li>Amazon RDS 使用多可用区部署为数据库实例提供高可用性和故障转移支持。Amazon RDS 使用几种不同的技术来提供故障转移支持。用于 Oracle、PostgreSQL、MySQL 和 MariaDB 数据库实例的多可用区部署使用 Amazon 的故障转移技术。SQL Server 数据库实例使用 SQL Server 数据库镜像 (DBM)</li>
-<li>高可用性功能不是面向只读情况的扩展解决方案；不能使用备用副本处理读取流量。要处理只读流量，应当使用只读副本</li>
-<li>Multi-AZ 部署<ul>
-<li>在多可用区部署中，Amazon RDS 会自动在不同可用区中配置和维护一个同步备用副本</li>
-<li>主数据库实例将跨可用区同步复制到备用副本，以提供数据冗余、消除 I/O 冻结并在系统备份期间将延迟峰值降至最小</li>
-<li>与单可用区部署相比，使用多可用区部署的数据库实例由于执行同步数据复制，因此会增加写入和提交延迟</li>
-<li>仅当主数据库和备用数据库上的提交都成功时，才会返回事务成功</li>
-<li>尽管 AWS 设计用于处理可用区之间的低延迟网络连接，但如果、部署故障转移到备用副本，延迟可能会发生更改</li>
-</ul>
-</li>
-<li>使用BYOL许可模型时，需要主实例和备用副本的许可证</li>
-<li>对于生产工作负载，建议使用具有预配置IOPS和数据库实例类（m1.large和更大）的多可用区部署，针对预配置IOPS进行了优化，以实现快速，一致的性能</li>
-<li>将单可用区部署修改为多可用区部署时（对于SQL Server或Amazon Aurora以外的引擎）<ol>
-<li>Amazon RDS拍摄主数据库实例的快照，然后将该快照还原到另一个可用区。</li>
-<li>Amazon RDS 在主数据库实例与新实例之间设置同步复制</li>
-<li>避免在从单可用区转换到多可用区时出现停机，但会在首次转换到多可用区时体验明显的性能影响。对于大型写入密集型数据库实例来说，此影响更明显</li>
-</ol>
-</li>
-</ul>
-<h2 id="RDS-Multi-AZ-Failover-Process"><a href="#RDS-Multi-AZ-Failover-Process" class="headerlink" title="RDS Multi-AZ Failover Process"></a>RDS Multi-AZ Failover Process</h2><ul>
-<li>数据库实例发生计划内或计划外的中断时，对已启用多可用区，则 Amazon RDS 会自动切换到另一个可用区中的备用副本</li>
-<li>完成故障转移所用的时间取决于在主数据库实例变为不可用时的数据库活动和其他条件。故障转移时间通常为 60-120 秒</li>
-<li>故障转移机制自动更改数据库实例的 DNS 记录，使其指向备用数据库实例</li>
-<li>多可用区切换与应用程序无缝连接，因为端点URL没有变化，只需要重新建立与数据库实例的任何现有连接</li>
-<li>Amazon RDS 会自动处理故障转移，因此，可以尽快恢复数据库操作而无需管理干预。如果出现以下任一情况，主数据库实例会自动切换到备用副本：<ul>
-<li>可用区中断</li>
-<li>主数据库实例故障</li>
-<li>更改数据库实例服务器类型</li>
-<li>数据库实例的操作系统在进行软件修补</li>
-<li>数据库实例的手动故障转移是使用 Reboot with failover 启动的</li>
-</ul>
-</li>
-<li>可通过多种方法确定多可用区数据库实例是否进行了故障转移：<ul>
-<li>数据库事件订阅可设置为在故障转移启动时向发送电子邮件或 SMS 通知。</li>
-<li>使用 Amazon RDS 控制台或 API 操作查看数据库事件。</li>
-<li>使用 Amazon RDS 控制台 API 操作查看多可用区部署的当前状态</li>
-</ul>
-</li>
-</ul>
-<h2 id="Read-Replica"><a href="#Read-Replica" class="headerlink" title="Read Replica"></a>Read Replica</h2><ul>
-<li>Amazon RDS 还使用 MariaDB、MySQL、Oracle 和 PostgreSQL 数据库引擎的内置复制功能来从源数据库实例创建一个特殊类型的数据库实例，称为只读副本</li>
-<li>对源数据库实例的更新将异步复制到只读副本</li>
-<li>将应用程序发出的读取查询路由到只读副本，以减轻源数据库实例上的负载</li>
-<li>利用只读副本，可针对进行大量读取操作的数据库负载灵活地进行扩展，突破单个数据库实例的容量限制</li>
-<li>只读副本作为允许只读连接的数据库实例运行; 应用程序可以像对任何数据库实例一样连接到只读副本</li>
-</ul>
-<h3 id="Read-Replica-creation"><a href="#Read-Replica-creation" class="headerlink" title="Read  Replica creation"></a>Read  Replica creation</h3><ul>
-<li>一个源数据库实例最多可以创建五个只读副本</li>
-<li>创建只读副本过程<ol>
-<li>先通过将备份保留期设置为一个非零值来在源数据库实例上启用自动备份</li>
-<li>需要将现有数据库实例指定为源</li>
-<li>RDS获取源实例的快照，并从快照创建只读实例</li>
-<li>然后，RDS使用数据库引擎的异步复制方法更新只读副本以获取对源数据库实例的任何更改</li>
-</ol>
-</li>
-<li>RDS复制源数据库实例中的所有数据实例</li>
-<li>如果只读副本位于与数据库实例不同的AWS区域中，则RDS会在源数据库实例与只读副本之间建立安全通信通道</li>
-<li>RDS建立启用安全通道所需的任何AWS安全配置，例如添加安全组</li>
-<li>在只读副本创建期间，可以在发生数据库快照时体验源数据库实例上的简短I / O挂起</li>
-<li>I / O暂停通常持续大约一分钟，如果源数据库实例是多可用区部署，则可以避免（在多可用区部署的情况下，数据库快照是从备用数据库获取的）</li>
-<li>长时间运行的活动事务会减慢创建只读副本的过程。建议等待长时间运行的事务完成，然后再创建只读副本。</li>
-<li>如果从同一源数据库实例同时创建多个并行只读副本，则 Amazon RDS 仅在开始第一个创建操作时创建一张快照</li>
-<li>可以将只读副本提升为新的独立源数据库，在这种情况下，只读副本和源数据库之间的复制链接会断开。 但是，使用原始源DB作为复制源继续复制其他副本</li>
-</ul>
-<h3 id="Read-Replica-Deletion-amp-DB-Failover"><a href="#Read-Replica-Deletion-amp-DB-Failover" class="headerlink" title="Read Replica Deletion&amp; DB Failover"></a>Read Replica Deletion&amp; DB Failover</h3><ul>
-<li>只读副本删除，必须采用与数据库实例一样的显式删除方法</li>
-<li>若删除源数据库而不删除副本，则会将每个副本提升为可用区内独立的数据库实例</li>
-<li>若multi-az部署的源实例故障转移到备用数据库，则会切换源实例的关联副本到备用数据库上（作为新的源）</li>
-</ul>
-<h3 id="Read-Replica-Storage-amp-Compute-requirements"><a href="#Read-Replica-Storage-amp-Compute-requirements" class="headerlink" title="Read Replica Storage &amp; Compute requirements"></a>Read Replica Storage &amp; Compute requirements</h3><ul>
-<li>默认情况下，使用与源数据库实例相同的存储类型创建只读副本</li>
-<li>为使复制有效运行，每个只读副本应具有与源数据库实例相同数量的计算和存储资源</li>
-<li>源数据库实例，如果缩放，则应相应地缩放只读副本</li>
-</ul>
-<h3 id="Read-Replica-Features-amp-Limitations"><a href="#Read-Replica-Features-amp-Limitations" class="headerlink" title="Read Replica Features &amp; Limitations"></a>Read Replica Features &amp; Limitations</h3><ul>
-<li>RDS不支持循坏复制</li>
-<li>只能从现有数据库实例创建新的只读副本，例如，如果MyDBInstance复制到ReadReplica1，则无法将ReadReplica1配置为复制回MyDBInstance。 从ReadReplica1，只能创建一个新的只读副本，例如ReadRep2</li>
-<li>跨区域复制<ul>
-<li>只有在使用 MariaDB、PostgreSQL (版本 9.4.7 和 9.5.2 和更高版本) 或 MySQL 5.6 和更高版本的 Amazon RDS 数据库实例时，才能在区域之间进行复制</li>
-<li>灾难恢复功能（减少RTO和RPO）</li>
-<li>将操作扩展到更接近最终用户的区域，</li>
-<li>从一个地区的数据中心迁移到另一个地区</li>
-</ul>
-</li>
-<li>也可以从其他只读副本创建只读副本。 但是，这些实例的副本滞后更高，并且复制链中涉及的实例不能超过四个。</li>
-</ul>
-<h3 id="RDS-不同引擎的只读副本区别"><a href="#RDS-不同引擎的只读副本区别" class="headerlink" title="RDS 不同引擎的只读副本区别"></a>RDS 不同引擎的只读副本区别</h3><table>
-<thead>
-<tr>
-<th>操作</th>
-<th>MySQL 和 MariaDB</th>
-<th>Oracle</th>
-<th>PostgreSQL</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>复制方法是什么？</td>
-<td>逻辑复制。</td>
-<td>物理复制。</td>
-<td>物理复制。</td>
-</tr>
-<tr>
-<td>如何清除事务日志？</td>
-<td>Amazon RDS MySQL 和 MariaDB 保留尚未应用的任何二进制日志。</td>
-<td>Amazon RDS for Oracle 在源数据库实例中保留至少两个小时的事务日志。两小时之后或在传递 archivelog retention hours 设置之后从源中清除日志，以时间较长者为准。传递 archivelog retention hours 设置之后，仅当它们已成功应用到数据库时，才会从只读副本清除日志。有关设置 archivelog retention hours 的信息，请参阅 保留存档重做日志。</td>
-<td>PostgreSQL 具有参数 wal_keep_segments，该参数指示保留多少个提前写入日志 (WAL) 文件以便为只读副本提供数据。该参数值指定要保留的日志的数量。</td>
-</tr>
-<tr>
-<td>是否能将副本设置为可写？</td>
-<td>是。 可将 MySQL 或 MariaDB 只读副本设置为可写。</td>
-<td>否。Oracle 只读副本是物理副本，Oracle 不允许写入只读副本。可以提升只读副本以将它设置为可写。提升的只读副本拥有提出提升请求时的已复制数据。</td>
-<td>否。PostgreSQL 只读副本是一个物理副本，PostgreSQL 不允许将只读副本设置为可写。</td>
-</tr>
-<tr>
-<td>是否能在副本上执行备份？</td>
-<td>是。可以对 MySQL 或 MariaDB 只读副本启用自动备份。</td>
-<td>否。不能创建 Amazon RDS for Oracle 只读副本的手动快照或为它们启用自动备份。</td>
-<td>是，可以创建 PostgreSQL 只读副本的手动快照，但无法启用自动备份。</td>
-</tr>
-<tr>
-<td>是否能使用并行复制？</td>
-<td>是。MySQL 5.6 版和更高版本和所有支持的 MariaDB 版本允许并行复制线程。</td>
-<td>是。重做日志数据始终会从源数据库并行传输到其所有只读副本。</td>
-<td>否。PostgreSQL 是一个处理复制的过程。</td>
-</tr>
-</tbody></table>
-<h3 id="Read-Replica-Use-cases"><a href="#Read-Replica-Use-cases" class="headerlink" title="Read Replica Use cases"></a>Read Replica Use cases</h3><ul>
-<li>为读取繁重的数据库工作负载扩展超出单个数据库实例的计算或I / O容量，将过多的读取流量引导到只读副本</li>
-<li>在源数据库实例不可用时提供读取流量，例如 如果源数据库实例由于备份I / O挂起或计划维护而无法接收I / O请求，则可以将读取流量定向到只读副本。（此时 数据可能是陈旧的）</li>
-<li>业务报告或数据仓库方案，可以对只读副本而不是主要生产数据库实例执行业务报告查询</li>
-</ul>
-<h1 id="RDS-Storage"><a href="#RDS-Storage" class="headerlink" title="RDS Storage"></a>RDS Storage</h1><ul>
-<li>RDS使用EBS存储数据库数据和日志</li>
-<li>RDS会自动对多个EBS卷进行条带化，以提高IOPS性能，具体取决于所请求的存储量</li>
-</ul>
-<h2 id="RDS-Storage-Types"><a href="#RDS-Storage-Types" class="headerlink" title="RDS Storage Types"></a>RDS Storage Types</h2><ul>
-<li>RDS 提供三个存储类型：通用型 SSD（也称为 gp2）、预配置 IOPS SSD（也称为 io1）和磁性存储</li>
-<li>它们的性能特性和价格不同，这意味着可以根据数据库工作负载需求定制存储性能和成本</li>
-<li>以创建最多具有 64 TiB 存储的 MySQL、MariaDB 和 PostgreSQL RDS 数据库实例。最多可以创建具有 64 TiB 存储的 Oracle RDS 数据库实例。可以创建最多具有 16 TiB 存储的 SQL Server RDS 数据库实例。对于此存储量，请使用预配置 IOPS SSD 和通用型 (SSD) 存储类型</li>
-</ul>
-<h2 id="Magnetic-Standard"><a href="#Magnetic-Standard" class="headerlink" title="Magnetic (Standard)"></a>Magnetic (Standard)</h2><ul>
-<li>磁存储，也称为标准存储，提供经济高效的存储，目前AWS建议使用SSD或预配IOPS类型</li>
-<li>不允许使用 SQL Server 数据库引擎时扩展存储</li>
-<li>不支持弹性卷。</li>
-<li>限制为 3 TiB 的最大大小</li>
-<li>限制为最大 1,000 IOPS</li>
-</ul>
-<h2 id="General-Purpose-SSD"><a href="#General-Purpose-SSD" class="headerlink" title="General Purpose (SSD)"></a>General Purpose (SSD)</h2><ul>
-<li>通用型 SSD（也称作 gp2）卷提供了适用于各种工作负载的经济高效的存储。这些卷可以提供几毫秒的延迟，能够突增至 3000 IOPS 并维持一段较长的时间</li>
-<li>MariaDB、MySQL 和 PostgreSQL 数据库实例：20 GiB–64 TiB</li>
-<li>SQL Server for Enterprise、Standard、Web 和 Express 版本：20 GiB–16 TiB</li>
-<li>Oracle 实例：20 GiB- 64 TiB</li>
-<li>非常适合中小型数据库</li>
-</ul>
-<h2 id="Provisioned-IOPS"><a href="#Provisioned-IOPS" class="headerlink" title="Provisioned IOPS"></a>Provisioned IOPS</h2><ul>
-<li>预配置 IOPS 存储符合 I/O 密集型工作负载（尤其是数据库工作负载）的需求，此类工作负载需要低 I/O 延迟和一致的 I/O 吞吐量</li>
-<li>提供了可预测的性能以及一致的低延迟</li>
-<li>需要快速且一致的I / O性能的任何生产应用程序，Amazon建议使用预配置IOPS存储类型</li>
-<li>预配置的 IOPS 存储针对性能要求一致的联机事务处理 (OLTP) 工作负载进行了优化</li>
-<li>下表显示每个数据库引擎的预配置 IOPS 的范围和存储大小范围</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>数据库引擎</th>
-<th>预配置的 IOPS 的范围</th>
-<th>存储的范围</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>MariaDB</td>
-<td>1000–80000 IOPS</td>
-<td>100 GiB–64 TiB</td>
-</tr>
-<tr>
-<td>SQL Server、Enterprise 和 Standard 版本</td>
-<td>1000–64000 IOPS*</td>
-<td>20 GiB–16 TiB</td>
-</tr>
-<tr>
-<td>SQL Server，Web 和 Express 版本</td>
-<td>1000–64000 IOPS*</td>
-<td>100 GiB–16 TiB</td>
-</tr>
-<tr>
-<td>MySQL</td>
-<td>1000–80000 IOPS</td>
-<td>100 GiB–64 TiB</td>
-</tr>
-<tr>
-<td>Oracle</td>
-<td>1000–80000 IOPS</td>
-<td>100 GiB– 64 TiB</td>
-</tr>
-<tr>
-<td>PostgreSQL</td>
-<td>1000–80000 IOPS</td>
-<td>100 GiB–64 TiB</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>** 最大 IOPS 64000 仅在基于 Nitro 的实例（m5 实例类型）上是可保证的。其他实例系列可确保最高 32000 IOPS 的性能 ** </p>
-<ul>
-<li>创建数据库实例时，指定专用IOPS速率和存储空间分配。 RDS规定IOPS速率和存储在数据库实例的生命周期内或直到其更改。</li>
-</ul>
-</blockquote>
-<h2 id="Adding-Storage-and-Changing-Storage-Type"><a href="#Adding-Storage-and-Changing-Storage-Type" class="headerlink" title="Adding Storage and Changing Storage Type"></a>Adding Storage and Changing Storage Type</h2><ul>
-<li>可以修改数据库实例以使用其他存储并转换为不同的存储类型。但是，不能减少分配的存储空间（增大可以，缩小不可以）</li>
-<li>MySQL，MariaDB，PostgreSQL和Oracle数据库实例可以扩展存储，这有助于提高I / O容量</li>
-<li>由于附加到Windows Server环境的条带存储的可扩展性限制，可以更改SQL Server数据库实例的存储容量和存储类型</li>
-<li>扩展过程中，数据库实例可用于读取和写入，但可能会出现性能下降</li>
-<li>添加存储可能需要几个小时;过程的持续时间取决于几个因素，例如负载，存储大小，存储类型，配置的IOPS数量（如果有）以及先前规模存储操作的数量</li>
-<li>在添加存储时，会暂停每夜备份，并且不会执行任何其他RDS操作，包括修改，重新引导，删除，创建只读副本和创建数据库快照</li>
-</ul>
-<h2 id="Performance-Metrics"><a href="#Performance-Metrics" class="headerlink" title="Performance Metrics"></a>Performance Metrics</h2><p>Amazon RDS提供了多个指标，可用于监控数据库的性能<br><strong>IOPS</strong></p>
-<ul>
-<li>每秒完成的I / O操作数</li>
-<li>它被报告为给定时间间隔的平均IOPS</li>
-<li>RDS每隔一分钟报告一次读写IOPS</li>
-<li>总IOPS是读写IOPS的总和</li>
-<li>IOPS的典型值范围为每秒零到几万<br><strong>Latency</strong></li>
-<li>提交I / O请求到完成之间经过的时间</li>
-<li>它被报告为给定时间间隔的平均延迟。</li>
-<li>RDS以一分钟为单位分别报告读取和写入延迟，单位为秒</li>
-<li>延迟的典型值以毫秒（ms）为单位<br><strong>Throughput</strong></li>
-<li>传输到磁盘或从磁盘传输的每秒字节数</li>
-<li>它被报告为给定时间间隔的平均吞吐量</li>
-<li>RDS使用每秒兆字节（MB / s）的单位分别以一分钟的间隔报告读写吞吐量</li>
-<li>吞吐量的典型值范围从零到I / O通道的最大带宽<br><strong>Queue Depth</strong></li>
-<li>队列中等待服务的I / O请求数。</li>
-<li>这些是由应用程序提交但尚未发送到设备的I / O请求，因为设备正在忙于处理其他I / O请求。</li>
-<li>它被报告为给定时间间隔的平均队列深度。</li>
-<li>RDS以一分钟为间隔报告队列深度。队列深度的典型值范围从零到几百。</li>
-<li>在队列中等待的时间是Latency和服务时间（不作为指标）</li>
-</ul>
-<h2 id="Amazon-RDS-Storage-Facts"><a href="#Amazon-RDS-Storage-Facts" class="headerlink" title="Amazon RDS Storage Facts"></a>Amazon RDS Storage Facts</h2><ul>
-<li>第一次启动数据库实例并首次访问磁盘区域时，该进程可能比对同一磁盘区域的所有后续访问花费的时间更长。这被称为“first touch penalty”。一旦磁盘区域产生了“first touch penalty”，即使数据库实例重新启动，重新启动或数据库实例类发生更改，该磁盘区域也不会在实例的生命周期内再次受到惩罚。请注意，从快照，时间点恢复或只读副本创建的数据库实例是新实例，并且会导致此“first touch penalty</li>
-<li>RDS管理DB实例，并在实例上保留开销空间。如果预留的存储量随DB实例类和其他因素而变化，那么这个预留空间可能是总存储的1%或2%</li>
-<li>预配置IOPS提供了一种通过指定IOPS来保留I / O容量的方法。与任何其他系统容量属性一样，负载下的最大吞吐量将受到首先消耗的资源的约束，这可能是IOPS，通道带宽，CPU，内存或数据库内部资源。</li>
-<li>当前可用的最大信道带宽是4000兆比特每秒（Mbps）全双工。就读取和写入吞吐量度量而言，这相当于每个方向上大约210兆字节/秒（MB / s）。 50％读取和50％写入的完美平衡工作负载可以达到420 MB / s的最大组合吞吐量，其中包括协议开销，因此实际数据吞吐量可能更低。</li>
-<li>预配置IOPS的I / O请求大小为32 KB。预配置IOPS消耗是I / O请求大小超过32 KB的线性函数。小于32 KB的I / O请求作为一个I / O处理;例如1000 16 KB I / O请求的处理方式与1000 32 KB请求相同。大于32 KB的I / O请求会消耗多个I / O请求;而48 KB I / O请求消耗1.5个I / O存储容量请求; 64 KB I / O请求消耗2个I / O请求</li>
-</ul>
-<h2 id="Factors-That-Impact-Storage-Performance"><a href="#Factors-That-Impact-Storage-Performance" class="headerlink" title="Factors That Impact Storage Performance"></a>Factors That Impact Storage Performance</h2><ul>
-<li>系统活动和数据库工作负载均可能影响存储性能</li>
-<li>系统活动，以下系统相关活动圴使用 I/O 容量，并且可能会在执行这些活动时降低数据库实例性能：<ul>
-<li>多可用区备用创建</li>
-<li>创建只读副本</li>
-<li>创建存储类型</li>
-</ul>
-</li>
-<li>数据库工作负载，数据库或应用程序设计导致并发问题、锁定或其他形式的数据库争用。在这类情况下，可能无法直接使用所有预配置的带宽<ul>
-<li>已到达基础实例类型的吞吐量限制。</li>
-<li>因为应用程序没有驱动足够的 I/O 操作，所以少于队列深度始终小于 1</li>
-<li>在数据库中遇到查询争用，即使部分 I/O 容量未使用也是如此</li>
-</ul>
-</li>
-</ul>
-<h1 id="RDS-Snapshots-Backup-amp-Restore"><a href="#RDS-Snapshots-Backup-amp-Restore" class="headerlink" title="RDS Snapshots, Backup &amp; Restore"></a>RDS Snapshots, Backup &amp; Restore</h1><ul>
-<li>RDS创建数据库实例的存储卷快照，备份整个数据库实例，而不仅仅是单个数据库。</li>
-<li>RDS提供了两种不同的自动和手动方法来备份数据库实例：</li>
-</ul>
-<h2 id="Automated-backups"><a href="#Automated-backups" class="headerlink" title="Automated backups"></a>Automated backups</h2><ul>
-<li>将自动创建并保留数据库实例的备份</li>
-<li>默认情况下，为新数据库实例启用自动备份</li>
-<li>自动备份在每日用户可配置的时间段内发生，称为首选备份窗口<ul>
-<li>如果在创建数据库实例时未指定首选备份窗口，则RDS会分配默认的30分钟备份窗口，该窗口是从每个区域的8小时时间块中随机选择的</li>
-<li>对备份窗口的更改会立即生效</li>
-<li>备份窗口不能与数据库实例的每周维护窗口重叠</li>
-</ul>
-</li>
-<li>创建数据库实例时设置备份保留期。如果未设置备份保留期，则在使用 Amazon RDS API 或 AWS CLI 创建数据库实例时，默认备份保留期为一天。如果使用控制台创建数据库实例，默认备份保留期为七天。创建数据库实例后，可以修改备份保留期。可以将备份保留期设置为在 0 到 35 天之间。要禁用自动备份，请将备份保留期设置为 0</li>
-<li>手动快照限制 (每个区域 100 个) 不适用于自动备份</li>
-<li>如果更改备份保留期，则会立即发生中断</li>
-<li>RDS将周期性数据备份与事务日志结合使用，以便在保留期内将数据库实例恢复到任何秒，直到LatestRestorableTime（通常直到最后几分钟）。</li>
-<li>在备份窗口期间，<ul>
-<li>对于单个AZ实例，可能会在备份过程初始化（通常在几秒钟内）时暂时暂停存储I / O，并且可能会遇到短暂的高延迟时间。</li>
-<li>对于多可用区数据库部署，由于备份是从备用实例获取的，因此没有I / O暂停</li>
-</ul>
-</li>
-<li>自动数据库快照删除<ul>
-<li>保留期限到期</li>
-<li>数据库实例的自动数据库快照已禁用</li>
-<li>数据库实例已删除</li>
-</ul>
-</li>
-<li>删除数据库实例时<ul>
-<li>删除后可以创建最终的数据库快照; 可用于在以后恢复已删除的数据库实例</li>
-<li>RDS保留最终用户创建的数据库快照以及所有其他手动创建的数据库快照</li>
-</ul>
-</li>
-<li>所有自动备份都将被删除，无法恢复</li>
-</ul>
-<h2 id="Point-In-Time-Recovery"><a href="#Point-In-Time-Recovery" class="headerlink" title="Point-In-Time Recovery"></a>Point-In-Time Recovery</h2><ul>
-<li>除了每日自动备份之外，RDS还存档数据库更改日志。 这样可以将数据库恢复到备份保留期间的任何时间点，直到数据库使用的最后五分钟。</li>
-<li>禁用自动备份还会禁用时间点恢复</li>
-<li>RDS存储数据的多个副本，但对于单可用区数据库实例，这些副本存储在单个可用区中</li>
-<li>如果出于任何原因，单可用区数据库实例变得不可用，则可以使用时间点恢复来启动具有最新可恢复数据的新数据库实例</li>
-</ul>
-<h2 id="用户自定义数据库快照"><a href="#用户自定义数据库快照" class="headerlink" title="用户自定义数据库快照"></a>用户自定义数据库快照</h2><ul>
-<li>手动数据库快照是用户启动的备份，可以将数据库实例备份到已知状态，并可以随时还原到该特定状态。</li>
-<li>RDS会保留所有手动数据库快照，直到明确删除</li>
-</ul>
-<h2 id="创建数据库快照"><a href="#创建数据库快照" class="headerlink" title="创建数据库快照"></a>创建数据库快照</h2><ul>
-<li>建数据库实例的存储卷快照，并备份整个数据库实例而不仅仅是单个数据库</li>
-<li>数据库快照可以根据需要在已知状态下备份数据库实例，然后可以随时将其还原到该特定状态</li>
-<li>保留数据库快照，直到明确删除</li>
-<li>在单可用区数据库实例上创建数据库快照会导致短暂的I / O挂起，通常持续时间不会超过几分钟</li>
-<li>由于备份是在备用实例上进行的，因此多可用区数据库实例不受此I / O挂起的影响</li>
-</ul>
-<h2 id="快照还原"><a href="#快照还原" class="headerlink" title="快照还原"></a>快照还原</h2><ul>
-<li>数据库实例可以在此保留期内恢复到任何特定时间，从而创建新的数据库实例</li>
-<li>从数据库快照还原来创建具有不同endpoint的新数据库实例</li>
-<li>RDS将周期性数据备份与事务日志结合使用，以便在保留期内将数据库实例恢复到任何秒，直到LatestRestorableTime（通常直到最后几分钟）</li>
-<li>在还原数据库实例时，默认安全组与还原的实例相关联。还原完成之后新数据库实例即变为可用状态，这时必须关联还原的源实例所用的所有自定义安全组</li>
-<li>建议保留所创建的数据库快照的参数组，这样还原的数据库实例就可以与正确的参数组关联。可以在还原数据库实例时指定参数组</li>
-<li>可以使用与源数据库快照不同的存储类型还原数据库实例。在这种情况下，由于将数据迁移到新存储类型所需的额外工作，恢复过程将变慢。从GP2到预配置IOPS</li>
-<li>有当数据库快照具有为新版本分配的所需存储时，才能使用不同版本的数据库引擎还原数据库实例，例如，从SQL Server Web Edition更改为SQL Server标准版，数据库快照必须已经过从具有至少200 GB分配存储的SQL Server数据库实例创建，该实例是SQL Server标准版的最小分配存储</li>
-</ul>
-<h2 id="DB-Snapshot-Copy"><a href="#DB-Snapshot-Copy" class="headerlink" title="DB Snapshot Copy"></a>DB Snapshot Copy</h2><ul>
-<li>可以复制自动或手动数据库快照</li>
-<li>复制自动数据库快照以在同一AWS区域中创建手动数据库快照。手动数据库快照不会自动删除，可以无限期保留。</li>
-<li>将自动或手动数据库快照从一个区域复制到另一个区域。通过将数据库快照复制到另一个区域，将创建一个保留在该区域中的手动数据库快照</li>
-<li>手动数据库快照可以与其他AWS账户共享，并复制其他AWS账户共享数据库快照</li>
-<li>快照加密<ul>
-<li>可以复制已使用 AWS KMS 加密密钥加密的快照</li>
-<li>复制加密的快照，则此快照的副本也必须加密。如果在相同 AWS 区域内复制加密的快照，可使用原始快照的 KMS 加密密钥来加密此副本，也可指定不同的 KMS 加密密钥。如果跨区域复制加密的快照，由于 KMS 密钥是区域特定的，所以不能使用与源快照相同的 KMS 加密密钥</li>
-</ul>
-</li>
-</ul>
-<h2 id="快照共享"><a href="#快照共享" class="headerlink" title="快照共享"></a>快照共享</h2><ul>
-<li>手动数据库快照或数据库集群快照可与最多20个其他AWS账户共享</li>
-<li>与其他AWS账户共享的手动快照可以复制快照，或从该快照还原数据库实例或数据库集群</li>
-<li>手动快照也可以作为公共共享，这使快照可供所有AWS账户使用。将快照共享为公共时应小心，以便不包含任何私人信息</li>
-<li>共享快照可以复制到另一个区域</li>
-<li>与其他 AWS 账户共享手动快照时存在以下限制：<ul>
-<li>当使用 AWS Command Line Interface (AWS CLI) 或 Amazon RDS API 从共享的快照还原数据库实例时，必须指定共享快照的 Amazon 资源名称 (ARN) 作为快照标识符</li>
-<li>无法共享使用了包含永久或持续性选项的选项组的数据库快照</li>
-<li>不能从选项组中移除永久选项。若为数据库实例指定了包含持续性选项的选项组，则不能从数据库实例中删除这些选项组</li>
-</ul>
-</li>
-<li>可共享使用 AES-256 加密算法“静态”加密的数据库快照</li>
-<li>用户可以访问用于加密数据库快照的AWS Key Management Service（AWS KMS）加密密钥，则用户只能复制加密的数据库快照</li>
-<li>通过将其他帐户添加到KMS密钥策略，可以与其他AWS账户共享AWS KMS加密密钥</li>
-<li>但是，在共享加密的数据库快照之前，必须首先通过添加任何帐户来共享KMS密钥策略以共享快照</li>
-</ul>
-<p>#RDS Security</p>
-<ul>
-<li>在基于 Amazon VPC 服务的 Virtual Private Cloud (VPC) 中运行数据库实例以获得可能最大的网络访问控制</li>
-<li>使用 AWS Identity and Access Management (IAM) 策略分配决定谁可以管理 Amazon RDS 资源的权限</li>
-<li>使用安全组可以控制可连接到数据库实例上的数据库的 IP 地址或 Amazon EC2 实例</li>
-<li>使用数据库实例的安全套接字层 (SSL) 连接</li>
-<li>使用 Amazon RDS 加密保护静态数据库实例和快照</li>
-<li>对 Oracle 数据库实例使用网络加密和透明数据加密</li>
-<li>使用数据库引擎的安全功能控制可以登录数据库实例上的数据库的人员</li>
-</ul>
-<h2 id="RDS-Authentication-and-Access-Control"><a href="#RDS-Authentication-and-Access-Control" class="headerlink" title="RDS Authentication and Access Control"></a>RDS Authentication and Access Control</h2><ul>
-<li>IAM可用于控制每个用户有权调用的RDS操作</li>
-</ul>
-<h2 id="Encrypting-RDS-Resources"><a href="#Encrypting-RDS-Resources" class="headerlink" title="Encrypting RDS Resources"></a>Encrypting RDS Resources</h2><ul>
-<li>使用行业标准AES-256加密算法来加密承载RDS实例的服务器上的数据</li>
-<li>在加密数据后，Amazon RDS 将以透明方式处理访问的身份验证和数据的解密，并且对性能产生的影响最小。无需修改数据库客户端应用程序来使用加密</li>
-<li>静态数据加密<ul>
-<li>可以在RDS实例上启用以加密底层存储</li>
-<li>加密密钥由KMS管理</li>
-<li>只能在实例创建期间启用</li>
-<li>启用后，无法更改加密密钥</li>
-<li>如果密钥丢失，则只能从备份中恢复数据库</li>
-</ul>
-</li>
-<li>为RDS实例启用加密后，<ul>
-<li>日志已加密</li>
-<li>快照已加密</li>
-<li>自动备份已加密</li>
-<li>只读副本是加密的</li>
-</ul>
-</li>
-<li>跨区域副本和快照副本不起作用，因为密钥仅在单个区域中可用</li>
-<li>快照注意事项<ul>
-<li>可以复制使用KMS加密密钥加密的数据库快照</li>
-<li>复制加密的数据库快照会生成数据库快照的加密副本</li>
-<li>复制时，可以使用与原始数据库快照相同的KMS加密密钥加密数据库快照，也可以使用其他KMS加密密钥加密数据库快照的副本。</li>
-<li>可以将未加密的数据库快照复制到加密快照，这是一种向以前未加密的数据库实例添加加密的快速方法。</li>
-<li>加密快照只能还原到加密的数据库实例</li>
-<li>如果从未加密的数据库集群快照还原时指定了KMS加密密钥，则使用指定的KMS加密密钥对还原的数据库集群进行加密</li>
-<li>复制从另一个AWS账户共享的加密快照需要访问用于加密数据库快照的KMS加密密钥。</li>
-<li>由于KMS加密密钥特定于创建它们的区域，因此无法将加密快照复制到其他区域</li>
-</ul>
-</li>
-<li>透明数据加密<ul>
-<li>在将数据写入底层存储设备之前自动加密数据，并在从存储设备读取数据时进行解密</li>
-<li>Oracle和SQL Server支持</li>
-<li>Oracle需要KMS外部的密钥存储，并与CloudHSM集成</li>
-<li>SQL Server需要密钥，但由RDS管理</li>
-</ul>
-</li>
-</ul>
-<h2 id="使用-SSL-加密与数据库实例的连接"><a href="#使用-SSL-加密与数据库实例的连接" class="headerlink" title="使用 SSL 加密与数据库实例的连接"></a>使用 SSL 加密与数据库实例的连接</h2><ul>
-<li>使用SSL加密连接，以便在应用程序和数据库实例之间传输数据</li>
-<li>当RDS配置实例时，Amazon RDS会创建SSL证书并在数据库实例上安装证书</li>
-<li>SSL证书由证书颁发机构签名。 SSL证书包括数据库实例端点作为SSL证书的公用名（CN）以防止欺骗攻击</li>
-<li>虽然SSL提供了安全性优势，但请注意，SSL加密是一项计算密集型操作，会增加数据库连接的延迟。</li>
-</ul>
-<h2 id="RDS-安全组"><a href="#RDS-安全组" class="headerlink" title="RDS 安全组"></a>RDS 安全组</h2><ul>
-<li>安全组控制流量进出数据库实例的访问权限</li>
-<li>VPC安全组的作用类似于控制对数据库实例的网络访问的防火墙</li>
-<li>可以配置VPC安全组并将其与数据库实例关联，以允许从IP地址范围，端口或EC2安全组进行访问</li>
-<li>数据库安全组默认为“拒绝所有”访问模式，客户必须专门授权网络入口</li>
-</ul>
-<h2 id="主账户权限"><a href="#主账户权限" class="headerlink" title="主账户权限"></a>主账户权限</h2><ul>
-<li>创建新数据库实例时，使用的默认主用户将获得该数据库实例的特定权限</li>
-<li>随后，可以创建具有权限的其他用户</li>
-</ul>
-<h2 id="事件通知"><a href="#事件通知" class="headerlink" title="事件通知"></a>事件通知</h2><ul>
-<li>可以为数据库实例上发生的重要事件配置事件通知</li>
-<li>RDS实例上可能发生的各种重要事件的通知，例如实例是否已关闭，备份是否已启动，是否发生故障转移，安全组是否已更改，或者存储空间是否低</li>
-</ul>
-<h1 id="RDS-Maintenance-amp-Upgrades"><a href="#RDS-Maintenance-amp-Upgrades" class="headerlink" title="RDS Maintenance &amp; Upgrades"></a>RDS Maintenance &amp; Upgrades</h1><p>当手动修改数据库实例时，可能会发生对数据库实例的更改。 数据库引擎版本已升级，或者当Amazon RDS对实例执行维护时</p>
-<h2 id="RDS-维护"><a href="#RDS-维护" class="headerlink" title="RDS 维护"></a>RDS 维护</h2><ul>
-<li>RDS会定期对Amazon RDS资源（例如数据库实例）执行维护，并且通常涉及对数据库实例的操作系统（OS）的更新</li>
-<li>维护项目也可以<ul>
-<li>在方便时手动应用于数据库实例</li>
-<li>或者等待Amazon RDS在定义的每周维护窗口期间启动的自动维护过程。</li>
-</ul>
-</li>
-<li>维护窗口仅确定挂起操作何时开始，但不限制这些操作的总执行时间。 维护操作无法保证在维护窗口结束之前完成，并且可以继续超过指定的结束时间</li>
-<li>可以在RDS控制台上和使用RDS API检查维护更新可用性。 如果有更新，可以<ul>
-<li>推迟维护项目</li>
-<li>立即应用维护项目</li>
-<li>安排它们在下一个定义的维护窗口期间启动</li>
-</ul>
-</li>
-<li>维护项目标记为<ul>
-<li>如果延期AWS将在下次执行更新时发送通知，则无法无限期延期</li>
-<li>可用且可以无限期延迟，更新不会应用于数据库实例</li>
-</ul>
-</li>
-<li>必需的补丁自动只适用于相关的安全性和可靠性，例如补丁计划。 这种修补很少发生（通常每隔几个月一次），很少需要维护窗口的一小部分。</li>
-<li>维护项目要求RDS的数据库实例在短时间内脱机。 需要数据库实例脱机的维护包括扩展计算操作，从开始到结束通常只需几分钟，并且需要操作系统或数据库修补。</li>
-<li>数据库实例的多可用区部署通过以下步骤减少了维护事件的影响：<ul>
-<li>在备用数据库上执行维护。</li>
-<li>将备用数据库提升为主数据库。</li>
-<li>对旧主服务器执行维护，这将成为新的主服务器。</li>
-</ul>
-</li>
-<li>在多可用区部署中修改数据库实例的数据库引擎时，RDS会同时升级主数据库实例和辅助数据库实例。 在这种情况下，升级期间将关闭整个多可用区部署的数据库引擎</li>
-</ul>
-<h2 id="OS-升级"><a href="#OS-升级" class="headerlink" title="OS 升级"></a>OS 升级</h2><ul>
-<li>升级到操作系统通常是出于安全问题，应该尽快完成。</li>
-<li>数据库实例上的操作系统更新可以方便的时候应用，也可以等待RDS启动的维护过程在定义的维护时段应用更新</li>
-<li>应用操作系统更新时，不会自动备份数据库实例，应在应用更新之前进行备份</li>
-</ul>
-<h2 id="DB-引擎升级"><a href="#DB-引擎升级" class="headerlink" title="DB 引擎升级"></a>DB 引擎升级</h2><ul>
-<li>当RDS支持新的数据库引擎版本时，可以升级数据库实例引擎版本</li>
-<li>数据库版本升级包括主要版本和次要版本升级</li>
-</ul>
-<h3 id="主要数据库版本升级"><a href="#主要数据库版本升级" class="headerlink" title="主要数据库版本升级"></a>主要数据库版本升级</h3><ul>
-<li>可以包含不向后兼容的更改</li>
-<li>RDS不会自动应用主要版本升级</li>
-<li>在将数据库实例应用于生产实例之前，应手动修改并彻底测试数据库实例</li>
-</ul>
-<h3 id="次要版本升级"><a href="#次要版本升级" class="headerlink" title="次要版本升级"></a>次要版本升级</h3><ul>
-<li>每个数据库引擎处理次要版本升级略有不同</li>
-<li>例如 RDS会自动将次要版本升级应用于运行PostgreSQL的数据库实例，但必须手动应用于运行Oracle的数据库实例</li>
-<li>AWS向论坛公告页面发布公告，并在升级数据库实例之前发送客户电子邮件通知</li>
-<li>AWS计划在一年中的特定时间进行升级，以帮助计划周围的升级，因为升级数据库引擎版本需要停机时间，即使对于多可用区实例也是如此</li>
-<li>RDS在升级过程中需要两个数据库快照。</li>
-<li>在进行任何升级更改之前，第一个数据库快照属于数据库实例。 如果升级失败，可以从快照还原以创建运行旧版本的数据库实例。</li>
-<li>升级完成后将执行第二个数据库快照。 升级完成后，无法将数据库引擎恢复为以前的版本。 要返回到先前版本，请还原用于创建新数据库实例的第一个数据库快照</li>
-<li>如果数据库实例正在使用读取复制，则必须先升级所有只读副本，然后再升级源实例</li>
-<li>如果数据库实例处于多可用区部署中，则主要副本和备用副本将同时升级并导致中断。 中断的时间因数据库引擎，版本和数据库实例的大小而异</li>
-</ul>
-<h2 id="RDS-维护窗口"><a href="#RDS-维护窗口" class="headerlink" title="RDS 维护窗口"></a>RDS 维护窗口</h2><ul>
-<li>每个数据库实例都定义了一个每周维护窗口，在此期间应用任何系统更改</li>
-<li>在请求或要求的情况下，维护窗口是控制何时发生数据库实例修改和软件修补的机会。</li>
-<li>如果为某一周安排了维护事件，则将在定义的30分钟维护时段内启动该事件</li>
-<li>维护事件大多在30分钟维护窗口期间完成，但较大的维护事件可能需要更多时间</li>
-<li>从每个区域的8小时时间块中随机选择30分钟的维护窗口。如果在创建数据库实例时未指定首选维护时段，则Amazon RDS会在一周中随机选择的某一天分配30分钟的维护时段</li>
-<li>在应用维护时，RDS将消耗数据库实例上的一些资源，从而最大限度地降低性能</li>
-<li>对于某些维护事件，可能需要多可用区故障转移才能完成维护更新</li>
-</ul>
-<h1 id="RDS-Monitoring-amp-Notification"><a href="#RDS-Monitoring-amp-Notification" class="headerlink" title="RDS Monitoring &amp; Notification"></a>RDS Monitoring &amp; Notification</h1><ul>
-<li>RDS与CloudWatch集成，并提供监控指标</li>
-<li>可以在警报更改状态时发送SNS消息的单个度量标准上创建CloudWatch警报</li>
-<li>每当发生任何RDS事件时，RDS也会提供SNS通知</li>
-</ul>
-<h2 id="CloudWatch-RDS-Monitoring"><a href="#CloudWatch-RDS-Monitoring" class="headerlink" title="CloudWatch RDS Monitoring"></a>CloudWatch RDS Monitoring</h2><ul>
-<li>可以使用CloudWatch监视RDS数据库实例，CloudWatch可以将RDS中的原始数据收集并处理为可读的近实时指标。</li>
-<li>统计信息记录为期两周，以便可以访问历史信息并更好地了解服务的执行情况。</li>
-<li>默认情况下，RDS指标数据会在1分钟内自动发送到Amazon CloudWatch</li>
-<li>CloudWatch RDS指标</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>指标</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>BinLogDiskUsage</td>
-<td>主节点上的二进制日志所占的磁盘空间大小。适用于 MySQL 只读副本。单位：字节</td>
-</tr>
-<tr>
-<td>BurstBalance</td>
-<td>可用的通用型 SSD (GP2) 突增存储桶 I/O 点数的百分比。单位：百分比</td>
-</tr>
-<tr>
-<td>CPUUtilization</td>
-<td>CPU 使用百分率。单位：百分比</td>
-</tr>
-<tr>
-<td>CPUCreditUsage</td>
-<td>[T2 实例] 实例为保持 CPU 使用率而花费的 CPU 积分数。单位：积分 (vCPU 分钟)</td>
-</tr>
-<tr>
-<td>CPUCreditBalance</td>
-<td>[T2 实例] 实例自启动后已累积获得的 CPU 积分数。单位：积分 (vCPU 分钟)</td>
-</tr>
-<tr>
-<td>DatabaseConnections</td>
-<td>使用中的数据库连接数。单位：计数</td>
-</tr>
-<tr>
-<td>DiskQueueDepth</td>
-<td>等待访问磁盘的未完成 IO（读取/写入请求）的数量。单位：计数</td>
-</tr>
-<tr>
-<td>FailedSQLServerAgentJobsCount</td>
-<td>过去 1 分钟内失败的 SQL Server 代理作业的数量。单位：计数/分钟</td>
-</tr>
-<tr>
-<td>FreeableMemory</td>
-<td>随机存取内存的可用大小。单位：字节</td>
-</tr>
-<tr>
-<td>FreeStorageSpace</td>
-<td>可用存储空间的大小。单位：字节</td>
-</tr>
-<tr>
-<td>MaximumUsedTransactionIDs</td>
-<td>已使用的最大事务 ID。适用于 PostgreSQL。单位：计数</td>
-</tr>
-<tr>
-<td>NetworkReceiveThroughput</td>
-<td>数据库实例的传入（接收）网络流量，包括用于监控和复制的客户数据库流量和 Amazon RDS 流量。单位：字节/秒</td>
-</tr>
-<tr>
-<td>NetworkTransmitThroughput</td>
-<td>数据库实例的传出（传输）网络流量，包括用于监控和复制的客户数据库流量和 Amazon RDS 流量。单位：字节/秒</td>
-</tr>
-<tr>
-<td>OldestReplicationSlotLag</td>
-<td>在接收 WAL 数据方面最滞后的副本的滞后大小。适用于 PostgreSQL。单位：MB</td>
-</tr>
-<tr>
-<td>ReadIOPS</td>
-<td>每秒平均磁盘读取 I/O 操作数。单位：计数/秒</td>
-</tr>
-<tr>
-<td>ReadLatency</td>
-<td>每个磁盘 I/O 操作所需的平均时间。单位：秒</td>
-</tr>
-<tr>
-<td>ReadThroughput</td>
-<td>每秒从磁盘读取的平均字节数。单位：字节/秒</td>
-</tr>
-<tr>
-<td>ReplicaLag</td>
-<td>只读副本数据库实例滞后于源数据库实例的时间量。适用于 MySQL、MariaDB 和 PostgreSQL 只读副本。单位：秒</td>
-</tr>
-<tr>
-<td>ReplicationSlotDiskUsage</td>
-<td>复制插槽文件使用的磁盘空间。适用于 PostgreSQL。单位：MB</td>
-</tr>
-<tr>
-<td>SwapUsage</td>
-<td>数据库实例上使用的交换空间的大小。此指标对于 SQL Server 不可用。单位：字节</td>
-</tr>
-<tr>
-<td>TransactionLogsDiskUsage</td>
-<td>事务日志使用的磁盘空间。适用于 PostgreSQL。单位：MB</td>
-</tr>
-<tr>
-<td>TransactionLogsGeneration</td>
-<td>每秒生成的事务日志的大小。适用于 PostgreSQL。单位：字节/秒</td>
-</tr>
-<tr>
-<td>WriteIOPS</td>
-<td>每秒平均磁盘写入 I/O 操作数。单位：计数/秒</td>
-</tr>
-<tr>
-<td>WriteLatency</td>
-<td>每个磁盘 I/O 操作所需的平均时间。单位：秒</td>
-</tr>
-<tr>
-<td>WriteThroughput</td>
-<td>每秒写入磁盘的平均字节数。单位：字节/秒</td>
-</tr>
-</tbody></table>
-<h2 id="RDS-Event-Notification"><a href="#RDS-Event-Notification" class="headerlink" title="RDS Event Notification"></a>RDS Event Notification</h2><ul>
-<li>RDS使用SNS在发生RDS事件时提供通知</li>
-<li>RDS将事件分组，可以订阅这些类别，以便在发生该类别中的事件时发送通知。</li>
-<li>可以订阅数据库实例，数据库集群，数据库快照，数据库集群快照，数据库安全组或数据库参数组的事件类别</li>
-<li>事件通知将发送到订阅创建期间提供的电子邮件地址</li>
-<li>通过在RDS控制台中将Enabled单选按钮设置为No或使用CLI或RDS API将Enabled参数设置为false，可以轻松关闭订阅而不删除订阅</li>
-</ul>
-<h1 id="RDS-最佳实践"><a href="#RDS-最佳实践" class="headerlink" title="RDS 最佳实践"></a>RDS 最佳实践</h1><h2 id="Amazon-RDS-基本操作指导"><a href="#Amazon-RDS-基本操作指导" class="headerlink" title="Amazon RDS 基本操作指导"></a>Amazon RDS 基本操作指导</h2><ul>
-<li>Monitoring<ul>
-<li>监控内存、CPU 和存储空间使用情况。可以将 Amazon CloudWatch 设置为在使用模式发生变化或接近部署容量时向发送通知，以保持系统性能和可用性</li>
-</ul>
-</li>
-<li>Scaling <ul>
-<li>当接近存储容量限制时，可以向上扩展数据库实例</li>
-<li>存储和内存中应含有一些缓冲区，以适应应用程序的意外增大需求</li>
-</ul>
-</li>
-<li>Backup<ul>
-<li>启用自动备份并设置备份时段，以在每天写入 IOPS 较低的时段进行</li>
-</ul>
-</li>
-<li>在MySQL数据库实例上，<ul>
-<li>不要创建使用自动配置的IOPS或1000个表使用标准存储超过10000个表。故障转移或数据库崩溃后，大量表将显着增加数据库恢复时间。 如果需要创建多于建议的表，请将innodb_file_per_table参数设置为0。</li>
-<li>避免数据库中的表变得过大。 预配置存储限制将MySQL表文件的最大大小限制为6 TB。 而是对大表进行分区，以使文件大小远低于6 TB的限制。 这还可以提高性能和恢复时间。</li>
-</ul>
-</li>
-<li>Performance</li>
-<li>数据库工作负载需要的 I/O 超过配置，那么出现故障转移或数据库故障后，恢复的速度将会变缓<ul>
-<li>迁移到具有高 I/O 容量的数据库实例类</li>
-<li>从标准存储转换为通用存储或配置的 IOPS 存储，具体取决于需要增加的量</li>
-<li>已在使用配置的 IOPS 存储，请额外配置吞吐量容量</li>
-</ul>
-</li>
-<li>多可用区和故障转移<ul>
-<li>在所有可用区中部署应用程序，如果AZ发生故障，其他AZ中的应用程序仍可用</li>
-<li>使用Amazon RDS数据库事件来监控故障转移</li>
-<li>如果客户端应用程序正在缓存数据库实例的DNS数据，则设置小于30秒的TTL。 由于数据库实例的基础IP地址可能在故障转移后发生更改，因此如果应用程序尝试连接到不再使用的IP地址，则将DNS数据缓存较长时间可能会导致连接失败</li>
-<li>多可用区要求启用事务日志记录功能。 不要使用简单恢复模式，脱机模式或只读模式等功能来转换事务日志记录</li>
-<li>缩短故障转移时间<ol>
-<li>确保工作负载分配了足够的预配置IOPS。 I / O不足可能会延长故障转移时间。 数据库恢复需要I / O</li>
-<li>使用较小的交易。 数据库恢复依赖于事务，因此将大型事务分解为多个较小的事务以缩短故障转移时间</li>
-</ol>
-</li>
-<li>测试数据库实例的故障转移，以了解进程对用例的持续时间，并确保访问数据库实例的应用程序可以在故障转移后自动连接到新的数据库实例</li>
-</ul>
-</li>
-</ul>
-<h2 id="数据库实例-RAM-建议"><a href="#数据库实例-RAM-建议" class="headerlink" title="数据库实例 RAM 建议"></a>数据库实例 RAM 建议</h2><ul>
-<li>RDS 性能最佳实践是分配足够的 RAM，以便工作集几乎完全驻留在内存中</li>
-<li>ReadIOPS 的值应是一个较小且稳定的值</li>
-<li>要确定工作集是否几乎完全位于内存中，请在数据库实例加载期间检查 ReadIOPS 指标 (使用 Amazon CloudWatch)</li>
-<li>如果将数据库实例类向上扩展—到带更多 RAM 的类—则会导致 ReadIOPS 大幅降低，从而使工作集不能几乎完全位于内存中。继续向上扩展直至 ReadIOPS 不再在扩展操作后大幅降低，否则 ReadIOPS 将降低至非常小的数量</li>
-</ul>
-<h2 id="RDS安全实践"><a href="#RDS安全实践" class="headerlink" title="RDS安全实践"></a>RDS安全实践</h2><ul>
-<li>不要使用AWS根凭据来管理Amazon RDS资源; 应该为每个人创建IAM用户</li>
-<li>为每个用户授予执行其职责所需的最小权限集</li>
-<li>使用IAM组有效管理多个用户的权限</li>
-<li>定期轮换IAM凭据</li>
-</ul>
-<h2 id="使用增强监控操作系统"><a href="#使用增强监控操作系统" class="headerlink" title="使用增强监控操作系统"></a>使用增强监控操作系统</h2><ul>
-<li>Amazon RDS为数据库实例运行的操作系统（OS）提供实时指标</li>
-</ul>
-<h2 id="使用指标确定性能问题"><a href="#使用指标确定性能问题" class="headerlink" title="使用指标确定性能问题"></a>使用指标确定性能问题</h2><ul>
-<li>要确定资源不足和其他常见瓶颈导致的性能问题，可以监控可用于 Amazon RDS 数据库实例的指标</li>
-<li>应定期监控性能指标以查看各种时间范围内的平均值、最大值和最小值</li>
-<li>可以针对特定指标阈值设置 Amazon CloudWatch 警报，以便在达到这些阈值时发出警报</li>
-<li>数据库实例具有许多不同类别的度量标准，包括CPU，内存，磁盘空间，IOPS，数据库连接和网络流量，以及如何确定可接受的值取决于度量标准。</li>
-<li>提高数据库实例性能的最佳方法之一是调整最常用和最耗费资源的查询，以降低运行成本</li>
-</ul>
-<h2 id="Recovery"><a href="#Recovery" class="headerlink" title="Recovery"></a>Recovery</h2><h3 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h3><ul>
-<li>InnoDB是Amazon RDS上MySQL数据库实例的推荐和支持的存储引擎。</li>
-<li>但是，如果需要强大的全文搜索功能，MyISAM的性能优于InnoDB。</li>
-<li>Amazon RDS for MySQL的时间点恢复和快照恢复功能需要可崩溃恢复的存储引擎，并且仅支持InnoDB存储引擎。</li>
-<li>尽管MySQL支持具有不同功能的多个存储引擎，但并非所有存储引擎都针对崩溃恢复和数据持久性进行了优化</li>
-<li>MyISAM存储引擎不支持可靠的崩溃恢复，并且可能会阻止时间点还原或快照还原按预期工作，这可能会导致在崩溃后重新启动MySQL时丢失或损坏数据</li>
-</ul>
-<h3 id="MariaDB"><a href="#MariaDB" class="headerlink" title="MariaDB"></a>MariaDB</h3><ul>
-<li>XtraDB是Amazon RDS上MariaDB数据库实例的推荐和支持的存储引擎</li>
-<li>Amazon RDS for MariaDB的时间点恢复和快照恢复功能需要可崩溃恢复的存储引擎，并且仅支持XtraDB存储引擎</li>
-<li>尽管 Aria 是 MyISAM 的崩溃安全替代，但它仍可能使时间点还原或快照还原无法按预期工作。这可能导致在崩溃后重新启动 MariaDB 时丢失或损坏数据</li>
-</ul>
-<h1 id="Refer"><a href="#Refer" class="headerlink" title="Refer"></a>Refer</h1><ul>
-<li>Amazon Relational Database Service user guide</li>
-<li><a href="http://jayendrapatil.com/aws-relational-database-service-rds/" target="_blank" rel="noopener">http://jayendrapatil.com/aws-relational-database-service-rds/</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -5598,7 +5474,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -5620,7 +5496,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

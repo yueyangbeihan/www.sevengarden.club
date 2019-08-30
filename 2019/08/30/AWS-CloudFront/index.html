@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Cloud Front,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="CloudFront overview Amazon CloudFront 是一个 Web 服务，它加快将静态和动态 Web 内容（如 .html、.css、.js 和图像文件）分发到用户的速度 CloudFront 通过全球数据中心网络传输内容，这些数据中心称为边缘站点。当用户请求用 CloudFront 提供的内容时，用户被路由到提供最低延迟 (时间延迟) 的边缘站点，从而以尽可能最佳的性能传">
+<meta name="keywords" content="Cloud Front">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS CloudFront">
+<meta property="og:url" content="http://sevengarden.club/2019/08/30/AWS-CloudFront/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="CloudFront overview Amazon CloudFront 是一个 Web 服务，它加快将静态和动态 Web 内容（如 .html、.css、.js 和图像文件）分发到用户的速度 CloudFront 通过全球数据中心网络传输内容，这些数据中心称为边缘站点。当用户请求用 CloudFront 提供的内容时，用户被路由到提供最低延迟 (时间延迟) 的边缘站点，从而以尽可能最佳的性能传">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2019/08/30/d2QlFRyZ4nkm6c8.png">
+<meta property="og:updated_time" content="2019-08-30T11:51:55.813Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWS CloudFront">
+<meta name="twitter:description" content="CloudFront overview Amazon CloudFront 是一个 Web 服务，它加快将静态和动态 Web 内容（如 .html、.css、.js 和图像文件）分发到用户的速度 CloudFront 通过全球数据中心网络传输内容，这些数据中心称为边缘站点。当用户请求用 CloudFront 提供的内容时，用户被路由到提供最低延迟 (时间延迟) 的边缘站点，从而以尽可能最佳的性能传">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/30/d2QlFRyZ4nkm6c8.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sevengarden.club/2019/08/30/AWS-CloudFront/">
+
+
+
+
+
+  <title>AWS CloudFront | 岳阳北寒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">岳阳北寒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-somrthing">
+          <a href="/有料" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            somrthing
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/30/AWS-CloudFront/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AWS CloudFront</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-30T19:44:53+08:00">
+                2019-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="CloudFront-overview"><a href="#CloudFront-overview" class="headerlink" title="CloudFront overview"></a>CloudFront overview</h2><ul>
+<li>Amazon CloudFront 是一个 Web 服务，它加快将静态和动态 Web 内容（如 .html、.css、.js 和图像文件）分发到用户的速度</li>
+<li>CloudFront 通过全球数据中心网络传输内容，这些数据中心称为边缘站点。当用户请求用 CloudFront 提供的内容时，用户被路由到提供最低延迟 (时间延迟) 的边缘站点，从而以尽可能最佳的性能传送内容</li>
+<li>CloudFront通过将每个用户请求路由到最能为内容提供服务的边缘位置来加速内容的分发，从而提供最低的延迟</li>
+<li>CloudFront可显着减少用户请求必须通过的网络跃点数，从而有助于提高性能，提供更低的延迟和更高的数据传输速率</li>
+<li>CloudFront是分发经常访问的静态内容的最好选择，这些内容受益于边缘交付 - 如流行的网站图像，视频，媒体文件或软件下载</li>
+</ul>
+<h2 id="CloudFront-Benefits"><a href="#CloudFront-Benefits" class="headerlink" title="CloudFront Benefits"></a>CloudFront Benefits</h2><ul>
+<li>CloudFront消除了在互联网上多个站点中进行缓存服务器网络的费用和复杂性，以及过度配置容量的需要，以便在潜在的流量爆发中也能提供服务</li>
+<li>提供数据更高的可靠性和可用性，对象的副本保存在世界各地的边缘位置</li>
+<li>CloudFront与源服务器保持持久连接，以便可以尽快从源服务器获取这些文件</li>
+<li>在诸如多个用户同时在边缘位置同时获取相同源文件请求中，折叠请求次数，减少对源站点的负载</li>
+<li>CloudFront与AWS WAF集成，后者一种web应用程序防火墙，允许通过基于IP地址，HTTP标头和自定义URL字符串配置的规则来保护web应用</li>
+</ul>
+<h2 id="Configuration-amp-Content-Delivery"><a href="#Configuration-amp-Content-Delivery" class="headerlink" title="Configuration &amp; Content Delivery"></a>Configuration &amp; Content Delivery</h2><ul>
+<li>Configuration<ol>
+<li>指定源服务器以获取要分发的文件。源服务器将存储对象的原始最终版本。如果通过 HTTP 提供内容，源服务器将为 Amazon S3 存储桶或 HTTP 服务器；使用 Adobe Media Server RTMP 协议按需分发媒体文件，则源服务器始终为 Amazon S3 存储桶</li>
+<li>添加/上载到源服务器上的文件请使用公共读取权限或限制性OAI权限</li>
+<li>创建一个 CloudFront 分配，在用户通过网站或应用程序请求文件时，这会指示 CloudFront 从哪些源服务器中获取文件</li>
+<li>CloudFront 将分配的配置（而不是的内容）发送到它的所有边缘站点，边缘站点是位于地理位置分散的数据中心（CloudFront 在其中缓存对象的副本）的服务器集合</li>
+<li>网站可与CloudFront提供的域名或自定义备用域名一起使用</li>
+<li>Origin服务器可以配置为限制访问协议，缓存行为，向文件添加标头以添加TTL或到期时间</li>
+</ol>
+</li>
+<li>Content delivery to users<ol>
+<li>当用户访问网站时，DNS将请求路由指向到CloudFront边缘站点，该位置可以最低的延迟响应用户对网站文件或对象的访问</li>
+<li>如果请求对象存在于edge 位置缓存中，则cloudfront会立即返回该对象</li>
+<li>如果请求对象不在edge位置缓存中，则cloudfront会从origin服务器请求对象，并在它开始接收数据事就返回给用户</li>
+<li>当对象到达其TTL值时，对于任何新请求，cloudfront会向origin服务器检查任何新版本，若有则更新，若没有则继续当前版本</li>
+</ol>
+</li>
+</ul>
+<h2 id="Delivery-Methods"><a href="#Delivery-Methods" class="headerlink" title="Delivery Methods"></a>Delivery Methods</h2><h3 id="Web-分发"><a href="#Web-分发" class="headerlink" title="Web 分发"></a>Web 分发</h3><ul>
+<li>支持静态或动态内容，例如使用HTTP或HTTPS的html、css、js、图像等</li>
+<li>多媒体内容支持HLS或渐进式下载使用<ul>
+<li>对于按需流式传输，可以使用 CloudFront 以常见格式（如 MPEG DASH、Apple HLS、Microsoft 平滑流和 CMAF）将内容流式传输到任何设备。</li>
+<li>对于广播实时流，可以在边缘站点缓存媒体片段，以便将按正确顺序传输片段的清单文件的多个请求组合起来，从而减小源服务器的负载</li>
+</ul>
+</li>
+<li>只是实时活动内容，如会议、音乐会、演唱会等。对于实时数据流，可以使用AWS Cloudformation堆栈自动创建分发</li>
+<li>源站可以是S3或HTTP服务器，如web server或ELB</li>
+</ul>
+<h3 id="RTMP分发"><a href="#RTMP分发" class="headerlink" title="RTMP分发"></a>RTMP分发</h3><ul>
+<li>支持使用Adobe Media Server和Adobe实时消息传递协议（RTMP）传输媒体文件</li>
+<li>必须使用S3作为源站</li>
+<li>使用cloudfront流逝传输媒体文件，需要一下支持<ul>
+<li>媒体文件</li>
+<li>媒体播放器，JW Player，Flowplayer或Adobe Flash</li>
+</ul>
+</li>
+<li>最终用户使用提供的媒体播放器查看媒体文件，而不是本地安装的播放器</li>
+<li>用户使用流逝传输媒体文件时，一边播放一遍下载</li>
+<li>媒体文件并不存放于本地存储系统上</li>
+<li>需要创建两个cloudfront分配，媒体播放器的web分发和媒体文件的RMTP分发</li>
+<li>媒体播放器和媒体文件可以存储在同一个源S3或不同bucket中</li>
+</ul>
+<h3 id="源"><a href="#源" class="headerlink" title="源"></a>源</h3><ul>
+<li>源站可以是S3或者HTTP服务器</li>
+<li>HTTP服务器作为源站，需要映射其资源的域名，且文件必须是公共可读的</li>
+<li>对于使用S3 作为源站，使用bucket地址或静态网址端点地址，文件需要公开读取或OAI受限保护</li>
+<li>可以使用Origin Access Identity配置源限制访问（仅限S3），以防止直接访问S3对象</li>
+<li>每个存储同，支持分配多个源，并将其用户请求分配到不同的缓存规则上。缓存行为中的路径模式决定哪些请求路由到与缓存行为关联的源(S3 bucket)</li>
+</ul>
+<h2 id="Cache-behavior"><a href="#Cache-behavior" class="headerlink" title="Cache behavior"></a>Cache behavior</h2><p>缓存行为为网站上文件的特定 URL 路径模式配置各种 CloudFront 功能</p>
+<ul>
+<li>路径模式。</li>
+<li>如果为 CloudFront 分配配置了多个源，希望 CloudFront 将的请求转发到哪个源。</li>
+<li>是否将查询字符串转发到源。</li>
+<li>是否访问指定文件需要签名 URL。</li>
+<li>是否要求用户使用 HTTPS 访问那些文件。</li>
+<li>那些文件保留在 CloudFront 缓存中的最小时间长度，不管源添加到文件中的任何 Cache-Control 标头的值。</li>
+</ul>
+<h2 id="Vuewer-Protocol-Policy"><a href="#Vuewer-Protocol-Policy" class="headerlink" title="Vuewer Protocol Policy"></a>Vuewer Protocol Policy</h2><blockquote>
+<p>可以配置查看器协议策略以定义允许的访问协议。 可以是HTTP和HTTPS，也可以是仅HTTPS或HTTP重定向到HTTPS</p>
+</blockquote>
+<h3 id="HTTPS-connection"><a href="#HTTPS-connection" class="headerlink" title="HTTPS connection"></a>HTTPS connection</h3><ul>
+<li>在CloudFront和Viewers之间，可以将缓存分发配置为允许HTTP或HTTPS请求，或仅使用HTTPS，或将所有HTTP请求重定向到HTTPS</li>
+<li>在CloudFront和Origin之间，可以将缓存分布配置为要求CloudFront使用HTTPS从源中提取对象，或者CloudFront使用查看器用于请求对象的协议。</li>
+<li>S3 作为源站<ul>
+<li>对于网站，协议必须是HTTP，因为不支持HTTPS</li>
+<li>对于S3存储桶，默认的Origin协议策略是Match Viewer，无法更改。 因此，当CloudFront配置为在查看器和CloudFront之间需要HTTPS时，它会自动使用HTTPS与S3通信。</li>
+</ul>
+</li>
+<li>通过使用以下方法，还可以将CloudFront配置为使用HTTPS处理备用域名： <ul>
+<li>使用专用IP地址提供HTTPS请求</li>
+<li>CloudFront将备用域名与专用IP地址相关联，并且证书与IP地址关联。 当从DNS服务器收到IP地址的请求时，</li>
+<li>CloudFront使用IP地址标识分发和SSL / TLS证书以返回给查看者</li>
+<li>无论用户使用何种浏览器或其他查看器，此方法都适用于每个HTTPS请求。</li>
+<li>使用专用IP地址会产生额外的每月费用</li>
+</ul>
+</li>
+<li>使用SNI提供HTTPS请求<ul>
+<li>SNI自定义SSL依赖于TLS协议的SNI扩展，它允许通过包含主机名在同一IP地址上提供多个域</li>
+<li>使用SNI方法，CloudFront将IP地址与备用域名相关联，但IP地址不是专用的</li>
+<li>CloudFront无法根据IP地址确定请求所针对的域，因为IP地址不是专用的 </li>
+<li>支持SNI的浏览器会自动从请求URL获取域名，并将其添加到请求标头中的新字段。</li>
+<li>当CloudFront从支持SNI的浏览器收到HTTPS请求时，它会在请求标头中找到域名，并使用适用的SSL / TLS证书响应该请求。</li>
+<li>Viewer和CloudFront执行SSL协商，CloudFront将请求的内容返回给查看器。</li>
+<li>较旧的浏览器不支持它</li>
+<li>除标准CloudFront数据传输和请求费用外，SNI Custom SSL无需额外费用</li>
+</ul>
+</li>
+<li>对于端到端HTTPS连接，需要在Viewers和CloudFront＆CloudFront和Origin之间应用证书，并满足以下要求<ul>
+<li>查看者和CloudFront之间的HTTPS<ul>
+<li>由受信任的证书颁发机构（CA）（如Comodo，DigiCert或Symantec）颁发的证书;</li>
+<li>由AWS Certificate Manager（ACM）提供的证书;</li>
+<li>自签名证书。</li>
+<li>CloudFront与自定义源之间的HTTPS</li>
+<li>如果源不是ELB负载平衡器，则证书必须由受信任的CA（如Comodo，DigiCert或Symantec）颁发。</li>
+<li>对于ELB负载平衡器，可以使用ACM提供的证书</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="允许的HTTP-方法"><a href="#允许的HTTP-方法" class="headerlink" title="允许的HTTP 方法"></a>允许的HTTP 方法</h3><ul>
+<li>CloudFront支持GET，HEAD，OPTIONS，PUT，POST，PATCH，DELETE来获取，添加，更新和删除对象，以及获取对象标头。</li>
+<li>GET，HEAD，OPTIONS方法仅使用CloudFront获取对象，对象标题或检索从源支持的选项列表</li>
+<li>POST，PUT操作也可以用于加速，例如PUT操作，从Web表单提交数据，这些数据直接代理回原始服务器</li>
+<li>CloudFront仅缓存对GET和HEAD请求以及（可选）OPTIONS请求的响应。 CloudFront不会缓存对PUT，POST，PATCH，DELETE请求方法的响应，并且这些请求将定向到源</li>
+<li>PUT，POST http方法也有助于加速内容上传，因为这些操作将被发送到源，例如S3通过CloudFront边缘位置，提高效率，减少延迟，并允许应用程序受益于CloudFront从边缘位置到源服务器维护的受监视的持久连接</li>
+</ul>
+<h3 id="优化缓存和可用性"><a href="#优化缓存和可用性" class="headerlink" title="优化缓存和可用性"></a>优化缓存和可用性</h3><ul>
+<li>控制cache max-age<ul>
+<li>要增加缓存命中率，可以将origin配置为向对象添加Cache-Control max-age指令。</li>
+<li>间隔越长，从原点检索的频率越低</li>
+</ul>
+</li>
+<li>针对查询字符串参数进行缓存<ul>
+<li>对于Web分发，可以将CloudFront配置为基于查询参数进行缓存</li>
+<li>缓存性能可以提高<ul>
+<li>将CloudFront配置为仅转发源将返回唯一对象的查询字符串。</li>
+<li>对于例如参数值使用相同的情况。 参数值A或a，即使返回的响应或对象相同，CloudFront也会将相同的请求缓存两次</li>
+<li>使用相同的参数顺序，例如 对于请求a = x＆b = y和b = y＆a = x，即使返回的响应或对象相同，CloudFront也会缓存相同的请求两次</li>
+<li>对于RTMP分发，当CloudFront从源服务器请求对象时，它会删除任何查询字符串参数。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>基于Cookie值的缓存<ul>
+<li>对于Web分发，可以将CloudFront配置为基于cookie值进行缓存。</li>
+<li>默认情况下，它在边缘位置缓存时不考虑cookie</li>
+<li>缓存性能可以通过以下提高<ul>
+<li>将 CloudFront 配置为仅转发指定的 Cookie 而不是转发所有 Cookie。对于配置 CloudFront 以转发到源的 Cookie，CloudFront 转发 Cookie 名称和值的所有组合，并分别缓存源返回的对象，即使这些对象完全相同。例如，如果请求包含2个包含3个可能值的cookie，则即使响应考虑了单个cookie，CloudFront也会缓存所有可能的组合，Cookie名称和值都区分大小写，因此最好坚持使用相同的大小写<ul>
+<li>为静态和动态内容创建单独的缓存行为，并将CloudFront配置为仅将Cookie转发到源，例如用于动态内容。对于css文件，cookie没有意义，因为对象不会随cookie值而改变</li>
+</ul>
+</li>
+<li>如果可能，为动态内容创建单独的缓存行为，对于每个用户，cookie值是唯一的（例如用户ID），动态内容根据较少数量的唯一值而变化，从而减少组合的数量</li>
+</ul>
+</li>
+<li>对于RTMP分发，无法配置CloudFront进行处理cookie<ul>
+<li>当CloudFront从源服务器请求对象时，它会在将请求转发到源之前删除所有cookie。 如果源返回任何cookie以及对象CloudFront在将对象返回给查看器之前删除它们。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>请求标头进行缓存<ul>
+<li>默认情况下，CloudFront在边缘位置缓存对象时不考虑标头。</li>
+<li>CloudFront配置为基于请求标头进行缓存，不会更改CloudFront转发的标头，只会更改CloudFront是否根据标头值缓存对象</li>
+<li>通过以下方式提高缓存性能<ul>
+<li>将 CloudFront 配置为仅基于指定标头进行转发和缓存，而不是基于所有标头转发和缓存</li>
+<li>尝试避免基于具有大量唯一值的请求标头进行缓存</li>
+<li>CloudFront配置为将所有标头转发到源，CloudFront不会缓存与此缓存行为关联的对象。 相反，它将每个请求发送到原点</li>
+<li>CloudFront基于标头值进行缓存，它不考虑标题名称的情况，但考虑标题值的情况</li>
+</ul>
+</li>
+<li>对于RTMP分发，无法将CloudFront配置为基于标头值进行缓存。</li>
+</ul>
+</li>
+</ul>
+<h3 id="对象缓存和过期"><a href="#对象缓存和过期" class="headerlink" title="对象缓存和过期"></a>对象缓存和过期</h3><ul>
+<li>对象到期时间即对象在从Origin再次获取之前保留在CloudFront缓存中的时间</li>
+<li>低过期时间有助于提供频繁更改的内容，长过期时间有助于提高性能并减少原始负载</li>
+<li>到期时间后，CloudFront会检查它是否仍具有最新版本</li>
+<li>到期时间后，CloudFront会检查它是否仍具有最新版本<ul>
+<li>如果缓存已具有最新版本，则origin返回304状态代码（未修改）。</li>
+<li>如果CloudFront缓存没有最新版本，则原点返回200状态代码（OK）和对象的最新版本</li>
+</ul>
+</li>
+<li>如果不经常请求边缘位置中的对象，CloudFront可能会逐出该对象，在其到期日期之前删除该对象，以便为最近请求的对象腾出空间。</li>
+<li>默认情况下，每个对象在24小时后自动过期</li>
+<li>对于Web分发，可以通过更改默认行为<ul>
+<li>对于整个路径模式，可以通过设置Minimum TTL，Maximum TTL和Default TTL值来配置缓存行为</li>
+<li>对于单个对象，可以将origin配置为向对象添加Cache-Control max-age或Cache-Control s-maxage指令或Expires头字段。</li>
+<li>AWS建议在Expires标头上使用Cache-Control max-age指令来控制对象缓存行为</li>
+<li>如果同时指定了Cache-Control max-age指令和Expires标头，则CloudFront仅使用<strong>Cache-Control max-age</strong>的值</li>
+<li>来自查看器的GET请求中的HTTP Cache-Control或Pragma标头字段不能用于强制CloudFront返回到对象的源服务器</li>
+<li>默认情况下，当原始返回HTTP 4xx或5xx状态代码时，CloudFront会将这些错误响应缓存五分钟，然后将该对象的下一个请求提交到原点以查看是否请求的对象可用</li>
+</ul>
+</li>
+<li>对于RTMP分发<ul>
+<li>可以将Cache-Control或Expires标头添加到对象，以更改CloudFront在将另一个请求转发到源之前将对象保留在边缓存中的时间。</li>
+<li>最短持续时间为3600秒（一小时）。如果指定较低的值，CloudFront将使用3600秒。  </li>
+</ul>
+</li>
+</ul>
+<h2 id="配置安全访问和限制对内容的访问"><a href="#配置安全访问和限制对内容的访问" class="headerlink" title="配置安全访问和限制对内容的访问"></a>配置安全访问和限制对内容的访问</h2><h3 id="提供私有内容"><a href="#提供私有内容" class="headerlink" title="提供私有内容"></a>提供私有内容</h3><ul>
+<li>可采用两种方式控制用户对私有内容的访问，如下图所示：<ul>
+<li>限制对 CloudFront 边缘缓存中的文件的访问</li>
+<li>通过执行下列操作之一，限制对源中文件的访问：<ul>
+<li>为 Amazon S3 存储桶（除非已将其配置为网站终端节点）设置源访问身份 (OAI)</li>
+<li>为私有 HTTP 服务器配置自定义标头或者将 Amazon S3 存储桶配置作为网站终端节点<br><img src="https://i.loli.net/2019/08/30/d2QlFRyZ4nkm6c8.png" alt="001.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>创建签名 URL 或签名 Cookie 以控制对文件的访问时，可以指定以下限制：<ul>
+<li>结束日期和时间，在此之后，URL 不再有效</li>
+<li>（可选）URL 生效的日期和时间</li>
+<li>（可选）可用于访问内容的 IP 地址或计算机的地址范围</li>
+</ul>
+</li>
+<li>选择保护 Amazon S3 存储桶中的内容，以便用户可以通过 CloudFront 访问内容，但无法使用 Amazon S3 URL 直接访问内容。这可防止其他人绕过 CloudFront 并使用 Amazon S3 URL 访问希望限制访问的内容。虽然此步骤未要求使用签名 URL，但我们建议使用。</li>
+<li>签名URL或签名Cookie可以使用HTTP服务器作为源，与CloudFront一起使用。 它要求内容可公开访问，并且应注意不要共享内容的直接URL</li>
+<li>源端限制可适用于<ul>
+<li>对于S3，使用Origin Access Identity仅使用Bucket策略或Object ACL授予CloudFront访问权限，以及删除任何其他访问权限</li>
+<li>对于HTTP服务器，可以通过CloudFront添加自定义标头，可以在Origin使用它来验证请求来自CloudFront</li>
+</ul>
+</li>
+</ul>
+<h3 id="可信签署人"><a href="#可信签署人" class="headerlink" title="可信签署人"></a>可信签署人</h3><ul>
+<li>要创建签名 URL 或签名 Cookie，至少需要一个具有有效 CloudFront 密钥对的 AWS 账户。该账户被称为可信签署人。</li>
+<li>只要将可信签署人的 AWS 账户 ID 添加到分配中，CloudFront 就会立即开始要求用户使用签名 URL 或签名 Cookie 访问文件</li>
+<li>创建签名 URL 或签名 Cookie 时，使用可信签署人的私有密钥来签署 URL 或 Cookie 的一部分。当某人请求限制的文件时，CloudFront 会比较 URL 或 Cookie 的已签名部分与未签名部分，以确认 URL 或 Cookie 未被篡改。CloudFront 还会验证 URL 或 Cookie 是否有效，例如是否未超过过期日期和时间</li>
+<li>指定可信签署人时，还会间接指定要求签名 URL 或签名 Cookie 的文件：<ul>
+<li>Web 分配 – 将可信签署人添加到缓存行为中。如果分配只有一个缓存行为，用户则必须使用签名 URL 或签名 Cookie 访问与该分配关联的任何文件。如果创建了多个缓存行为，并将可信签署人添加到某些缓存行为中而没有添加到其他缓存行为中，则可要求用户使用签名 URL 或签名 Cookie 访问某些文件而不是其他文件。</li>
+<li>RTMP 分配（仅签名 URL） – 将可信签署人添加到分配中。在将可信签署人添加到 RTMP 分配后，用户必须使用签名 URL 访问与该分配相关联的任何文件。</li>
+</ul>
+</li>
+<li>用于创建CloudFront签名URL或签名cookie的每个可信签署者AWS账户必须拥有自己的活动CloudFront密钥对，应该经常轮换</li>
+<li>每个缓存行为或RTMP分配最多可以分配5个可信签名者</li>
+</ul>
+<h3 id="签名URL-vs-签名cookie"><a href="#签名URL-vs-签名cookie" class="headerlink" title="签名URL vs 签名cookie"></a>签名URL vs 签名cookie</h3><ul>
+<li>在以下情况下使用签名 URL：<ul>
+<li>希望使用 RTMP 分配。RTMP 分配不支持签名 Cookie。</li>
+<li>希望限制对单个文件的访问，例如应用程序的安装程序下载。</li>
+<li>用户使用不支持 Cookie 的客户端 (例如，自定义 HTTP 客户端)。</li>
+</ul>
+</li>
+<li>在以下情况下使用签名 Cookie：<ul>
+<li>希望提供对多个限制文件的访问，例如，HLS 格式视频的所有文件或者网站订户区域中的所有文件。</li>
+<li>不希望更改当前 URL。</li>
+</ul>
+</li>
+</ul>
+<h3 id="标准策略-vs-自定义策略"><a href="#标准策略-vs-自定义策略" class="headerlink" title="标准策略 vs 自定义策略"></a>标准策略 vs 自定义策略</h3><ul>
+<li>创建签名 URL 时，需要编写 JSON 格式的策略声明，以指定对签名 URL 的限制，例如，URL 的有效期。可以使用标准策略或自定义策略。以下是标准策略和自定义策略的比较</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>描述</th>
+<th>标准策略</th>
+<th>自定义策略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>可对多个文件重复使用策略声明。要重复使用策略声明，必须在 Resource 对象中使用通配符。有关更多信息，请参阅 在使用自定义策略的签名 URL 的策略声明中指定的值。)</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可指定用户开始访问内容的日期和时间。</td>
+<td>否</td>
+<td>是（可选）</td>
+</tr>
+<tr>
+<td>可指定用户无法再访问内容的日期和时间。</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可指定能够访问内容的用户的 IP 地址或 IP 地址范围。</td>
+<td>否</td>
+<td>是（可选）</td>
+</tr>
+<tr>
+<td>签名 URL 包括策略的 Base64 编码版本，这会导致更长的 URL。</td>
+<td>否</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<ul>
+<li>CloudFront 何时检查签名 URL 中的过期日期和时间来确定该 URL 是否仍有效，取决于该 URL 是用于 Web 分配还是用于 RTMP 分配<ul>
+<li>Web 分配 – 在发出 HTTP 请求时，CloudFront 检查签名 URL 中的过期日期和时间。如果客户端刚好在过期时间之前开始下载大型文件，即使在下载过程中到了过期时间，该下载也应该完成。如果客户端使用 Range GET 来获取较小的文件，在过期时间到期后发生的任何 GET 请求将会失败。</li>
+<li>RTMP分配 - 播放事件开始时，CloudFront 检查签名 URL 中的过期时间。如果客户端在过期时间到期之前开始播放媒体文件，CloudFront 将允许播放整个媒体文件。然而，根据媒体播放器，暂停和重新开始可能触发另一个播放事件。跳到媒体文件中另一个位置将触发另一个播放事件。如果在过期时间到期后发生播放事件，CloudFront 不会提供媒体文件。</li>
+</ul>
+</li>
+</ul>
+<h3 id="提供压缩"><a href="#提供压缩" class="headerlink" title="提供压缩"></a>提供压缩</h3><ul>
+<li>将 CloudFront 配置为在查看器请求的请求标头中包含 Accept-Encoding: gzip 时自动压缩某些类型的文件，并提供压缩文件</li>
+<li>在压缩内容时，由于文件更小，因此下载速度更快，在某些情况下，大小不到原件的四分之一。—特别是对于 JavaScript 和 CSS 文件，更快的下载转化为向用户更快地提供网页。</li>
+<li>查看器请求必须在请求标头中包含 Accept-Encoding: gzip，否则，CloudFront 不会压缩请求的文件</li>
+<li>如果使用自定义或 Amazon S3 源，可以将源配置为使用或不使用 CloudFront 压缩功能压缩文件。源可以压缩 CloudFront 无法压缩的文件类型。</li>
+<li>如果源向 CloudFront 返回压缩文件，CloudFront 将根据 Content-Encoding 标头值检测到已压缩该文件，而不会再次压缩该文件。</li>
+<li>使用 CloudFront 压缩内容<ol>
+<li>创建或更新 CloudFront 分配，并配置 CloudFront 以压缩内容。</li>
+<li>查看器请求文件。查看器将 Accept-Encoding: gzip 标头添加到请求中。这表示查看器支持压缩的内容。</li>
+<li>在边缘站点，CloudFront 将在缓存中检查请求中引用的文件的压缩版本。</li>
+<li>如果压缩的文件已在缓存中，则 CloudFront 将文件返回到查看器并跳过剩余步骤。</li>
+<li>如果压缩文件没有位于缓存中，则 CloudFront 将请求转发到源服务器，它可以是 Amazon S3 存储桶或自定义源。</li>
+<li>源服务器将请求文件的未压缩版本返回到 CloudFront。</li>
+<li>CloudFront 确定文件是否可压缩：<ul>
+<li>文件必须是 CloudFront 可压缩的类型。</li>
+<li>文件大小必须介于 1000 和 10000000 字节之间。</li>
+<li>响应必须包含 Content-Length 标头，以便 CloudFront 可以确定文件大小是否在 CloudFront 压缩的范围内。如果缺少    </li>
+<li>Content-Length 标头，则 CloudFront 不会压缩文件。</li>
+<li>该响应不得包含 Content-Encoding 标头。</li>
+</ul>
+<ol start="8">
+<li>如果文件是可压缩的，则 CloudFront 将压缩文件，将压缩后的文件返回到查看器并将它添加到缓存中。</li>
+<li>查看器将解压缩文件。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="Distribution-Details"><a href="#Distribution-Details" class="headerlink" title="Distribution Details"></a>Distribution Details</h2><h3 id="替代域名（CNAME）"><a href="#替代域名（CNAME）" class="headerlink" title="替代域名（CNAME）"></a>替代域名（CNAME）</h3><ul>
+<li>默认情况下，CloudFront为分发分配域名，例如d111111abcdef8.cloudfront.net</li>
+<li>备用域名（也称为CNAME）可用于将自己的自定义域名用于指向对象的链接</li>
+<li>Web和RTMP分发都支持备用域名。</li>
+<li>CloudFront在域名开头支持*通配符，而不是单独指定子域。</li>
+<li>但是，通配符不能替换部分子域名，例如， * domain.example.com，或者不能替换域名中间的子域名，例如子域.*.example.com</li>
+</ul>
+<h3 id="限制内容的地理分配"><a href="#限制内容的地理分配" class="headerlink" title="限制内容的地理分配"></a>限制内容的地理分配</h3><ul>
+<li>当用户请求内容时，CloudFront 通常会提供请求的内容，而不考虑用户所在的位置。如果需要阻止特定国家/地区的用户访问内容，可以使用 CloudFront 地理限制功能来执行下列操作之一：<ul>
+<li>仅当用户位于批准的国家/地区白名单中的某个国家/地区时，才允许他们访问内容。</li>
+<li>当用户位于阻止的国家/地区黑名单中的某个国家/地区时，阻止他们访问内容。<blockquote>
+<p>CloudFront 使用第三方 GeoIP 数据库确定用户的位置。IP 地址和国家/地区之间映射的准确性因区域而异。根据最近的测试，整体准确性为 99.8%。请注意，如果 CloudFront 无法确定用户的位置，CloudFront 将提供用户请求的内容。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="CloudFront与Amazon-S3"><a href="#CloudFront与Amazon-S3" class="headerlink" title="CloudFront与Amazon S3"></a>CloudFront与Amazon S3</h3><ul>
+<li>CloudFront可用于分发S3存储桶中的内容</li>
+<li>对于RTMP分发，S3存储区是唯一受支持的源，并且不能使用自定义源</li>
+<li>在S3上使用CloudFront具有以下优势<ul>
+<li>如果在更高的使用频率下频繁访问对象，则可以更具成本效益，CloudFront数据传输的价格远低于S3数据传输的价格。</li>
+<li>CloudFront的下载速度比单独使用S3更快，因为对象存储的距离更接近用户</li>
+<li>当使用S3作为分发的原点并将存储桶移动到其他区域时，如果满足以下两个条件，则CloudFront最多可能需要一个小时来更新其记录以包括区域更改：<ul>
+<li>源访问标识（OAI）用于限制对存储桶的访问</li>
+<li>存储桶被移动到需要签名版本4进行身份验证的S3区域</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="源站访问识别"><a href="#源站访问识别" class="headerlink" title="源站访问识别"></a>源站访问识别</h3><ul>
+<li>以S3为源站，S3中的对象必须被授予公共读取权限，因此可以从S3和CloudFront访问对象</li>
+<li>尽管CloudFront不公开底层S3 URL，但如果直接共享或由应用程序使用，则可以为用户所知</li>
+<li>要使用CloudFront签名URL或签名cookie来提供对对象的访问，有必要阻止用户直接访问S3对象</li>
+<li>直接访问S3对象会导致 <ul>
+<li>绕过CloudFront签名URL或签名cookie提供的控制，例如，控制用户无法再访问内容的日期时间，并且IP地址可用于访问内容</li>
+<li>CloudFront访问日志不太有用，因为它们不完整。</li>
+</ul>
+</li>
+<li>源访问标识（OAI）可用于防止用户直接从S3访问对象</li>
+<li>可以创建原始访问标识（一种特殊的CloudFront用户）并将其与分发相关联。</li>
+<li>需要将S3存储桶/对象权限配置为仅提供对源访问标识的访问</li>
+<li>当用户从CloudFront访问该对象时，它使用OAI代表用户获取内容，同时限制对S3对象的直接访问</li>
+</ul>
+<h3 id="使用对象"><a href="#使用对象" class="headerlink" title="使用对象"></a>使用对象</h3><ul>
+<li>CloudFront可以配置为包括自定义标头或修改现有标头，只要它将请求转发到源</li>
+<li>验证用户没有直接访问源，绕过CDN</li>
+<li>如果用户使用不支持CORS的查看器，请配置CloudFront以将Origin标头转发到源。 这将导致origin为每个请求返回Access-Control-Allow-Origin标头</li>
+</ul>
+<h3 id="添加和更新对象"><a href="#添加和更新对象" class="headerlink" title="添加和更新对象"></a>添加和更新对象</h3><ul>
+<li>只需要将对象添加爱到Origin，CloudFront将在访问时开发分发他们</li>
+<li>通过以下方式更新<ul>
+<li>覆盖原始对象</li>
+<li>创建不同的版本并更新向用户公开的链接</li>
+</ul>
+</li>
+<li>为了更新对象，建议使用版本控制，例如拥有文件或带有版本的整个文件夹，因此在更新对象时强制刷新可以更改链接</li>
+<li>版本控制<ul>
+<li>在CloudFront开始提供新版本之前，没有时间等待对象过期</li>
+<li>从边缘提供的对象的一致性没有差异</li>
+<li>支付对象失效不涉及任何费用。</li>
+</ul>
+</li>
+</ul>
+<h3 id="删除-使对象无效"><a href="#删除-使对象无效" class="headerlink" title="删除/使对象无效"></a>删除/使对象无效</h3><ul>
+<li>默认情况下，对象将在到期时被删除（TTL），并且最新的对象将从Origin获取</li>
+<li>对象也可以在到期之前从边缘缓存中删除<ul>
+<li>更改对象名称（版本控制）已提供具有不同名称的对象的不同版本</li>
+<li>在边缘缓存中使对象失效，对于下一个请求，cloudfront返回到Origin以获取对象</li>
+</ul>
+</li>
+<li>Web分发<ul>
+<li>如果需要频繁更新对象，则建议更改对象名称（版本控制），而不是像对象那样更改对象<ul>
+<li>即使用户在本地或在缓存代理后面缓存了版本，也可以控制请求返回的对象。如果对象无效，则用户可能会继续查看旧版本，直到它们从这些缓存过期。</li>
+<li>由于CloudFront访问日志包含对象的名称，因此可以更轻松地分析对象更改的结果</li>
+<li>提供了向不同用户提供不同版本的方法。</li>
+<li>简化了对象修订之间的前滚和后退。</li>
+<li>更便宜，因为没有收取使对象无效的费用。</li>
+<li>例如将header-v1.jpg更改为header-v2.jpg</li>
+</ul>
+</li>
+<li>使缓存中的对象失效<ul>
+<li>缓存中的对象可以在它们到期之前显式无效以强制刷新</li>
+<li>允许使所选对象无效</li>
+<li>允许使多个对象无效，例如如果目录中的对象或名称以相同字符开头的所有对象，则可以在失效路径的末尾包含*通配符</li>
+<li>无效路径可以用于例如单个对象。 /js/ab.js或多个对象，例如： / js / <em>并且即使</em>通配符请求可能使数千个对象无效，也会被计为单个请求</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对于RTMP分发，对象不能无效</li>
+</ul>
+<h3 id="Range-GETS"><a href="#Range-GETS" class="headerlink" title="Range GETS"></a>Range GETS</h3><ul>
+<li>在GET请求中使用Range标头的部分请求有助于以较小的单位下载对象，从而提高部分下载的效率和部分失败的传输的恢复。</li>
+<li>对于partial get 请求，cloudfront <ul>
+<li>检查边缘位置中的缓存是否包含请求的范围或整个对象，如果存在，则立即提供</li>
+<li>如果请求的范围不存在，它会将请求转发到源，并且可能请求比客户端请求更大的范围以优化性能</li>
+<li>如果origin支持范围标头，则返回请求的对象范围，CloudFront将其返回给查看器</li>
+<li>如果原点不支持范围标题，则返回完整对象，CloudFront将为整个对象提供服务并将其缓存以备将来使用。</li>
+<li>CloudFront使用缓存的整个对象来提供任何未来范围的GET标头请求</li>
+</ul>
+</li>
+</ul>
+<h2 id="访问日志"><a href="#访问日志" class="headerlink" title="访问日志"></a>访问日志</h2><ul>
+<li>可以将CloudFront配置为创建包含有关CloudFront接收的每个用户请求的详细信息的日志文件</li>
+<li>可用于Web和RTMP分发</li>
+<li>启用日志记录后，可以指定一个S3存储桶，CloudFront将保存文件</li>
+<li>CloudFront定期为分发提供访问日志，最多可达一小时几次</li>
+<li>CloudFront通常会在日志中显示的事件的一小时内将该时间段的日志文件传递到S3存储桶。 但请注意，某段时间内的某些或所有日志文件条目有时可能会延迟最多24小时</li>
+</ul>
+<h2 id="CloudFront-费用"><a href="#CloudFront-费用" class="headerlink" title="CloudFront 费用"></a>CloudFront 费用</h2><ol>
+<li>数据传输到Internet<ul>
+<li>对于从CloudFront边缘位置传输的数据量，将收取费用，以GB为单位</li>
+<li>不再收取从AWS源（例如，S3，EC2等）到CloudFront的数据传输。</li>
+<li>适用于从所有AWS区域到所有全球CloudFront边缘位置的数据传输</li>
+</ul>
+</li>
+<li>HTTP/HTTPS 请求<ul>
+<li>为内容进行的HTTP / HTTPS请求数</li>
+</ul>
+</li>
+<li>失效请求<ul>
+<li>无效请求中的每个路径</li>
+<li>失效请求中列出的路径表示要从CloudFront缓存中失效的对象的URL（如果路径包含通配符，则为多个URL）</li>
+</ul>
+</li>
+<li>与Cloudfront分配相关联的专用IP 自定义SSL证书</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Cloud-Front/" rel="tag"># Cloud Front</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/28/AWS-Elastic-LoadBalancer/" rel="next" title="AWS Elastic LoadBalancer">
+                <i class="fa fa-chevron-left"></i> AWS Elastic LoadBalancer
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/30/AWS-DynamoDB/" rel="prev" title="AWS DynamoDB">
+                AWS DynamoDB <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">seven</p>
+              <p class="site-description motion-element" itemprop="description">seven 的精神家园，学习笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="1988xuegang@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudFront-overview"><span class="nav-number">1.</span> <span class="nav-text">CloudFront overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudFront-Benefits"><span class="nav-number">2.</span> <span class="nav-text">CloudFront Benefits</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configuration-amp-Content-Delivery"><span class="nav-number">3.</span> <span class="nav-text">Configuration &amp; Content Delivery</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Delivery-Methods"><span class="nav-number">4.</span> <span class="nav-text">Delivery Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-分发"><span class="nav-number">4.1.</span> <span class="nav-text">Web 分发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RTMP分发"><span class="nav-number">4.2.</span> <span class="nav-text">RTMP分发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源"><span class="nav-number">4.3.</span> <span class="nav-text">源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cache-behavior"><span class="nav-number">5.</span> <span class="nav-text">Cache behavior</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vuewer-Protocol-Policy"><span class="nav-number">6.</span> <span class="nav-text">Vuewer Protocol Policy</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTPS-connection"><span class="nav-number">6.1.</span> <span class="nav-text">HTTPS connection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#允许的HTTP-方法"><span class="nav-number">6.2.</span> <span class="nav-text">允许的HTTP 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化缓存和可用性"><span class="nav-number">6.3.</span> <span class="nav-text">优化缓存和可用性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象缓存和过期"><span class="nav-number">6.4.</span> <span class="nav-text">对象缓存和过期</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置安全访问和限制对内容的访问"><span class="nav-number">7.</span> <span class="nav-text">配置安全访问和限制对内容的访问</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#提供私有内容"><span class="nav-number">7.1.</span> <span class="nav-text">提供私有内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可信签署人"><span class="nav-number">7.2.</span> <span class="nav-text">可信签署人</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#签名URL-vs-签名cookie"><span class="nav-number">7.3.</span> <span class="nav-text">签名URL vs 签名cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准策略-vs-自定义策略"><span class="nav-number">7.4.</span> <span class="nav-text">标准策略 vs 自定义策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提供压缩"><span class="nav-number">7.5.</span> <span class="nav-text">提供压缩</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Distribution-Details"><span class="nav-number">8.</span> <span class="nav-text">Distribution Details</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#替代域名（CNAME）"><span class="nav-number">8.1.</span> <span class="nav-text">替代域名（CNAME）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限制内容的地理分配"><span class="nav-number">8.2.</span> <span class="nav-text">限制内容的地理分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CloudFront与Amazon-S3"><span class="nav-number">8.3.</span> <span class="nav-text">CloudFront与Amazon S3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源站访问识别"><span class="nav-number">8.4.</span> <span class="nav-text">源站访问识别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用对象"><span class="nav-number">8.5.</span> <span class="nav-text">使用对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加和更新对象"><span class="nav-number">8.6.</span> <span class="nav-text">添加和更新对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除-使对象无效"><span class="nav-number">8.7.</span> <span class="nav-text">删除/使对象无效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Range-GETS"><span class="nav-number">8.8.</span> <span class="nav-text">Range GETS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问日志"><span class="nav-number">9.</span> <span class="nav-text">访问日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudFront-费用"><span class="nav-number">10.</span> <span class="nav-text">CloudFront 费用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seven</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
