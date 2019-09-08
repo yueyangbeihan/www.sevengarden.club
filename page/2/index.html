@@ -296,6 +296,8 @@
         
 
         <div class="post-meta">
+          
+          
           <span class="post-time">
             
               <span class="post-meta-item-icon">
@@ -489,6 +491,8 @@
         
 
         <div class="post-meta">
+          
+          
           <span class="post-time">
             
               <span class="post-meta-item-icon">
@@ -1392,6 +1396,8 @@
         
 
         <div class="post-meta">
+          
+          
           <span class="post-time">
             
               <span class="post-meta-item-icon">
@@ -1550,8 +1556,7 @@
 <li>HTTP gzip压缩：大多数情况需要压缩的文件时网页中出现最频繁的HTML、CSS、javascript、XML等文件，这类本身是没有经过压缩的文本文件，可以取得较好的压缩效果</li>
 <li>HTTP与TCP关系</li>
 </ul>
-<div align="center"> ![ScreenShot_20190804162308.png](https://i.loli.net/2019/08/17/EHS8wOft6PdhmZb.png)</div>
-
+<p><img src="https://i.loli.net/2019/08/17/EHS8wOft6PdhmZb.png" alt="ScreenShot_20190804162308.png"></p>
 <ul>
 <li>HTTP通常时架构在TCP传输协议之上，出于安全考虑，HTTP还需要经过TLS或SSL层封装</li>
 <li>HTTP客户端（浏览器）首先发起建立于服务器的TCP连接，然后客户端于服务器的HTTP进程就可以通过各自的套接字（socket）来下层的TCP</li>
@@ -2075,6 +2080,8 @@
         
 
         <div class="post-meta">
+          
+          
           <span class="post-time">
             
               <span class="post-meta-item-icon">
@@ -2783,6 +2790,8 @@
         
 
         <div class="post-meta">
+          
+          
           <span class="post-time">
             
               <span class="post-meta-item-icon">
@@ -3008,6 +3017,8 @@
         
 
         <div class="post-meta">
+          
+          
           <span class="post-time">
             
               <span class="post-meta-item-icon">
@@ -3738,6 +3749,8 @@ table tr:hover {
         
 
         <div class="post-meta">
+          
+          
           <span class="post-time">
             
               <span class="post-meta-item-icon">
@@ -4415,6 +4428,8 @@ table tr:hover {
         
 
         <div class="post-meta">
+          
+          
           <span class="post-time">
             
               <span class="post-meta-item-icon">
@@ -4718,6 +4733,8 @@ table tr:hover {
         
 
         <div class="post-meta">
+          
+          
           <span class="post-time">
             
               <span class="post-meta-item-icon">
@@ -5075,6 +5092,8 @@ table tr:hover {
         
 
         <div class="post-meta">
+          
+          
           <span class="post-time">
             
               <span class="post-meta-item-icon">
@@ -5588,6 +5607,46 @@ table tr:hover {
 
 
 
+<!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async="" src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count"></span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/21/2018 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
         
 
 
