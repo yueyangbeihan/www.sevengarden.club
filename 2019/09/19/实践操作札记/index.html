@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="更新札记，AWS,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="更新ing  Route 53路由策略 简单路由策略–对于域执行功能给定功能的单一资源(例如为 example.com 网站提供内容的 Web 服务器)，可以使用该策略 故障转移路由策略– 如果想要配置主动-被动故障转移，则可以使用该策略 地理位置路由策略—如果想要根据用户的位置来路由流量，则可以使用该策略 地理位置林进度路由策略–用于更具资源的位置来路由通信，以及（可选）将流量从一个位置中的资">
+<meta name="keywords" content="更新札记，AWS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实践操作札记">
+<meta property="og:url" content="http://sevengarden.club/2019/09/19/实践操作札记/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="更新ing  Route 53路由策略 简单路由策略–对于域执行功能给定功能的单一资源(例如为 example.com 网站提供内容的 Web 服务器)，可以使用该策略 故障转移路由策略– 如果想要配置主动-被动故障转移，则可以使用该策略 地理位置路由策略—如果想要根据用户的位置来路由流量，则可以使用该策略 地理位置林进度路由策略–用于更具资源的位置来路由通信，以及（可选）将流量从一个位置中的资">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-19T11:04:31.430Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实践操作札记">
+<meta name="twitter:description" content="更新ing  Route 53路由策略 简单路由策略–对于域执行功能给定功能的单一资源(例如为 example.com 网站提供内容的 Web 服务器)，可以使用该策略 故障转移路由策略– 如果想要配置主动-被动故障转移，则可以使用该策略 地理位置路由策略—如果想要根据用户的位置来路由流量，则可以使用该策略 地理位置林进度路由策略–用于更具资源的位置来路由通信，以及（可选）将流量从一个位置中的资">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sevengarden.club/2019/09/19/实践操作札记/">
+
+
+
+
+
+  <title>实践操作札记 | 岳阳北寒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">岳阳北寒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-somrthing">
+          <a href="/有料" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            somrthing
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/09/19/实践操作札记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">实践操作札记</h1>
+        
+
+        <div class="post-meta">
+          
+                    <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-19T19:01:47+08:00">
+                2019-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>更新ing</p>
+</blockquote>
+<h2 id="Route-53"><a href="#Route-53" class="headerlink" title="Route 53"></a>Route 53</h2><h3 id="路由策略"><a href="#路由策略" class="headerlink" title="路由策略"></a>路由策略</h3><ol>
+<li>简单路由策略–对于域执行功能给定功能的单一资源(例如为 example.com 网站提供内容的 Web 服务器)，可以使用该策略</li>
+<li>故障转移路由策略– 如果想要配置主动-被动故障转移，则可以使用该策略</li>
+<li>地理位置路由策略—如果想要根据用户的位置来路由流量，则可以使用该策略</li>
+<li>地理位置林进度路由策略–用于更具资源的位置来路由通信，以及（可选）将流量从一个位置中的资源转移到另一个位置中的资源</li>
+<li>延迟路由策略–如果资源位于多个AWS区域，并且想要将流量路由到提供给哦你最佳延迟的区域，则可以使用该策略</li>
+<li>多值应答路由策略–想要让Route 53用随机选择的正常记录（最多八条）响应DNS查询，则可是用该策略</li>
+<li>甲醛路由策略—用于按照指定的比例将流量路由到多个资源</li>
+</ol>
+<h3 id="记录集"><a href="#记录集" class="headerlink" title="记录集"></a>记录集</h3><ul>
+<li>一个Record只能有一个alias target</li>
+<li>加权路由：加权路由允许将多个资源关联至单个域名 (example.com) 或子域名 (acme.example.com)，并选择向每个资源路由多少流量。这可用于多种用途，例如负载均衡、测试软件新版本等。要配置加权路由，可以创建与每个资源同名、同类型的记录，然后根据要发送到每个资源的流量的规模为每条记录分配相对权重。Amazon Route 53 将根据分配给记录的权重 (占该组中所有记录总权重的比例) 向资源发送流量</li>
+</ul>
+<h3 id="R53运行状态检查类型"><a href="#R53运行状态检查类型" class="headerlink" title="R53运行状态检查类型"></a>R53运行状态检查类型</h3><ol>
+<li>监控指端节点的运行状况检查：可以配置运行状况检查来监控通过 IP 地址或域名指定的终端节点。Route 53 按照指定的固定间隔，通过 Internet 向您的应用程序、服务器或其他资源自动提交请求，以验证其是否可到达、是否可用及功能是否正常。也可以通过配置运行状况检查来发出与用户发出的请求类似的请求，如从特定 URL 请求网页</li>
+<li>监控其他运行状况检查的运行状况检查：可以创建运行状况检查，以监控 Route 53 是将其他运行状况检查视为运行状况良好还是不佳。在下面的情况下，这种运行状况检查可能很有用：您有多个执行相同功能的资源 (如多台 Web 服务器)，主要关注的是运行状况良好的资源数是否达到最少数目。您可以为每个资源创建运行状况检查，而不为这些运行状况检查配置通知。然后，可以创建一个运行状况检查，来监控其他运行状况检查的状态，并且仅在可用的 Web 资源数低于指定阈值时通知</li>
+<li>监控CloudWatch报警的运行状况检查：可以创建用于监控 CloudWatch 指标状态的 CloudWatch 警报，这些指标包括 Amazon DynamoDB 数据库的受限读取事件数或被认为运行状况良好的 Elastic Load Balancing 主机数。在创建警报后，可以创建运行状况检查，使其监控与 CloudWatch 针对警报监控的数据流相同的数据流。为了提高复原能力和可用性，Route 53 不等待 CloudWatch 警报进入 ALARM 状态。运行状况检查的状态会根据数据流以及 CloudWatch 警报中的条件从运行状况良好更改为运行状况不佳</li>
+</ol>
+<h2 id="AutoScaling"><a href="#AutoScaling" class="headerlink" title="AutoScaling"></a>AutoScaling</h2><ul>
+<li>启动配置创建后不可修改，只能创建新的启动配置与最新的映像关联，然后再修改 Auto Scaling Group 与新创建的启动配置关联。替换掉的启动配置不好管理。</li>
+<li>启动模板的优势在于有版本的概念。可以在上一版的基础上，替换最新制作的映像生成启动模板的新版本。不需要再更新 Auto Scaling Group 的相关属性。通过版本这个概念也可以很好的管理历史的映像。</li>
+</ul>
+<h2 id="Cloudfront"><a href="#Cloudfront" class="headerlink" title="Cloudfront"></a>Cloudfront</h2><ul>
+<li>当使用 https 协议访问网站时，CNAME 跳转会有 SSL 证书的问题</li>
+<li>创建 CloudFront Distribution 时一定要添加 Alternate Domain Names (CNAMEs)，否则 CloudFront 会报错<ul>
+<li>因为 CloudFront 服务的边缘站点使用的是一个资源共享的模式，所以在默认的情况下 Distribution 本身并没有独立的专属 IP 地址，而是共享同一群IP地址，因此需要通过 Host 标头去匹配请求和 Distribution 之间的关联</li>
+</ul>
+</li>
+</ul>
+<h2 id="CloudWatch"><a href="#CloudWatch" class="headerlink" title="CloudWatch"></a>CloudWatch</h2><ul>
+<li>CloudWatch base：5分钟传输一次指标，不需要付费，这个是开通的默认选项</li>
+<li>Cloudwatch detailed：1分钟传输一次指标，需要支付额外的费用</li>
+</ul>
+<h2 id="EC2"><a href="#EC2" class="headerlink" title="EC2"></a>EC2</h2><ul>
+<li>EC2访问公网需要有公共IP或者EIP，同时需要IGW网关，并attach到实例所在的VPC，创建一个路由表 0.0.0.0/0 指向IGW，最后就是检查acl和安全组是否开放了相关端口允许流量出入</li>
+<li>不建议创建IAM user或者IAM group 通过用户的授信信息保存到应用中调用资源。</li>
+<li>建议通过为EC2创建 IAM role，将应用部署到EC2上，来获取访问AWS其他服务资源的权限。将角色的授信策略绑定到角色上。</li>
+</ul>
+<h2 id="S3"><a href="#S3" class="headerlink" title="S3"></a>S3</h2><ul>
+<li>read after write for new object是提供了一致性的存储；</li>
+<li>只有改变了现有的对象，才有可能导致最终一致性的问题发生；</li>
+<li>S3的跨region复制必须启动versioning</li>
+</ul>
+<h2 id="VPC"><a href="#VPC" class="headerlink" title="VPC"></a>VPC</h2><ul>
+<li>Nat gateway 不能直接与vpc endpoints、vpn connections、AWS Direct Connect或者vpc peering connection进行流量互通，如果你的实例在private subnet中需要通过vpc endpoint、vpn、AWS Direct Connect连接，可以直接用private subnet的路由表直接路由到这设备上；</li>
+<li>不能直接从NAT gateway上通过VPC PEER/VPN/DC进行路由。NAT GATEWAY不能被这些连接的另一端直接使用</li>
+<li>Custom VPC不支持DNS HOSTNAME ENABLE,当你在这个VPC创建一个EC2的时候不会带private DNS name。你需要修改VPC的属性，设置dns hostname被设置为enable。</li>
+<li>DNS resolution是一个解决DNS HOSTNAME在AWS内部生效的能力，是通过AWS的DNS server。感觉有点类似我们管理host表；</li>
+<li>自动赋予public IP这个事情如果是在public subnet中可以在操作的时候设定。如果是在private subnet中创建EC2，默认是disabled的</li>
+</ul>
+<h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><ul>
+<li>流量控制：如果web server与db instance在一个VPC中，设置流量访问控制建议直接使用SecurityGroup；</li>
+<li>NACL的使用场景：主要用于你想拒绝一个指定的IP访问或者一个CIDR 块的访问的时候</li>
+<li>简单来说，只是流量控制，使用SecurityGroup，如果有拒绝某些IP和CIDR的场景，就配合上NACL来控制流量</li>
+</ul>
+<h2 id="容灾"><a href="#容灾" class="headerlink" title="容灾"></a>容灾</h2><ul>
+<li>Multi-AZ deployments解决的是高可用问题；</li>
+<li>跨region复制才是解决容灾问题；</li>
+<li>RDS采用了不同的技术来支持高可用的failover机制<ul>
+<li>采用AWS failover 技术的有：oracle、Postgre、mysql、mariadb</li>
+<li>sqlserver使用的是mirroring技术</li>
+<li>Aurora使用的是集群下的数据库复制技术</li>
+</ul>
+</li>
+</ul>
+<h2 id="elasticache"><a href="#elasticache" class="headerlink" title="elasticache"></a>elasticache</h2><h3 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h3><ul>
+<li>描述：缓存穿透是指缓存和数据库中都没有的数据，而用户不断发起请求，如发起为id为“-1”的数据或id为特别大不存在的数据。这时的用户很可能是攻击者，攻击会导致数据库压力过大。</li>
+<li>解决方案方案：<ol>
+<li>接口层增加校验，如用户鉴权校验，id做基础校验，id&lt;=0的直接拦截；</li>
+<li>从缓存取不到的数据，在数据库中也没有取到，这时也可以将key-value对写为key-null，缓存有效时间可以设置短点，如30秒（设置太长会导致正常情况也没法使用）。这样可以防止攻击用户反复用同一个id暴力攻击</li>
+</ol>
+</li>
+</ul>
+<h3 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h3><ul>
+<li>描述：缓存击穿是指缓存中没有但数据库中有的数据（一般是指缓存时间到期），这时由于并发用户特别多，同时读缓存没读到数据，又同时去数据库去取数据，引起数据库压力瞬间增大，造成过大压力</li>
+<li>解决方案<ol>
+<li>设置热点数据永远不过期</li>
+<li>家户斥锁</li>
+</ol>
+</li>
+</ul>
+<h3 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h3><ul>
+<li>描述:缓存雪崩是指缓存中数据大批量到过期时间，而查询数据量巨大，引起数据库压力过大甚至down机。和缓存击穿不同的是,缓存击穿指并发查同一条数据，缓存雪崩是不同数据都过期了，很多数据都查不到从而查数据库</li>
+<li>解决方案：<ol>
+<li>缓存数据的过期时间设置随机，防止同一时间大量数据过期现象发生。</li>
+<li>如果缓存数据库是分布式部署，将热点数据均匀分布在不同搞得缓存数据库中。</li>
+<li>设置热点数据永远不过期</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/更新札记，AWS/" rel="tag"># 更新札记，AWS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/08/AWS-IAM/" rel="next" title="AWS IAM">
+                <i class="fa fa-chevron-left"></i> AWS IAM
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">seven</p>
+              <p class="site-description motion-element" itemprop="description">seven 的精神家园，学习笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="1988xuegang@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Route-53"><span class="nav-number">1.</span> <span class="nav-text">Route 53</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路由策略"><span class="nav-number">1.1.</span> <span class="nav-text">路由策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#记录集"><span class="nav-number">1.2.</span> <span class="nav-text">记录集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#R53运行状态检查类型"><span class="nav-number">1.3.</span> <span class="nav-text">R53运行状态检查类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AutoScaling"><span class="nav-number">2.</span> <span class="nav-text">AutoScaling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cloudfront"><span class="nav-number">3.</span> <span class="nav-text">Cloudfront</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudWatch"><span class="nav-number">4.</span> <span class="nav-text">CloudWatch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EC2"><span class="nav-number">5.</span> <span class="nav-text">EC2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S3"><span class="nav-number">6.</span> <span class="nav-text">S3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPC"><span class="nav-number">7.</span> <span class="nav-text">VPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安全"><span class="nav-number">7.1.</span> <span class="nav-text">安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容灾"><span class="nav-number">8.</span> <span class="nav-text">容灾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elasticache"><span class="nav-number">9.</span> <span class="nav-text">elasticache</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存穿透"><span class="nav-number">9.1.</span> <span class="nav-text">缓存穿透</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存击穿"><span class="nav-number">9.2.</span> <span class="nav-text">缓存击穿</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存雪崩"><span class="nav-number">9.3.</span> <span class="nav-text">缓存雪崩</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seven</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+<!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count"></span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/21/2018 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

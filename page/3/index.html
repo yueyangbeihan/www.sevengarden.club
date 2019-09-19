@@ -273,6 +273,772 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/10/16/流计算/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/16/流计算/" itemprop="url">流计算</a></h1>
+        
+
+        <div class="post-meta">
+          
+                    <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T19:02:37+08:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Bigdata/" itemprop="url" rel="index">
+                    <span itemprop="name">Bigdata</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="流计算概述"><a href="#流计算概述" class="headerlink" title="流计算概述"></a>流计算概述</h1><h2 id="静态数据和流数据"><a href="#静态数据和流数据" class="headerlink" title="静态数据和流数据"></a>静态数据和流数据</h2><ul>
+<li>很多企业为了支持决策分析而构建的数据仓库系统，其中存放的大量历史数据就是静态数据。技术人员可以利用数据挖掘和OLAP（On-Line Analytical Processing）分析工具从静态数据中找到对企业有价值的信息<br><img src="https://i.loli.net/2019/08/15/CMX6Q7n4UceDJi8.png" alt="静态数据.png"></li>
+</ul>
+<ul>
+<li>近年来，在Web应用、网络监控、传感监测等领域，兴起了一种新的数据密集型应用——流数据，即数据以大量、快速、时变的流形式持续到达</li>
+<li>实例：PM2.5检测、电子商务网站用户点击流</li>
+<li>流数据具有如下特征：<ul>
+<li>数据快速持续到达，潜在大小也许是无穷无尽的</li>
+<li>数据来源众多，格式复杂</li>
+<li>数据量大，但是不十分关注存储，一旦经过处理，要么被丢弃，要么被归档存储</li>
+<li>注重数据的整体价值，不过分关注个别数据</li>
+<li>数据顺序颠倒，或者不完整，系统无法控制将要处理的新到达的数据元素的顺序</li>
+</ul>
+</li>
+</ul>
+<h2 id="批量计算和实时计算"><a href="#批量计算和实时计算" class="headerlink" title="批量计算和实时计算"></a>批量计算和实时计算</h2><ul>
+<li>对静态数据和流数据的处理，对应着两种截然不同的计算模式：批量计算和实时计算</li>
+<li>批量计算：充裕时间处理静态数据，如Hadoop</li>
+<li>流数据不适合采用批量计算，因为流数据不适合用传统的关系模型建模</li>
+<li>流数据必须采用实时计算，响应时间为秒级</li>
+<li>数据量少时，不是问题，但是，在大数据时代，数据格式复杂、来源众多、数据量巨大，对实时计算提出了很大的挑战。因此，针对流数据的实时计算——流计算，应运而生<br><img src="https://i.loli.net/2019/08/15/nC72xfOSIHaXW6J.png" alt="数据的两种处理模型.png"></li>
+</ul>
+<h2 id="流计算概念"><a href="#流计算概念" class="headerlink" title="流计算概念"></a>流计算概念</h2><ul>
+<li>流计算：实时获取来自不同数据源的海量数据，经过实时分析处理，获得有价值的信息<br><img src="https://i.loli.net/2019/08/15/ryRDeMPvW2kVFZ8.png" alt="流计算示意图.png"></li>
+<li>流计算秉承一个基本理念，即<strong>数据的价值随着时间的流逝而降低</strong>，如用户点击流。因此，当事件出现时就应该立即进行处理，而不是缓存起来进行批量处理。为了及时处理流数据，就需要一个低延迟、可扩展、高可靠的处理引擎</li>
+<li>对于一个流计算系统来说，它应达到如下需求：<ul>
+<li>高性能：处理大数据的基本要求，如每秒处理几十万条数据</li>
+<li>海量式：支持TB级甚至是PB级的数据规模</li>
+<li>实时性：保证较低的延迟时间，达到秒级别，甚至是毫秒级别</li>
+<li>分布式：支持大数据的基本架构，必须能够平滑扩展</li>
+<li>易用性：能够快速进行开发和部署</li>
+<li>可靠性：能可靠地处理流数据</li>
+</ul>
+</li>
+</ul>
+<h2 id="流计算与Hadoop"><a href="#流计算与Hadoop" class="headerlink" title="流计算与Hadoop"></a>流计算与Hadoop</h2><ul>
+<li>Hadoop设计的初衷是面向大规模数据的批量处理，每台机器并行运行MapReduce任务，最后对结果进行汇总输出</li>
+<li>MapReduce是专门面向静态数据的批量处理的，内部各种实现机制都为批处理做了高度优化，不适合用于处理持续到达的动态数据</li>
+<li>可能会想到一种“变通”的方案来降低批处理的时间延迟——将基于MapReduce的批量处理转为小批量处理，将输入数据切成小的片段，每隔一个周期就启动一次MapReduce作业。但这种方式也无法有效处理流数据<ul>
+<li>切分成小片段，可以降低延迟，但是也增加了附加开销，还要处理片段之间依赖关系</li>
+<li>需要改造MapReduce以支持流式处理<br><font color="red"><strong>结论：鱼和熊掌不可兼得，Hadoop擅长批处理，不适合流计算</strong></font></li>
+</ul>
+</li>
+</ul>
+<h2 id="流计算框架"><a href="#流计算框架" class="headerlink" title="流计算框架"></a>流计算框架</h2><ul>
+<li>目前有三类常见的流计算框架和平台：商业级的流计算平台、开源流计算框架、公司为支持自身业务开发的流计算框架</li>
+<li>商业级：IBM InfoSphere Streams和IBM StreamBase</li>
+<li>较为常见的是开源流计算框架，代表如下：<ul>
+<li>Twitter Storm：免费、开源的分布式实时计算系统，可简单、高效、可靠地处理大量的流数据</li>
+<li>Yahoo! S4（Simple Scalable Streaming System）：开源流计算平台，是通用的、分布式的、可扩展的、分区容错的、可插拔的流式系统</li>
+</ul>
+</li>
+<li>公司为支持自身业务开发的流计算框架：<ul>
+<li>Facebook Puma</li>
+<li>Dstream（百度）</li>
+<li>银河流数据处理平台（淘宝）</li>
+</ul>
+</li>
+</ul>
+<h1 id="流计算处理流程"><a href="#流计算处理流程" class="headerlink" title="流计算处理流程"></a>流计算处理流程</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>传统的数据处理流程，需要先采集数据并存储在关系数据库等数据管理系统中，之后由用户通过查询操作和数据管理系统进行交互</li>
+<li>传统的数据处理流程隐含了两个前提：<ul>
+<li><strong>存储的数据是旧的</strong>。存储的静态数据是过去某一时刻的快照，这些数据在查询时可能已不具备时效性了</li>
+<li><strong>需要用户主动发出查询来获取结果</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="数据实时采集"><a href="#数据实时采集" class="headerlink" title="数据实时采集"></a>数据实时采集</h2><ul>
+<li>数据实时采集阶段通常采集多个数据源的海量数据，需要保证实时性、低延迟与稳定可靠</li>
+<li>以日志数据为例，由于分布式集群的广泛应用，数据分散存储在不同的机器上，因此需要实时汇总来自不同机器上的日志数据</li>
+<li>目前有许多互联网公司发布的开源分布式日志采集系统均可满足每秒数百MB的数据采集和传输需求，如：<ul>
+<li>Facebook的Scribe</li>
+<li>LinkedIn的Kafka</li>
+<li>淘宝的Time Tunnel</li>
+<li>基于Hadoop的Chukwa和Flume<br><img src="https://i.loli.net/2019/08/16/uPW8HjeiowtgRVF.png" alt="数据实时采集.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="数据实时计算"><a href="#数据实时计算" class="headerlink" title="数据实时计算"></a>数据实时计算</h2><ul>
+<li>数据采集系统的基本架构一般有以下三个部分：<ul>
+<li>Agent：主动采集数据，并把数据推送到Collector部分</li>
+<li>Collector：接收多个Agent的数据，并实现有序、可靠、高性能的转发</li>
+<li>Store：存储Collector转发过来的数据（对于流计算不存储数据</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/U3KCNEJhtjHvkPZ.png" alt="数据采集系统基本架构.png"></p>
+<ul>
+<li>数据实时计算阶段对采集的数据进行实时的分析和计算，并反馈实时结果</li>
+<li>经流处理系统处理后的数据，可视情况进行存储，以便之后再进行分析计算。在时效性要求较高的场景中，处理之后的数据也可以直接丢弃</li>
+</ul>
+<h2 id="实时查询服务"><a href="#实时查询服务" class="headerlink" title="实时查询服务"></a>实时查询服务</h2><ul>
+<li>实时查询服务：经由流计算框架得出的结果可供用户进行实时查询、展示或储存</li>
+<li>传统的数据处理流程，用户需要主动发出查询才能获得想要的结果。而在流处理流程中，实时查询服务可以不断更新结果，并将用户所需的结果实时推送给用户</li>
+<li>虽然通过对传统的数据处理系统进行定时查询，也可以实现不断地更新结果和结果推送，但通过这样的方式获取的结果，仍然是根据过去某一时刻的数据得到的结果，与实时结果有着本质的区别<blockquote>
+<ul>
+<li>可见，流处理系统与传统的数据处理系统有如下不同：</li>
+</ul>
+</blockquote>
+</li>
+<li>流处理系统处理的是实时的数据，而传统的数据处理系统处理的是预先存储好的静态数据</li>
+<li>用户通过流处理系统获取的是实时结果，而通过传统的数据处理系统，获取的是过去某一时刻的结果</li>
+<li>流处理系统无需用户主动发出查询，实时查询服务可以主动将实时结果推送给用户</li>
+</ul>
+<h1 id="流计算应用"><a href="#流计算应用" class="headerlink" title="流计算应用"></a>流计算应用</h1><ul>
+<li>流计算是针对流数据的实时计算，可以应用在多种场景中，如Web服务、机器翻译、广告投放、自然语言处理、气候模拟预测等</li>
+<li>如百度、淘宝等大型网站中，每天都会产生大量流数据，包括用户的搜索内容、用户的浏览记录等数据。采用流计算进行实时数据分析，可以了解每个时刻的流量变化情况，甚至可以分析用户的实时浏览轨迹，从而进行实时个性化内容推荐</li>
+<li>但是，并不是每个应用场景都需要用到流计算的。流计算适合于需要处理持续到达的流数据、对数据处理有较高实时性要求的场景</li>
+</ul>
+<h1 id="流计算开源框架-–-Storm"><a href="#流计算开源框架-–-Storm" class="headerlink" title="流计算开源框架 – Storm"></a>流计算开源框架 – Storm</h1><h2 id="Storm简介"><a href="#Storm简介" class="headerlink" title="Storm简介"></a>Storm简介</h2><ul>
+<li>Twitter Storm是一个免费、开源的分布式实时计算系统，Storm对于实时计算的意义类似于Hadoop对于批处理的意义，Storm可以简单、高效、可靠地处理流数据，并支持多种编程语言</li>
+<li>Storm框架可以方便地与数据库系统进行整合，从而开发出强大的实时计算系统</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/16/2OAfhoyKXdsYmjV.png" alt="Twitter的分层数据处理架构.png"></p>
+<h2 id="Storm的特点"><a href="#Storm的特点" class="headerlink" title="Storm的特点"></a>Storm的特点</h2><ul>
+<li>Storm可用于许多领域中，如实时分析、在线机器学习、持续计算、远程RPC、数据提取加载转换等</li>
+<li>Storm具有以下主要特点：<ul>
+<li>整合性：Storm可方便地与队列系统和数据库系统进行整合</li>
+<li>简易的API：Storm的API在使用上即简单又方便</li>
+<li>可扩展性：Storm的并行特性使其可以运行在分布式集群中</li>
+<li>容错性：Storm可自动进行故障节点的重启、任务的重新分配</li>
+<li>可靠的消息处理：Storm保证每个消息都能完整处理 </li>
+<li>支持各种编程语言：Storm支持使用各种编程语言来定义任务</li>
+<li>快速部署：Storm可以快速进行部署和使用</li>
+<li>免费、开源：Storm是一款开源框架，可以免费使用</li>
+</ul>
+</li>
+</ul>
+<h2 id="Storm设计思想"><a href="#Storm设计思想" class="headerlink" title="Storm设计思想"></a>Storm设计思想</h2><ul>
+<li>Storm主要术语包括Streams、Spouts、Bolts、Topology和Stream Groupings</li>
+<li>Streams：Storm将流数据Stream描述成一个无限的Tuple序列，这些Tuple序列会以分布式的方式并行地创建和处理<br><img src="https://i.loli.net/2019/08/16/pyhWGTaef9SscdM.png" alt="Stream.png"></li>
+<li>每个tuple是一堆值，每个值有一个名字，并且每个值可以是任何类型</li>
+<li>Tuple本来应该是一个Key-Value的Map，由于各个组件间传递的tuple的字段名称已经事先定义好了，所以Tuple只需要按序填入各个Value，所以就是一个Value List（值列表）</li>
+<li>Spout：Storm认为每个Stream都有一个源头，并把这个源头抽象为Spout</li>
+<li>通常Spout会从外部数据源（队列、数据库等）读取数据，然后封装成Tuple形式，发送到Stream中。Spout是一个主动的角色，在接口内部有个nextTuple函数，Storm框架会不停的调用该函数<br><img src="https://i.loli.net/2019/08/16/uO6giCcEQ81NrBX.png" alt="Spout.png"></li>
+<li>Bolt：Storm将Streams的状态转换过程抽象为Bolt。Bolt即可以处理Tuple，也可以将处理后的Tuple作为新的Streams发送给其他Bolt</li>
+<li>Bolt可以执行过滤、函数操作、Join、操作数据库等任何操作</li>
+<li>Bolt是一个被动的角色，其接口中有一个execute(Tuple input)方法，在接收到消息之后会调用此函数，用户可以在此方法中执行自己的处理逻辑<br><img src="https://i.loli.net/2019/08/16/TVfov9rABmMWx8D.png" alt="bboult.png"></li>
+<li>Topology：Storm将Spouts和Bolts组成的网络抽象成Topology，它可以被提交到Storm集群执行。Topology可视为流转换图，图中节点是一个Spout或Bolt，边则表示Bolt订阅了哪个Stream。当Spout或者Bolt发送元组时，它会把元组发送到每个订阅了该Stream的Bolt上进行处理</li>
+<li>Topology里面的每个处理组件（Spout或Bolt）都包含处理逻辑， 而组件之间的连接则表示数据流动的方向</li>
+<li>Topology里面的每一个组件都是并行运行的</li>
+<li>在Topology里面可以指定每个组件的并行度， Storm会在集群里面分配那么多的线程来同时计算</li>
+<li>在Topology的具体实现上，Storm中的Topology定义仅仅是一些Thrift结构体（二进制高性能的通信中间件），支持各种编程语言进行定义<br><img src="https://i.loli.net/2019/08/16/sWUh84QkrPGbjdL.png" alt="Toploly.png"></li>
+<li>Stream Groupings：Storm中的Stream Groupings用于告知Topology如何在两个组件间（如Spout和Bolt之间，或者不同的Bolt之间）进行Tuple的传送。每一个Spout和Bolt都可以有多个分布式任务，一个任务在什么时候、以什么方式发送Tuple就是由Stream Groupings来决定的<br><img src="https://i.loli.net/2019/08/16/IHnpzWscD8PEBmJ.png" alt="StramGrouping .png"><blockquote>
+<ul>
+<li>目前，Storm中的Stream Groupings有如下几种方式：</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<ol>
+<li>ShuffleGrouping：随机分组，随机分发Stream中的Tuple，保证每个Bolt的Task接收Tuple数量大致一致</li>
+<li>FieldsGrouping：按照字段分组，保证相同字段的Tuple分配到同一个Task中</li>
+<li>AllGrouping：广播发送，每一个Task都会收到所有的Tuple</li>
+<li>GlobalGrouping：全局分组，所有的Tuple都发送到同一个Task中</li>
+<li>NonGrouping：不分组，和ShuffleGrouping类似，当前Task的执行会和它的被订阅者在同一个线程中执行</li>
+<li>DirectGrouping：直接分组，直接指定由某个Task来执行Tuple的处理</li>
+</ol>
+<h2 id="Storm框架设计"><a href="#Storm框架设计" class="headerlink" title="Storm框架设计"></a>Storm框架设计</h2><ul>
+<li>Storm运行任务的方式与Hadoop类似：Hadoop运行的是MapReduce作业，而Storm运行的是“Topology”</li>
+<li>但两者的任务大不相同，主要的不同是：MapReduce作业最终会完成计算并结束运行，而Topology将持续处理消息（直到人为终止）<table>
+<thead>
+<tr>
+<th>Hadoop</th>
+<th>Storm</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应用名称</td>
+<td>Job</td>
+</tr>
+<tr>
+<td>系统角色</td>
+<td>JobTracker</td>
+</tr>
+<tr>
+<td>系统角色</td>
+<td>TaskTracker</td>
+</tr>
+<tr>
+<td>组件接口</td>
+<td>Map/Reduce</td>
+</tr>
+</tbody></table>
+</li>
+<li>Storm集群采用“Master—Worker”的节点方式：<ul>
+<li>Master节点运行名为“Nimbus”的后台程序（类似Hadoop中的“JobTracker”），负责在集群范围内分发代码、为Worker分配任务和监测故障</li>
+<li>Worker节点运行名为“Supervisor”的后台程序，负责监听分配给它所在机器的工作，即根据Nimbus分配的任务来决定启动或停止Worker进程，一个Worker节点上同时运行若干个Worker进程</li>
+</ul>
+</li>
+<li>Storm使用Zookeeper来作为分布式协调组件，负责Nimbus和多个Supervisor之间的所有协调工作。借助于Zookeeper，若Nimbus进程或Supervisor进程意外终止，重启时也能读取、恢复之前的状态并继续工作，使得Storm极其稳定<br><img src="https://i.loli.net/2019/08/16/OxlvwgL9Juq8Zam.png" alt="Storm集群架构示意图.png"></li>
+</ul>
+<ol>
+<li>worker:每个worker进程都属于一个特定的Topology，每个Supervisor节点的worker可以有多个，每个worker对Topology中的每个组件（Spout或 Bolt）运行一个或者多个executor线程来提供task的运行服务</li>
+<li>executor：executor是产生于worker进程内部的线程，会执行同一个组件的一个或者多个task。</li>
+<li>task:实际的数据处理由task完成，在Topology的生命周期中，每个组件的task数目是不会发生变化的，而executor的数目却不一定。executor数目小于等于task的数目，默认情况下，二者是相等的<br><img src="https://i.loli.net/2019/08/16/ivGbezZRMup6jDh.png" alt="worker excuter和task关系.png"><blockquote>
+<ul>
+<li>基于这样的架构设计，Storm的工作流程如下图所示：</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>所有Topology任务的提交必须在Storm客户端节点上进行，提交后，由Nimbus节点分配给其他Supervisor节点进行处理</li>
+<li>Nimbus节点首先将提交的Topology进行分片，分成一个个Task，分配给相应的Supervisor，并将Task和Supervisor相关的信息提交到Zookeeper集群上</li>
+<li>Supervisor会去Zookeeper集群上认领自己的Task，通知自己的Worker进程进行Task的处理</li>
+<li>说明：在提交了一个Topology之后，Storm就会创建Spout/Bolt实例并进行序列化。之后，将序列化的组件发送给所有的任务所在的机器(即Supervisor节点)，在每一个任务上反序列化组件<br><img src="https://i.loli.net/2019/08/16/GHqlOyPUjadZnzF.png" alt="Storm工作流程示意图.png"><h1 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h1><h2 id="Spark-Streaming设计"><a href="#Spark-Streaming设计" class="headerlink" title="Spark Streaming设计"></a>Spark Streaming设计</h2></li>
+<li>Spark Streaming可整合多种输入数据源，如Kafka、Flume、HDFS，甚至是普通的TCP套接字。经处理后的数据可存储至文件系统、数据库，或显示在仪表盘里<br><img src="https://i.loli.net/2019/08/16/KvQyUpZ9Rs1c8uH.png" alt="Spark Streaming支持的输入、输出数据源.png"></li>
+<li>Spark Streaming的基本原理是将实时输入数据流以时间片（秒级）为单位进行拆分，然后经Spark引擎以类似批处理的方式处理每个时间片数据<br><img src="https://i.loli.net/2019/08/16/wYuM6RTUAn9B5vi.png" alt="Spark Streaming执行流程.png"></li>
+<li>Spark Streaming最主要的抽象是DStream（Discretized Stream，离散化数据流），表示连续不断的数据流。在内部实现上，Spark Streaming的输入数据按照时间片（如1秒）分成一段一段的DStream，每一段数据转换为Spark中的RDD，并且对DStream的操作都最终转变为对相应的RDD的操作<br><img src="https://i.loli.net/2019/08/16/7uiej3OvUBofWPp.png" alt="DStream操作示意图.png"></li>
+</ul>
+<h2 id="Spark-Streaming与Storm的对比"><a href="#Spark-Streaming与Storm的对比" class="headerlink" title="Spark Streaming与Storm的对比"></a>Spark Streaming与Storm的对比</h2><ul>
+<li>Spark Streaming和Storm最大的区别在于，Spark Streaming无法实现毫秒级的流计算，而Storm可以实现毫秒级响应</li>
+<li>Spark Streaming构建在Spark上，一方面是因为Spark的低延迟执行引擎（100ms+）可以用于实时计算，另一方面，相比于Storm，RDD数据集更容易做高效的容错处理</li>
+<li>Spark Streaming采用的小批量处理的方式使得它可以同时兼容批量和实时数据处理的逻辑和算法，因此，方便了一些需要历史数据和实时数据联合分析的特定应用场合</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/10/06/Spark/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/06/Spark/" itemprop="url">Spark</a></h1>
+        
+
+        <div class="post-meta">
+          
+                    <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-06T18:53:15+08:00">
+                2018-10-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Bigdata/" itemprop="url" rel="index">
+                    <span itemprop="name">Bigdata</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Spark概述"><a href="#Spark概述" class="headerlink" title="Spark概述"></a>Spark概述</h1><h2 id="Spark简介"><a href="#Spark简介" class="headerlink" title="Spark简介"></a>Spark简介</h2><ul>
+<li>Spark最初由美国加州伯克利大学（UCBerkeley）的AMP实验室于2009年开发，是基于内存计算的大数据并行计算框架，可用于构建大型的、低延迟的数据分析应用程序</li>
+<li>2013年Spark加入Apache孵化器项目后发展迅猛，如今已成为Apache软件基金会最重要的三大分布式计算系统开源项目之一（Hadoop、Spark、Storm）</li>
+<li>Spark具有如下几个主要特点：<ul>
+<li>运行速度快：使用DAG执行引擎以支持循环数据流与内存计算</li>
+<li>容易使用：支持使用Scala、Java、Python和R语言进行编程，可以通过Spark Shell进行交互式编程   </li>
+<li>通用性：Spark提供了完整而强大的技术栈，包括SQL查询、流式计算、机器学习和图算法组件</li>
+<li>运行模式多样：可运行于独立的集群模式中，可运行于Hadoop中，也可运行于Amazon EC2等云环境中，并且可以访问HDFS、Cassandra、HBase、Hive等多种数据源</li>
+</ul>
+</li>
+</ul>
+<h2 id="Scala简介"><a href="#Scala简介" class="headerlink" title="Scala简介"></a>Scala简介</h2><ul>
+<li>Scala是一门现代的多范式编程语言，运行于Java平台（JVM，Java 虚拟机），并兼容现有的Java程序</li>
+<li>Scala的特性：<ul>
+<li>Scala具备强大的并发性，支持函数式编程，可以更好地支持分布式系统</li>
+<li>Scala语法简洁，能提供优雅的API</li>
+<li>Scala兼容Java，运行速度快，且能融合到Hadoop生态圈中 </li>
+</ul>
+</li>
+<li>Scala是Spark的主要编程语言，但Spark还支持Java、Python、R作为编程语言</li>
+<li>Scala的优势是提供了REPL（Read-Eval-Print Loop，交互式解释器），提高程序开发效率</li>
+</ul>
+<h2 id="Spark与Hadoop的比较"><a href="#Spark与Hadoop的比较" class="headerlink" title="Spark与Hadoop的比较"></a>Spark与Hadoop的比较</h2><ul>
+<li>Hadoop存在如下一些缺点：<ul>
+<li>表达能力有限</li>
+<li>磁盘IO开销大</li>
+<li>延迟高</li>
+<li>任务之间的衔接涉及IO开销，在前一个任务执行完成之前，其他任务就无法开始，难以胜任复杂、多阶段的计算任务 </li>
+</ul>
+</li>
+<li>相比于Hadoop MapReduce，Spark主要具有如下优点：<ul>
+<li>Spark的计算模式也属于MapReduce，但不局限于Map和Reduce操作，还提供了多种数据集操作类型，编程模型比Hadoop MapReduce更灵活</li>
+<li>Spark提供了内存计算，可将中间结果放到内存中，对于迭代运算效率更高</li>
+<li>Spark基于<strong>DAG</strong>的任务调度执行机制，要优于Hadoop MapReduce的迭代执行机制 </li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/15/vr9S5IBqmax1MFf.png" alt="Spark执行流程.png"></p>
+<ul>
+<li>使用Hadoop进行迭代计算非常耗资源</li>
+<li>Spark将数据载入内存后，之后的迭代计算都可以直接使用内存中的中间结果作运算，避免了从磁盘中频繁读取数据</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/15/TVUy9Nz7DWkqpZ5.png" alt="Hadoop与Spark执行逻辑回归时间对比.png"></p>
+<h1 id="Spark生态系统"><a href="#Spark生态系统" class="headerlink" title="Spark生态系统"></a>Spark生态系统</h1><blockquote>
+<p>在实际应用中，大数据处理主要包括以下三个类型：</p>
+<ul>
+<li>复杂的批量数据处理：通常时间跨度在数十分钟到数小时之间</li>
+<li>基于历史数据的交互式查询：通常时间跨度在数十秒到数分钟之间</li>
+<li>基于实时数据流的数据处理：通常时间跨度在数百毫秒到数秒之间<br>当同时存在以上三种场景时，就需要同时部署三种不同的软件<br>比如: MapReduce  /  Impala  /  Storm</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>这样做难免会带来一些问题： </p>
+<ul>
+<li>不同场景之间输入输出数据无法做到无缝共享，通常需要进行数据格式的转换</li>
+<li>不同的软件需要不同的开发和维护团队，带来了较高的使用成本</li>
+<li>比较难以对同一个集群中的各个系统进行统一的资源协调和分配</li>
+</ul>
+</blockquote>
+<ul>
+<li><p>Spark的设计遵循<strong>“一个软件栈满足不同应用场景”</strong>的理念，逐渐形成了一套完整的生态系统</p>
+</li>
+<li><p>既能够提供内存计算框架，也可以支持SQL即席查询、实时流式计算、机器学习和图计算等</p>
+</li>
+<li><p>Spark可以部署在资源管理器YARN之上，提供一站式的大数据解决方案</p>
+</li>
+<li><p>因此，Spark所提供的生态系统足以应对上述三种场景，即同时支持批处理、交互式查询和流数据处理</p>
+</li>
+<li><p>Spark的生态系统主要包含了Spark Core、Spark SQL、Spark Streaming、MLLib和GraphX 等组件</p>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/15/eGqLAQjrxYDIiB4.png" alt="BDAS架构.png"></p>
+<table>
+<thead>
+<tr>
+<th>应用场景</th>
+<th>时间跨度</th>
+<th>其他框架</th>
+<th>Spark生态系统中的组件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>复杂的批量数据处理</td>
+<td>小时级</td>
+<td>MapReduce、Hive</td>
+<td>Spark</td>
+</tr>
+<tr>
+<td>基于历史数据的交互式查询</td>
+<td>分钟级、秒级</td>
+<td>Impala、Dremel、Drill</td>
+<td>Spark SQL</td>
+</tr>
+<tr>
+<td>基于实时数据流的数据处理</td>
+<td>毫秒、秒级</td>
+<td>Storm、S4</td>
+<td>Spark Streaming</td>
+</tr>
+<tr>
+<td>基于历史数据的数据挖掘</td>
+<td>-</td>
+<td>Mahout</td>
+<td>MLlib</td>
+</tr>
+<tr>
+<td>图结构数据的处理</td>
+<td>-</td>
+<td>Pregel、Hama</td>
+<td>GraphX</td>
+</tr>
+</tbody></table>
+<h1 id="Spark运行架构"><a href="#Spark运行架构" class="headerlink" title="Spark运行架构"></a>Spark运行架构</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li>RDD：是Resillient Distributed Dataset（弹性分布式数据集）的简称，是分布式内存的一个抽象概念，提供了一种高度受限的共享内存模型</li>
+<li>DAG：是Directed Acyclic Graph（有向无环图）的简称，反映RDD之间的依赖关系</li>
+<li>Executor：是运行在工作节点（WorkerNode）的一个进程，负责运行Task</li>
+<li>Application：用户编写的Spark应用程序</li>
+<li>Task：运行在Executor上的工作单元 </li>
+<li>Job：一个Job包含多个RDD及作用于相应RDD上的各种操作</li>
+<li>Stage：是Job的基本调度单位，一个Job会分为多组Task，每组Task被称为Stage，或者也被称为TaskSet，代表了一组关联的、相互之间没有Shuffle依赖关系的任务组成的任务集</li>
+</ul>
+<h2 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h2><ul>
+<li>Spark运行架构包括集群资源管理器（Cluster Manager）、运行作业任务的工作节点（Worker Node）、每个应用的任务控制节点（Driver）和每个工作节点上负责具体任务的执行进程（Executor）</li>
+<li>资源管理器可以自带或Mesos或YARN<blockquote>
+<p>与Hadoop MapReduce计算框架相比，Spark所采用的Executor有两个优点：</p>
+</blockquote>
+</li>
+<li>一是利用多线程来执行具体的任务，减少任务的启动开销</li>
+<li>二是Executor中有一个BlockManager存储模块，会将内存和磁盘共同作为存储设备，有效减少IO开销<br><img src="https://i.loli.net/2019/08/15/ayNnsW1oELcmMrV.png" alt="Spark运行架构.png"></li>
+<li>一个Application由一个Driver和若干个Job构成，一个Job由多个Stage构成，一个Stage由多个没有Shuffle关系的Task组成</li>
+<li>当执行一个Application时，Driver会向集群管理器申请资源，启动Executor，并向Executor发送应用程序代码和文件，然后在Executor上执行Task，运行结束后，执行结果会返回给Driver，或者写到HDFS或者其他数据库中<br><img src="https://i.loli.net/2019/08/15/TcBFl2LCj9PdIGM.png" alt="Spark中各种概念之间的相互关系.png"></li>
+</ul>
+<h2 id="Spark运行基本流程"><a href="#Spark运行基本流程" class="headerlink" title="Spark运行基本流程"></a>Spark运行基本流程</h2><p><img src="https://i.loli.net/2019/08/15/gHdGTBRl4L8Ekhy.png" alt="Spark运行基本流程图.png"></p>
+<ol>
+<li>运行环境，即由Driver创建一个SparkContext，进行资源的申请、任务的分配和监控</li>
+<li>资源管理器为Executor分配资源，并启动Executor进程</li>
+<li>SparkContext根据RDD的依赖关系构建DAG图，DAG图提交给DAGScheduler解析成Stage，然后把一个个TaskSet提交给底层调度器TaskScheduler处理；Executor向SparkContext申请Task，Task Scheduler将Task发放给Executor运行，并提供应用程序代码</li>
+<li>Task在Executor上运行，把执行结果反馈给TaskScheduler，然后反馈给DAGScheduler，运行完毕后写入数据并释放所有资源 <blockquote>
+<p><em>总体而言，Spark运行架构具有以下特点：</em></p>
+</blockquote>
+</li>
+<li>每个Application都有自己专属的Executor进程，并且该进程在Application运行期间一直驻留。Executor进程以多线程的方式运行Task</li>
+<li>Spark运行过程与资源管理器无关，只要能够获取Executor进程并保持通信即可</li>
+<li>Task采用了数据本地性和推测执行等优化机制</li>
+</ol>
+<h2 id="RDD-运行原理"><a href="#RDD-运行原理" class="headerlink" title="RDD 运行原理"></a>RDD 运行原理</h2><ol>
+<li>设计背景</li>
+</ol>
+<ul>
+<li>许多迭代式算法（比如机器学习、图算法等）和交互式数据挖掘工具，共同之处是，不同计算阶段之间会重用中间结果</li>
+<li>目前的MapReduce框架都是把中间结果写入到HDFS中，带来了大量的数据复制、磁盘IO和序列化开销</li>
+<li>RDD就是为了满足这种需求而出现的，它提供了一个抽象的数据架构，我们不必担心底层数据的分布式特性，只需将具体的应用逻辑表达为一系列转换处理，不同RDD之间的转换操作形成依赖关系，可以实现管道化，避免中间数据存储</li>
+</ul>
+<ol start="2">
+<li>RDD概念</li>
+</ol>
+<ul>
+<li>一个RDD就是一个分布式对象集合，本质上是一个只读的分区记录集合，每个RDD可分成多个分区，每个分区就是一个数据集片段，并且一个RDD的不同分区可以被保存到集群中不同的节点上，从而可以在集群中的不同节点上进行并行计算</li>
+<li>RDD提供了一种高度受限的共享内存模型，即RDD是只读的记录分区的集合，不能直接修改，只能基于稳定的物理存储中的数据集创建RDD，或者通过在其他RDD上执行确定的转换操作（如map、join和group by）而创建得到新的RDD</li>
+<li>RDD提供了一组丰富的操作以支持常见的数据运算，分为“动作”（Action）和“转换”（Transformation）两种类型</li>
+<li>RDD提供的转换接口都非常简单，都是类似map、filter、groupBy、join等粗粒度的数据转换操作，而不是针对某个数据项的细粒度修改（不适合网页爬虫）</li>
+<li>表面上RDD的功能很受限、不够强大，实际上RDD已经被实践证明可以高效地表达许多框架的编程模型（比如MapReduce、SQL、Pregel）</li>
+<li>Spark用Scala语言实现了RDD的API，程序员可以通过调用API实现对RDD的各种操作</li>
+<li>RDD典型的执行过程如下：<ul>
+<li>RDD读入外部数据源进行创建</li>
+<li>RDD经过一系列的转换（Transformation）操作，每一次都会产生不同的RDD，供给下一个转换操作使用</li>
+<li>最后一个RDD经过“动作”操作进行转换，并输出到外部数据源 <blockquote>
+<ul>
+<li>这一系列处理称为一个Lineage（血缘关系），即DAG拓扑排序的结果<br>优点：惰性调用、管道化、避免同步等待、不需要保存中间结果、每次操作变得简单<br><img src="https://i.loli.net/2019/08/15/a1Y9sXAxECQTD6I.png" alt="RDD执行过程的一个实例.png"></li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>RDD特性<br>Spark采用RDD以后能够实现高效计算的原因主要在于：</li>
+<li>高效的容错性<ul>
+<li>现有容错机制：数据复制或者记录日志</li>
+<li>RDD：血缘关系、重新计算丢失分区、无需回滚系统、重算过程在不同节点之间并行、只记录粗粒度的操作</li>
+</ul>
+</li>
+<li>中间结果持久化到内存，数据在内存中的多个RDD操作之间进行传递，避免了不必要的读写磁盘开销</li>
+<li>存放的数据可以是Java对象，避免了不必要的对象序列化和反序列化</li>
+<li>RDD之间的依赖关系<br><img src="https://i.loli.net/2019/08/15/v71RxrEqTLsDjNI.png" alt="窄依赖与宽依赖的区别.png"></li>
+</ol>
+<ul>
+<li>窄依赖表现为一个父RDD的分区对应于一个子RDD的分区或多个父RDD的分区对应于一个子RDD的分区</li>
+<li>宽依赖则表现为存在一个父RDD的一个分区对应一个子RDD的多个分区</li>
+</ul>
+<ol start="5">
+<li>Stage的划分<blockquote>
+<ul>
+<li>Spark通过分析各个RDD的依赖关系生成了DAG，再通过分析各个RDD中的分区之间的依赖关系来决定如何划分Stage，具体划分方法是：</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>在DAG中进行反向解析，遇到宽依赖就断开</li>
+<li>遇到窄依赖就把当前的RDD加入到Stage中</li>
+<li>　将窄依赖尽量划分在同一个Stage中，可以实现流水线计算<blockquote>
+<ul>
+<li>被分成三个Stage，在Stage2中，从map到union都是窄依赖，这两步操作可以形成一个流水线操作<br><img src="https://i.loli.net/2019/08/15/iEwLC2qAhSlpY6M.png" alt="根据RDD分区的依赖关系划分Stage.png"></li>
+</ul>
+</blockquote>
+</li>
+<li>流水线操作实例<ul>
+<li>分区7通过map操作生成的分区9，可以不用等待分区8到分区10这个map操作的计算结束，而是继续进行union操作，得到分区13，这样流水线执行大大提高了计算的效率</li>
+</ul>
+</li>
+<li>Stage的类型包括两种：ShuffleMapStage和ResultStage，具体如下：<ul>
+<li>ShuffleMapStage：不是最终的Stage，在它之后还有其他Stage，所以，它的输出一定需要经过Shuffle过程，并作为后续Stage的输入；这种Stage是以Shuffle为输出边界，其输入边界可以是从外部获取数据，也可以是另一个ShuffleMapStage的输出，其输出可以是另一个Stage的开始；在一个Job里可能有该类型的Stage，也可能没有该类型Stage；</li>
+<li>ResultStage：最终的Stage，没有输出，而是直接产生结果或存储。这种Stage是直接输出结果，其输入边界可以是从外部获取数据，也可以是另一个ShuffleMapStage的输出。在一个Job里必定有该类型Stage。<br>因此，一个Job含有一个或多个Stage，其中至少含有一个ResultStage</li>
+</ul>
+</li>
+</ul>
+<ol start="6">
+<li>RDD运行过程<blockquote>
+<ul>
+<li>通过上述对RDD概念、依赖关系和Stage划分的介绍，结合之前介绍的Spark运行基本流程，再总结一下RDD在Spark架构中的运行过程：</li>
+</ul>
+</blockquote>
+</li>
+<li>创建RDD对象；</li>
+<li>SparkContext负责计算RDD之间的依赖关系，构建DAG；</li>
+<li>DAGScheduler负责把DAG图分解成多个Stage，每个Stage中包含了多个Task，每个Task会被TaskScheduler分发给各个WorkerNode上的Executor去执行。<br><img src="https://i.loli.net/2019/08/15/N6DdUuQT8E5MXRn.png" alt="RDD在Spark中的运行过程.png"></li>
+</ol>
+<h1 id="Spark-SQL"><a href="#Spark-SQL" class="headerlink" title="Spark SQL"></a>Spark SQL</h1><ul>
+<li>Spark SQL在Hive兼容层面仅依赖HiveQL解析、Hive元数据，也就是说，从HQL被解析成抽象语法树（AST）起，就全部由Spark SQL接管了。Spark SQL执行计划生成和优化都由Catalyst（函数式关系查询优化框架）负责<br><img src="https://i.loli.net/2019/08/15/B4gFD6Nnx75dblL.png" alt="Spark SQL架构.png"><ul>
+<li>Spark SQL增加了SchemaRDD（即带有Schema信息的RDD），使用户可以在Spark SQL中执行SQL语句，数据既可以来自RDD，也可以是Hive、HDFS、Cassandra等外部数据源，还可以是JSON格式的数据</li>
+<li>Spark SQL目前支持Scala、Java、Python三种语言，支持SQL-92规范<br><img src="https://i.loli.net/2019/08/15/irYBgfjqWhAZCpx.png" alt="Spark SQL支持的数据格式和编程语言.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="Spark的部署和应用方式"><a href="#Spark的部署和应用方式" class="headerlink" title="Spark的部署和应用方式"></a>Spark的部署和应用方式</h1><h2 id="Spark三种部署方式"><a href="#Spark三种部署方式" class="headerlink" title="Spark三种部署方式"></a>Spark三种部署方式</h2><ul>
+<li>Standalone（类似于MapReduce1.0，slot为资源分配单位）</li>
+<li>Spark on Mesos（和Spark有血缘关系，更好支持Mesos）</li>
+<li>Spark on YARN<br><img src="https://i.loli.net/2019/08/15/IXHGPSlbvZxKoBa.png" alt="Spark on Yarn.png"></li>
+</ul>
+<h2 id="从Hadoop-Storm架构转向Spark架构"><a href="#从Hadoop-Storm架构转向Spark架构" class="headerlink" title="从Hadoop+Storm架构转向Spark架构"></a>从Hadoop+Storm架构转向Spark架构</h2><p><img src="https://i.loli.net/2019/08/15/Fnlm51KXpfL6NjB.png" alt="采用Hadoop+Storm部署方式的一个案例.png"></p>
+<blockquote>
+<ul>
+<li>用Spark架构具有如下优点：</li>
+</ul>
+<ul>
+<li>实现一键式安装和配置、线程级别的任务监控和告警</li>
+<li>降低硬件集群、软件维护、任务监控和应用开发的难度</li>
+<li>便于做成统一的硬件、计算平台资源池</li>
+</ul>
+<ul>
+<li>需要说明的是，Spark Streaming无法实现毫秒级的流计算，因此，对于需要毫秒级实时响应的企业应用而言，仍然需要采用流计算框架（如Storm）<br><img src="https://i.loli.net/2019/08/15/vfjaYQR8shSqDJt.png" alt="用Spark架构满足批处理和流处理需求.png"></li>
+</ul>
+</blockquote>
+<h2 id="Hadoop和Spark的统一部署"><a href="#Hadoop和Spark的统一部署" class="headerlink" title="Hadoop和Spark的统一部署"></a>Hadoop和Spark的统一部署</h2><ul>
+<li>由于Hadoop生态系统中的一些组件所实现的功能，目前还是无法由Spark取代的，比如，Storm</li>
+<li>现有的Hadoop组件开发的应用，完全转移到Spark上需要一定的成本<blockquote>
+<ul>
+<li>不同的计算框架统一运行在YARN中，可以带来如下好处：</li>
+</ul>
+</blockquote>
+</li>
+<li>计算资源按需伸缩</li>
+<li>不用负载应用混搭，集群利用率高</li>
+<li>共享底层存储，避免数据跨集群迁移<br><img src="https://i.loli.net/2019/08/15/RPfTV8uejXhgvlw.png" alt="Hadoop和Spark的统一部署.png"></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/09/27/NoSQL/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -297,8 +1063,7 @@
 
         <div class="post-meta">
           
-          
-          <span class="post-time">
+                    <span class="post-time">
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -791,8 +1556,7 @@
 
         <div class="post-meta">
           
-          
-          <span class="post-time">
+                    <span class="post-time">
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1275,8 +2039,7 @@
 
         <div class="post-meta">
           
-          
-          <span class="post-time">
+                    <span class="post-time">
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1504,8 +2267,7 @@
 
         <div class="post-meta">
           
-          
-          <span class="post-time">
+                    <span class="post-time">
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1725,8 +2487,7 @@
 
         <div class="post-meta">
           
-          
-          <span class="post-time">
+                    <span class="post-time">
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -2047,8 +2808,7 @@
 
         <div class="post-meta">
           
-          
-          <span class="post-time">
+                    <span class="post-time">
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -2457,7 +3217,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2479,7 +3239,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

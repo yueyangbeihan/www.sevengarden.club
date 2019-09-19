@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="岳阳北寒">
 <meta property="og:description" content="数字化转型（金融）    信息化模型 数字化模型    使用模式 专线支持的网点、ATM、POS机等客户场景 互联网生态及自有APP的用户场景、无人银行   人员思维 项目经理思维，架构师思维 产品思维、数据思维   产品形态 以金融机构为视角的专业化产品 以客户体验为核心的生态化产品   开发模式 基于完整需求进行瀑布式开发 基于体验点进行敏捷开发   合作模式 业务部门定义产品，科技部门实现产">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-26T11:27:32.398Z">
+<meta property="og:updated_time" content="2019-09-19T11:00:53.392Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="札记">
 <meta name="twitter:description" content="数字化转型（金融）    信息化模型 数字化模型    使用模式 专线支持的网点、ATM、POS机等客户场景 互联网生态及自有APP的用户场景、无人银行   人员思维 项目经理思维，架构师思维 产品思维、数据思维   产品形态 以金融机构为视角的专业化产品 以客户体验为核心的生态化产品   开发模式 基于完整需求进行瀑布式开发 基于体验点进行敏捷开发   合作模式 业务部门定义产品，科技部门实现产">
@@ -295,8 +295,7 @@
 
         <div class="post-meta">
           
-          
-          <span class="post-time">
+                    <span class="post-time">
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -553,6 +552,26 @@
 <li>串行读（Serializable）：完全串行化的读，每次读都需要获得表级共享锁，读写相互都会阻塞</li>
 </ul>
 <p>MySQL尽量避免使用NULL（空值）列，其使得索引、索引统计和值都比较复杂</p>
+<ul>
+<li>MySql 复制上的读/写分离<ul>
+<li>由于备库是异步的，主要的难点是如何处理备库上的脏数据</li>
+<li>常见读/写分离方法如下：<ul>
+<li>基于查询分离：将所有不能容忍脏数据的读和写查询分配到主服务器上，其他读查询分配到备库上</li>
+<li>基于脏数据分离：通过应用检查复制延迟，以确定备库数据是否太旧。</li>
+<li>基于会话分离：判断用户是否修改了数据。在会话层设置标记位，表明做了更新，就将该用户的查询在一段时间内总是指向主库。</li>
+<li>基于版本分离：跟踪对象的版本号以及或时间戳，通过从备库读取对象的版本或时间戳判断数据是否足够新</li>
+<li>基于全局版本/会话分离：应用执行写操作是，在提交事务后，执行一次show master status，然后在缓存中存储主库日志坐标，作为被修改对象以及或会话版本号。当应用连接到备库时，执行show slave status并将备库上的坐标和缓存中的版本号相比。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Apache WEB 处理动态内容</p>
+<ul>
+<li>Apache 通常是通过prefork配置来使用mod_php、mod_perl和mod_python模块，prefork模式会为每个请求预分配进程。</li>
+<li>PHP、Perl和Python脚本是可以定制化的，每个进程使用50Mb或100MB内存</li>
+</ul>
+<p>lightttpd、nginx擅长处理静态内容，Tomcat处理动态内容</p>
 
       
     </div>
@@ -672,7 +691,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -694,7 +713,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
