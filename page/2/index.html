@@ -273,6 +273,317 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/20/AWS-High-Availability-Fault-Tolerance-Architecture/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/20/AWS-High-Availability-Fault-Tolerance-Architecture/" itemprop="url">AWS High Availability & Fault Tolerance Architecture</a></h1>
+        
+
+        <div class="post-meta">
+          
+                    <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-20T17:30:32+08:00">
+                2019-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>前言：AWS提供众多服务和基础架构能力，以在云中构建可靠，容错且高度可用的系统。一下为AWS的定义范围和解释</li>
+</ul>
+<ul>
+<li>Fault Tolerance定义了构建系统的某些组件发生故障时，系统仍能保持运行的能力</li>
+<li>大多数高级服务（如S3，RDS，SQS和ELB）都考虑了容错和高可用性（<font size="3" color="orange">自设计冗余性和高可用</font>）</li>
+<li>提供基本基础架构（如EC2和EBS）的服务提供特定功能，例如可用区，弹性IP地址和快照，系统需要正确利用和使用这些功能才能达到容错和高可用性（<strong><font color="red">需要借助AWS基础架构实现高可用性和容错性</font></strong>）</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/20/UKcMhzL8VOBtHmD.png" alt="AWS-High-Availability-and-Fault-Tolerance.png"></p>
+<h2 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h2><h3 id="HA"><a href="#HA" class="headerlink" title="HA"></a>HA</h3><ul>
+<li>高可用性是指提供在本地系统单个组件故障情况下，能继续访问应用的能力，无论这个故障是业务流程、物理设施、IT软/硬件的故障。</li>
+<li>主要用于确保关键系统始终正常运行，如核心业务系统、数据库场景。</li>
+<li>（RPO=0，共享存储的情况下，RTO分钟级）</li>
+<li>一般使用通过运行时间百分比表示其可用性，5 个9：99.999%年可用率，意味着每年停机时间在一到两分钟</li>
+</ul>
+<h3 id="FT"><a href="#FT" class="headerlink" title="FT"></a>FT</h3><ul>
+<li>设计方式时当一个组件发生故障（无论是硬件还是软件）时，备份组件立即接管操作，从而不会丢失服务</li>
+<li>容错是高可用性的更严格版本。 HA专注于提供尽可能少的停机时间，而FT则通过实现零停机而进一步提升， 但是，在容错模型中，系统在发生故障时提供高性能的能力不是首要任务，相反，预计系统可以保持运行性能，甚至降低水平</li>
+<li>（ 设计目标RTO =0 &amp;&amp; RPO = 0）</li>
+</ul>
+<h3 id="DR"><a href="#DR" class="headerlink" title="DR"></a>DR</h3><ul>
+<li><p>灾难恢复涉及<font color="red">一系列政策，工具和程序</font>，以便在自然灾害或人为灾难之后恢复或延续重要技术基础设施和系统。</p>
+</li>
+<li><p>DR需要具有异地设施，可以在其中恢复关键数据和工作负载（无论是完全还是部分），以便在发生破坏性事件后恢复足够的业务运营。要将工作负载转移到远程位置，必须采用适当的灾难恢复解决方案</p>
+</li>
+<li><p>灾难恢复是一个更广泛，更复杂的概念，它指的是一套具有全面组件的战略，包括：风险评估，规划，依赖关系分析，远程站点配置，员工培训，测试，自动化设置等等。灾难恢复超越了<font color="red">HA和FT</font>，但可以而且应该将这些因素包括在其技术设计中。</p>
+</li>
+<li><p>由于DR场景已经跨单数据中心，基本上RPO可小时级，RTO小时级到天级别</p>
+</li>
+<li><p>相比HA、FT，DR强调发生灾难后处理，而不是应急或预防，而是减弱灾难带来的影响。DR处理的不是单个组件的故障情况，而是DC级别的故障，应对人力不可控的风险。</p>
+</li>
+<li><p>在场景上一般都是有着严格行业监管要求的，如金融、医疗等</p>
+</li>
+<li><p>容灾通常意义上分为<font color="red"><strong>三个级别（数据、应用、业务</strong></font>，国际上专业划分为7个层次）</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>级别</th>
+<th>定义</th>
+<th>RTO</th>
+<th>RTO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据级</td>
+<td>指通过建立异地容灾中心，做数据的远程备份，在灾难发生之后要确保原有的数据不会丢失或者遭到破坏。但在数据级容灾这个级别，发生灾难时应用是会中断的。在数据级容灾方式下，所建立的异地容灾中心可以简单地把它理解成一个远程的数据备份中心。数据级容灾的恢复时间比较长，但是相比其他容灾级别来讲它的费用比较低，而且构建实施也相对简单。但是，“数据源是一切关键性业务系统的生命源泉”，因此数据级容灾必不可少。</td>
+<td>RTO 最长(若干天) ，因为灾难发生时，需要重新部署机器，利用备份数据恢复业务。</td>
+<td>最低</td>
+</tr>
+<tr>
+<td>应用级</td>
+<td>在数据级容灾的基础之上，在备份站点同样构建一套相同的应用系统，通过同步或异步复制技术，这样可以保证关键应用在允许的时间范围内恢复运行，尽可能减少灾难带来的损失，让用户基本感受不到灾难的发生，这样就使系统所提供的服务是完整的、可靠的和安全的。</td>
+<td>RTO 中等（若干小时）</td>
+<td>中等。异地可以搭建一样的系统，或者小些的系统。</td>
+</tr>
+<tr>
+<td>业务级</td>
+<td>全业务的灾备，除了必要的 IT 相关技术，还要求具备全部的基础设施。其大部分内容是非IT系统（如电话、办公地点等），当大灾难发生后，原有的办公场所都会受到破坏，除了数据和应用的恢复，更需要一个备份的工作场所能够正常的开展业务。</td>
+<td>RTO 最小（若干分钟或者秒）</td>
+<td>最高</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>RTO （Recovery Time Objective）和 RPO（Recovery Point Objective）</strong></li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/20/o7k6O5vtfeIEcUP.png" alt="002.png"></p>
+<h3 id="HA与DR关系"><a href="#HA与DR关系" class="headerlink" title="HA与DR关系"></a>HA与DR关系</h3><h4 id="两者相互关联，互相补充，互有交叉，同时又有显著的区别："><a href="#两者相互关联，互相补充，互有交叉，同时又有显著的区别：" class="headerlink" title="两者相互关联，互相补充，互有交叉，同时又有显著的区别："></a>两者相互关联，互相补充，互有交叉，同时又有显著的区别：</h4><ul>
+<li>HA 往往指本地的高可用系统，表示在多个服务器运行一个或多种应用的情况下，应确保任意服务器出现任何故障时，其运行的应用不能中断，应用程序和系统应能迅速切换到其它服务器上运行，即本地系统集群和热备份。HA 往往是用共享存储，因此往往不会有数据丢失（RPO = 0），更多的是切换时间长度考虑即 RTO。</li>
+<li>DR 是指异地（同城或者异地）的高可用系统，表示在灾害发生时，数据、应用以及业务的恢复能力。异地灾备的数据灾备部分是使用数据复制，根据使用的不同数据复制技术（同步、异步、Strectched Cluster 等），数据往往有损失导致 RPO &gt;0；而异地的应用切换往往需要更长的时间，这样 RT0 &gt;0。 因此，需要结合特定的业务需求，来定制所需要的 RTO 和 RPO，以实现最优的 CTO。</li>
+</ul>
+<h4 id="也可以从别的角度上看待两者的区别："><a href="#也可以从别的角度上看待两者的区别：" class="headerlink" title="也可以从别的角度上看待两者的区别："></a>也可以从别的角度上看待两者的区别：</h4><ul>
+<li>从故障角度，HA 主要处理单组件的故障导致负载在集群内的服务器之间的切换，DR 则是应对大规模的故障导致负载在数据中心之间做切换。</li>
+<li>从网络角度，LAN 尺度的任务是 HA 的范畴，WAN 尺度的任务是 DR 的范围。</li>
+<li>从云的角度看，HA 是一个云环境内保障业务持续性的机制，DR 是多个云环境间保障业务持续性的机制。</li>
+<li>从目标角度，HA 主要是保证业务高可用，DR 是保证数据可靠的基础上的业务可用<br>当前的国内IT对于这两个技术术语有着太多差异化的理解。从个人角度来讲<font color="red" size="5"><strong>容灾更强调业务级，而HA更强调数据的高可用，独立应用的可用性。</strong></font></li>
+</ul>
+<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><p><img src="https://i.loli.net/2019/08/20/eBGgKt6F527nRLf.jpg" alt="HA&amp;DR (2).jpeg"></p>
+<h2 id="Regions-amp-Availability-Zones"><a href="#Regions-amp-Availability-Zones" class="headerlink" title="Regions &amp; Availability Zones"></a>Regions &amp; Availability Zones</h2><ul>
+<li>AWS提供多Region基础架构，并且在一个内具有多个可用区域（AZs），t提供更简易的可以轻松访问冗余部署位置。</li>
+<li>AZ分布在不同的地理位置，其设计与其他AZ物理故障隔离</li>
+<li>区域和AZ在地理上分布应用程序并帮助构建多站点解决方案来帮助实现更高的容错能力</li>
+<li>AZ之间提供低成本，低延迟的网络连接</li>
+<li>将EC2实例放置在多个AZ中，可以保护应用程序免于在单个数据中心发生故障</li>
+<li>在同一区域或另一个区域中的多个AZ中运行独立的应用程序堆栈非常重要，这样，如果一个区域出现故障，另一个区域中的应用程序可以继续运行</li>
+</ul>
+<h2 id="Amazon-Machine-Image-–-AMIs"><a href="#Amazon-Machine-Image-–-AMIs" class="headerlink" title="Amazon Machine Image – AMIs"></a>Amazon Machine Image – AMIs</h2><ul>
+<li>EC2是AWS中提供计算资源的服务</li>
+<li>Amazon机器映像（AMI）提供了可用于定义服务实例的模板</li>
+<li>模板包含软件配置（OS，应用服务和应用程序）并通过实例类型提供服务</li>
+<li>AMI可以包含所有软件、应用程序和内置代码，也可以配置为具有启动时安装的引导脚本</li>
+<li>单一的AMI可用于创建不同的实例类型的服务器，用于创建新实例或更换故障实例</li>
+</ul>
+<h2 id="Auto-Scaling"><a href="#Auto-Scaling" class="headerlink" title="Auto Scaling"></a>Auto Scaling</h2><ul>
+<li>Auto Scaling可根据自定义的规则自动扩展或缩小EC2</li>
+<li>AS除了在响应增大时，增加多个实例; 当不再需要这些实例时，它们将自动终止</li>
+<li>AS可以根据需要终止服务器实例，他们将自动启动替换实例</li>
+<li>AS可以在AWS Region范围内跨AZ部署</li>
+</ul>
+<h2 id="Elastic-Load-Balancing-–-ELB"><a href="#Elastic-Load-Balancing-–-ELB" class="headerlink" title="Elastic Load Balancing – ELB"></a>Elastic Load Balancing – ELB</h2><ul>
+<li>ELB 在单个可用区或多个可用区内的多个目标（Amazon EC2 实例、容器和 IP 地址）之间自动分配流量</li>
+<li>随着创建ELB，会产生一个DNS域名，发送到这个域名的任何请求都会被转发到后端处理实例上</li>
+<li>ELB支持主机上的运行状况检查，在跨多个可用区域的EC2实例的流量分配，根据健康状态检查动态添加和删除EC2主机</li>
+<li>ELB 可以检测无法正常运行的目标、停止向它们发送流量，然后将负载分散到剩余的正常运行的目标上，直至使用AS组无缝地恢复不健康的实例</li>
+<li>AS和ELB是一个理想的组合——ELB为请求提供对外DNS访问域名，ELB自动确保始终有正确数量的健康EC2实例来接受请求处理</li>
+<li>ELB可用于在一个区域的多个AZs中的多个实例之间进行平衡（<font color="red">跨AZ多实例</font>）</li>
+</ul>
+<h2 id="Elastic-IPs-–-EIP"><a href="#Elastic-IPs-–-EIP" class="headerlink" title="Elastic IPs – EIP"></a>Elastic IPs – EIP</h2><ul>
+<li>弹性IP地址是公共静态IP地址，仅在所属区域内的实现地址于实例之间映射</li>
+<li>EIP与AWS账户绑定，而不是与实例关联</li>
+<li>弹性IP地址可用于固定终端服务的需求，例如，主数据库，文件服务器和EC2托管负载平衡器</li>
+<li>可以通过快速将地址重新映射到另一个正在运行的实例或刚刚启动的替换实例，弹性IP地址可用于解决主机或可用区故障（EIP与实例解耦）</li>
+</ul>
+<h2 id="Reserved-Instance"><a href="#Reserved-Instance" class="headerlink" title="Reserved Instance"></a>Reserved Instance</h2><ul>
+<li>预留实例有助于保留并保证计算始终以较低的成本提供</li>
+</ul>
+<h2 id="Elastic-Block-Store-–-EBS"><a href="#Elastic-Block-Store-–-EBS" class="headerlink" title="Elastic Block Store – EBS"></a>Elastic Block Store – EBS</h2><ul>
+<li>弹性块存储（EBS）提供持久的实例存储卷，这些存储卷独立于实例的生命周期而存在，并且比实例存储大多个数量级</li>
+<li>EBS卷以冗余方式存储数据，并在单个可用区内自动复制</li>
+<li>在故障转移场景，如果EC2实例发生故障并需要更换，则EBS卷可以附加到新的EC2实例</li>
+<li>有价值的数据不应该对实例（临时）存储上当没有没有适当的备份，复制或重新创建数据的能力的时候</li>
+</ul>
+<h2 id="EBS-Snapshots"><a href="#EBS-Snapshots" class="headerlink" title="EBS Snapshots"></a>EBS Snapshots</h2><ul>
+<li>EBS卷是高度可靠的，为了进一步减轻故障的可能性并提高数据可靠性性，基于时间点的快照可以存储在S3中，然后将其复制到多个AZ</li>
+<li>快照可用于创建新的EBS卷，这些卷是快照时原始卷的精确副本</li>
+<li>快照提供了一种有效的方法来处理磁盘故障、主机、AZ的故障问题</li>
+<li>快照是增量备份，仅备份自上一个快照以来的更改，因此建议保留最近的快照</li>
+<li><font color="red">快照属于region范围内，而EBS卷属于AZ范围内</font></li>
+</ul>
+<h2 id="Relational-Database-Service-–-RDS"><a href="#Relational-Database-Service-–-RDS" class="headerlink" title="Relational Database Service – RDS"></a>Relational Database Service – RDS</h2><ul>
+<li>RDS是在云上交付的一种数据库服务，并使数据库服务使用变得更加简单</li>
+<li>RDS Multi-AZ部署，在不同的AZ提供数据库的同步备用副本，提高数据库的可用性，并保护数据库不受意外停机的影响</li>
+<li>在出现故障转移的情况下，备用服务器被无缝地提升为主服务器，并将处理数据库操作</li>
+<li>默认情况下，数据库启用的自动备份为数据库实例提供时间点恢复</li>
+<li>RDS将备份数据库和事务日志，并将其存储在用户指定的保留期内</li>
+<li>除自动备份外，还可以执行手动RDS备份，这些备份在明确删除之前一直保留</li>
+<li>备份有助于从更高级别的故障中恢复，例如无意中的数据修改，无论是操作员错误还是应用程序中的错误</li>
+<li>RDS只读副本提供数据库的只读副本，并提供扩展超出单个数据库部署容量的能力，用于读取大量数据库工作负载（<font color="red">注意数据库引擎，不是所有RDS支持</font>）</li>
+<li>RDS只读副本是一种可扩展性而非高可用性解决方案</li>
+</ul>
+<h2 id="S3"><a href="#S3" class="headerlink" title="S3"></a>S3</h2><ul>
+<li>S3提供高度持久，容错和冗余的对象存储</li>
+<li>跨S3区域中的多个设施在多个设备上冗余地存储对象</li>
+<li>S3是作为一个非常理想的存储解决方案，适用于静态或缓慢变化的对象，例如图像，视频和其他静态媒体</li>
+<li>S3结合Amazon CloudFront服务交互来支持静态内容缓存加速和流式数据加速传输</li>
+</ul>
+<h2 id="Simple-Queue-Service-–-SQS"><a href="#Simple-Queue-Service-–-SQS" class="headerlink" title="Simple Queue Service – SQS"></a>Simple Queue Service – SQS</h2><ul>
+<li>简单队列服务（SQS）是一种高度可靠的分布式消息传递系统，作为容错应用程序的主干环节</li>
+<li>SQS旨在提供所有消息的“至少一次”传送</li>
+<li>消息被保证发送到队列被保留长达四天（默认，并且可以扩展高达14天）或直到它们被应用程序读出并删除</li>
+<li>消息可由多个worker轮询并进行处理，而SQS使用称为可见性超时的可配置时间间隔，一次只由一个worker处理请求</li>
+<li>如果队列中的消息数量开始增加，或者处理消息的平均时间变得过高，则可以通过添加额外的EC2实例来向上扩展worker</li>
+</ul>
+<h2 id="Route-53"><a href="#Route-53" class="headerlink" title="Route 53"></a>Route 53</h2><ul>
+<li>Route 53是一种高度可用且可扩展的域名解析 服务</li>
+<li>域名的查询自动路由到最近的DNS服务器，从而提供最佳的性能作了解答</li>
+<li>Route 53支持将域名请求（例如，<a href="http://www.example.com）解析为Elastic" target="_blank" rel="noopener">www.example.com）解析为Elastic</a> Load Balancer地址以及域名root记录（example.com）</li>
+</ul>
+<h2 id="Cloud-Front"><a href="#Cloud-Front" class="headerlink" title="Cloud Front"></a>Cloud Front</h2><ul>
+<li>CloudFront可用于使用全球边缘位置网络提供网站加速访问，包括动态，静态和流媒体内容</li>
+<li>对内容的请求会自动路由到最近的边缘位置，以最佳性能体验</li>
+<li>CloudFront可以与其他AWS（如S3和EC2）配合使用以获得的最好的体验</li>
+<li>CloudFront还可以与任何非AWS原始服务器无缝协作，该服务器存储文件的源目标</li>
+</ul>
+<h2 id="Refer"><a href="#Refer" class="headerlink" title="Refer"></a>Refer</h2><ol>
+<li><a href="https://www.cnblogs.com/sammyliu/p/4741967.html" target="_blank" rel="noopener">https://www.cnblogs.com/sammyliu/p/4741967.html</a></li>
+<li><a href="http://jayendrapatil.com/aws-high-availability-fault-tolerance-architecture-certification/" target="_blank" rel="noopener">http://jayendrapatil.com/aws-high-availability-fault-tolerance-architecture-certification/</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/19/AWS-Disaster-Recovery/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -5886,310 +6197,6 @@ table tr:hover {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/10/26/图计算/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/26/图计算/" itemprop="url">图计算</a></h1>
-        
-
-        <div class="post-meta">
-          
-                    <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-26T19:13:10+08:00">
-                2018-10-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bigdata/" itemprop="url" rel="index">
-                    <span itemprop="name">Bigdata</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="图计算简介"><a href="#图计算简介" class="headerlink" title="图计算简介"></a>图计算简介</h1><h2 id="图结构数据"><a href="#图结构数据" class="headerlink" title="图结构数据"></a>图结构数据</h2><ul>
-<li>许多大数据都是以大规模图或网络的形式呈现，如社交网络、传染病传播途径、交通事故对路网的影响</li>
-<li>许多非图结构的大数据，也常常会被转换为图模型后进行分析</li>
-<li>图数据结构很好地表达了数据之间的关联性</li>
-<li>关联性计算是大数据计算的核心——通过获得数据的关联性，可以从噪音很多的海量数据中抽取有用的信息<ul>
-<li>比如，通过为购物者之间的关系建模，就能很快找到口味相似的用户，并为之推荐商品</li>
-<li>或者在社交网络中，通过传播关系发现意见领袖<h2 id="传统图计算解决方案的不足之处"><a href="#传统图计算解决方案的不足之处" class="headerlink" title="传统图计算解决方案的不足之处"></a>传统图计算解决方案的不足之处</h2></li>
-</ul>
-</li>
-</ul>
-<ol>
-<li>常常表现出比较差的内存访问局部性</li>
-<li>针对单个顶点的处理工作过少</li>
-<li>计算过程中伴随着并行度的改变<h2 id="图计算通用软件"><a href="#图计算通用软件" class="headerlink" title="图计算通用软件"></a>图计算通用软件</h2></li>
-</ol>
-<ul>
-<li>第一种主要是基于遍历算法的、实时的图数据库，如Neo4j、OrientDB、DEX和 Infinite Graph</li>
-<li>第二种则是以图顶点为中心的、基于消息传递批处理的并行引擎，如GoldenOrb、Giraph、Pregel和Hama，这些图处理软件主要是基于BSP模型实现的并行图处理系统<blockquote>
-<ul>
-<li>一次BSP(Bulk Synchronous Parallel Computing Model，又称“大同步”模型)计算过程包括一系列全局超步（所谓的超步就是计算中的一次迭代），每个超步主要包括三个组件：</li>
-</ul>
-</blockquote>
-</li>
-<li><strong>局部计算</strong>：每个参与的处理器都有自身的计算任务，它们只读取存储在本地内存中的值，不同处理器的计算任务都是异步并且独立的</li>
-<li><strong>通讯</strong>：处理器群相互交换数据，交换的形式是，由一方发起推送(put)和获取(get)操作</li>
-<li><strong>栅栏同步(Barrier Synchronization)</strong>：当一个处理器遇到“路障”（或栅栏），会等到其他所有处理器完成它们的计算步骤；每一次同步也是一个超步的完成和下一个超步的开始<br><img src="https://i.loli.net/2019/08/16/CbFHOziDv5lRt3f.png" alt="一个超步的垂直结构图 .png"><br><img src="https://i.loli.net/2019/08/16/xJ7QVRDH8P1dMCY.png" alt="超同步.png"><h1 id="Pregel简介"><a href="#Pregel简介" class="headerlink" title="Pregel简介"></a>Pregel简介</h1></li>
-<li>Pregel是一种基于BSP模型实现的并行图处理系统</li>
-<li>为了解决大型图的分布式计算问题，Pregel搭建了一套可扩展的、有容错机制的平台，该平台提供了一套非常灵活的API，可以描述各种各样的图计算</li>
-<li>Pregel作为分布式图计算的计算框架，主要用于图遍历、最短路径、PageRank计算等等<h1 id="Pregel图计算模型"><a href="#Pregel图计算模型" class="headerlink" title="Pregel图计算模型"></a>Pregel图计算模型</h1><h2 id="有向图和顶点"><a href="#有向图和顶点" class="headerlink" title="有向图和顶点"></a>有向图和顶点</h2></li>
-<li>Pregel计算模型以有向图作为输入</li>
-<li>有向图的每个顶点都有一个String类型的顶点ID</li>
-<li>每个顶点都有一个可修改的用户自定义值与之关联</li>
-<li>每条有向边都和其源顶点关联，并记录了其目标顶点ID<br><img src="https://i.loli.net/2019/08/16/gLxEuf8voYjP6Qs.png" alt="有向图和顶点.png"></li>
-<li>边上有一个可修改的用户自定义值与之关联</li>
-<li>在每个超步S中，图中的所有顶点都会并行执行相同的用户自定义函数</li>
-<li>每个顶点可以接收前一个超步(S-1)中发送给它的消息，修改其自身及其出射边的状态，并发送消息给其他顶点，甚至是修改整个图的拓扑结构</li>
-<li>在这种计算模式中，“边”并不是核心对象，在边上面不会运行相应的计算，只有顶点才会执行用户自定义函数进行相应计算<br><img src="https://i.loli.net/2019/08/16/xJ7QVRDH8P1dMCY.png" alt="超同步.png"><h2 id="顶点之间的消息传递"><a href="#顶点之间的消息传递" class="headerlink" title="顶点之间的消息传递"></a>顶点之间的消息传递</h2></li>
-</ul>
-<blockquote>
-<ul>
-<li>采用消息传递模型主要基于以下两个原因：</li>
-</ul>
-<ol>
-<li>消息传递具有足够的表达能力，没有必要使用远程读取或共享内存的方式</li>
-<li>有助于提升系统整体性能。大型图计算通常是由一个集群完成的，集群环境中执行远程数据读取会有较高的延迟；Pregel的消息模式采用异步和批量的方式传递消息，因此可以缓解远程读取的延迟<br><img src="https://i.loli.net/2019/08/16/bmZ8JU2CrKexPVa.png" alt="纯消息传递模型图 .png"></li>
-</ol>
-</blockquote>
-<h2 id="Pregel的计算过程"><a href="#Pregel的计算过程" class="headerlink" title="Pregel的计算过程"></a>Pregel的计算过程</h2><ul>
-<li>Pregel的计算过程是由一系列被称为“超步”的迭代组成的</li>
-<li>在每个超步中，每个顶点上面都会并行执行用户自定义的函数，该函数描述了一个顶点V在一个超步S中需要执行的操作</li>
-<li>该函数可以读取前一个超步(S-1)中其他顶点发送给顶点V的消息，执行相应计算后，修改顶点V及其出射边的状态，然后沿着顶点V的出射边发送消息给其他顶点，而且，一个消息可能经过多条边的传递后被发送到任意已知ID的目标顶点上去</li>
-<li>这些消息将会在下一个超步(S+1)中被目标顶点接收，然后象上述过程一样开始下一个超步(S+1)的迭代过程<br><img src="https://i.loli.net/2019/08/16/eUrodhXamDiVS1Y.png" alt="Ptrgel计算过程.png"></li>
-<li>在Pregel计算过程中，一个算法什么时候可以结束，是由所有顶点的状态决定的</li>
-<li>在第0个超步，所有顶点处于活跃状态，都会参与该超步的计算过程</li>
-<li>当一个顶点不需要继续执行进一步的计算时，就会把自己的状态设置为“停机”，进入非活跃状态</li>
-<li>一旦一个顶点进入非活跃状态，后续超步中就不会再在该顶点上执行计算，除非其他顶点给该顶点发送消息把它再次激活</li>
-<li>当一个处于非活跃状态的顶点收到来自其他顶点的消息时，Pregel计算框架必须根据条件判断来决定是否将其显式唤醒进入活跃状态</li>
-<li>当图中所有的顶点都已经标识其自身达到“非活跃（inactive）”状态，并且没有消息在传送的时候，算法就可以停止运行<br><img src="https://i.loli.net/2019/08/16/Bfl9CYyFdSunm7i.png" alt="一个简单的状态机图.png"><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><img src="https://i.loli.net/2019/08/16/YzldRLfNjiSUwM3.png" alt="一个求最大值的Pregel计算过程图 .png"><h1 id="Pregel的C-API"><a href="#Pregel的C-API" class="headerlink" title="Pregel的C++ API"></a>Pregel的C++ API</h1></li>
-<li>Pregel已经预先定义好一个基类——Vertex类：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename VertexValue, typename EdgeValue, typename MessageValue&gt;</span><br><span class="line">class Vertex &#123;</span><br><span class="line">  public:</span><br><span class="line">	virtual void Compute(MessageIterator* msgs) = 0;</span><br><span class="line">	const string&amp; vertex_id() const;</span><br><span class="line">	int64 superstep() const;</span><br><span class="line">	const VertexValue&amp; GetValue();</span><br><span class="line">	VertexValue* MutableValue();</span><br><span class="line">	OutEdgeIterator GetOutEdgeIterator();	</span><br><span class="line">	void SendMessageTo(const string&amp; dest_vertex,	const MessageValue&amp; message);</span><br><span class="line">	void VoteToHalt();</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在Vetex类中，定义了三个值类型参数，分别表示顶点、边和消息。每一个顶点都有一个给定类型的值与之对应</li>
-<li>编写Pregel程序时，需要继承Vertex类，并且覆写Vertex类的虚函数Compute() </li>
-<li>在Pregel执行计算过程时，在每个超步中都会并行调用每个顶点上定义的Compute()函数</li>
-<li>允许Compute()方法查询当前顶点及其边的信息，以及发送消息到其他的顶点<ul>
-<li>Compute()方法可以调用GetValue()方法来获取当前顶点的值</li>
-<li>调用MutableValue()方法来修改当前顶点的值</li>
-<li>通过由出射边的迭代器提供的方法来查看、修改出射边对应的值</li>
-</ul>
-</li>
-<li>对状态的修改，对于被修改的顶点而言是可以立即被看见的，但是，对于其他顶点而言是不可见的，因此，不同顶点并发进行的数据访问是不存在竞争关系的<blockquote>
-<ul>
-<li>整个过程中，唯一需要在超步之间持久化的顶点级状态，是顶点和其对应的边所关联的值，因而，Pregel计算框架所需要管理的图状态就只包括顶点和边所关联的值，这种做法大大简化了计算流程，同时，也有利于图的分布和故障恢复</li>
-</ul>
-</blockquote>
-<h2 id="消息传递机制"><a href="#消息传递机制" class="headerlink" title="消息传递机制"></a>消息传递机制</h2></li>
-<li>顶点之间的通讯是借助于消息传递机制来实现的，每条消息都包含了消息值和需要到达的目标顶点ID。用户可以通过Vertex类的模板参数来设定消息值的数据类型</li>
-<li>在一个超步S中，一个顶点可以发送任意数量的消息，这些消息将在下一个超步（S+1）中被其他顶点接收</li>
-<li>也就是说，在超步（S+1）中，当Pregel计算框架在顶点V上执行用户自定义的Compute()方法时，所有在前一个超步S中发送给顶点V的消息，都可以通过一个迭代器来访问到。迭代器不能保证消息的顺序，不过可以保证消息一定会被传送并且不会被重复传送</li>
-<li>一个顶点V通过与之关联的出射边向外发送消息，并且，消息要到达的目标顶点并不一定是与顶点V相邻的顶点，一个消息可以连续经过多条连通的边到达某个与顶点V不相邻的顶点U，U可以从接收的消息中获取到与其不相邻的顶点V的ID<br><img src="https://i.loli.net/2019/08/16/xJ7QVRDH8P1dMCY.png" alt="超同步.png"><h2 id="Combiner"><a href="#Combiner" class="headerlink" title="Combiner"></a>Combiner</h2></li>
-<li>Pregel计算框架在消息发出去之前，Combiner可以将发往同一个顶点的多个整型值进行求和得到一个值，只需向外发送这个“求和结果”，从而实现了由多个消息合并成一个消息，大大减少了传输和缓存的开销</li>
-<li>在默认情况下，Pregel计算框架并不会开启Combiner功能，因为，通常很难找到一种对所有顶点的Compute()函数都合适的Combiner</li>
-<li>当用户打算开启Combiner功能时，可以继承Combiner类并覆写虚函数Combine()<br>此外，通常只对那些满足交换律和结合律的操作才可以去开启Combiner功能，因为，Pregel计算框架无法保证哪些消息会被合并，也无法保证消息传递给 Combine()的顺序和合并操作执行的顺序<br><img src="https://i.loli.net/2019/08/16/5LgTwuXAxR4lHJS.png" alt="Combiner应用的例子.png"><h2 id="Aggregator"><a href="#Aggregator" class="headerlink" title="Aggregator"></a>Aggregator</h2></li>
-<li>Aggregator提供了一种全局通信、监控和数据查看的机制</li>
-<li>在一个超步S中，每一个顶点都可以向一个Aggregator提供一个数据，Pregel计算框架会对这些值进行聚合操作产生一个值，在下一个超步（S+1）中，图中的所有顶点都可以看见这个值</li>
-<li>Aggregator的聚合功能，允许在整型和字符串类型上执行最大值、最小值、求和操作，比如，可以定义一个“Sum”Aggregator来统计每个顶点的出射边数量，最后相加可以得到整个图的边的数量</li>
-<li>Aggregator还可以实现全局协同的功能，比如，可以设计“and” Aggregator来决定在某个超步中Compute()函数是否执行某些逻辑分支，只有当“and” Aggregator显示所有顶点都满足了某条件时，才去执行这些逻辑分支<h2 id="拓扑改变"><a href="#拓扑改变" class="headerlink" title="拓扑改变"></a>拓扑改变</h2></li>
-<li>Pregel计算框架允许用户在自定义函数Compute()中定义操作，修改图的拓扑结构，比如在图中增加（或删除）边或顶点</li>
-<li>对于全局拓扑改变，Pregel采用了惰性协调机制，在改变请求发出时，Pregel不会对这些操作进行协调，只有当这些改变请求的消息到达目标顶点并被执行时，Pregel才会对这些操作进行协调，这样，所有针对某个顶点V的拓扑修改操作所引发的冲突，都会由V自己来处理</li>
-<li>对于本地的局部拓扑改变，是不会引发冲突的，顶点或边的本地增减能够立即生效，很大程度上简化了分布式编程<h2 id="输入和输出"><a href="#输入和输出" class="headerlink" title="输入和输出"></a>输入和输出</h2></li>
-<li>在Pregel计算框架中，图的保存格式多种多样，包括文本文件、关系数据库或键值数据库等</li>
-<li>在Pregel中，“从输入文件生成得到图结构”和“执行图计算”这两个过程是分离的，从而不会限制输入文件的格式</li>
-<li>对于输出，Pregel也采用了灵活的方式，可以以多种方式进行输出<h1 id="Pregel的体系结构"><a href="#Pregel的体系结构" class="headerlink" title="Pregel的体系结构"></a>Pregel的体系结构</h1><h2 id="Pregel的执行过程"><a href="#Pregel的执行过程" class="headerlink" title="Pregel的执行过程"></a>Pregel的执行过程</h2></li>
-<li>在Pregel计算框架中，一个大型图会被划分成许多个分区，每个分区都包含了一部分顶点以及以其为起点的边</li>
-<li>一个顶点应该被分配到哪个分区上，是由一个函数决定的，系统默认函数为hash(ID) mod N，其中，N为所有分区总数，ID是这个顶点的标识符；当然，用户也可以自己定义这个函数</li>
-<li>这样，无论在哪台机器上，都可以简单根据顶点ID判断出该顶点属于哪个分区，即使该顶点可能已经不存在了</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/16/tl1LIS5QxwoK3vf.png" alt="图的划分图.png"></p>
-<blockquote>
-<ul>
-<li>在理想的情况下（不发生任何错误），一个Pregel用户程序的执行过程如下：</li>
-</ul>
-<ol>
-<li>选择集群中的多台机器执行图计算任务，每台机器上运行用户程序的一个副本，其中，有一台机器会被选为Master，其他机器作为Worker。Master只负责协调多个Worker执行任务，系统不会把图的任何分区分配给它。Worker借助于名称服务系统可以定位到Master的位置，并向Master发送自己的注册信息。</li>
-<li>Master把一个图分成多个分区，并把分区分配到多个Worker。一个Worker会领到一个或多个分区，每个Worker知道所有其他Worker所分配到的分区情况。每个Worker负责维护分配给自己的那些分区的状态(顶点及边的增删)，对分配给自己的分区中的顶点执行Compute()函数，向外发送消息，并管理接收到的消息。<br><img src="https://i.loli.net/2019/08/16/8vGSQVM9zCxF5Ab.png" alt="Pregel的执行过程图 .png"></li>
-<li>Master会把用户输入划分成多个部分，通常是基于文件边界进行划分。划分后，每个部分都是一系列记录的集合，每条记录都包含一定数量的顶点和边。然后，Master会为每个Worker分配用户输入的一部分。如果一个Worker从输入内容中加载到的顶点，刚好是自己所分配到的分区中的顶点，就会立即更新相应的数据结构。否则，该Worker会根据加载到的顶点的ID，把它发送到其所属的分区所在的Worker上。当所有的输入都被加载后，图中的所有顶点都会被标记为“活跃”状态。</li>
-<li>Master向每个Worker发送指令，Worker收到指令后，开始运行一个超步。Worker会为自己管辖的每个分区分配一个线程，对于分区中的每个顶点，Worker会把来自上一个超步的、发给该顶点的消息传递给它，并调用处于“活跃”状态的顶点上的Compute()函数，在执行计算过程中，顶点可以对外发送消息，但是，所有消息的发送工作必须在本超步结束之前完成。当所有这些工作都完成以后，Worker会通知Master，并把自己在下一个超步还处于“活跃”状态的顶点的数量报告给Master。上述步骤会被不断重复，直到所有顶点都不再活跃并且系统中不会有任何消息在传输，这时，执行过程才会结束。</li>
-<li>计算过程结束后，Master会给所有的Worker发送指令，通知每个Worker对自己的计算结果进行持久化存储。</li>
-</ol>
-</blockquote>
-<h2 id="容错性"><a href="#容错性" class="headerlink" title="容错性"></a>容错性</h2><ul>
-<li>Pregel采用检查点机制来实现容错。在每个超步的开始，Master会通知所有的Worker把自己管辖的分区的状态（包括顶点值、边值以及接收到的消息），写入到持久化存储设备</li>
-<li>Master会周期性地向每个Worker发送ping消息，Worker收到ping消息后会给Master发送反馈消息。如果Master在指定时间间隔内没有收到某个Worker的反馈消息，就会把该Worker标记为“失效”。同样地，如果一个Worker在指定的时间间隔内没有收到来自Master的ping消息，该Worker也会停止工作</li>
-<li>每个Worker上都保存了一个或多个分区的状态信息，当一个Worker发生故障时，它所负责维护的分区的当前状态信息就会丢失。Master监测到一个Worker发生故障“失效”后，会把失效Worker所分配到的分区，重新分配到其他处于正常工作状态的Worker集合上，然后，所有这些分区会从最近的某超步S开始时写出的检查点中，重新加载状态信息<h2 id="Worker"><a href="#Worker" class="headerlink" title="Worker"></a>Worker</h2></li>
-<li>在一个Worker中，它所管辖的分区的状态信息是保存在内存中的。分区中的顶点的状态信息包括：<ul>
-<li>顶点的当前值</li>
-<li>以该顶点为起点的出射边列表，每条出射边包含了目标顶点ID和边的值</li>
-<li>消息队列，包含了所有接收到的、发送给该顶点的消息</li>
-<li>标志位，用来标记顶点是否处于活跃状态</li>
-</ul>
-</li>
-<li>在每个超步中，Worker会对自己所管辖的分区中的每个顶点进行遍历，并调用顶点上的Compute()函数，在调用时，会把以下三个参数传递进去：<ul>
-<li>该顶点的当前值</li>
-<li>一个接收到的消息的迭代器 </li>
-<li>一个出射边的迭代器 </li>
-</ul>
-</li>
-<li>在Pregel中，为了获得更好的性能，“标志位”和输入消息队列是分开保存的</li>
-<li>对于每个顶点而言，Pregel只保存一份顶点值和边值，但是，会保存两份“标志位”和输入消息队列，分别用于当前超步和下一个超步</li>
-<li>在超步S中，当一个Worker在进行顶点处理时，用于当前超步的消息会被处理，同时，它在处理过程中还会接收到来自其他Worker的消息，这些消息会在下一个超步S+1中被处理，因此，需要两个消息队列用于存放作用于当前超步S的消息和作用于下一个超步S+1的消息</li>
-<li>如果一个顶点V在超步S接收到消息，那么，它表示V将会在下一个超步S+1中（而不是当前超步S中）处于“活跃”状态</li>
-<li>当一个Worker上的一个顶点V需要发送消息到其他顶点U时，该Worker会首先判断目标顶点U是否位于自己机器上</li>
-<li>如果目标顶点U在自己的机器上，就直接把消息放入到与目标顶点U对应的输入消息队列中</li>
-<li>如果发现目标顶点U在远程机器上，这个消息就会被暂时缓存到本地，当缓存中的消息数目达到一个事先设定的阈值时，这些缓存消息会被批量异步发送出去，传输到目标顶点所在的Worker上</li>
-<li>如果存在用户自定义的Combiner操作，那么，当消息被加入到输出队列或者到达输入队列时，就可以对消息执行合并操作，这样可以节省存储空间和网络传输开销<h2 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h2></li>
-<li>Master主要负责协调各个Worker执行任务，每个Worker会借助于名称服务系统定位到Master的位置，并向Master发送自己的注册信息，Master会为每个Worker分配一个唯一的ID</li>
-<li>Master维护着关于当前处于“有效”状态的所有Worker的各种信息，包括每个Worker的ID和地址信息，以及每个Worker被分配到的分区信息</li>
-<li>虽然在集群中只有一个Master，但是，它仍然能够承担起一个大规模图计算的协调任务，这是因为Master中保存这些信息的数据结构的大小，只与分区的数量有关，而与顶点和边的数量无关</li>
-<li>一个大规模图计算任务会被Master分解到多个Worker去执行，在每个超步开始时，Master都会向所有处于“有效”状态的Worker发送相同的指令，然后等待这些Worker的回应</li>
-<li>如果在指定时间内收不到某个Worker的反馈，Master就认为这个Worker失效</li>
-<li>如果参与任务执行的多个Worker中的任意一个发生了故障失效，Master就会进入恢复模式</li>
-<li>在每个超步中，图计算的各种工作，比如输入、输出、计算、保存和从检查点中恢复，都会在“路障（barrier）”之前结束</li>
-<li>如果路障同步成功，说明一个超步顺利结束，Master就会进入下一个处理阶段，图计算进入下一个超步的执行</li>
-<li>Master在内部运行了一个HTTP服务器来显示图计算过程的各种信息</li>
-<li>用户可以通过网页随时监控图计算执行过程各个细节<ul>
-<li>图的大小</li>
-<li>关于出度分布的柱状图</li>
-<li>处于活跃状态的顶点数量</li>
-<li>在当前超步的时间信息和消息流量</li>
-<li>所有用户自定义Aggregator的值</li>
-</ul>
-</li>
-</ul>
-<h2 id="Aggregator-1"><a href="#Aggregator-1" class="headerlink" title="Aggregator"></a>Aggregator</h2><ul>
-<li>每个用户自定义的Aggregator都会采用聚合函数对一个值集合进行聚合计算得到一个全局值</li>
-<li>每个Worker都保存了一个Aggregator的实例集，其中的每个实例都是由类型名称和实例名称来标识的</li>
-<li>在执行图计算过程的某个超步S中，每个Worker会利用一个Aggregator对当前本地分区中包含的所有顶点的值进行归约，得到一个本地的局部归约值</li>
-<li>在超步S结束时，所有Worker会将所有包含局部归约值的Aggregator的值进行最后的汇总，得到全局值，然后提交给Master</li>
-<li>在下一个超步S+1开始时，Master就会将Aggregator的全局值发送给每个Worker</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -6240,7 +6247,7 @@ table tr:hover {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -6251,7 +6258,7 @@ table tr:hover {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -6262,7 +6269,7 @@ table tr:hover {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

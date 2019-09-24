@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="消息队列，RabbitMQ,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="消息中间件功能 解耦:消息中间件在处理过程中间插入了一个隐含的、基于数据的接口层， 两边的处理过程都要实现这一接口，这允许你独立地扩展或修改两边的处理过程， 只要确保它们遵守同样的接口约束即可 异步：消息中间件提供了异步处理机制， 允许应用把一些消息放入消息中间件中， 但并不立即处理它， 在之后需要的时候再慢慢处理。 削峰：使用消息中间件能够使关键组件支撑突发访问压力， 不会因为突发的超负荷请求而">
+<meta name="keywords" content="消息队列，RabbitMQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RabbitMQ">
+<meta property="og:url" content="http://sevengarden.club/2019/09/24/RabbitMQ/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="消息中间件功能 解耦:消息中间件在处理过程中间插入了一个隐含的、基于数据的接口层， 两边的处理过程都要实现这一接口，这允许你独立地扩展或修改两边的处理过程， 只要确保它们遵守同样的接口约束即可 异步：消息中间件提供了异步处理机制， 允许应用把一些消息放入消息中间件中， 但并不立即处理它， 在之后需要的时候再慢慢处理。 削峰：使用消息中间件能够使关键组件支撑突发访问压力， 不会因为突发的超负荷请求而">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2019/09/23/lU6HvuaJkRpNxnW.png">
+<meta property="og:image" content="https://i.loli.net/2019/09/23/AJNarVCmTRXhWdP.png">
+<meta property="og:image" content="https://i.loli.net/2019/09/23/a4iC5t1eWPOInlT.png">
+<meta property="og:image" content="https://i.loli.net/2019/09/23/GiHuMJOfmkUev1z.png">
+<meta property="og:image" content="https://i.loli.net/2019/09/23/BgWoebCmMHvYV7U.png">
+<meta property="og:image" content="https://i.loli.net/2019/09/24/T5dc3xC1qXbaZ2n.png">
+<meta property="og:image" content="https://i.loli.net/2019/09/24/KtZJI3bVgrvLYPm.png">
+<meta property="og:image" content="https://i.loli.net/2019/09/24/lPjVXzr2OmxRUyY.png">
+<meta property="og:image" content="https://i.loli.net/2019/09/24/EUHP4eGlQpTjzYi.png">
+<meta property="og:updated_time" content="2019-09-24T10:55:51.294Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RabbitMQ">
+<meta name="twitter:description" content="消息中间件功能 解耦:消息中间件在处理过程中间插入了一个隐含的、基于数据的接口层， 两边的处理过程都要实现这一接口，这允许你独立地扩展或修改两边的处理过程， 只要确保它们遵守同样的接口约束即可 异步：消息中间件提供了异步处理机制， 允许应用把一些消息放入消息中间件中， 但并不立即处理它， 在之后需要的时候再慢慢处理。 削峰：使用消息中间件能够使关键组件支撑突发访问压力， 不会因为突发的超负荷请求而">
+<meta name="twitter:image" content="https://i.loli.net/2019/09/23/lU6HvuaJkRpNxnW.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sevengarden.club/2019/09/24/RabbitMQ/">
+
+
+
+
+
+  <title>RabbitMQ | 岳阳北寒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">岳阳北寒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-somrthing">
+          <a href="/有料" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            somrthing
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/09/24/RabbitMQ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RabbitMQ</h1>
+        
+
+        <div class="post-meta">
+          
+                    <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-24T18:50:49+08:00">
+                2019-09-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/消息队列/" itemprop="url" rel="index">
+                    <span itemprop="name">消息队列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="消息中间件功能"><a href="#消息中间件功能" class="headerlink" title="消息中间件功能"></a>消息中间件功能</h2><ul>
+<li><strong>解耦</strong>:消息中间件在处理过程中间插入了一个隐含的、基于数据的接口层， 两边的处理过程都要实现这一接口，这允许你独立地扩展或修改两边的处理过程， 只要确保它们遵守同样的接口约束即可</li>
+<li><strong>异步</strong>：消息中间件提供了异步处理机制， 允许应用把一些消息放入消息中间件中， 但并不立即处理它， 在之后需要的时候再慢慢处理。</li>
+<li><strong>削峰</strong>：使用消息中间件能够使关键组件支撑突发访问压力， 不会因为突发的超负荷请求而完全崩溃<br><img src="https://i.loli.net/2019/09/23/lU6HvuaJkRpNxnW.png" alt="Snipaste_2019-09-23_15-11-53.png"></li>
+</ul>
+<h3 id="RabbitMQ服务端口"><a href="#RabbitMQ服务端口" class="headerlink" title="RabbitMQ服务端口"></a>RabbitMQ服务端口</h3><blockquote>
+<p>RabbitMQ 是一个实现AMQP协议的消息中间件服务，采用Erlang语言进行编写。</p>
+<ul>
+<li>4369：epmd,负责维护RabbitMQ集群内的节点连接</li>
+<li>5672：client端通信端口</li>
+<li>15672：RabbitMQmanagement web ui 管理口</li>
+<li>25672： RabbitMQ集群内节点通信端口</li>
+</ul>
+</blockquote>
+<h3 id="RabbitMQ基本操作"><a href="#RabbitMQ基本操作" class="headerlink" title="RabbitMQ基本操作"></a>RabbitMQ基本操作</h3><ol>
+<li>创建Queue</li>
+<li>创建exchange</li>
+<li>创建binding</li>
+<li>发送msg</li>
+<li>接收msg</li>
+</ol>
+<p><img src="https://i.loli.net/2019/09/23/AJNarVCmTRXhWdP.png" alt="Snipaste_2019-09-23_15-15-55.png"></p>
+<h3 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h3><ul>
+<li>Exchange： 消息交换机，它指定消息按什么规则，路由到那个队列<ul>
+<li>Direct：Bingding key和Routing key必须完全一致，不支持通配符</li>
+<li>Topic：同Direct类型，但支持通配符。</li>
+<li>Fanout：忽略binding key和routing key，消息会被传送到所有绑定的队列上</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/09/23/a4iC5t1eWPOInlT.png" alt="Snipaste_2019-09-23_15-18-30.png"></p>
+<ul>
+<li>Queue：消息队列载体，每个消息都会被投入到一个或多个队列</li>
+<li>Binding：绑定，它的作用就是把exchange和queue按照路由规则绑定起来</li>
+<li>Routing key：路由关键字，exchange根据这个关键字进行消息投递</li>
+</ul>
+<h4 id="Exchange-Delclare参数"><a href="#Exchange-Delclare参数" class="headerlink" title="Exchange Delclare参数"></a>Exchange Delclare参数</h4><hr>
+<p><code>def exchange_declare(self, exchange, type, passive=False, durable=False,
+auto_delete=True, nowait=False, arguments=None,
+argsig=&#39;BssbbbbbF&#39;)</code></p>
+<hr>
+<ul>
+<li>exchange: 交换器的名称。</li>
+<li>type: 交换器的类型，常见的如fanout, direct 和topic</li>
+<li>passive: passive设置为true用于检测相应的交换器是否存在。 如果存在则正常返回；否则RabbitMQ抛出异常:404 (not found)。</li>
+<li>durable: 设置是否持久化。 durable设置为true 表示持久化。</li>
+<li>auto_delete: 设置是否自动删除。 auto_delete 设置为true 则表示自动删除。 自动删除的前提是至少有一个队列或<br>者交换器与这个交换器绑定， 之后所有与这个交换器绑定的队列或者交换器都与此解绑。</li>
+<li>nowait: 声明Exchange时，不需要RabbitMQ返回任何信息。在声明完一个交换器之后(实际服务器还并未完成交<br>换器的创建) ， 那么此时客户端紧接着使用这个交换器，必然会发生异常。</li>
+<li>argument: 其他一些结构化参数，比如alternate-exchange</li>
+</ul>
+<h4 id="Queue-Declare参数"><a href="#Queue-Declare参数" class="headerlink" title="Queue Declare参数"></a>Queue Declare参数</h4><hr>
+<p><code>def queue_declare(self, queue=&#39;&#39;, passive=False, durable=False,
+exclusive=False, auto_delete=True, nowait=False,
+arguments=None, argsig=&#39;BsbbbbbF&#39;)</code></p>
+<hr>
+<ul>
+<li>queue: 队列的名称。</li>
+<li>passive:同exchange_declare的passive参数含义。</li>
+<li>durable: 设置是否持久化。 durable设置为true 表示持久化。</li>
+<li>exclusive:设置是否排他。为true 则设置队列为排他的。如果一个队列被声明为排他队列，该队列仅对首次声<br>明它的连接可见，并在连接断开时自动删除。</li>
+<li>auto_delete: 设置是否自动删除。为true则设置队列为自动删除。自动删除的前提是:至少有一个消费者连接到<br>这个队列，之后所有与这个队列连接的消费者都断开时，才会自动删除。</li>
+<li>nowait: 同exchange_declare的nowait参数含义。</li>
+<li>argument: 设置队列的其他一些参数，如x-message-ttl, x-expires, x-dead-letter-exchange, x-dead-letterrouting-key, x-max-priority 等。</li>
+</ul>
+<h4 id="Bing-参数"><a href="#Bing-参数" class="headerlink" title="Bing 参数"></a>Bing 参数</h4><hr>
+<p><code>def queue_bind(self, queue, exchange=&#39;&#39;, routing_key=&#39;&#39;,
+nowait=False, arguments=None, argsig=&#39;BsssbF&#39;)</code></p>
+<hr>
+<ul>
+<li>queue: 队列名称。</li>
+<li>exchange: 交换器名称。</li>
+<li>routing_key: 用来绑定队列和交换器的路由键</li>
+</ul>
+<hr>
+<p><code>def exchange_bind(self, destination, source=&#39;&#39;, routing_key=&#39;&#39;,
+nowait=False, arguments=None, argsig=&#39;BsssbF&#39;)</code></p>
+<hr>
+<ul>
+<li>destination: 目的交换器名称。</li>
+<li>source: 源交换器名称。</li>
+<li>routing_key: 用来绑定源交换器和目的交换器的路由键</li>
+</ul>
+<h3 id="消息可靠传输"><a href="#消息可靠传输" class="headerlink" title="消息可靠传输"></a>消息可靠传输</h3><ul>
+<li><p>生产者确认</p>
+<ul>
+<li>通过事务机制实现</li>
+<li>通过发送方确认机制实现</li>
+</ul>
+</li>
+<li><p>生产者保证——保证消息从Producer传输到Rabbit Broker</p>
+<ul>
+<li>Mandatory参数</li>
+<li>Alternate Exchange（备份交换器）</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/09/23/GiHuMJOfmkUev1z.png" alt="Snipaste_2019-09-23_17-29-14.png"></p>
+<ul>
+<li>设置mandatory参数，在生成者业务侧需增加监听回调函数，增加了生成者的复杂度。如果不想消息丢失，可以使用Alternate Exchange。这样可以将未被路由的消息存储在RabbitMQ中，再在需要的时候去处理这些消息。</li>
+<li>Alternate Exchange和mandatory参数同时使用，那么mandatory参数无效。</li>
+</ul>
+<p><img src="https://i.loli.net/2019/09/23/BgWoebCmMHvYV7U.png" alt="Snipaste_2019-09-23_17-26-57.png"></p>
+<p>事务机制和publisher confirm机制确保的是消息能够正确的发送至RabbitMQ的Exchange，如果Exchange没有匹配的Queue，那么消息也会丢失。所以发送方需要配合mandatory参数或者Alternate Exchange一起使用来提高消息传输的可靠性</p>
+<ul>
+<li><p>Broker保证——保证消息在RabbitMQ Broker不丢失</p>
+<ul>
+<li>Exchange持久化——声明交换器时将durable参数设置为true</li>
+<li>Queue持久化——声明队列将durable参数设置为true</li>
+<li>消息持久化——将消息的投递模式（delivery_mode）设置为2来实现消息的持久化<blockquote>
+<p>单单只设置队列持久化，重启之后消息会丢失;单单只设置消息的持久化，重启之后队列消失，继而消息也丢失。<br>单单设置消息持久化而不设置队列的持久化显得毫无意义。<br>虽然RabbitMQ的entities持久化可以保证消息的可靠性，但是会影响RabbitMQ的吞吐量。因此在选择是否要将<br>消息持久化时，需要在可靠性和吞吐量之间做一个权衡</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>消费者保证——保证消息从RabbitMQ传输到Consumer</p>
+<ul>
+<li>消费者确认——消费者在订阅队列时，设置no_ack参数<br>——————————<br><code>def basic_consume(self, queue=&#39;&#39;, consumer_tag=&#39;&#39;, no_local=False,no_ack=False, exclusive=False,nowait=False,callback=None, arguments=None, on_cancel=None,argsig=&#39;BssbbbbF&#39;)</code><br>———————————</li>
+</ul>
+</li>
+<li><p>当no_ack为false时， RabbitMQ会等待消费者显式的回复确认信号后才从内存(或者磁盘)中移去消息。</p>
+</li>
+<li><p>当no_ack为true时， RabbitMQ 会自动把发送出去的消息置为确认，然后从内存(或者磁盘)中删除，而不管消<br>费者是否真正地消费到了这些消息。</p>
+</li>
+<li><p>采用消息确认机制后，只要设置no_ack参数为false，消费者就有足够的时间处理消息(任务) ，不用担心处理<br>消息过程中消费者进程挂掉后消息丢失的问题， 因为RabbitMQ 会一直等待持有消息直到消费者显式调用<br>Basic.Ack 命令为止。即调用如下函数:<br>————————————<br><code>def basic_ack(self, delivery_tag, multiple=False, argsig=&#39;Lb&#39;)</code><br>——————————</p>
+</li>
+</ul>
+<h2 id="RabbitMQ-传输机制和幂等性"><a href="#RabbitMQ-传输机制和幂等性" class="headerlink" title="RabbitMQ 传输机制和幂等性"></a>RabbitMQ 传输机制和幂等性</h2><h3 id="消息的传输机制"><a href="#消息的传输机制" class="headerlink" title="消息的传输机制"></a>消息的传输机制</h3><ul>
+<li>At most once:最多一次。消息可能会丢失，但绝对不会重传</li>
+<li>At least once：最少一次。消息绝并不会丢失，但可能重传</li>
+<li>Exactly once:恰好一次。每条消息只被传输一次并且只传输一次</li>
+<li>RabbitMQ支持其中的“最多一次”和“最少一次”</li>
+</ul>
+<h3 id="消息的幂等性"><a href="#消息的幂等性" class="headerlink" title="消息的幂等性"></a>消息的幂等性</h3><ul>
+<li>用户对同一操作发起的一个或多次请求的结果都是一样的</li>
+<li>RabbitMQ并不能保证消息的幂等性。需要业务方通过解决消息的重复问题来保证幂等性操作</li>
+</ul>
+<h2 id="RabbitMQ过期时间（TTL）"><a href="#RabbitMQ过期时间（TTL）" class="headerlink" title="RabbitMQ过期时间（TTL）"></a>RabbitMQ过期时间（TTL）</h2><h3 id="设置消息的TTL"><a href="#设置消息的TTL" class="headerlink" title="设置消息的TTL"></a>设置消息的TTL</h3><ul>
+<li>通过队列属性设置，队列中所有消息都有相同的过期时间。 (x-message-ttl)</li>
+<li>对消息本身进行单独设置，每条消息的TTL 可以不同。 (expiration)</li>
+<li>如果两种方法一起使用，则消息的TTL 以两者之间较小的那个数值为准</li>
+</ul>
+<h3 id="设置队列的TTL（x-peries）"><a href="#设置队列的TTL（x-peries）" class="headerlink" title="设置队列的TTL（x-peries）"></a>设置队列的TTL（x-peries）</h3><ul>
+<li>队列的TTL表示队列被自动删除前处于未使用状态的时间</li>
+</ul>
+<h2 id="RabbitMQ-消息顺序性"><a href="#RabbitMQ-消息顺序性" class="headerlink" title="RabbitMQ 消息顺序性"></a>RabbitMQ 消息顺序性</h2><ul>
+<li>消息的顺序性是指消费者消费到的消息和发送者发布的消息的顺序是一致的。举个例子，不考虑消息重复的<br>情况，如果生产者发布的消息分别为msgl、 msg2 、 msg3 ，那么消费者必然也是按照msgl 、 msg2 、msg3 的顺序进行消费的</li>
+<li>RabbitMQ并不能保证消息的顺序性，除非只有一个生产者和一个消息者的情况</li>
+<li>如果要保证消息的顺序性， 需要<strong>业务方</strong>使用RabbitMQ 之后做进一步的处理，比如在消息体内添加全局有序<br>标识(类似SequenceID) 来实现</li>
+</ul>
+<h3 id="RabbitMQ-消息分发"><a href="#RabbitMQ-消息分发" class="headerlink" title="RabbitMQ 消息分发"></a>RabbitMQ 消息分发</h3><ul>
+<li>Round-Robin分发（默认消息分发方式）</li>
+<li>Fair分发（调用channel.basic_qos函数进行设置）</li>
+</ul>
+<h2 id="RabbitMQ使用实例"><a href="#RabbitMQ使用实例" class="headerlink" title="RabbitMQ使用实例"></a>RabbitMQ使用实例</h2><h3 id="延迟队列"><a href="#延迟队列" class="headerlink" title="延迟队列"></a>延迟队列</h3><p><img src="https://i.loli.net/2019/09/24/T5dc3xC1qXbaZ2n.png" alt="Snipaste_2019-09-24_09-15-15.png"></p>
+<ul>
+<li>RabbitMQ的延迟队列/重试队列可以采用设置消息的TTL+DLX(Dead-Letter-Exchange)来实现。</li>
+<li>当消息在一个队列中变成死信后， 它能被重新被发送到另一个交换器中， 这个交换器就是DLX，绑定DLX的<br>队列就称之为死信队列</li>
+</ul>
+<h3 id="重试队列"><a href="#重试队列" class="headerlink" title="重试队列"></a>重试队列</h3><p><img src="https://i.loli.net/2019/09/24/KtZJI3bVgrvLYPm.png" alt="Snipaste_2019-09-24_09-18-26.png"></p>
+<h3 id="优先级队列"><a href="#优先级队列" class="headerlink" title="优先级队列"></a>优先级队列</h3><p><img src="https://i.loli.net/2019/09/24/lPjVXzr2OmxRUyY.png" alt="Snipaste_2019-09-24_09-19-09.png"></p>
+<ul>
+<li>上面的代码中设置队列的优先级为10。消息的优先级默认最低为0，最高为队列设置的最大优先级。对于超过优先级队列指定的最大优先级的消息，优先级以最大优先级对待。</li>
+<li>这个也是有前提的: 如果在消费者的消费速度大于生产者的速度且Broker 中没有消息堆积的情况下， 对发送的消息设置优先级也就没有什么实际意义。因为生产者刚发送完一条消息就被消费者消费了，那么就相当于Broker 中至多只有一条消息，对于单条消息来说优先级是没有什么意义的。</li>
+</ul>
+<h3 id="ROC实现"><a href="#ROC实现" class="headerlink" title="ROC实现"></a>ROC实现</h3><p><img src="https://i.loli.net/2019/09/24/EUHP4eGlQpTjzYi.png" alt="Snipaste_2019-09-24_09-21-00.png"></p>
+<h2 id="RabbitMQ集群"><a href="#RabbitMQ集群" class="headerlink" title="RabbitMQ集群"></a>RabbitMQ集群</h2><ul>
+<li>RabbitMQ集群节点没有leader和follower之分， 所有节点是平等的。</li>
+<li>RabbitMQ集群的queue有master和slave之分(这是采用Mirror queue的场景。 如果没有配置Mirror queue，则queue所处的节点也可称为该queue的master节点)。</li>
+<li>RabbitMQ集群正常情况下， 客户端能够连接到集群中的任何节点对queue做操作，所有的操作会被RabbitMQ route到queue的master节点。</li>
+<li>如果关闭了集群中的所有节点， 则需要确保在启动的时候最后关闭的那个节点是第一个启动的。 如果第一个启动的不是最后关闭的节点， 那么这个节点会等待最后关闭的节点启动</li>
+<li>如果RabbitMQ集群节点没有采用Mirror queue，则某个节点宕机，则该节点上非持久化的消息将丢失。</li>
+<li>采用Mirror queue设置RabbitMQ集群后， 到达queue的master节点的消息会被分发到queue的每个slave节点，防止消息丢失，保证RabbitMQ的高可用。</li>
+<li>若queue的master节点宕机， “资历最老” 的queue的slave节点将被提升为新的master节点</li>
+</ul>
+<h3 id="消息队列对比"><a href="#消息队列对比" class="headerlink" title="消息队列对比"></a>消息队列对比</h3><table>
+<thead>
+<tr>
+<th align="center">****</th>
+<th align="center"><strong>RabbitMQ</strong></th>
+<th align="center"><strong>Kafka</strong></th>
+<th align="center"><strong>RocketMQ</strong></th>
+<th align="center"><strong>Pulsar</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">成熟度</td>
+<td align="center">成熟</td>
+<td align="center">成熟</td>
+<td align="center">比较成熟</td>
+<td align="center">/</td>
+</tr>
+<tr>
+<td align="center">所属社区/公司</td>
+<td align="center">Mozilla Public License</td>
+<td align="center">Apache</td>
+<td align="center">Ali</td>
+<td align="center">Apache</td>
+</tr>
+<tr>
+<td align="center">活跃度</td>
+<td align="center">高</td>
+<td align="center">高</td>
+<td align="center">中</td>
+<td align="center">/</td>
+</tr>
+<tr>
+<td align="center">开发语言</td>
+<td align="center">Erlang</td>
+<td align="center">Scala&amp;Java</td>
+<td align="center">Java</td>
+<td align="center">Java</td>
+</tr>
+<tr>
+<td align="center">客户端支持语言</td>
+<td align="center">Java/python/go/C/C++/Erl ang等，几乎支持所有常用语言</td>
+<td align="center">Java/python/go/C/ C++等</td>
+<td align="center"></td>
+<td align="center">ava/python/go/C/ C++/websocket</td>
+</tr>
+<tr>
+<td align="center">数据可靠性</td>
+<td align="center">可以保证数据不丢失，有slave做备份</td>
+<td align="center">数据可靠，并且有 replica机制，有容错容 灾能力</td>
+<td align="center">支持异步实时刷盘，同 步刷盘，同步复制，异 步复制。</td>
+<td align="center">实时刷盘，按用户配置， quorum-vote的方式并 发写入多个存储节点</td>
+</tr>
+<tr>
+<td align="center">单机吞吐量</td>
+<td align="center">万级</td>
+<td align="center">十万级</td>
+<td align="center">十万级</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">消息延迟</td>
+<td align="center">微秒级</td>
+<td align="center">微秒级</td>
+<td align="center">微秒级，比kafka快</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">HA</td>
+<td align="center">Master/Slave模式， master 提供服务， Slave作备份</td>
+<td align="center">支持replica机制， leader宕掉后，基于 zookeeper在备份节点中 重新选举新的leader</td>
+<td align="center">多Master模式 多Master多Slave模 式—异步复制 多Master多Slave模 式—同步双写</td>
+<td align="center">服务/存储分层架构，服 务层无状态。 无Master/Slave，服务 层broker宕机， topic的 owner会被自动转到其 他alive的broker。 存储层节点宕机，服务 层和client不受影响</td>
+</tr>
+<tr>
+<td align="center">模式</td>
+<td align="center">发布/订阅</td>
+<td align="center">发布/订阅</td>
+<td align="center">发布/订阅</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">消息持久性</td>
+<td align="center">内存/硬盘</td>
+<td align="center">硬盘</td>
+<td align="center">硬盘</td>
+<td align="center">硬盘</td>
+</tr>
+<tr>
+<td align="center">消息推拉模式</td>
+<td align="center">多协议，Pull/Push均支持</td>
+<td align="center">Pull</td>
+<td align="center">多协议，Pull/Push均支持</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">是否有序</td>
+<td align="center">若想有序，只能使用一个client</td>
+<td align="center">多client保证有序</td>
+<td align="center">有序</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">消息批量操作</td>
+<td align="center">不支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="center">顺序投递</td>
+<td align="center">不支持</td>
+<td align="center">不支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="center">事务</td>
+<td align="center">不支持</td>
+<td align="center">不支持</td>
+<td align="center">支持</td>
+<td align="center">不支持</td>
+</tr>
+<tr>
+<td align="center">集群</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="center">负载均衡</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/消息队列，RabbitMQ/" rel="tag"># 消息队列，RabbitMQ</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/19/实践操作札记/" rel="next" title="实践操作札记">
+                <i class="fa fa-chevron-left"></i> 实践操作札记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">seven</p>
+              <p class="site-description motion-element" itemprop="description">seven 的精神家园，学习笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="1988xuegang@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#消息中间件功能"><span class="nav-number">1.</span> <span class="nav-text">消息中间件功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ服务端口"><span class="nav-number">1.1.</span> <span class="nav-text">RabbitMQ服务端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ基本操作"><span class="nav-number">1.2.</span> <span class="nav-text">RabbitMQ基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本术语"><span class="nav-number">1.3.</span> <span class="nav-text">基本术语</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Exchange-Delclare参数"><span class="nav-number">1.3.1.</span> <span class="nav-text">Exchange Delclare参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Queue-Declare参数"><span class="nav-number">1.3.2.</span> <span class="nav-text">Queue Declare参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bing-参数"><span class="nav-number">1.3.3.</span> <span class="nav-text">Bing 参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息可靠传输"><span class="nav-number">1.4.</span> <span class="nav-text">消息可靠传输</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ-传输机制和幂等性"><span class="nav-number">2.</span> <span class="nav-text">RabbitMQ 传输机制和幂等性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消息的传输机制"><span class="nav-number">2.1.</span> <span class="nav-text">消息的传输机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息的幂等性"><span class="nav-number">2.2.</span> <span class="nav-text">消息的幂等性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ过期时间（TTL）"><span class="nav-number">3.</span> <span class="nav-text">RabbitMQ过期时间（TTL）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置消息的TTL"><span class="nav-number">3.1.</span> <span class="nav-text">设置消息的TTL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置队列的TTL（x-peries）"><span class="nav-number">3.2.</span> <span class="nav-text">设置队列的TTL（x-peries）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ-消息顺序性"><span class="nav-number">4.</span> <span class="nav-text">RabbitMQ 消息顺序性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ-消息分发"><span class="nav-number">4.1.</span> <span class="nav-text">RabbitMQ 消息分发</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ使用实例"><span class="nav-number">5.</span> <span class="nav-text">RabbitMQ使用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#延迟队列"><span class="nav-number">5.1.</span> <span class="nav-text">延迟队列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重试队列"><span class="nav-number">5.2.</span> <span class="nav-text">重试队列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优先级队列"><span class="nav-number">5.3.</span> <span class="nav-text">优先级队列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ROC实现"><span class="nav-number">5.4.</span> <span class="nav-text">ROC实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ集群"><span class="nav-number">6.</span> <span class="nav-text">RabbitMQ集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消息队列对比"><span class="nav-number">6.1.</span> <span class="nav-text">消息队列对比</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seven</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+<!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count"></span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/21/2018 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
