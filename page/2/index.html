@@ -273,6 +273,233 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/21/AWS-Direct-Connect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/21/AWS-Direct-Connect/" itemprop="url">AWS Direct Connect</a></h1>
+        
+
+        <div class="post-meta">
+          
+                    <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-21T21:40:54+08:00">
+                2019-08-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Direct-Connect-Overview"><a href="#Direct-Connect-Overview" class="headerlink" title="Direct Connect Overview"></a>Direct Connect Overview</h2><ul>
+<li>AWS Direct Connect是一种网络服务，它是一种替代Internet来利用AWS云服务的一种方案</li>
+<li>通过标准的以太网光纤电缆将内部网络链接到 AWS Direct Connect 位置。电缆的一端接到用户侧路由器，另一端接到 AWS Direct Connect 路由器</li>
+<li>可以使用1Gbps和10Gbps端口建立直接连接。可以从任何支持AWS Direct Connect的APN合作伙伴订购50Mbps，100Mbps，200Mbps，300Mbps，400Mbps和500Mbps的速度</li>
+<li>有了此连接以后，可以创建直接连接到公共 AWS 服务（如 Amazon S3）或 Amazon VPC 的虚拟接口，从而绕过网络路径中的 Internet 服务提供商</li>
+<li>AWS Direct Connect位置提供对与其关联的区域中的Amazon Web Services的访问，以及对其他美国区域的访问（如果是美国地区的Direct Connect）。例如，可以为美国的任何AWS Direct Connect位置配置单个连接，并使用它来访问所有美国区域和AWS GovCloud（美国）中的公共AWS服务。</li>
+<li>每个AWS Direct Connect位置都可以连接到地理位置最近的AWS区域内的所有可用区</li>
+<li>公有区域或AWS GovCloud (US)中的 AWS Direct Connect 位置可以访问任何其他公有区域（不包括中国(北京和宁夏)）中的公有服务</li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/21/6VWEui91R57Yyjm.png" alt="direct_connect_overview.png"></p>
+<h2 id="Direct-Connect-Advantages"><a href="#Direct-Connect-Advantages" class="headerlink" title="Direct Connect Advantages"></a>Direct Connect Advantages</h2><ul>
+<li>降低带宽成本<ul>
+<li>所有通过专用连接传输的数据均按AWS直接连接数据传输速率(而不是Internet数据传输速率)的，从而节省成本</li>
+<li>在AWS之间传输数据直接减少了Internet服务提供商的带宽承诺</li>
+</ul>
+</li>
+<li>一致的网络性能<ul>
+<li>与互联网的网络变化（抖动、延迟）相比，Direct Connect提供专用连接和更一致的网络性能体验</li>
+</ul>
+</li>
+<li>AWS 服务兼容性<ul>
+<li>Direct Connect是一种网络服务，可与S3，EC2和VPC等所有AWS服务配合使用</li>
+</ul>
+</li>
+<li>VPC的专用连接<ul>
+<li>使用直接连接专用虚拟接口（Private virtual interface）可以在网络和VPC之间建立专用的专用高带宽网络连接</li>
+</ul>
+</li>
+<li>弹性<ul>
+<li>使用更高带宽的连接或建立多个连接，可以轻松扩展直接连接以满足需求</li>
+</ul>
+</li>
+</ul>
+<h2 id="Direct-Connect-vs-IPSec-VPN-Connections"><a href="#Direct-Connect-vs-IPSec-VPN-Connections" class="headerlink" title="Direct Connect vs IPSec VPN Connections"></a>Direct Connect vs IPSec VPN Connections</h2><ul>
+<li>VPC VPN连接通过IPSec在Internet上建立内部网和Amazon VPC之间的加密网络连接</li>
+<li>VPN连接可以在几分钟内进行配置，而对于需要一个具有低到适度的带宽需求，并能容忍在基于互联网连接的内在变化</li>
+<li>AWS Direct Connect不涉及Internet; 相反，它使用Intranet和Amazon VPC之间的专用专用网络连接</li>
+<li>与Direct Connect连接相比，VPN连接非常便宜，因为它需要实际的硬件和基础设施，可能需要数千个</li>
+</ul>
+<h2 id="Direct-Connect-Anatomy"><a href="#Direct-Connect-Anatomy" class="headerlink" title="Direct Connect Anatomy"></a>Direct Connect Anatomy</h2><p><img src="https://i.loli.net/2019/08/21/qgxn1o5FaWQEUVT.png" alt="screen-shot-2016-05-17-at-1-56-15-pm.png"></p>
+<ul>
+<li>亚马逊在不同地点维护AWS Direct Connect PoP（称为主机托管设施），这与AWS区域不同</li>
+<li>AWS本身维护从AWS Direct Connect PoP到AWS区域的连接</li>
+<li>消费者，既可以购买机架空间，也可以使用任何已在主机托管设施中拥有基础架构的AWS APN合作伙伴并配置客户网关</li>
+<li>Direct Connect PoP与Colocation Facility内的Customer网关之间的连接称为Cross Connect</li>
+<li>可以使用任何服务提供商网络建立从客户网关到客户数据中心的连接</li>
+<li>使用AWS创建直接连接连接后，将收到LOA-CFA（授权书 - 连接设施分配）。</li>
+<li>LOA-CFA可以切换到主机托管设施或APN合作伙伴以建立交叉连接</li>
+<li>一旦建立了Cross Connect以及CGW和Customer DataCenter之间的连接，就可以创建虚拟接口</li>
+<li>AWS Direct Connect需要VGW才能访问AWS VPC</li>
+<li>虚拟接口<ol>
+<li>每个AWS Direct Connect连接都需要一个虚拟接口</li>
+<li>每个AWS Direct Connect连接都可以配置一个或多个虚拟接口。</li>
+<li>可以创建公共虚拟接口（public virtual interface）以连接到例如公共资源。 SQS，S3，EC2，Glacier等只能公开到达</li>
+<li>可以创建专用虚拟接口以连接到例如VPC私有IP地址的实例</li>
+<li>每个虚拟接口都需要VLAN ID，接口IP地址，ASN和BGP密钥</li>
+</ol>
+</li>
+<li>要将AWS Direct Connect连接与其他AWS账户一起使用，可以为该账户创建托管虚拟接口。 这些托管虚拟接口与标准虚拟接口的工作方式相同，可以连接到公共资源或VPC。</li>
+</ul>
+<h2 id="Direct-Connect-Redundancy"><a href="#Direct-Connect-Redundancy" class="headerlink" title="Direct Connect Redundancy"></a>Direct Connect Redundancy</h2><p><img src="https://i.loli.net/2019/08/21/y1cnTMYo63FADd5.png" alt="screen-shot-2016-05-17-at-1-57-22-pm.png"></p>
+<ul>
+<li>直接连接不提供冗余，并且有多个单点故障，因为每个连接都包含路由器端口和Amazon路由器之间的单个专用连接</li>
+<li>冗余连接<ol>
+<li>建立第二个DX，最好使用不同的路由器和AWS Direct Connect PoP在不同的主机托管设施中建立连接</li>
+<li>客户DC与VGW之间的IPsec VPN连接</li>
+</ol>
+</li>
+<li>对于在同一AWS Direct Connect位置中请求的多个端口，Amazon本身确保在冗余Amazon路由器上配置它们以防止硬件故障的影响</li>
+</ul>
+<h2 id="Direct-Connect-LAG"><a href="#Direct-Connect-LAG" class="headerlink" title="Direct Connect LAG"></a>Direct Connect LAG</h2><ul>
+<li>链接聚合组 (LAG) 是一个逻辑接口，使用链接聚合控制协议 (LACP) 在一个 AWS Direct Connect 终端节点处聚合多个连接，从而允许将这些连接视为一个托管连接</li>
+<li>可从现有连接创建 LAG，也可配置新连接</li>
+<li>在创建 LAG 之后，可将现有连接 (无论是独立连接还是其他 LAG 的一部分) 与 LAG 关联</li>
+<li>LAG遵循以下规则<ol>
+<li>LAG 中的所有连接都必须使用相同的带宽</li>
+<li>LAG 中最多可有 4 个连接。LAG 中的每个连接都会计入区域的整体连接限制</li>
+<li>LAG 中的所有连接都必须终止于同一 AWS Direct Connect 终端节点</li>
+</ol>
+</li>
+</ul>
+<h2 id="Refer"><a href="#Refer" class="headerlink" title="Refer"></a>Refer</h2><ul>
+<li>AWS Direct Connect user guide</li>
+<li><a href="http://jayendrapatil.com/aws-direct-connect-dx" target="_blank" rel="noopener">http://jayendrapatil.com/aws-direct-connect-dx</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/20/AWS-High-Availability-Fault-Tolerance-Architecture/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -5519,684 +5746,6 @@ table tr:hover {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/10/AWS-VPC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/10/AWS-VPC/" itemprop="url">AWS VPC</a></h1>
-        
-
-        <div class="post-meta">
-          
-                    <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-10T11:30:44+08:00">
-                2019-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AWS/" itemprop="url" rel="index">
-                    <span itemprop="name">AWS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><font size="2"> &gt; <em>前言：在 Amazon Web Services (AWS) 云中预置一个逻辑隔离的部分，可以在自己定义的虚拟网络中启动 AWS 资源。完全掌控您的虚拟联网环境，包括选择自己的 IP 地址范围、创建子网以及配置路由表和网络网关。在 VPC 中可以使用 IPv4 和 IPv6，因此能够轻松安全地访问资源和应用程序。</em></font></p>
-<h2 id="VPC-Overview-amp-Components"><a href="#VPC-Overview-amp-Components" class="headerlink" title="VPC Overview &amp; Components"></a>VPC Overview &amp; Components</h2><font face="微软雅黑">
-
-<ul>
-<li>虚拟私有云（VPC）是专用于AWS账户的虚拟网络， 它在逻辑上与AWS云中的其他虚拟网络隔离</li>
-<li>VPC允许用户选择IP地址范围，创建子网，以及配置路由表，网络网关和安全设置</li>
-<li>VPC sizing<ul>
-<li>创建 VPC 时将单个无类别互联网域路由 (CIDR) IP 地址范围指定为主 CIDR 块，默认 VPC 分配有 172.31.0.0/16 的 CIDR 范围（允许2 ^ 16（65536）IP地址可用）</li>
-<li>允许的CIDR块大小介于以下两者之间<ol>
-<li>/ 28网络掩码（最小值为2 ^ 4  -  16个可用IP地址）</li>
-<li>/ 16网络掩码（最大为2 ^ 16  -  65536 IP地址）</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>可以分配来自专用（非公共路由）IP地址的CIDR块<ol>
-<li>10.0.0.0  -  10.255.255.255（10/8前缀）</li>
-<li>172.16.0.0  -  172.31.255.255（172.16 /12前缀）</li>
-<li>192.168.0.0  -  192.168.255.255（192.168/16前缀）<ul>
-<li>可以指定一系列可公开路由的IP地址;然而，VPC中公开路由的CIDR块目前不支持直接访问Internet(public subnet)</li>
-<li>现在可以调整VPC的size</li>
-<li>每个VPC都与使用相同CIDR块创建的任何其他VPC分开，即使它位于同一AWS账户中</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>VPC允许VPC对等连接与相同或不同AWS账户中的其他VPC</li>
-<li>可以建立VPC与公司或家庭办公网络之间的连接，但是CIDR块不应重叠，例如： 具有CIDR 10.0.0.0/16的VPC可以与10.1.0.0/16公司网络通信，但如果尝试连接到10.0.37.0/16公司网络导致重叠IP地址，则连接将被丢弃。</li>
-<li>VPC允许其中启动的实例设置租期选项。 默认情况下，租赁选项是共享的。 如果选择了专用选项，则其中的所有实例都将在覆盖单个实例租用设置的专用硬件上启动</li>
-<li>只有在终止VPC中的所有实例并删除具有VPC的所有组件之后，才可能删除VPC，包括子网，安全组，网络ACL，路由表，Internet网关，VPC对等连接和DHCP选项</li>
-<li>AWS VPC组件<br><img src="https://i.loli.net/2019/08/10/fLeUIt8TSy6vD5Q.png" alt="AWS-VPC-Components.png"><h2 id="IP-Address"><a href="#IP-Address" class="headerlink" title="IP Address"></a>IP Address</h2>在VPC中启动的实例可以分配私有，公共和弹性IP地址，并且是ENI（弹性网络接口）的属性<h3 id="Private-IP-Addresses"><a href="#Private-IP-Addresses" class="headerlink" title="Private IP Addresses"></a>Private IP Addresses</h3></li>
-<li>私有IP地址无法通过Internet访问，并且只能用于VPC内的实例之间的通信</li>
-<li>所有实例都在子网的IP地址范围内分配给默认网络接口(eth0)的私有IP地址</li>
-<li>主（Primary）IP地址在其生命周期内与网络接口相关联，即使实例已停止并重新启动，仅在实例终止时才释放</li>
-<li>可以将其他私有IP地址（称为辅助专用IP地址）分配给实例，这些可以从一个网络接口重新分配给另一个网络接口（非eth0）<h3 id="Public-IP-Addresses"><a href="#Public-IP-Addresses" class="headerlink" title="Public IP Addresses"></a>Public IP Addresses</h3></li>
-<li>公共IP地址可通过Internet访问，可用于实例与Internet之间的通信，也可用于具有公共端点的其他AWS服务</li>
-<li>为实例分配公共IP地址取决于是否为子网启用了公共IP属性</li>
-<li>通过在创建实例期间启用公共IP，也可以将公共IP分配给实例，从而覆盖子网的公共IP寻址属性</li>
-<li>公共IP地址是从AWS IP地址池分配的，它与AWS账户无关，因此在实例停止并重新启动或终止时会释放<h3 id="Elastic-IP-Address"><a href="#Elastic-IP-Address" class="headerlink" title="Elastic IP Address"></a>Elastic IP Address</h3></li>
-<li>弹性IP地址是静态的，持久的公共IP地址，可以根据需要与实例关联或解除关联</li>
-<li>弹性IP地址在VPC上分配，并由帐户拥有，除非被释放</li>
-<li>可以为网络接口分配公共IP或弹性IP。 如果分配已具有公共IP，分配弹性IP的实例时，则会释放公共IP</li>
-<li>弹性IP地址可以从一个实例移动到另一个实例，该实例可以位于同一帐户中的相同或不同VPC内</li>
-<li>弹性IP收取费用，即使其并未与相关实例绑定或ENI相关联<h2 id="Elastic-NetworkInterface（ENI）"><a href="#Elastic-NetworkInterface（ENI）" class="headerlink" title="Elastic NetworkInterface（ENI）"></a>Elastic NetworkInterface（ENI）</h2></li>
-<li>每个实例都附带默认的弹性网络接口（主网络接口eth0），不能与实例分离</li>
-<li>ENI包含以下属性<ul>
-<li>Primary 私有IP</li>
-<li>一个或多个辅助私有IP地址</li>
-<li>每个privateIP地址一个弹性IP地址</li>
-<li>一个公共IP地址，可以在启动实例时自动分配给eth0的网络接口，仅在为eth0创建网络接口而不是使用现有ENI</li>
-<li>一个或多个安全组</li>
-<li>一个MAC地址</li>
-<li>源/目标检查标志</li>
-<li>其他说明</li>
-</ul>
-</li>
-<li>ENI的属性归属ENI，不属于实例，可以与实力连接或分离，并重新连接到另一个实例，属性仍然有效。 当ENI从一个实例移动到另一个实例时，网络流量将重定向到新实例。</li>
-<li>实例可以附加多个ENI，有着一下好处<ul>
-<li>独立管理网络</li>
-<li>在VPC中使用网络和安全设施</li>
-<li>使实例在不同子网上具有不同工作负载/角色</li>
-<li>性价比、高可用的解决方案<h2 id="Route-Tables"><a href="#Route-Tables" class="headerlink" title="Route Tables"></a>Route Tables</h2></li>
-</ul>
-</li>
-<li>路由表定义的规则，称为路由，确定在何处从子网的网络流量将被路由</li>
-<li>每个VPC都有一个隐式路由器来路由网络流量</li>
-<li>每个VPC都有一个主路由表，可以创建多个自定义路由表</li>
-<li>VPC中的每个子网必须一次与一个路由表相关联，而路由表可以有多个与之关联的子网</li>
-<li>如果未明确地与路由表关联，则子网与主路由表隐式关联</li>
-<li>每个路由表都包含一个本地路由，该路由允许在VPC内进行无法修改或删除的通信</li>
-<li>路由优先级通过匹配路由表中与流量匹配的最具体路由来确定</li>
-<li>路由表需要更新，已经定义的好的网关设备如IGW，虚拟专用网关，VPC对等，VPC端点，NAT设备等<h2 id="Internet-Gateways-IGW"><a href="#Internet-Gateways-IGW" class="headerlink" title="Internet Gateways-IGW"></a>Internet Gateways-IGW</h2></li>
-<li>IGW是一种水平扩展，冗余且高度可用的VPC组件，允许在VPC和Internet中的实例之间进行通信</li>
-<li>IGW不对网络流量设置带宽限制或成为故障风险点（国内公有云有网络出口限制，同时这里的带宽不限制，是在不超过AWS自身网络限制）</li>
-<li>IGW有两个用途：在VPC路由表中为可路由Internet的流量提供网关目标，以及实例（未分配公有IP地址）执行网络地址转换（NAT）</li>
-<li>实例访问Internet需要满足一下要求<ul>
-<li>将IGW关联到VPC</li>
-<li>子网具有指向IGW网关的路由表</li>
-<li>实例应分配公共IP或弹性IP</li>
-<li>与实例关联的安全组和AACL应该允许其流量通过<h2 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h2></li>
-</ul>
-</li>
-<li>NAT设备允许私有子网中的实例连接到Internet或其他AWS服务，但阻止Internet与实例的连接</li>
-<li>NAT设备不支持IPv6流量，而应使用egress-only Internet gateway网关<h2 id="Egress-only-Internet-gateway"><a href="#Egress-only-Internet-gateway" class="headerlink" title="Egress-only Internet gateway"></a>Egress-only Internet gateway</h2></li>
-<li>像NAT网关使用，并且仅支持IPv6</li>
-<li>Egress Only Internet Gateway网关是一种水平扩展，冗余且高度可用的VPC组件，允许通过IPv6从VPC中的实例向Internet进行出站通信，并防止Internet实例的IPv6连接</li>
-<li>仅用于IPv6,如果要启用IPv4请使用NGW<h2 id="VPC-amp-Subnet-Sizing"><a href="#VPC-amp-Subnet-Sizing" class="headerlink" title="VPC &amp; Subnet Sizing"></a>VPC &amp; Subnet Sizing</h2></li>
-<li>VPC支持IPv4和IPv6寻址，并且每个都具有不同的CIDR块大小限制</li>
-<li>VPC 可以同时有 IPv4 和 IPv6 CIDR 块与其关联</li>
-<li>对于 IPv6，VPC 使用 /56 的固定大小</li>
-<li>通过向现有 VPC 添加四 (4) 个辅助 IPv4 IP 范围 (CIDR) 来扩展 VPC。可通过删除已添加到 VPC 的辅助 CIDR 块来缩小 VPC；不能更改 VPC 的 IPv6 地址范围的大小</li>
-<li>限制<ul>
-<li>允许的块大小介于/ 28~ / 16网络掩码之间</li>
-<li>CIDR块不得与任何与VPC关联的现有CIDR块重叠</li>
-<li>CIDR块不能与任何VPC路由表中的路由的CIDR范围相同或更大，例如， 对于CIDR块10.0.0.0/24，只能关联较小的CIDR块，如10.0.0.0/25<h2 id="VPC-Security"><a href="#VPC-Security" class="headerlink" title="VPC Security"></a>VPC Security</h2>提供三种功能，以用来提高和监控 Virtual Private Cloud (VPC) 的安全性</li>
-</ul>
-</li>
-<li>安全组 充当实例的虚拟防火墙以控制入站和出站流量</li>
-<li>网络访问控制列表 (ACL) 是 VPC 的一个可选安全层，可用作防火墙来控制进出一个或多个子网的流量</li>
-<li>VPC 流日志这项功能，捕获有关传入和传出VPC 中网络接口的 IP 流量的信息<br><img src="https://i.loli.net/2019/08/10/fQTSim9weNAOWLR.png" alt="security-diagram.png"><h3 id="Security-Groups"><a href="#Security-Groups" class="headerlink" title="Security Groups"></a>Security Groups</h3></li>
-<li>在实例级别而不是在子网级别执行</li>
-<li>可以为子网中的每个实例分配不同的安全组</li>
-<li>可以为实例分配5个安全组，每个安全组具有50个规则</li>
-<li>安全组允许为实例的入站（入口）和出站（出口）流量添加或删除规则（授权或撤消访问）<ul>
-<li>默认安全组不允许外部入站流量，但允许来自具有相同安全组的实例的入站流量</li>
-<li>默认安全组允许所有出站流量</li>
-<li>新安全组仅以允许所有流量离开实例的出站规则开始</li>
-</ul>
-</li>
-<li>安全组只能指定允许规则，但不包含拒绝规则</li>
-<li>安全组可以授予对特定CIDR范围或VPC中的另一个安全组或对等VPC的访问权限（需要VPC对等连接）</li>
-<li>安全组被评估为完整或累积规则，其中最宽松的规则优先。对于例如 如果有一个允许从IP地址203.0.113.1访问TCP端口22（SSH）的规则和允许从每个人访问TCP端口22的另一个规则，则每个人都可以访问TCP端口22</li>
-<li>安全组是<font color="red">有状态的</font> - 无论出站规则如何，都允许对允许的入站流量的响应流出，反之亦然。 因此，不需要响应的出站规则</li>
-<li>安全组与ENI（网络接口）相关联</li>
-<li>可以更改与实例关联的安全组，这会更改与主网络接口（eth0）关联的安全组，并且更改将立即应用于与安全组关联的所有实例<h4 id="Connection-Tracking"><a href="#Connection-Tracking" class="headerlink" title="Connection Tracking"></a>Connection Tracking</h4></li>
-<li>由于安全组是有状态的，基于流量的连接状态应用规则以确定允许还是拒绝流量</li>
-<li>无论出站安全组规则如何，都允许对入站流量的响应流出实例，反之亦然。</li>
-<li>仅当入站请求没有明确的出站规则时才会维护连接跟踪（响应流量基于允许响应流量的入站或出站规则流动，而不是基于跟踪信息流动）</li>
-<li>但是，如果是入站请求一个明确的出站规则，响应流量被允许出站规则的基础上，而不是跟踪连接</li>
-<li>跟踪流量</li>
-</ul>
-<ol>
-<li>对于除 TCP、UDP 或 ICMP 以外的协议，仅跟踪 IP 地址和协议编号</li>
-<li>实例将流量发送到另一个主机 (主机 B)，并且在原始请求或响应的 600 秒内，主机 B 在单独的请求中发起到实例的同一类型的流量，则无论入站安全组规则如何，实例都将接受该请求，因为该流量被视为响应流量</li>
-</ol>
-<ul>
-<li>确保所有入站流量均遵循防火墙规则，可以使用网络 ACL — <font color="red">网络 ACL 是无状态的</font>，因此不会自动允许响应流量<h3 id="NACLs"><a href="#NACLs" class="headerlink" title="NACLs"></a>NACLs</h3></li>
-<li>网络访问控制列表 (ACL) 是 VPC 的一个可选安全层，可用作防火墙来控制进出一个或多个子网的流量</li>
-<li>NACL作用于子网级别控制，并且适用于该子网中的所有实例</li>
-<li>网络ACL具有单独的入站和出站规则，每个规则可以允许或拒绝流量默认ACL允许所有入站和出站流量</li>
-<li>新创建的ACL拒绝所有入站和出站流量</li>
-<li>子网只能分配1个ACL，如果没有明确关联，则会与默认NACL隐式关联</li>
-<li>网络ACL是按顺序评估的编号规则列表</li>
-<li>从编号最小的规则开始，确定是否允许流量进出与网络ACL关联的任何子网</li>
-<li>例如如果你有一个允许全部的规则100和一个全部拒绝的规则110，则允许全部优先，所有流量都将被允许</li>
-<li>网络ACL是无状态的;对允许的入站流量的响应受出站流量规则的约束（反之亦然），例如：如果从特定IP地址启用端口22上的入站SSH，则还需要为响应添加出站规则<h4 id="安全组-vs-ACL"><a href="#安全组-vs-ACL" class="headerlink" title="安全组 vs ACL"></a>安全组 vs ACL</h4><table>
-<thead>
-<tr>
-<th>安全组</th>
-<th>ACL</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>在实例级别运行</td>
-<td>在子网级别运行</td>
-</tr>
-<tr>
-<td>仅支持允许规则</td>
-<td>支持允许规则和拒绝规则</td>
-</tr>
-<tr>
-<td>有状态：返回数据流会被自动允许，不受任何规则的影响</td>
-<td>无状态：返回数据流必须被规则明确允许</td>
-</tr>
-<tr>
-<td>决定是否允许数据流前评估所有规则</td>
-<td>决定是否允许数据流时按照数字顺序处理所有规则</td>
-</tr>
-<tr>
-<td>只有在启动实例的同时指定安全组、或稍后将安全组与实例关联的情况下，操作才会被应用到实例</td>
-<td>自动应用到关联子网内的所有实例（因此不需要依靠用户指定安全组）</td>
-</tr>
-</tbody></table>
-</li>
-</ul>
-<h2 id="VPC-Flow-logs"><a href="#VPC-Flow-logs" class="headerlink" title="VPC Flow logs"></a>VPC Flow logs</h2><ul>
-<li>VPC 流日志这项功能，捕获有关传入和传出 VPC 中网络接口的 IP 流量的信息。流日志数据可以发布到 Amazon CloudWatch Logs 和 Amazon S3。创建流日志后，可以在选定目标中检索和查看其数据</li>
-<li>可以为 VPC、子网或网络接口创建流日志。如果为子网或 VPC 创建流日志，则会监视 VPC 或子网中的每个网络接口</li>
-<li>流日志不会为网络接口捕获实时日志流(通常需要几分钟开始收集数据并发布到指定目标)</li>
-<li>可以为其他 AWS 创建的网络接口创建流日志，例如 Elastic Load Balancing、Amazon RDS、Amazon ElastiCache、Amazon Redshift 和 Amazon WorkSpaces<h2 id="Subnets"><a href="#Subnets" class="headerlink" title="Subnets"></a>Subnets</h2></li>
-<li>子网跨越单个可用区，不同的位置设计为AZ级别故障隔离</li>
-<li>子网可以配置IGW以启用Internet通信，或虚拟专用网关（VPN）连接以启用与公司网络的连通</li>
-<li>子网可以是公共的或私有的，它取决于它是否具有因特网连接，即能够通过IGW将流量路由到因特网</li>
-<li>应为公共子网中的实例分配公共IP或弹性IP地址，以便能够与Internet通信</li>
-<li>对于未连接到Internet的子网，但通过虚拟专用网关路由的流量称为VPN专属子网</li>
-<li>可以将子网配置为默认为子网内启动的所有实例分配公共IP地址</li>
-<li>Subnet sizing <ul>
-<li>分配给子网的CIDR块可以与VPC CIDR相同，在这种情况下，只能在VPC中启动一个子网</li>
-<li>分配给子网的CIDR块可以是VPC CIDR的子集，允许在VPC中启动多个子网</li>
-<li>分配给子网的CIDR块不应重叠</li>
-<li>允许的CIDR块大小介于两者之间<ul>
-<li>/28网络掩码（最小值为2 ^ 4  -  16个可用IP地址）</li>
-<li>16网络掩码（最大为2 ^ 16  -  65536 IP地址）</li>
-</ul>
-</li>
-<li>AWS在每个子网中保留5个IP地址（前4个和后1个IP地址），这些地址不可用，无法分配给实例。 例如 对于具有CIDR块10.0.0.0/24的子网，保留以下五个IP<ul>
-<li>10.0.0.0：网络地址</li>
-<li>10.0.0.1：AWS为VPC路由器保留</li>
-<li>10.0.0.2：由AWS保留，用于映射到亚马逊提供的DNS</li>
-<li>10.0.0.3：AWS保留供将来使用</li>
-<li>10.0.0.255：网络广播地址。 AWS不支持VPC中的广播，因此保留地址</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>子网路由<ul>
-<li>每个子网都与一个路由表相关联</li>
-</ul>
-</li>
-<li>子网安全<ul>
-<li>可以使用安全组和NACL配置子网安全性</li>
-<li>安全组在实例级别工作，NACL在子网级别工作<h2 id="Shared-VPCs"><a href="#Shared-VPCs" class="headerlink" title="Shared VPCs"></a>Shared VPCs</h2></li>
-</ul>
-</li>
-<li>VPC 共享允许多个 AWS 账户在共享的集中式管理的 Amazon Virtual Private Cloud (VPC) 中创建自己的应用程序资源，如 Amazon EC2、Amazon Relational Database Service (RDS)、Amazon Redshift 群集和 AWS Lambda</li>
-<li>在此模型中，拥有 VPC 的账户（所有者）与属于 AWS Organizations 中同一组织的其他账户（参与者）共享一个或多个子网</li>
-<li>共享子网之后，参与者可以查看、创建、修改和删除与他们共享的子网中的应用程序资源。参与者无法查看、修改或删除属于其他参与者或 VPC 拥有者的资源<h2 id="VPC-Endpoints"><a href="#VPC-Endpoints" class="headerlink" title="VPC Endpoints"></a>VPC Endpoints</h2></li>
-<li>VPC 终端节点能够将 VPC 创建专有链接连接到支持的 AWS 服务和 VPC 终端节点服务（由 PrivateLink 提供支持），而无需 Internet 网关、NAT 设备、VPN 连接或 AWS Direct Connect 连接。VPC 中的实例无需公有 IP 地址便可与服务中的资源通信。VPC 和其他服务之间的通信不会离开 Amazon 网络。</li>
-<li>终端节点是虚拟设备。这些是水平扩展、冗余且具备高可用性的 VPC 组件，通过使用这些组件，可以在 VPC 中的实例与服务之间进行通信，而不会对网络通信带来可用性风险或带宽限制</li>
-<li>端点当前不支持跨区域请求，请确保在与服务相同相同的区域中创建端点</li>
-<li>VPC 终端节点有两种类型：接口终端节点 和 网关终端节点</li>
-<li>VPC 终端节点策略是一种 IAM 资源策略，在创建或修改终端节点时可将它附加到终端节点</li>
-<li>默认策略来允许对服务进行完全访问。终端节点策略不会覆盖或取代 IAM 用户策略或服务特定策略 (如 S3 存储桶策略)<h3 id="网关-VPC-终端节点"><a href="#网关-VPC-终端节点" class="headerlink" title="网关 VPC 终端节点"></a>网关 VPC 终端节点</h3></li>
-<li>网关终端节点是一个网关，作为路由表中的指定路由的目标（用于发送到受支持的 AWS 服务的流量）</li>
-<li>支持Amazon S3&amp;DynamoDB<br><img src="https://i.loli.net/2019/08/10/oQuy8DG35PSltWF.png" alt="AWS-VPC-Endpoints.png"></li>
-<li>Configuration<ol>
-<li>指定要在其中创建终端节点的 VPC 以及要连接到的服务</li>
-<li>端点需要与Route表关联，并且不能修改路由表以删除路由条目。只能通过删除与Route表的Endpoint关联来删除它</li>
-<li>路由会自动添加到每个路由表中，同时会添加一个指定服务的前缀列表 ID 的目的地 (pl-xxxxxxxx) 以及一个具有终端节点 ID 的目标 (vpce-xxxxxxxx)；例如：</li>
-</ol>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>目的地</th>
-<th>目标</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>10.0.0.0/16</td>
-<td>本地</td>
-</tr>
-<tr>
-<td>pl-1a2b3c4d</td>
-<td>vpce-11bb22cc</td>
-</tr>
-</tbody></table>
-<ol start="4">
-<li>端点策略可以控制对其他服务中的资源的访问</li>
-<li>需要修改安全组以允许从VPC到端点中指定的服务的出站流量。 使用服务前缀列表ID，例如 com.amazonaws.us-east-1.s3作为出站规则中的目的地<ol start="6">
-<li>在一个路由表中拥有针对不同服务的多个终端节点路由，并且可以在不同的路由表中拥有针对同一服务的多个终端节点路由，但不能在一个路由表中拥有针对同一服务的多个终端节点路由。例如，如果 VPC 中有两个针对 Amazon S3 的终端节点，则不能同时对这两个终端节点使用相同的路由表</li>
-</ol>
-</li>
-</ol>
-<ul>
-<li>限制<ul>
-<li>仅在同一地区内支持终端节点。无法在 VPC 和其他区域内的服务之间创建终端节点</li>
-<li>无法将终端节点从一个 VPC 转移到另一个 VPC，也无法将终端节点从一项服务转移到另一项服务</li>
-<li>无法将终端节点连接扩展到 VPC 之外。VPC 中的 VPN 连接、VPC 对等连接、AWS Direct Connect 连接或 ClassicLink 连接的另一端的资源不能使用终端节点与终端节点服务中的资源进行通信<h3 id="接口终端节点"><a href="#接口终端节点" class="headerlink" title="接口终端节点"></a>接口终端节点</h3></li>
-</ul>
-</li>
-<li>接口 VPC 终端节，可连接到由 AWS PrivateLink 提供支持的服务</li>
-<li>服务包括一些AWS服务，例如： CloudTrail，CloudWatch等，由其他AWS客户和合作伙伴在其自己的VPC（称为端点服务）中托管的服务，以及受支持的AWS Marketplace合作伙伴服务<br><img src="https://i.loli.net/2019/08/10/7VcIfgrZWMyF4GT.png" alt="VPC-Interface-Endpoints.png"></li>
-<li>配置</li>
-</ul>
-<ol>
-<li>选择要在其中创建接口终端节点的 VPC，然后提供要连接到的 AWS 服务、终端节点服务或 AWS Marketplace 服务的名称。</li>
-<li>在 VPC 中选择使用接口终端节点的子网。将在该子网中创建一个终端节点网络接口</li>
-<li>指定要与终端节点网络接口关联的安全组</li>
-<li>为终端节点启用私有 DNS 以使能够使用服务的默认 DNS 主机名对服务发出请求（可选）</li>
-</ol>
-<ul>
-<li>限制</li>
-</ul>
-<ol>
-<li>对于每个接口终端节点，每个可用区只能选择一个子网</li>
-<li>默认情况下，每个可用区的每个接口终端节点可支持高达 10 Gbps 的带宽</li>
-<li>子网的网络ACL可以限制流量，需要正确配置</li>
-<li><font color="red">接口终端节点仅支持 TCP 流量</font></li>
-<li>仅在同一地区内支持终端节点</li>
-<li>仅支持 IPv4 流量</li>
-<li>无法将终端节点从一个 VPC 转移到另一个 VPC，也无法将终端节点从一项服务转移到另一项服务<h2 id="VPC-Peering"><a href="#VPC-Peering" class="headerlink" title="VPC Peering"></a>VPC Peering</h2></li>
-</ol>
-<ul>
-<li>VPC 对等连接是两个 VPC 之间的网络连接，可通过此连接不公开地在这两个 VPC 之间路由流量(Private IP address)</li>
-<li>两个 VPC 中的实例可以彼此通信，就像它们在同一网络中一样</li>
-<li>可以在自己的 VPC 之间、自己的 VPC 与另一个 AWS 账户中的 VPC 或与其他 AWS 区域中的 VPC 之间创建 VPC 对等连接</li>
-<li>AWS 使用 VPC 的现有基础设施来创建 VPC 对等连接；该连接既非网关也非 AWS Site-to-Site VPN 连接，且不依赖某个单独的物理硬件。</li>
-<li>没有单点通信故障也没有带宽瓶颈</li>
-</ul>
-<h3 id="VPC-对等连接规则和限制"><a href="#VPC-对等连接规则和限制" class="headerlink" title="VPC 对等连接规则和限制"></a>VPC 对等连接规则和限制</h3><ol>
-<li><p>不能在重叠CIDR块的VPC之间创建VPC对等连接<br><img src="https://i.loli.net/2019/08/10/xHQWgin81pjRylO.png" alt="Screen-Shot-2016-06-15-at-12.33.07-PM.png"></p>
-</li>
-<li><p>每个 VPC 创建数量有限的活动和待定 VPC 对等连接</p>
-<table>
-<thead>
-<tr>
-<th>源</th>
-<th>默认限制</th>
-<th>注释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>每个 VPC 的活动 VPC 对等连接</td>
-<td>50</td>
-<td>每个 VPC 的最大限制为 125 个对等连接。应相应地增加每个路由表的条目数；但是，网络性能可能会受到影响</td>
-</tr>
-<tr>
-<td>未完成的 VPC 对等连接请求</td>
-<td>25</td>
-<td>这是账户请求的未完成 VPC 对等连接请求数的限制</td>
-</tr>
-<tr>
-<td>未接受的 VPC 对等连接请求的过期时间</td>
-<td>1</td>
-<td>周 (168 小时)</td>
-</tr>
-</tbody></table>
-</li>
-<li><p>VPC 对等不支持传递的对等关系。在 VPC 对等连接中， VPC 无权访问对等 VPC 可能与之对等的任何其他 VPC<br><img src="https://i.loli.net/2019/08/10/Z7nO2QzRpqYMtld.png" alt="Screen-Shot-2016-06-15-at-12.33.00-PM.png"></p>
-</li>
-<li><p>VPC对等不支持通过网关或专用连接进行边缘到边缘路由</p>
-</li>
-<li><p>在VPC对等连接中，VPC无法访问对等VPC可能具有的任何其他连接， </p>
-<ul>
-<li>与企业网络之间的 VPN 连接或 AWS Direct Connect 连接</li>
-<li>通过 Internet 网关建立的 Internet 连接</li>
-<li>在私有子网中通过 NAT 设备建立的 Internet 连接</li>
-<li>AWS 服务的 VPC 终端节点；例如，Amazon S3 的终端节点<br><img src="https://i.loli.net/2019/08/10/kciwbLvoAMqHDYj.png" alt="Screen-Shot-2016-06-15-at-12.35.38-PM.png"></li>
-</ul>
-</li>
-<li><p>在同一个两个VPC之间只能建立一个VPC对等连接</p>
-</li>
-<li><p>VPC对等连接上的最大传输单元（MTU）为1500字节</p>
-</li>
-<li><p>置放组（place group）可在同一区域内建立对等连接，但在对等连接中无法获得全部带宽</p>
-</li>
-<li><p>VPC 对等连接创建的任何标签仅在创建它们的账户或区域中应用</p>
-</li>
-<li><p>不支持在 VPC 对等连接中进行单一地址反向传输路径转发</p>
-</li>
-<li><p><font color="red">必须为 VPC 对等连接启用 DNS 解析支持才能将对等 VPC 的私有 DNS 主机名解析为私有IP地址</font></p>
-<h3 id="VPC-Peering-Architecture"><a href="#VPC-Peering-Architecture" class="headerlink" title="VPC Peering Architecture"></a>VPC Peering Architecture</h3><p><img src="https://i.loli.net/2019/08/10/H19WGByM87D6log.png" alt="Screen-Shot-2016-11-12-at-3.20.55-PM.png"></p>
-</li>
-</ol>
-<ul>
-<li>可以应用VPC对等来创建共享服务或使用本地实例执行身份验证</li>
-<li>这将有助于创建单个联系，并将VPN连接限制到单个帐户或VPC<h2 id="VPC-VPN-Connections-amp-CloudHub"><a href="#VPC-VPN-Connections-amp-CloudHub" class="headerlink" title="VPC VPN Connections &amp; CloudHub"></a>VPC VPN Connections &amp; CloudHub</h2></li>
-<li>VPC  VPN 连接用于将本地数据中心扩展到AWS云中</li>
-<li>通过IPSec技术实现安全连接</li>
-<li>硬件VPN<ul>
-<li>VPC和远程网络之间创建IPSec隧道，硬件VPN连接来建立连接</li>
-<li>在VPN连接的AWS端，虚拟专用网关（VGW）提供两个VPN端点以进行自动故障转移</li>
-<li>在客户端需要配置客户网关（CGW），这是VPN连接远程端的物理设备或软件应用程序</li>
-</ul>
-</li>
-<li>AWS Direct Connect<ul>
-<li>AWS Direct Connect提供从远程网络到VPC的专用专用连接</li>
-<li>Direct Connect可与AWS硬件VPN连接结合使用，以创建IPsec加密连接</li>
-</ul>
-</li>
-<li>AWS VPN CloudHub<ul>
-<li>有多个远程网络（例如，多个分公司），则可以通过虚拟专用网关创建多个 AWS Site-to-Site VPN 连接，来启用这些网络之间的通信</li>
-</ul>
-</li>
-<li>Software VPN<ul>
-<li>通过在 VPC 中使用正在运行软件 VPN 设备的 Amazon EC2 实例来创建与远程网络的 VPN 连接</li>
-<li>AWS 不提供或维护第三方软件 VPN 设备；但是，可以选择合作伙伴和开源社区提供的一系列产品<h3 id="Hardware-VPN"><a href="#Hardware-VPN" class="headerlink" title="Hardware VPN"></a>Hardware VPN</h3><img src="https://i.loli.net/2019/08/10/1DJ9cQhp4KTznjE.png" alt="VPN-Connection.png"><h4 id="VPN-组件"><a href="#VPN-组件" class="headerlink" title="VPN 组件"></a>VPN 组件</h4></li>
-</ul>
-</li>
-<li>虚拟专有网关—VGW<ul>
-<li>VPN连接的AWS侧的VPN集中器</li>
-</ul>
-</li>
-<li>客户网关——CGW<ul>
-<li>客户网关是连接中用户侧使用的定位标记。它可以是物理或软件设备</li>
-<li>VPN连接时，会在创建两端创建VPN隧道</li>
-<li>VGW不是发起者，需要CGW启动VPN连接</li>
-<li>若VPN链接建立之后超过10秒的空闲连接（具体看配置属性），隧道会自动关闭。为了避免这种情况，建议用网络监控工具保持周期性的ping，例如使用IP SLA。<h4 id="VPN-配置"><a href="#VPN-配置" class="headerlink" title="VPN 配置"></a>VPN 配置</h4></li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>VPC包含的VGW，并且远程网络部署客户网关，必须将两者配置为启用</li>
-<li>配置路由，以便来自绑定到远程网络的VPC的任何流量都路由到虚拟专用网关（VGW）</li>
-<li>每个VPN都有两个与之关联的隧道，可以在客户路由器上配置，因为不是单点故障</li>
-<li>可以创建到单个VPC的多个VPN连接，并且可以配置第二个CGW以创建到同一外部位置的冗余连接或创建到多个地理位置的VPN连接<h4 id="VPN-路由"><a href="#VPN-路由" class="headerlink" title="VPN 路由"></a>VPN 路由</h4></li>
-</ul>
-<ul>
-<li>对于VPN连接，应使用的路由类型（动态或静态）更新子网的路由表</li>
-<li>路由表确定网络流量的定向。 发往VPN连接的流量必须经过到虚拟专用网关</li>
-<li>路由的类型（VPN的设备和型号）<ul>
-<li>静态路由<ul>
-<li>如果设备不支持BGP，请指定静态路由。</li>
-<li>使用静态路由，可以指定应传送到虚拟专用网关的路由（IP前缀）。</li>
-<li>不支持BGP的设备也可以执行运行状况检查，以帮助在需要时故障转移到第二个隧道。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>BGP动态路由<ul>
-<li>如果VPN设备支持边界网关协议（BGP），请使用VPN连接指定动态路由。</li>
-<li>使用BGP设备时，不需要为VPN连接指定静态路由，因为设备使用BGP进行自动发现并将其路由通告给虚拟专用网关。</li>
-<li>建议使用支持BGP的设备，因为BGP协议提供强大的活动检测检查，如果第一个隧道出现故障，可以帮助故障转移到第二个VPN隧道</li>
-<li>只有通过BGP通告或静态路由条目的虚拟专用网关已知的IP前缀才能从VPC接收流量。</li>
-<li>VGW不会路由发布在BGP之外的任何其他流量，静态路由条目或其附加的VPC CIDR<h4 id="VPN-Connection-Redundancy"><a href="#VPN-Connection-Redundancy" class="headerlink" title="VPN Connection Redundancy"></a>VPN Connection Redundancy</h4><img src="https://i.loli.net/2019/08/10/yAYVsuhQUOBLtNv.png" alt="VPN-Connection-Redundancy.png"></li>
-</ul>
-</li>
-<li>每个VPN连接都有两个隧道，以防止VGW成为单点故障，每个隧道使用唯一的虚拟专用网关公共IP地址</li>
-<li>当一个隧道变得不可用时，例如为了维护，网络流量会自动路由到特定VPN连接的可用隧道</li>
-<li>为防止在客户网关不可用时丢失连接，建议使用第二个客户网关为VPC和虚拟专用网关建立第二个VPN连接</li>
-<li>建议使用边界网关协议（BGP）动态路由VPN连接，以在客户网关和虚拟专用网关之间交换路由信息</li>
-<li>静态路由的VPN连接需要在客户网关侧输入网络的静态路由。</li>
-<li>BGP通告和静态输入的路由信息允许双方的网关确定哪些隧道可用，并在发生故障时重新路由流量<h3 id="VPN-CloudHub"><a href="#VPN-CloudHub" class="headerlink" title="VPN CloudHub"></a>VPN CloudHub</h3></li>
-<li>VPN CloudHub可用于在多站点之间提供多个VPN通道安全通信</li>
-<li>远程站点彼此进行通信，而不只是与 VPC 进行通信</li>
-<li>VPN CloudHub 在简单的星型拓扑连接模型上操作，可以在使用或不使用 VPC 的情况下操作 VPN CloudHub。</li>
-<li>这种设计适合有多间分公司和现有 Internet 连接的客户，帮助他们实施方便、潜在低成本的星型拓扑连接模型，以便在这些远程办公室之间建立主要或备用连接<br><img src="https://i.loli.net/2019/08/10/4rd7DFAWt1SvoZe.png" alt="AWS_VPN_CloudHub-diagram.png"></li>
-<li>蓝色虚线表示网络远程站点之间的流量通过其VPN连接进行路由的流量通道</li>
-<li>使用 AWS VPN CloudHub，必须创建具有多个客户网关的虚拟专用网关</li>
-<li>每个CGW使用唯一的边界网关协议 (BGP) 自治系统编号 (ASN)</li>
-<li>客户网关可通过它们的 Site-to-Site VPN 连接传播适当的路由（BGP 前缀）</li>
-<li>路由通告会被每个 BGP 对等体接收并重新通告，使每个站点都可以向其他站点发送或接受数据</li>
-<li>每个辐射路由必须具有唯一的ASN，并且站点不得具有重叠的IP范围</li>
-<li>每个站点还可以发送和从 VPC 接收数据（与使用标准 Site-to-Site VPN 连接的方式相同）</li>
-<li>使用AWS Direct Connect连接到虚拟专用网关的站点也可以是AWS VPN CloudHub的一部分</li>
-<li>配置VPN CloudHub VPN<ol>
-<li>创建多个客户网关，每个网关都具有网关和ASN的唯一公共IP地址</li>
-<li>每个CGW到公共虚拟专用网（VGW）关创建VPN连接</li>
-<li>每个VPN连接必须通告其特定的BGP路由。 VPN连接的VPN配置文件来完成<h2 id="NAT网关-vs-NAT实例"><a href="#NAT网关-vs-NAT实例" class="headerlink" title="NAT网关 vs NAT实例"></a>NAT网关 vs NAT实例</h2></li>
-</ol>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>NAT网关</th>
-<th>NAT实例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>可用性</td>
-<td>高度可用。每个可用区中的 NAT 网关都采用冗余实施。在每个可用区中创建一个 NAT 网关可确保架构不依赖于可用区</td>
-<td>使用脚本管理实例之间的故障转移</td>
-</tr>
-<tr>
-<td></td>
-<td>NAT网关</td>
-<td>NAT实例</td>
-</tr>
-<tr>
-<td>————-</td>
-<td>————-</td>
-<td>——</td>
-</tr>
-<tr>
-<td>可用性</td>
-<td>高度可用。每个可用区中的 NAT 网关都采用冗余实施。在每个可用区中创建一个 NAT 网关可确保架构不依赖于可用区</td>
-<td>使用脚本管理实例之间的故障转移</td>
-</tr>
-<tr>
-<td>带宽</td>
-<td>可以扩展到 45 Gbps</td>
-<td>取决于实例类型的带宽</td>
-</tr>
-<tr>
-<td>维护</td>
-<td>由 AWS 管理。不需要进行任何维护</td>
-<td>自行管理，例如需要对实例安装软件更新或操作系统补丁</td>
-</tr>
-<tr>
-<td>性能</td>
-<td>软件经过优化以便处理 NAT 流量</td>
-<td>由配置来执行 NAT 的通用 AMI</td>
-</tr>
-<tr>
-<td>费用</td>
-<td>费用取决于使用的 NAT 网关的数量、使用时长以及通过 NAT 网关发送的数据量</td>
-<td>费用取决于使用的 NAT 实例的数量、使用时长以及实例类型和大小</td>
-</tr>
-<tr>
-<td>类型和大小</td>
-<td>整合提供；不需要选择类型或范围</td>
-<td>根据的预测工作负载选择适当的实例类型和大小</td>
-</tr>
-<tr>
-<td>公有IP地址</td>
-<td>在创建时选择弹性 IP 地址以与 NAT 网关关联</td>
-<td>为 NAT 实例使用弹性 IP 地址或公有 IP 地址。随时可以通过将新的弹性 IP 地址与实例关联来更改公有 IP 地址</td>
-</tr>
-<tr>
-<td>私有IP地址</td>
-<td>在创建网关时自动从子网的 IP 地址范围中选择。</td>
-<td>在启动实例时，从子网的 IP 地址范围内分配特定的私有 IP 地址</td>
-</tr>
-<tr>
-<td>安全组</td>
-<td>无法与 NAT 网关关联。可以将安全组与 NAT 网关之后的资源关联，以控制入站和出站流量。</td>
-<td>与NAT 实例和 NAT 实例之后的资源关联，以控制入站和出站流量。</td>
-</tr>
-<tr>
-<td>网络 ACL</td>
-<td>使用网络 ACL 控制进出NAT 网关所在子网的流量</td>
-<td>使用网络 ACL 控制进出 NAT 实例所在子网的流量</td>
-</tr>
-<tr>
-<td>流日志</td>
-<td>使用流日志捕获流量。</td>
-<td>使用流日志捕获流量</td>
-</tr>
-<tr>
-<td>端口转发</td>
-<td>不支持</td>
-<td>手动自定义配置以支持端口转发</td>
-</tr>
-<tr>
-<td>堡垒服务器</td>
-<td>不支持</td>
-<td>用作堡垒服务器</td>
-</tr>
-<tr>
-<td>流量指标</td>
-<td><a href="https://docs.aws.amazon.com/zh_cn/vpc/latest/userguide/vpc-nat-gateway-cloudwatch.html" target="_blank" rel="noopener">查看 NAT 网关的 CloudWatch 指标</a></td>
-<td>查看实例的 CloudWatch 指标</td>
-</tr>
-<tr>
-<td>超时行为</td>
-<td>如果连接超时，NAT 网关向 NAT 网关后方的任何资源返回 RST 数据包，尝试继续进行连接 (它不发送 FIN 数据包)。</td>
-<td>如果连接超时，NAT 实例向 NAT 实例后方的资源发送 FIN 数据包，以关闭连接</td>
-</tr>
-<tr>
-<td>IP 分段</td>
-<td>支持转发 UDP 协议的 IP 分段数据包。不支持 TCP 和 ICMP 协议的分段。将删除这些协议的分段数据包。</td>
-<td>支持重组 UDP、TCP 和 ICMP 协议的 IP 分段数据包。</td>
-</tr>
-</tbody></table>
-<h3 id="Refer"><a href="#Refer" class="headerlink" title="Refer"></a>Refer</h3><ol>
-<li><a href="https://docs.aws.amazon.com/zh_cn/vpc/latest/userguide/amazon-vpc-limits.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/zh_cn/vpc/latest/userguide/amazon-vpc-limits.html</a></li>
-<li>Amazon Virtual Private Cloud user guide </li>
-<li>AWS Site-to-Site VPN user guide</li>
-</ol>
-
-
-
-</font>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -6247,7 +5796,7 @@ table tr:hover {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -6258,7 +5807,7 @@ table tr:hover {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -6269,7 +5818,7 @@ table tr:hover {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

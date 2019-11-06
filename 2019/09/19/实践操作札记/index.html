@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="岳阳北寒">
 <meta property="og:description" content="更新ing  Route 53路由策略 简单路由策略–对于域执行功能给定功能的单一资源(例如为 example.com 网站提供内容的 Web 服务器)，可以使用该策略 故障转移路由策略– 如果想要配置主动-被动故障转移，则可以使用该策略 地理位置路由策略—如果想要根据用户的位置来路由流量，则可以使用该策略 地理位置林进度路由策略–用于更具资源的位置来路由通信，以及（可选）将流量从一个位置中的资">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-19T11:05:44.941Z">
+<meta property="og:updated_time" content="2019-11-06T11:05:42.341Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="实践操作札记">
 <meta name="twitter:description" content="更新ing  Route 53路由策略 简单路由策略–对于域执行功能给定功能的单一资源(例如为 example.com 网站提供内容的 Web 服务器)，可以使用该策略 故障转移路由策略– 如果想要配置主动-被动故障转移，则可以使用该策略 地理位置路由策略—如果想要根据用户的位置来路由流量，则可以使用该策略 地理位置林进度路由策略–用于更具资源的位置来路由通信，以及（可选）将流量从一个位置中的资">
@@ -434,6 +434,26 @@
 </ol>
 </li>
 </ul>
+<h3 id="双写一致性"><a href="#双写一致性" class="headerlink" title="双写一致性"></a>双写一致性</h3><ul>
+<li><p>先更新数据库，再更新缓存</p>
+</li>
+<li><p>先删除缓存，在更新数据库</p>
+</li>
+<li><p><strong>先更新数据库，在删除缓存</strong></p>
+</li>
+<li><p>使用分布式锁：缓存失效后，加锁查询、更新缓存，更新数据库时加锁删除缓存</p>
+<h2 id="ELB-访问日志中捕获客户端-IP-地址"><a href="#ELB-访问日志中捕获客户端-IP-地址" class="headerlink" title="ELB 访问日志中捕获客户端 IP 地址"></a>ELB 访问日志中捕获客户端 IP 地址</h2></li>
+<li><p>对于具有 HTTP/HTTPS 侦听器的 Application Load Balancers 和 Classic Load Balancer ，必须使用 X-Forwarded-For 标头来捕获客户端 IP 地址。然后&gt;，必须输出访问日志中的这些客户端 IP 地址。</p>
+<ul>
+<li>对于具有 TCP/SSL 侦听器的 Classic Load Balancer，必须在 Classic Load Balancer 和目标应用程序上启用代理协议支持。确保两端都配置代理协议支&gt;持，否则应用程序可能会遇到问题。还可以使用 AWS CLI 启用代理协议支持。</li>
+<li>对于网络负载均衡器，您可以按实例 ID 注册目标，以捕获客户端 IP 地址，而无需额外的 Web 服务器配置。</li>
+</ul>
+</li>
+</ul>
+<h2 id="通过“三段封装”来规划应用结构"><a href="#通过“三段封装”来规划应用结构" class="headerlink" title="通过“三段封装”来规划应用结构"></a>通过“三段封装”来规划应用结构</h2><h3 id="第一段：基础设施封装"><a href="#第一段：基础设施封装" class="headerlink" title="第一段：基础设施封装"></a>第一段：基础设施封装</h3><p> 通过基础设施即代码技术构建出一个应用程序的平台，这个平台可以做到隔离应用且对开发者透明。例如：Kubernetes 或者 AWS CloudFormation。前者可以为开发者提供一个简单的应用部署平台，并很好的支持了很多高可用的特性。后者可以用来配置包括网络在内的所有 AWS 资源。<br> 这里需要注意的是要根据基础设施的变更频率对基础设施实施分层管理，将经常变动的部分独立成一个风险最小的变更单元，避免和其它部分相互影响。</p>
+<h3 id="第二段：应用封装"><a href="#第二段：应用封装" class="headerlink" title="第二段：应用封装"></a>第二段：应用封装</h3><p>通过构建持续交付流水线构建出应用镜像或者虚拟机镜像，要做到快速复制以实现水平扩展。例如 Docker 镜像或者用 Packer 构建出 AMI。<br>这里需要注意的是构建镜像的时候一定要考虑无状态特性，每个镜像被创建后所展现出来的最终效果和操作都是幂等的。</p>
+<h3 id="第三段：数据封装"><a href="#第三段：数据封装" class="headerlink" title="第三段：数据封装"></a>第三段：数据封装</h3><p>通过数据全量+增量的备份把数据库或者文件存储在更稳妥的地方，并修改访问方式。例如：采用 S3 或者 RDS 来存储。<br>这里需要注意的是如果你没有用 RDS 等高可靠的数据存储服务，就要要定时对数据进行备份恢复测试，避免需要恢复数据的时候备份不起作用。备份策略可以按照全量 + 增量的方式进行，具体的方式可以参考不同数据库的方案。</p>
+<p>+————————-VPC————————–+<br>  |                                                      |<br>+—-+ap-southeast-1a+—-+      +—-+ap-southeast-1b+—-+<br>| |                       |      |                       | |<br>| | +—————–+   |      |   +—————–+ | |<br>| | | Public Subnet A |   |      |   | Public Subnet B | | |<br>| | +—————–+   |      |   +—————–+ | |<br>| |                       |      |                       | |<br>| |                       |      |                       | |<br>| | +—————–+   |      |   +—————–+ | |<br>| | | Nat Subnet A    |   |      |   | Nat Subnet B    | | |<br>| | +—————–+   |      |   +—————–+ | |<br>| |                       |      |                       | |<br>| |                       |      |                       | |<br>| | +—————–+   |      |   +—————–+ | |<br>| | | Private Subnet A|   |      |   | Private Subnet B| | |<br>| | +—————–+   |      |   +—————–+ | |<br>| |                       |      |                       | |<br>+————————-+      +————————-+<br>  |                                                      |<br>  +——————————————————+</p>
 
       
     </div>
@@ -553,7 +573,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -564,7 +584,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -575,7 +595,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -618,7 +638,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Route-53"><span class="nav-number">1.</span> <span class="nav-text">Route 53</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路由策略"><span class="nav-number">1.1.</span> <span class="nav-text">路由策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#记录集"><span class="nav-number">1.2.</span> <span class="nav-text">记录集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#R53运行状态检查类型"><span class="nav-number">1.3.</span> <span class="nav-text">R53运行状态检查类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AutoScaling"><span class="nav-number">2.</span> <span class="nav-text">AutoScaling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cloudfront"><span class="nav-number">3.</span> <span class="nav-text">Cloudfront</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudWatch"><span class="nav-number">4.</span> <span class="nav-text">CloudWatch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EC2"><span class="nav-number">5.</span> <span class="nav-text">EC2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S3"><span class="nav-number">6.</span> <span class="nav-text">S3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPC"><span class="nav-number">7.</span> <span class="nav-text">VPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安全"><span class="nav-number">7.1.</span> <span class="nav-text">安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容灾"><span class="nav-number">8.</span> <span class="nav-text">容灾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elasticache"><span class="nav-number">9.</span> <span class="nav-text">elasticache</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存穿透"><span class="nav-number">9.1.</span> <span class="nav-text">缓存穿透</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存击穿"><span class="nav-number">9.2.</span> <span class="nav-text">缓存击穿</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存雪崩"><span class="nav-number">9.3.</span> <span class="nav-text">缓存雪崩</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Route-53"><span class="nav-number">1.</span> <span class="nav-text">Route 53</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路由策略"><span class="nav-number">1.1.</span> <span class="nav-text">路由策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#记录集"><span class="nav-number">1.2.</span> <span class="nav-text">记录集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#R53运行状态检查类型"><span class="nav-number">1.3.</span> <span class="nav-text">R53运行状态检查类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AutoScaling"><span class="nav-number">2.</span> <span class="nav-text">AutoScaling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cloudfront"><span class="nav-number">3.</span> <span class="nav-text">Cloudfront</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudWatch"><span class="nav-number">4.</span> <span class="nav-text">CloudWatch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EC2"><span class="nav-number">5.</span> <span class="nav-text">EC2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S3"><span class="nav-number">6.</span> <span class="nav-text">S3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPC"><span class="nav-number">7.</span> <span class="nav-text">VPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安全"><span class="nav-number">7.1.</span> <span class="nav-text">安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容灾"><span class="nav-number">8.</span> <span class="nav-text">容灾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elasticache"><span class="nav-number">9.</span> <span class="nav-text">elasticache</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存穿透"><span class="nav-number">9.1.</span> <span class="nav-text">缓存穿透</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存击穿"><span class="nav-number">9.2.</span> <span class="nav-text">缓存击穿</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存雪崩"><span class="nav-number">9.3.</span> <span class="nav-text">缓存雪崩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双写一致性"><span class="nav-number">9.4.</span> <span class="nav-text">双写一致性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ELB-访问日志中捕获客户端-IP-地址"><span class="nav-number">10.</span> <span class="nav-text">ELB 访问日志中捕获客户端 IP 地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过“三段封装”来规划应用结构"><span class="nav-number">11.</span> <span class="nav-text">通过“三段封装”来规划应用结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一段：基础设施封装"><span class="nav-number">11.1.</span> <span class="nav-text">第一段：基础设施封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二段：应用封装"><span class="nav-number">11.2.</span> <span class="nav-text">第二段：应用封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三段：数据封装"><span class="nav-number">11.3.</span> <span class="nav-text">第三段：数据封装</span></a></li></ol></li></ol></div>
             
 
           </div>
