@@ -3216,6 +3216,58 @@ nowait=False, arguments=None, argsig=&#39;BsssbF&#39;)</code></p>
 <li>PHP、Perl和Python脚本是可以定制化的，每个进程使用50Mb或100MB内存</li>
 </ul>
 <p>lightttpd、nginx擅长处理静态内容，Tomcat处理动态内容</p>
+<p>AWS<br>ec2-instance-connect</p>
+<p>mssh i-06db13d2771b32cd2 -r ap-southeast-1</p>
+<p>{<br>    “Version”: “2012-10-17”,<br>    “Statement”: [<br>        {<br>            “Effect”: “Allow”,<br>            “Action”: “ec2-instance-connect:SendSSHPublicKey”,<br>            “Resource”: “arn:aws:ec2:ap-southeast-1:952133295668:instance/i-0f238d1ff9dfe1548”,<br>            “Condition”: {<br>                “StringEquals”: {<br>                    “ec2:osuser”: “ec2-user”<br>                }<br>            }<br>        },<br>        {<br>            “Effect”: “Allow”,<br>            “Action”: “ec2:DescribeInstances”,<br>            “Resource”: “*”<br>        }<br>    ]<br>}</p>
+<ul>
+<li><p>启动配置创建后不可修改，只能创建新的启动配置与最新的映像关联，然后再修改 Auto Scaling Group 与新创建的启动配置关联。替换掉的启动配置不好管理。</p>
+</li>
+<li><p>启动模板的优势在于有版本的概念。可以在上一版的基础上，替换最新制作的映像生成启动模板的新版本。不需要再更新 Auto Scaling Group 的相关属性。通过版本这个概念也可以很好的管理历史的映像。</p>
+</li>
+<li><p>当使用 https 协议访问网站时，CNAME 跳转会有 SSL 证书的问题</p>
+</li>
+<li><p>创建 CloudFront Distribution 时一定要添加 Alternate Domain Names (CNAMEs)，否则 CloudFront 会报错</p>
+<ul>
+<li>因为 CloudFront 服务的边缘站点使用的是一个资源共享的模式，所以在默认的情况下 Distribution 本身并没有独立的专属 IP 地址，而是共享同一群IP地址，因此需要通过 Host 标头去匹配请求和 Distribution 之间的关联</li>
+</ul>
+<h2 id="数据库迁移考虑因素"><a href="#数据库迁移考虑因素" class="headerlink" title="数据库迁移考虑因素"></a>数据库迁移考虑因素</h2><ul>
+<li>number  of databases and data sizes</li>
+<li>Access Patterns</li>
+<li>Data types,character sets</li>
+<li>Data transfer mechanism </li>
+<li>Connected apps and DB links </li>
+<li>Acceptable downtime </li>
+</ul>
+<h3 id="Oracle-迁移工具"><a href="#Oracle-迁移工具" class="headerlink" title="Oracle 迁移工具"></a>Oracle 迁移工具</h3><ul>
+<li>Oracle SQL Developer</li>
+<li>Oracle Data Pump</li>
+<li>Oracle Export/import Utilities</li>
+<li>Oracle SQL*Loader</li>
+<li>Oracle Materialized Views </li>
+</ul>
+</li>
+</ul>
+<h3 id="大数据选择正确的工具"><a href="#大数据选择正确的工具" class="headerlink" title="大数据选择正确的工具"></a>大数据选择正确的工具</h3><ol>
+<li><p>structure of your data</p>
+</li>
+<li><p>Latency </p>
+</li>
+<li><p>Throughput</p>
+</li>
+<li><p>Access patterns</p>
+<h4 id="微服务架构设计最佳实践"><a href="#微服务架构设计最佳实践" class="headerlink" title="微服务架构设计最佳实践"></a>微服务架构设计最佳实践</h4></li>
+</ol>
+<ul>
+<li>Create a seprate data store for each microservice</li>
+<li>Keep all code in a microservice at a similar level of maturity and stablity</li>
+<li>Do a separate build for each microservice </li>
+<li>Deploy in containers</li>
+<li>Treat servers as stateless</li>
+<li><h4 id="session-data-in-DynamoDB-or-ElasticCache"><a href="#session-data-in-DynamoDB-or-ElasticCache" class="headerlink" title="session data in DynamoDB or ElasticCache"></a>session data in DynamoDB or ElasticCache</h4></li>
+<li>Dynamodb has hourly rates for reads and writes</li>
+<li>同一AZ中，EC2与Elasticache免收费</li>
+<li>Redis支持TTL设置</li>
+</ul>
 
           
         
