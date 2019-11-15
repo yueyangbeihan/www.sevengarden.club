@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Dynamo DB,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="table  Item attributes 条目 属性 分区键（Range key）：必须指定，键值访问方式，决定数据如何分布 排序键(Sort key):可选，用于1：N的关系，提供很多查询优化的能力  分区键 分区键唯一的标识一条记录 分区键用来构建一个非排序的散列索引（对比关系型数据库采用二叉树索引） 使得表可以进行分区，从而满足扩展性的需求  分区键：排序键 分区键和排序键共同唯一的标识">
+<meta name="keywords" content="Dynamo DB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DynamoDB DeepDive">
+<meta property="og:url" content="http://sevengarden.club/2019/11/15/DynamoDB-DeepDive/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="table  Item attributes 条目 属性 分区键（Range key）：必须指定，键值访问方式，决定数据如何分布 排序键(Sort key):可选，用于1：N的关系，提供很多查询优化的能力  分区键 分区键唯一的标识一条记录 分区键用来构建一个非排序的散列索引（对比关系型数据库采用二叉树索引） 使得表可以进行分区，从而满足扩展性的需求  分区键：排序键 分区键和排序键共同唯一的标识">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2019/11/14/vrweiudKH1UpBXO.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/14/82bFoRPshZlHyiY.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/14/HZh1liAeurkKqtF.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/14/DlZjWkFiLyhTsmU.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/14/7kwnE8AxBcSJtPC.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/14/pXUQinZr8OH4KcF.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/14/kKdMEavUGDIVXfx.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/14/b7nD63k9sZourBJ.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/14/Pw9iKWgMnqakvSF.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/14/u5Jfm7gn4Kerdva.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/14/1FmKQrBucMACT3a.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/14/jo32XTgPyUVReHJ.png">
+<meta property="og:updated_time" content="2019-11-15T09:02:30.134Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DynamoDB DeepDive">
+<meta name="twitter:description" content="table  Item attributes 条目 属性 分区键（Range key）：必须指定，键值访问方式，决定数据如何分布 排序键(Sort key):可选，用于1：N的关系，提供很多查询优化的能力  分区键 分区键唯一的标识一条记录 分区键用来构建一个非排序的散列索引（对比关系型数据库采用二叉树索引） 使得表可以进行分区，从而满足扩展性的需求  分区键：排序键 分区键和排序键共同唯一的标识">
+<meta name="twitter:image" content="https://i.loli.net/2019/11/14/vrweiudKH1UpBXO.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sevengarden.club/2019/11/15/DynamoDB-DeepDive/">
+
+
+
+
+
+  <title>DynamoDB DeepDive | 岳阳北寒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">岳阳北寒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-somrthing">
+          <a href="/有料" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            somrthing
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/11/15/DynamoDB-DeepDive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DynamoDB DeepDive</h1>
+        
+
+        <div class="post-meta">
+          
+                    <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-15T16:58:42+08:00">
+                2019-11-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="table"><a href="#table" class="headerlink" title="table"></a>table</h3><p><img src="https://i.loli.net/2019/11/14/vrweiudKH1UpBXO.png" alt="ScreenShot_20191114105742.png"></p>
+<ul>
+<li>Item attributes 条目 属性</li>
+<li>分区键（Range key）：必须指定，键值访问方式，决定数据如何分布</li>
+<li>排序键(Sort key):可选，用于1：N的关系，提供很多查询优化的能力</li>
+</ul>
+<h3 id="分区键"><a href="#分区键" class="headerlink" title="分区键"></a>分区键</h3><ul>
+<li>分区键唯一的标识一条记录</li>
+<li>分区键用来构建一个非排序的散列索引（对比关系型数据库采用二叉树索引）</li>
+<li>使得表可以进行分区，从而满足扩展性的需求<br><img src="https://i.loli.net/2019/11/14/82bFoRPshZlHyiY.png" alt="ScreenShot_20191114110301.png"></li>
+</ul>
+<h3 id="分区键：排序键"><a href="#分区键：排序键" class="headerlink" title="分区键：排序键"></a>分区键：排序键</h3><ul>
+<li>分区键和排序键共同唯一的标识一条记录</li>
+<li>在一个分区键决定的散列索引里，数据按照排序键进行排列</li>
+<li>每个排序键所对应的数据行数没有上限<ul>
+<li>除非有本地二级索引（local seconday indexs）<br><img src="https://i.loli.net/2019/11/14/HZh1liAeurkKqtF.png" alt="ScreenShot_20191114110313.png"></li>
+</ul>
+</li>
+</ul>
+<h3 id="本地二级索引-Local-Secondary-Index（LSI）"><a href="#本地二级索引-Local-Secondary-Index（LSI）" class="headerlink" title="本地二级索引-Local Secondary Index（LSI）"></a>本地二级索引-Local Secondary Index（LSI）</h3><ul>
+<li>可以选择与表不同的排序键</li>
+<li>每个表分区对应一个索引分区</li>
+<li>每个分区键可以存储最多10Gb的数据，包括表分区和索引分区的数据量</li>
+<li>使用的是表上定义的RCU和WCU</li>
+<li>强一致性<br><img src="https://i.loli.net/2019/11/14/DlZjWkFiLyhTsmU.png" alt="ScreenShot_20191114110453.png"></li>
+<li>keys_only 存在回表的可行性</li>
+<li>include 或all 存在空间的浪费</li>
+</ul>
+<h3 id="全局二级索引-Glocal-Secondary-Index（GSI）"><a href="#全局二级索引-Glocal-Secondary-Index（GSI）" class="headerlink" title="全局二级索引-Glocal Secondary Index（GSI）"></a>全局二级索引-Glocal Secondary Index（GSI）</h3><ul>
+<li>可以选择与表不同的分区键以及排序键</li>
+<li>每个索引分区会对应所有的表分区</li>
+<li>GSI的RCUs和WCUs 是独立于表的容量而单独计算的</li>
+<li>索引的尺寸没有上限</li>
+<li>只支持最终一致性</li>
+<li>GSI的更新是由dynamoDB自行维护（异步方式，由client发起更新操作）<br><img src="https://i.loli.net/2019/11/14/7kwnE8AxBcSJtPC.png" alt="ScreenShot_20191114110817.png"></li>
+</ul>
+<h3 id="预置容量"><a href="#预置容量" class="headerlink" title="预置容量"></a>预置容量</h3><p>在表级别或者GSI级别设置读写容量</p>
+<ul>
+<li>写容量单位（write capacity  units：WCUs）按照每秒1KB进行计算</li>
+<li>读容量单位（read capacity  units：WCUs）按照每秒4KB进行计算<ul>
+<li>RCUs按照强一致性读进行计算</li>
+<li>如果是最终一致性，则RCU double（8KB）</li>
+</ul>
+</li>
+<li>读写吞吐量是独立计算的</li>
+</ul>
+<h3 id="分区计算公式"><a href="#分区计算公式" class="headerlink" title="分区计算公式"></a>分区计算公式</h3><p>| <strong>分区个数</strong>                                   |   |   |<br>|——–|————————————-|—|—|<br>| 按照容量计算 | (Total RCU/3000）+（Total WCU/1000） |   |   |<br>| 按照尺寸计算 | Total Size /10GB                    |   |   |<br>| 分区数量   | CEILING(MAX(Capacity,Size))     |   |   |<br>|        |                                     |   |   |</p>
+<h4 id="sample"><a href="#sample" class="headerlink" title="sample"></a>sample</h4><p><img src="https://i.loli.net/2019/11/14/pXUQinZr8OH4KcF.png" alt="ScreenShot_20191114111818.png"></p>
+<h3 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h3><p> 如果吞吐量持续的超过分区上预置的吞吐量，则发生限流。限流的主要原因包括：</p>
+<ul>
+<li><p>不平均的工作负载</p>
+</li>
+<li><p>存在热键或者热分区</p>
+</li>
+<li><p>存在非常大的记录<br><img src="https://i.loli.net/2019/11/14/kKdMEavUGDIVXfx.png" alt="ScreenShot_20191114112029.png"></p>
+<h3 id="计算表或索引的容量"><a href="#计算表或索引的容量" class="headerlink" title="计算表或索引的容量"></a>计算表或索引的容量</h3></li>
+</ul>
+<ol>
+<li>计算RCU和WCU</li>
+<li>计算每秒发出的读或写的记录数量</li>
+<li>计算每条记录上的读写活动的数量</li>
+<li>每秒读写的记录数乘以每条记录上读写活动的数量</li>
+<li>对于读来说，如果是最终一致性则实际需要的RCU可以减半</li>
+<li>sample<br><img src="https://i.loli.net/2019/11/14/b7nD63k9sZourBJ.png" alt="ScreenShot_20191114112336.png"></li>
+</ol>
+<ul>
+<li><p><strong>注意：不要忘记LSI以及需要独立计算容量的GSI</strong></p>
+<h3 id="DynamoDB-的自动伸缩"><a href="#DynamoDB-的自动伸缩" class="headerlink" title="DynamoDB 的自动伸缩"></a>DynamoDB 的自动伸缩</h3></li>
+</ul>
+<ul>
+<li>DynamoDB能够根据工作负载进行自动伸缩</li>
+<li>使用自动伸缩时，需要自定义伸缩策略，包括目标使用率、最小预置容量以及最大预置容量</li>
+<li>可以分别为读和谐自定义伸缩策略。也可以为GSI配置与表相同的自动伸缩策略</li>
+</ul>
+<p><img src="https://i.loli.net/2019/11/14/Pw9iKWgMnqakvSF.png" alt="ScreenShot_20191114112742.png"></p>
+<h3 id="最佳模式实践"><a href="#最佳模式实践" class="headerlink" title="最佳模式实践"></a>最佳模式实践</h3><h4 id="最佳实践1：慎重选择Hash-Key以实现无限扩展"><a href="#最佳实践1：慎重选择Hash-Key以实现无限扩展" class="headerlink" title="最佳实践1：慎重选择Hash Key以实现无限扩展"></a>最佳实践1：慎重选择Hash Key以实现无限扩展</h4><p>避免热键</p>
+<ul>
+<li>好的散列键（hash key）的取值范围很大；不好的散列键只能有有限的值</li>
+<li>选择能将负载均衡分布到不同分区的散列键（访问模式）</li>
+</ul>
+<h4 id="如何存储大项目"><a href="#如何存储大项目" class="headerlink" title="如何存储大项目"></a>如何存储大项目</h4><ul>
+<li>把大项目分开存储在另一张表<br><img src="https://i.loli.net/2019/11/14/u5Jfm7gn4Kerdva.png" alt="ScreenShot_20191114113139.png"></li>
+<li>把大项目存储在S3 <ul>
+<li>基表也做相应修改，大的属性值存在S3<br><img src="https://i.loli.net/2019/11/14/1FmKQrBucMACT3a.png" alt="ScreenShot_20191114113257.png"></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>每条记录的大小限制（400KB），但是记录的数目无限制<ul>
+<li>讲一个大的属性分开存储在分开的表格中</li>
+<li>将大的记录分成多个小的记录</li>
+<li>将image/media 等大文件存储在S3</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>将查询分散到不同分区，降低对单一分区的读写吞吐量，从而降低对整表的吞吐量要求</li>
+</ul>
+<h4 id="最佳实践：使用Time-Series表格存储时序型数据"><a href="#最佳实践：使用Time-Series表格存储时序型数据" class="headerlink" title="最佳实践：使用Time-Series表格存储时序型数据"></a>最佳实践：使用Time-Series表格存储时序型数据</h4><ul>
+<li><p>适应于类似日志，点击行为，浏览行为，交易记录，操作记录等数据</p>
+<ul>
+<li>对于应用倾向于访问最近的数据，而老的数据访问很少或者根本不再访问的场景，应该将热数据和冷数据分别存储在不同表格中，这样就可以对热数据表格配置高的吞吐量，冷数据表格配置低的吞吐量</li>
+<li>预先创建每天，每周或每月的表格，对当前表格配置需要的吞吐量，新的数据斜土当前表格，降低历史数据表格的吞吐量</li>
+</ul>
+</li>
+<li><p>对每个时间段创建一张表</p>
+<h4 id="最佳实践：如何处理多个属性为条件的查询"><a href="#最佳实践：如何处理多个属性为条件的查询" class="headerlink" title="最佳实践：如何处理多个属性为条件的查询"></a>最佳实践：如何处理多个属性为条件的查询</h4><ul>
+<li>Query filter<ul>
+<li>简化应用代码</li>
+<li>简单的类似SQL语句的表达式：AND，OR，NOT，（）</li>
+</ul>
+</li>
+<li>组合键（重新设计表把两个旧表字冠组合为一个新的字段Sortkey，减少RCU）</li>
+</ul>
+<h3 id="DynamoDB流"><a href="#DynamoDB流" class="headerlink" title="DynamoDB流"></a>DynamoDB流</h3><ul>
+<li>针对表里数据变化的顺序记录</li>
+<li>在流里，针对表的变化的记录只出现一次</li>
+<li>在流里的记录的顺序与表上发生修改操作的顺序是一致的</li>
+<li>流里的数据保存24小时，24H后自动删除</li>
+<li>可以把表的数据被更新前的值以及更新后值都写在流里</li>
+<li>流里的数据通过API进行消费</li>
+</ul>
+</li>
+</ul>
+<h4 id="访问DynamoDB流记录"><a href="#访问DynamoDB流记录" class="headerlink" title="访问DynamoDB流记录"></a>访问DynamoDB流记录</h4><ul>
+<li>DynamoDB和DynamoDB流记录使用了不同的终端节点</li>
+<li>流的终端节点命名规则为streams.dynamodb.<region>.amazonaws.com</region></li>
+<li>使用dynamoDB Streans Kenesis Adapter来访问流记录。同时实现了Kinesis Data Streams接口，因此可使用Kinesis KCL消费来自dynamoDB 流的记录</li>
+<li>也可以使用DynamoDB 流的low-level API来消费流记录<br><img src="https://i.loli.net/2019/11/14/jo32XTgPyUVReHJ.png" alt="ScreenShot_20191114114637.png"></li>
+</ul>
+<h4 id="流里记录的数据内容"><a href="#流里记录的数据内容" class="headerlink" title="流里记录的数据内容"></a>流里记录的数据内容</h4><p>四种写入的数据内容</p>
+<ul>
+<li>keys_only：只有分区键和排序键的数据被写入</li>
+<li>new_image:修改前的整条记录都被写入流</li>
+<li>old_image:修改后的整条记录都被写入流</li>
+<li>new_and_old_iamges:修改前和修改后的整条记录都被写入流</li>
+</ul>
+<h4 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h4><ul>
+<li>表之间的数据复制</li>
+<li>触发器</li>
+<li>容灾和多区域复制</li>
+<li>数据汇总</li>
+<li>数据安全和通知</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Dynamo-DB/" rel="tag"># Dynamo DB</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/06/Kafka/" rel="next" title="Kafka">
+                <i class="fa fa-chevron-left"></i> Kafka
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">seven</p>
+              <p class="site-description motion-element" itemprop="description">seven 的精神家园，学习笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="1988xuegang@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#table"><span class="nav-number">1.</span> <span class="nav-text">table</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分区键"><span class="nav-number">2.</span> <span class="nav-text">分区键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分区键：排序键"><span class="nav-number">3.</span> <span class="nav-text">分区键：排序键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地二级索引-Local-Secondary-Index（LSI）"><span class="nav-number">4.</span> <span class="nav-text">本地二级索引-Local Secondary Index（LSI）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局二级索引-Glocal-Secondary-Index（GSI）"><span class="nav-number">5.</span> <span class="nav-text">全局二级索引-Glocal Secondary Index（GSI）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预置容量"><span class="nav-number">6.</span> <span class="nav-text">预置容量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分区计算公式"><span class="nav-number">7.</span> <span class="nav-text">分区计算公式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sample"><span class="nav-number">7.1.</span> <span class="nav-text">sample</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限流"><span class="nav-number">8.</span> <span class="nav-text">限流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算表或索引的容量"><span class="nav-number">9.</span> <span class="nav-text">计算表或索引的容量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DynamoDB-的自动伸缩"><span class="nav-number">10.</span> <span class="nav-text">DynamoDB 的自动伸缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最佳模式实践"><span class="nav-number">11.</span> <span class="nav-text">最佳模式实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最佳实践1：慎重选择Hash-Key以实现无限扩展"><span class="nav-number">11.1.</span> <span class="nav-text">最佳实践1：慎重选择Hash Key以实现无限扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何存储大项目"><span class="nav-number">11.2.</span> <span class="nav-text">如何存储大项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最佳实践：使用Time-Series表格存储时序型数据"><span class="nav-number">11.3.</span> <span class="nav-text">最佳实践：使用Time-Series表格存储时序型数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最佳实践：如何处理多个属性为条件的查询"><span class="nav-number">11.4.</span> <span class="nav-text">最佳实践：如何处理多个属性为条件的查询</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DynamoDB流"><span class="nav-number">12.</span> <span class="nav-text">DynamoDB流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#访问DynamoDB流记录"><span class="nav-number">12.1.</span> <span class="nav-text">访问DynamoDB流记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流里记录的数据内容"><span class="nav-number">12.2.</span> <span class="nav-text">流里记录的数据内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用场景"><span class="nav-number">12.3.</span> <span class="nav-text">应用场景</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seven</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+<!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count"></span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/21/2018 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

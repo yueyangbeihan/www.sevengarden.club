@@ -88,7 +88,7 @@
 <meta property="og:description" content="Kafka 是一个分布式、分区的、多副本、多订阅者，基于zoopkeeper协调的分布式他日志系统（也可以当作MQ系统），常见用于web/nginx日志、访问日志、消息服务等等。  主要用于日志收集系统和消息系统  Kafka设计目标 以时间复杂度为O（1）的方式提供消息持久化能力，即使PB级以上的数据也能保证常数时间的访问性能 高吞吐率。即使在非常廉价的商业机器上也能做到单机支持美妙100K条消">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2019/11/05/ALvIx89ZG7n6Ywb.png">
-<meta property="og:updated_time" content="2019-11-06T11:10:16.023Z">
+<meta property="og:updated_time" content="2019-11-09T09:03:36.800Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kafka">
 <meta name="twitter:description" content="Kafka 是一个分布式、分区的、多副本、多订阅者，基于zoopkeeper协调的分布式他日志系统（也可以当作MQ系统），常见用于web/nginx日志、访问日志、消息服务等等。  主要用于日志收集系统和消息系统  Kafka设计目标 以时间复杂度为O（1）的方式提供消息持久化能力，即使PB级以上的数据也能保证常数时间的访问性能 高吞吐率。即使在非常廉价的商业机器上也能做到单机支持美妙100K条消">
@@ -417,6 +417,9 @@
 <li>因每个partion知会被consumer group内一个consumer消费，因此kafka保证每个partion内的消息会被顺序订阅</li>
 <li>kafka为每条消息计算CRC校验，用于错误检测，crc校验不通过的消息会直接被丢弃掉</li>
 </ol>
+<blockquote>
+<p>Kafka将数据写到磁盘，实际上都会写到OS的page cache里， 而读的时候又用sendfile非常高效的将数据传输到NIC。Kafka的扩展性也非常好，只要增加broker即可。Kafka的逻辑也非常清晰，可以将不同业务逻辑的数据写进不同到topic，而topic又可以切分成若干个partition来并行处理，并且Kafka0.9后，zk只需要被broker所使用，consumer并不再需要使用zk来记录offset，大大降低zk的压力，同时也从侧面降低了scale的压力。Kafka也有比较友好的删除策略。可以直接按照max age或者max size自动删除，也可以按照key进行compact，基本上都能满足需求</p>
+</blockquote>
 
       
     </div>
@@ -456,6 +459,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/15/DynamoDB-DeepDive/" rel="prev" title="DynamoDB DeepDive">
+                DynamoDB DeepDive <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -532,7 +539,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -554,7 +561,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -273,6 +273,737 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/11/AWS地理组件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/11/AWS地理组件/" itemprop="url">AWS地理组件</a></h1>
+        
+
+        <div class="post-meta">
+          
+                    <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-11T10:11:31+08:00">
+                2019-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><font size="1">&gt; <em>前沿：本文主要描述AWS各种服务自身的作用范围（地理），AWS的各种服务所覆盖的地理区域包含全区域、Region、AZ等</em></font></p>
+<h3 id="优先解释几个概念"><a href="#优先解释几个概念" class="headerlink" title="优先解释几个概念"></a>优先解释几个概念</h3><p><font color="red">AWS Regions &amp; Availability Zones</font></p>
+<ul>
+<li>Amazon服务托管在全球多个位置。Amazon提供将资源和数据放置在多个位置的能力，以提高性能、提供容错、高可用性和成本优化</li>
+</ul>
+<p><font color="red">Region</font></p>
+<ul>
+<li>AWS为客户提供了在多个地理区域(称为区域)中放置实例和存储数据的灵活性。每个区域都是一个定义地理位置上AWS资源的独立集合。</li>
+<li>每个地区都是一个独立的地理区域，是完全独立的。</li>
+<li>每个Amazon区域都被设计成与其他区域完全隔离，并帮助实现尽可能大的容错性和稳定性</li>
+<li>区域间的通信是通过公共互联网进行的，应该采取适当的措施使用加密技术来保护数据</li>
+<li>区域间的数据传输按Internet数据传输速率对发送和接收实例进行收费</li>
+<li>除非显式复制，否则不会跨区域复制资源</li>
+<li>一个地区的选择可以由许多因素驱动<ul>
+<li>延迟—可以选择贴近目标用户群的区域，以减少数据延迟成本</li>
+<li>AWS在所有地区提供相同的服务，但通常情况下，由于亚马逊的成本(由于土地、电力、带宽等)不同，服务的成本也会有所不同，因此在一个地区的服务成本可能会低于另一个地区</li>
+</ul>
+</li>
+<li>法律遵从性——许多国家强制执行数据驻留在区域内的遵从性和法规要求（如欧盟的GDPR）</li>
+<li>特性——由于并非所有区域都提供所有AWS特性和服务，因此区域选择可以依赖于该区域支持的服务</li>
+</ul>
+<p><font color="red"> Availability Zones</font></p>
+<ul>
+<li>每个区域由多个孤立的位置组成，这些位置称为可用性区域，每个可用性区域都运行在其物理上不同的、独立的基础设施上（风火水电完全独立），并且设计得非常可靠。</li>
+<li>每个Region都有多个可用性区域。</li>
+<li>每个AZ在物理上是相互隔离的（距离在KM以上），因此一个不常见的灾难，如火灾、地震，只会影响一个AZ</li>
+<li>AZs在地理上相互分离，位于同一区域内，是一个独立的失效区。</li>
+<li>AZ冗余地连接到多个运营商的链路。<br>区域中的AZ使用低延迟的私有链接连接，而不是通过公共internet。</li>
+<li>多AZ，跨多个可用性区域的资源分布，特性可用于跨多个AZ分布实例，以提供高可用性。</li>
+<li>AWS通过将每个帐户的可用性区域独立映射到标识符，确保资源分布在一个区域的可用性区域之间。例如，us-east-1区域的us-east-1a AZ可能与us-east-1a AZ位于不同的位置。无法协调帐户之间的可用性区域。</li>
+</ul>
+<p><font color="red">Edge Locations</font></p>
+<ul>
+<li>Edge location是AWS Cloud Front (CDN)面向全球提供数据加速访问的节点。</li>
+<li>主要位于世界上大多数主要城市，CloudFront (CDN)使用这些位置向终端用户分发内容，以减少延迟。<h1 id="1-AWS-地理组件"><a href="#1-AWS-地理组件" class="headerlink" title="1. AWS 地理组件"></a>1. AWS 地理组件</h1></li>
+</ul>
+<ul>
+<li>AWS 提供三种地理性组件：（<a href="https://infrastructure.aws/" target="_blank" rel="noopener">https://infrastructure.aws/</a> 获取最新信息，可查阅这个网站，具体网络连接，region内AZ数量，区域内的PoP节点都可以即时获得。）</li>
+<li><strong>Regions</strong>：区域，即AWS提供云服务的一个区域，其目的是为了用户能就近接入，降低网络延迟。通常是一个城市的若干个AZ组成一个region。2016年，AWS 宣布在其全球region之间建设了100GbE 私有环网。</li>
+<li><strong>Availability Zones</strong>：一个 region 内至少两个通常三个可用区，其用途是为了搭建高可用架构。一个比较常见的看法是一个AZ是一个数据中心。（其实这不尽然，有时候靠得非常近的几个数据中心也可以组成一个AZ。弗吉尼亚有6个AZ。部分AZ 超过30万台服务器。AZ拥有独立的包括电力和网络在内的基础设施等。）AZ 之间利用低延迟光纤网络互联，延迟控制在3ms以内，AZ内低于0.3ms。（目前所有新建区域的AZ都会保持3个及以上，北京区域属于特殊情况。）</li>
+<li><strong>Edge Locations</strong>：指往往部署在大城市，以及主要人口汇聚区域的AWS 站点。它的主要作用是缓存数据，降低延迟。它们独立于region 和 AZ，数量比AZ多很多。它被多个AWS服务利用，比如AWS CloudFront 和 AWS Lambda@Edge。CloudFront 利用它来作为提供给用户分布在全球的接入点，通常称为Edge POP点。</li>
+<li><strong>目前全球有21个区域，66个可用区，180个接入点（2019/07/23）</strong></li>
+</ul>
+<p><img src="https://i.loli.net/2019/08/11/PRfSLEvcx2Fe1h5.jpg" alt="001.jpg"><br><img src="https://i.loli.net/2019/08/11/vaZy2ekGKf37jiM.jpg" alt="003.jpg"></p>
+<h1 id="2-AWS基础服务与地理组件关系"><a href="#2-AWS基础服务与地理组件关系" class="headerlink" title="2. AWS基础服务与地理组件关系"></a>2. AWS基础服务与地理组件关系</h1><p><img src="https://i.loli.net/2019/08/11/x1HuiApjYXPF6cR.jpg" alt="004.jpg"></p>
+<p>例如：</p>
+<ol>
+<li>AWS 只有极少数全区域性的，不限于特定region，比如IAM、SES、S3 和 CloudFront（特殊区域除外，如AWS USA GOV、中国区域）</li>
+<li>一些服务是覆盖区域的，其作用范围在某个特定区域内，比如经常使用的的S3、AMI</li>
+<li>一些服务是覆盖可用区的，其作用范围在某可用区内，比如最常使用的 EC2和EBS</li>
+</ol>
+<p><img src="https://i.loli.net/2019/08/11/MxZpr82NsRJGl9O.jpg" alt="002.jpg"></p>
+<h1 id="3-具体覆盖区域"><a href="#3-具体覆盖区域" class="headerlink" title="3. 具体覆盖区域"></a>3. 具体覆盖区域</h1> <style>
+table {
+    width: 100%; /*表格宽度*/
+    max-width: 65em; /*表格最大宽度，避免表格过宽*/
+    border: 1px solid #dedede; /*表格外边框设置*/
+    margin: 15px auto; /*外边距*/
+    border-collapse: collapse; /*使用单一线条的边框*/
+    empty-cells: show; /*单元格无内容依旧绘制边框*/
+}
+table th,
+
+table td {
+  height: 35px; /*统一每一行的默认高度*/
+  border: 1px solid #dedede; /*内部边框样式*/
+  padding: 0 10px; /*内边距*/
+          }
+table tbody tr:nth-child(2n) {
+    background: rgba(158,188,226,0.12); 
+}
+
+table tr:hover {
+    background: #efefef; 
+}
+
+
+
+
+.table-area {
+    overflow: auto;
+}
+
+  </style>
+
+
+
+
+
+
+<table>
+<thead>
+<tr>
+<th align="center">Service</th>
+<th align="center">Global</th>
+<th align="center">Region</th>
+<th align="center">AZ</th>
+<th align="center">subservices</th>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">IAM</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Users, Groups, Roles, Accounts</td>
+<td align="left">所有区域都可以使用相同的AWS帐户、用户、组和角色</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Key Pairs</td>
+<td align="left">关键对-全球或地区</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Key Pairs</td>
+<td align="left">IAM users 是与 AWS account 绑定的，不受限于某个region。</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Key Pairs</td>
+<td align="left">注：中国/美国 GOV区域除外，其都有自己独立的IAM账户体系，不与全球共用。</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Key Pairs</td>
+<td align="left">Amazon EC2创建的密钥对是特定于该区域的</td>
+</tr>
+<tr>
+<td align="center">IAM</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">RSA key pair</td>
+<td align="left">RSA密钥对可以创建和上传，可以在所有区域使用。</td>
+</tr>
+<tr>
+<td align="center">KMS</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">存储在创建区域，并且仅在该区域使用。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">VPC</td>
+<td align="left">VPC是在一个区域内创建的</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">VPC 位于一个reigon内，且分布在该region的所有AZ内。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">VPC不能迁移至其它region，而只能新建。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">Subnet</td>
+<td align="left">子网只能率属于AZ。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Security groups</td>
+<td align="left">安全组绑定到一个区域，并且只能分配给同一区域中的实例。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">VPC Endpoints</td>
+<td align="left">您不能在不同区域的VPC和AWS服务之间创建端点。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">VPC Peering</td>
+<td align="left">支持region内和跨region</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">NAT gateway</td>
+<td align="left">NAT网关运行在AZ中</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Virtual private gateway (VGW)</td>
+<td align="left">VGW在Region范围内自身实现冗余度设计。但是，VPN 服务和DX 需要用户自配置其高可用设计。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Internet gateway</td>
+<td align="left">IGW在Region范围内自身实现高可用、冗余度设计，等同于有多条链路到达IGW。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Elastic IP Address</td>
+<td align="left">在区域内创建的弹性IP地址只能分配给区域内的实例。</td>
+</tr>
+<tr>
+<td align="center">VPC</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">每个region有它自己的地址池，EIP 从该池中分配。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Resource Identifiers</td>
+<td align="left">资源标识符属于Region范围内，每个资源标识符(如AMI ID、实例ID、EBS卷ID或EBS快照ID)都绑定到其区域，并且只能在创建资源的区域中使用。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">Instances</td>
+<td align="left">实例绑定到启动它的可用性区域。但是，请注意它的实例ID绑定到该区域。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">EBS Volumes</td>
+<td align="left">Amazon EBS卷绑定到它的可用性区域，并且只能附加到同一可用性区域（AZ）中的实例。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">EBS Snapshot</td>
+<td align="left">EBS快照绑定到它的区域，并且只能用于在同一区域创建卷，如果需要，必须从一个区域复制到另一个区域，可利用 Snapshot Copy 功能将其拷贝至其它region</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">AMIs （Aamzon Machine Images）</td>
+<td align="left">AMI提供了启动EC2实例的模板</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">AMI与Amazon S3中文件所在的区域绑定。对于在不同区域使用AMI，可以将AMI复制到其他区域</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">AWS 提供 AMI Copy 功能来将某AMI 拷贝至其它region。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">Auto Scaling</td>
+<td align="left">自动扩展跨越同一区域内的多个可用性区域，但不能跨区域</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">ELB(Elastic Load Balancer)</td>
+<td align="left">弹性负载均衡器在同一区域的多个可用性区域的多个实例之间分配流量</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">无法将 ELB 迁移至其它region，你只能在其它region中新建ELB实例。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">SSH Public Keys</td>
+<td align="left">保存在region内，AWS不跨region复制或同步keys。</td>
+</tr>
+<tr>
+<td align="center">EC2</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">Placement Groups</td>
+<td align="left">集群放置组部署在同一可用性区域内的实例组</td>
+</tr>
+<tr>
+<td align="center">S3</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">S3 bucket  name是全球性，但数据是区域性的</td>
+</tr>
+<tr>
+<td align="center">S3</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">S3桶是在选定的区域内创建的Bucket 中的数据物理地位于一个region内，但是可以从其它region上访问它，此时需要考虑到延时问题。</td>
+</tr>
+<tr>
+<td align="center">S3</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">存储的对象跨可用性区域复制，以提供高持久性，但除非显式地进行跨区域复制，否则不会跨区域复制</td>
+</tr>
+<tr>
+<td align="center">Glacier</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">要迁移 Glacier 中的数据的话，需要经过几个步骤：1. 将 Glacier 中的数据restore到 S3 中。2. 利用 S3 Copy 功能将数据拷贝至另一个region 3. 利用 S3 lifecycle policy 将 S3 中的数据转移到新的region的 Glacier 内 4. 将原region的 Glacier 中的数据删除。</td>
+</tr>
+<tr>
+<td align="center">Glacier</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">注：目前S3可以向S3 Deep Archive 直接归档数据（如北京region到宁夏）</td>
+</tr>
+<tr>
+<td align="center">EFS</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">有两种数据在region间的迁移途径。1. 将EFS中的数据拷贝至 EBS，然后利用 EBS Snapshot Copy 功能将数据拷贝至另一个region内，再将数据从 EBS 拷贝到 EFS 内。 2. 将 EFS 中的数据拷贝到 S3 中，然后将利用 S3 Cross-region Replication 功能将数据拷贝至另一个region，再从S3 拷贝到EFS。</td>
+</tr>
+<tr>
+<td align="center">Route53</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">Route53服务是在AWS的边缘位置提供的，并且是全球性的</td>
+</tr>
+<tr>
+<td align="center">RDS</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="left">RDS 实例有单可用区的，也有跨多AZ 的</td>
+</tr>
+<tr>
+<td align="center">RDS</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">可利用 AWS Database Migration Serivce 进行跨区域迁移</td>
+</tr>
+<tr>
+<td align="center">RDS</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">跨区域的手工数据迁移步骤：1. 停止transactions 2. 在一个临时 EC2 将 DB 中的数据导出为文件 3. 利用工具将文件拷贝至远端region的EC2内 4. 创建RDS实例 5. 导入数据文件</td>
+</tr>
+<tr>
+<td align="center">ElastiCache</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">支持 Redis 和 Memcached</td>
+</tr>
+<tr>
+<td align="center">ElastiCache</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">Redis 迁移方法：1. 给集群手工创建一个 backup 2. 将backup 导入 S3. 4. S3 bucket 复制到另一个region。 5. 在新的region 内从 S3 restore 数据，其过程包括创建一个新的 Redis cluster 然后导入数据。</td>
+</tr>
+<tr>
+<td align="center">ElastiCache</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">Memcached 数据跨region 迁移方法：在新的region 内创建一个 cluster，然后从应用层做数据复制。</td>
+</tr>
+<tr>
+<td align="center">RedShift</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">集群迁移：利用 RedShift cross-region snapshot 功能创建snapshot 并将它拷贝到新的region内，然后将snapshot restore 到集群。</td>
+</tr>
+<tr>
+<td align="center">RedShift</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">表迁移：利用 RedShift Upload 功能将数据导入 S3，再利用 S3 Cross-region Replication 功能将数据复制到另一个region，再在另一个region内创建 RedShift 集群并利用 COPY 功能从S3 中导入数据。</td>
+</tr>
+<tr>
+<td align="center">EMR</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">跨region 迁移 EMR：在新的 region 内新建 EMR Cluster，然后导入数据</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">如果数据在 S3 中，则利用 S3 cross-region replication 功能将数据迁移到新的 region 内</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">如果数据在 HDFS 内，择利用 S3DistCp 命令将HDFS 内的数据拷贝到 S3， 然后再利用 S3DistCp 命令将S3 中的数据拷贝到目标 HDFS 内。</td>
+</tr>
+<tr>
+<td align="center">Elasticsearch</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">为 ES domain 创建一个 snapshot，它会被保存到 S3 内。再利用 S3 做跨region 复制。再在新region内将数据从S3 恢复到 Elasticsearch 中。</td>
+</tr>
+<tr>
+<td align="center">SQS</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">SQS queues 位于region内。需要利用应用，将消息从源region 的 queues 中导入目的 region的 queues 内。</td>
+</tr>
+<tr>
+<td align="center">SNS</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">SNS topics 位于region 内</td>
+</tr>
+<tr>
+<td align="center">Auroa</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">在另一个region 内创建一个 Aurora Cluster 作为 Read Replica。一旦创建后，Amazon RDS 对原 Aurora cluster 做snapshot，然后将 snapshot 发送只 Read Replica。</td>
+</tr>
+<tr>
+<td align="center">DynamoDB</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">所有数据对象都存储在同一区域内，并跨同一区域中的多个可用性区域复制</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">可以使用跨区域复制显式地跨区域复制数据对象</td>
+</tr>
+<tr>
+<td align="center">WAF</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">WAF服务保护Web应用程序免受常见Web攻击，它是在AWS边缘位置提供的，并且是全局的</td>
+</tr>
+<tr>
+<td align="center">CloudFront</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">CloudFront是全球内容交付网络(CDN)服务，</td>
+</tr>
+<tr>
+<td align="center">Storage Gateway</td>
+<td align="center">-</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">AWS存储网关适用范围在Region范围内，提供存储卷、快照和磁带数据的网关。</td>
+</tr>
+<tr>
+<td align="center">SES</td>
+<td align="center">Y</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="left">SES 有 regional endpoint。你的应用既可以使用与它相同region内的 SES服务，也可以利用其它region内的SES服务。当然了，这里面需</td>
+</tr>
+</tbody></table>
+<h4 id="Refer"><a href="#Refer" class="headerlink" title="Refer"></a>Refer</h4><ul>
+<li>《Using Amazon Web Services for Disaster Recovery》</li>
+<li>《Migrating AWS Resources to a New AWS Region》</li>
+<li>《Building Fault-Tolerant Application on AWS》</li>
+<li>刘世民 云计算 博客</li>
+<li><a href="http://jayendrapatil.com/aws-global-vs-regional-vs-az-resources/" target="_blank" rel="noopener">http://jayendrapatil.com/aws-global-vs-regional-vs-az-resources/</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/10/AWS-VPC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3753,407 +4484,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/08/03/大数据/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/03/大数据/" itemprop="url">大数据概述</a></h1>
-        
-
-        <div class="post-meta">
-          
-                    <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-03T22:00:08+08:00">
-                2018-08-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bigdata/" itemprop="url" rel="index">
-                    <span itemprop="name">Bigdata</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="大数据概述"><a href="#大数据概述" class="headerlink" title="大数据概述"></a>大数据概述</h1><p>大数据思维导图(点击链可以展开详细)<br><img src="https://i.loli.net/2019/08/13/n7zpOUBKujb4tr1.png" alt="大数据 (1).png"><br>(<a href="https://www.processon.com/view/link/5b9b6867e4b06fc64af4b823" target="_blank" rel="noopener">https://www.processon.com/view/link/5b9b6867e4b06fc64af4b823</a>)</p>
-<ul>
-<li>数据产生方式变革<ul>
-<li>运营式阶段：数据库使得数据管理复杂度降低，数据往往伴随着一定的运营活动产生记录，生产方式是被动的</li>
-<li>用户原创内容阶段：Web2.0时代，用户原创成为标志，智能手机加速内容产生，数据产生方式是主动的</li>
-<li>感知式系统阶段：感知系统广泛使用</li>
-</ul>
-</li>
-<li>大数据发展历程</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th><strong>阶段</strong></th>
-<th><strong>时间</strong></th>
-<th><strong>内容</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>第一阶段：萌芽期</td>
-<td>上世纪90年代至本世纪初</td>
-<td>随着数据挖掘理论和数据库技术的逐步成熟，一批商业智能工具和知识管理技术开始被应用，如数据仓库、专家系统、知识管理系统等。</td>
-</tr>
-<tr>
-<td>第二阶段：成熟期</td>
-<td>本世纪前十年</td>
-<td>Web2.0应用迅猛发展，非结构化数据大量产生，传统处理方法难以应对，带动了大数据技术的快速突破，大数据解决方案逐渐走向成熟，形成了并行计算与分布式系统两大核心技术，谷歌的GFS和MapReduce等大数据技术受到追捧，Hadoop平台开始大行其道</td>
-</tr>
-<tr>
-<td>第三阶段：大规模应用期</td>
-<td>2010年以后</td>
-<td>大数据应用渗透各行各业，数据驱动决策，信息社会智能化程度大幅提高</td>
-</tr>
-</tbody></table>
-<ul>
-<li>大数据概念<ul>
-<li>大量化 Volume</li>
-<li>快速化 Velocity （1秒定律）</li>
-<li>多样化 Variety</li>
-<li>价值化  Value  价值密度低，商业价值高</li>
-</ul>
-</li>
-<li>大数据影响<ul>
-<li>科学研究：先后经历了实验、理论、计算和数据四中范式<br><img src="https://i.loli.net/2019/08/13/aFXqhifzbmRLVGK.png" alt="图片1.png"></li>
-<li>思维方面（摘自《大数据时代》）<ul>
-<li>全样儿非抽样</li>
-<li>效率而非精确</li>
-<li>相关而非因果   </li>
-</ul>
-</li>
-</ul>
-</li>
-<li>大数据应用<ul>
-<li>智能医疗研发</li>
-<li>监控身体情况</li>
-<li>研发智能汽车</li>
-<li>实时掌控交通情况，改善日常生活</li>
-<li>金融交易</li>
-<li>业务流程优化</li>
-</ul>
-</li>
-<li>大数据关键技术</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th><strong>技术层面</strong></th>
-<th align="left"><strong>功能</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据采集</td>
-<td align="left">利用ETL工具将分布的、异构数据源中的数据如关系数据、平面数据文件等，抽取到临时中间层后进行清洗、转换、集成，最后加载到数据仓库或数据集市中，成为联机分析处理、数据挖掘的基础；或者也可以把实时采集的数据作为流计算系统的输入，进行实时处理分析</td>
-</tr>
-<tr>
-<td>数据存储和管理</td>
-<td align="left">利用分布式文件系统、数据仓库、关系数据库、NoSQL数据库、云数据库等，实现对结构化、半结构化和非结构化海量数据的存储和管理</td>
-</tr>
-<tr>
-<td>数据处理与分析</td>
-<td align="left">利用分布式并行编程模型和计算框架，结合机器学习和数据挖掘算法，实现对海量数据的处理和分析；对分析结果进行可视化呈现，帮助人们更好地理解数据、分析数据</td>
-</tr>
-<tr>
-<td>数据隐私和安全</td>
-<td align="left">在从大数据中挖掘潜在的巨大商业价值和学术价值的同时，构建隐私数据保护体系和数据安全体系，有效保护个人隐私和数据安全</td>
-</tr>
-</tbody></table>
-<ul>
-<li><p>两大核心技术<br><img src="https://i.loli.net/2019/08/13/OYDRiAm1vBK2cjw.png" alt="图片2.png"></p>
-</li>
-<li><p>大数据计算模式</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th><strong>大数据计算模式</strong></th>
-<th><strong>解决问题</strong></th>
-<th><strong>代表产品</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>批处理计算</td>
-<td>针对大规模数据的批量处理</td>
-<td>MapReduce、Spark等</td>
-</tr>
-<tr>
-<td>流计算</td>
-<td>针对流数据的实时计算</td>
-<td>Storm、S4、Flume、Streams、Puma、DStream、Super Mario、银河流数据处理平台等</td>
-</tr>
-<tr>
-<td>图计算</td>
-<td>针对大规模图结构数据的处理</td>
-<td>Pregel、GraphX、Giraph、PowerGraph、Hama、GoldenOrb等</td>
-</tr>
-<tr>
-<td>查询分析计算</td>
-<td>大规模数据的存储管理和查询分析</td>
-<td>Dremel、Hive、Cassandra、Impala等</td>
-</tr>
-</tbody></table>
-<ul>
-<li>大数据产业</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center"><strong>产业链环节</strong></th>
-<th><strong>包含内容</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">IT基础设施层</td>
-<td>包括提供硬件、软件、网络等基础设施以及提供咨询、规划和系统集成服务的企业，比如，提供数据中心解决方案的IBM、惠普和戴尔等，提供存储解决方案的EMC，提供虚拟化管理软件的微软、思杰、SUN、Redhat等</td>
-</tr>
-<tr>
-<td align="center">数据源层</td>
-<td>大数据生态圈里的数据提供者，是生物大数据（生物信息学领域的各类研究机构）、交通大数据（交通主管部门）、医疗大数据（各大医院、体检机构）、政务大数据（政府部门）、电商大数据（淘宝、天猫、苏宁云商、京东等电商）、社交网络大数据（微博、微信、人人网等）、搜索引擎大数据（百度、谷歌等）等各种数据的来源</td>
-</tr>
-<tr>
-<td align="center">数据管理层</td>
-<td>包括数据抽取、转换、存储和管理等服务的各类企业或产品，比如分布式文件系统（如Hadoop的HDFS和谷歌的GFS）、ETL工具（Informatica、Datastage、Kettle等）、数据库和数据仓库（Oracle、MySQL、SQL Server、HBase、GreenPlum等）</td>
-</tr>
-<tr>
-<td align="center">数据分析层</td>
-<td>包括提供分布式计算、数据挖掘、统计分析等服务的各类企业或产品，比如，分布式计算框架MapReduce、统计分析软件SPSS和SAS、数据挖掘工具Weka、数据可视化工具Tableau、BI工具（MicroStrategy、Cognos、BO）等等</td>
-</tr>
-<tr>
-<td align="center">数据平台层</td>
-<td>包括提供数据分享平台、数据分析平台、数据租售平台等服务的企业或产品，比如阿里巴巴、谷歌、中国电信、百度等</td>
-</tr>
-<tr>
-<td align="center">数据应用层</td>
-<td>提供智能交通、智慧医疗、智能物流、智能电网等行业应用的企业、机构或政府部门，比如交通主管部门、各大医疗机构、菜鸟网络、国家电网等</td>
-</tr>
-</tbody></table>
-<ul>
-<li>大数据、云计算、物联网关系</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/13/LNPauHj28IFpZn6.jpg" alt="图片3.jpg"></p>
-<h1 id="Hadoop-概述（Hadoop-2-0）"><a href="#Hadoop-概述（Hadoop-2-0）" class="headerlink" title="Hadoop 概述（Hadoop 2.0）"></a>Hadoop 概述（Hadoop 2.0）</h1><p> Hadoop 是 Apache 基金会下的一个开源分布式计算平台，以 <strong><font color="red">HDFS 分布式文件系统</font></strong> 和 <strong><font color="red">MapReduce</font></strong> 分布式计算框架为核心，为用户提供底层细节透明的分布式基础设施。目前，Hadoop 是分析海量数据的首选工具。Hadoop 是一个可以更容易开发和并行处理大规模数据的分布式计算平台，它的主要特点是扩展能力强、成本低、高效率和可靠。目前，Hadoop 的用户已经从传统的互联网公司，扩展到了各个行业，并且得到越来越广泛的应用。它的优势包括：</p>
-<ol>
-<li>方便：Hadoop 可以运行在商业机器集群上，或者Amazon EC2 等云计算服务商</li>
-<li>弹性：Hadoop 可以方便增加和减少集群节点</li>
-<li>健壮：Hadoop 可以从容处理常见的硬件失效情况</li>
-<li>简单：Hadoop 允许用户快速高效编写并行分布代码<h2 id="Hadoop-项目结构"><a href="#Hadoop-项目结构" class="headerlink" title="Hadoop 项目结构"></a>Hadoop 项目结构</h2><img src="https://i.loli.net/2019/08/13/LEQbCB2q53mphVo.png" alt="hadoop项目结构.png"></li>
-</ol>
-<table>
-<thead>
-<tr>
-<th><strong>组件</strong></th>
-<th><strong>功能</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>HDFS</td>
-<td>分布式文件系统</td>
-</tr>
-<tr>
-<td>MapReduce</td>
-<td>分布式并行编程模型</td>
-</tr>
-<tr>
-<td>YARN</td>
-<td>资源管理和调度器</td>
-</tr>
-<tr>
-<td>Tez</td>
-<td>运行在YARN之上的下一代Hadoop查询处理框架</td>
-</tr>
-<tr>
-<td>Hive</td>
-<td>Hadoop上的数据仓库</td>
-</tr>
-<tr>
-<td>HBase</td>
-<td>Hadoop上的非关系型的分布式数据库</td>
-</tr>
-<tr>
-<td>Pig</td>
-<td>一个基于Hadoop的大规模数据分析平台，提供类似SQL的查询语言Pig Latin</td>
-</tr>
-<tr>
-<td>Sqoop</td>
-<td>用于在Hadoop与传统数据库之间进行数据传递</td>
-</tr>
-<tr>
-<td>Oozie</td>
-<td>Hadoop上的工作流管理系统</td>
-</tr>
-<tr>
-<td>Zookeeper</td>
-<td>提供分布式协调一致性服务</td>
-</tr>
-<tr>
-<td>Storm</td>
-<td>流计算框架</td>
-</tr>
-<tr>
-<td>Flume</td>
-<td>一个高可用的，高可靠的，分布式的海量日志采集、聚合和传输的系统</td>
-</tr>
-<tr>
-<td>Ambari</td>
-<td>Hadoop快速部署工具，支持Apache Hadoop集群的供应、管理和监控</td>
-</tr>
-<tr>
-<td>Kafka</td>
-<td>一种高吞吐量的分布式发布订阅消息系统，可以处理消费者规模的网站中的所有动作流数据</td>
-</tr>
-<tr>
-<td>Spark</td>
-<td>类似于Hadoop MapReduce的通用并行框架</td>
-</tr>
-</tbody></table>
-<ul>
-<li>HDFS有着高容错特点，并且设计用来部署在低廉的硬件之上，适合有着超量大数据集的应用程序</li>
-<li>MapReduce：Hadoop编程模型，用于大规模数据及（大于1TB）的并行计算。MR是离线处理框架，由编程模型、运行时环境（JobTracker和TaskTracker）和数据处理引擎（MapTask和ReduceTask）三部分组成</li>
-<li>HBase:基于列存储模型的分布式数据库，专用用于Hadoop档案系统上的资料库系统，采用Column-Oriented设计，不同于传统关系型数据库，没有资料表、Schema等规范，而是采用Key-Value形式的架构，采用多维度的对应关系建立类似于表格效果的资料架构。如此采用分布式存储方式，可以扩充到前台服务器，应付PB级资料处理</li>
-<li>Hive：可用SQL语法存储Hadoop资料的工具。<ul>
-<li>Hive是建置在HDFS上的一套分散式资料仓储系统，可让使用者以惯用的SQL语法，来存取Hadoop档案中的大型资料集，例如可以使用Join、Group by、Order by等，而这个语法称为Hive QL。Hive 提供完整的 SQL 查询功能，可以将 SQL 语句转换为 MR 任务进行运行。不过，Hive QL和SQL并非完全相同，例如Hive就不支援Store Procedure、Trigger等功能。</li>
-<li>Hive会将使用者输入的Hive QL指令编译成Java程序，再来存取HDFS档案系统上的资料，所以，执行效率依指令复杂度和处理的资料量而异，可能有数秒鐘，甚至是数分鐘的延迟。和HBase相比，Hive容易使用且弹性高，但执行速度较慢。不少资料库系统，都是透过先连结到Hive，才能与Hadoop整合。例如微软就是透过Hive ODBC驱动程序，将SQL指令转换成Hive QL，让Excel可以存取Hadoop上的资料。</li>
-<li>在同一个Hadoop集群中，Hive可以存取HBase上的资料，将HBase上的资料对应成Hive内的一个表格</li>
-</ul>
-</li>
-<li>Pig：基于Hadoop分析组件，Pig 为复杂的海量数据并行计算提供一个简易的操作和编程接口。它提供了一个Script语言Pig Latin，语法简单，类似可读性高的高阶Basic语言，可用来撰写MapReduce程序。Pig会自动将这些脚本程序转换，成为能在Hadoop中执行的MapReduce Java程序。因此，使用者即使不懂Java也能撰写出MapReduce。<br>Zookeeper：是一个高效的可扩展的资源协调系统，存储和协调关键共享状态。它监控和协调 Hadoop 分散式运作的集中式服务，可提供各个服务器的配置和运作状态资讯，用於提供不同Hadoop系统角色之间的工作协调。<ul>
-<li>以HBase资料库为例，其中有两种服务器角色：Region服务器角色和Master服务器角色，系统会自动透过ZooKeeper监看Master服务器的状态，一旦Master的运作资讯消失，代表当机或网路断线，HBase就会选出另一台Region服务器成为Mater角色来负责管理工作。<ul>
-<li>可等同于etcd功能</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -4199,7 +4534,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -4221,7 +4556,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
