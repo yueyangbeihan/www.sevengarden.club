@@ -88,7 +88,7 @@
 <meta property="og:description" content="Kafka 是一个分布式、分区的、多副本、多订阅者，基于zoopkeeper协调的分布式他日志系统（也可以当作MQ系统），常见用于web/nginx日志、访问日志、消息服务等等。  主要用于日志收集系统和消息系统  Kafka设计目标 以时间复杂度为O（1）的方式提供消息持久化能力，即使PB级以上的数据也能保证常数时间的访问性能 高吞吐率。即使在非常廉价的商业机器上也能做到单机支持美妙100K条消">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2019/11/05/ALvIx89ZG7n6Ywb.png">
-<meta property="og:updated_time" content="2019-11-09T09:03:36.800Z">
+<meta property="og:updated_time" content="2019-11-22T10:19:52.840Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kafka">
 <meta name="twitter:description" content="Kafka 是一个分布式、分区的、多副本、多订阅者，基于zoopkeeper协调的分布式他日志系统（也可以当作MQ系统），常见用于web/nginx日志、访问日志、消息服务等等。  主要用于日志收集系统和消息系统  Kafka设计目标 以时间复杂度为O（1）的方式提供消息持久化能力，即使PB级以上的数据也能保证常数时间的访问性能 高吞吐率。即使在非常廉价的商业机器上也能做到单机支持美妙100K条消">
@@ -420,6 +420,48 @@
 <blockquote>
 <p>Kafka将数据写到磁盘，实际上都会写到OS的page cache里， 而读的时候又用sendfile非常高效的将数据传输到NIC。Kafka的扩展性也非常好，只要增加broker即可。Kafka的逻辑也非常清晰，可以将不同业务逻辑的数据写进不同到topic，而topic又可以切分成若干个partition来并行处理，并且Kafka0.9后，zk只需要被broker所使用，consumer并不再需要使用zk来记录offset，大大降低zk的压力，同时也从侧面降低了scale的压力。Kafka也有比较友好的删除策略。可以直接按照max age或者max size自动删除，也可以按照key进行compact，基本上都能满足需求</p>
 </blockquote>
+<h4 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h4><ul>
+<li>日志收集 ：一个公司可以用Kafka可以收集各种服务的log，通过kafka以统一接口服务的方式开放给各种consumer，例如hadoop、HBase、Solr等</li>
+<li>消息系统：解耦生产者与消费者、缓存消息</li>
+<li>用户活动跟踪：Kafka经常被用来记录web用户或者app用户的各种活动，如浏览网页、搜索、点击等活动，这些活动信息被各个服务器发布到kafka的topic中，然后订阅者通过订阅这些topic来做实时的监控分析，或者装载到hadoop、数据仓库中做离线分析和挖掘</li>
+<li>运营指标：Kafka也经常用来记录运营数据。包括收集各种分布式应用的数据，生产各种操作的集中反馈，比如报警和报告。</li>
+<li>流式处理： 比如spark streaming和Flink</li>
+</ul>
+<h4 id="Kafka缺点"><a href="#Kafka缺点" class="headerlink" title="Kafka缺点"></a>Kafka缺点</h4><ul>
+<li>由于是批量发送，数据并非真正的实时；</li>
+<li>对于MQTT协议不支持</li>
+<li>不支持物联网传感数据直接接入</li>
+<li>仅支持同一分区内消息有序，无法实现全局消息有序</li>
+<li>监控不完善，需要安装插件</li>
+<li>依赖Zookeeper进行元数据管理</li>
+</ul>
+<h4 id="Kafka幂等性实现原理（Producer）"><a href="#Kafka幂等性实现原理（Producer）" class="headerlink" title="Kafka幂等性实现原理（Producer）"></a>Kafka幂等性实现原理（Producer）</h4><p>实现米等的关键点就是服务端可以区分请求是否重复，过滤掉重复请求。区分请求是否重复有两点：</p>
+<ul>
+<li>唯一标识：要想区分请求是否重复，请求中就得有唯一标识。例如支付请求中，订单号就是唯一标识</li>
+<li>记录下已处理过的请求标识：单有唯一标识还不够，还需要记录下那些请求是已经处理过的，这样当收到新的请求时，用新请求中的标识和处理记录进行比较，如果处理记录中有相同的标识，说明是重复交易，拒绝掉</li>
+</ul>
+<blockquote>
+<p>为了实现Producer的幂等性，kafka引入Producer ID（即PID）和Sequence Number</p>
+<ul>
+<li>PID：每个新的Producer在初始化的时候会被分配一个唯一的PID，这个PID对用户是不可见的</li>
+<li>Sequence Number（对于每个PID，该Producer发送数据的每个&lt;Topic，Partion&gt;都对应一个从0开始单调递增的Sequence Number）</li>
+</ul>
+</blockquote>
+<h4 id="kafka-集群选择合适的Topic-partions-数量"><a href="#kafka-集群选择合适的Topic-partions-数量" class="headerlink" title="kafka 集群选择合适的Topic/partions 数量"></a>kafka 集群选择合适的Topic/partions 数量</h4><ul>
+<li>单个Partion的吞吐量通常是在10MB/s</li>
+<li>越多的分区需要打开更多的文件句柄，生产集群中，每个broker打开的文件句柄数量超过30，000</li>
+<li>越多的分区可以提供更高的吞吐量，更多的分区会导致更高的不可用性</li>
+<li>通常情况下，当一个Broker有计划地停止服务时，那么controller会在服务停止之前，将该broker上的所有leader一个一个秦阿姨走。单个leader的移动时间只需要几毫秒；当broker非计划地宕机，所有的partion同时变得不可用，若有1000个partion，则恢复时间将花费5秒（灭个partion5 ms）;若宕机的broker恰好是controller节点时，新的leader节点选举过程同样需要花费时间，从zookeeper中恢复元数据时每个partion大约花费2ms，则controller恢复将会增加20秒不可用窗口</li>
+<li>通常情况下，将每个broker的partion 数量限制在2000～4000，kafka集群中partion数量限制在10，000</li>
+<li>越多的分区可能增加端到端的延迟：in-sync副本复制所花费时间是kafka端到端延迟的主要部分，端到端的延迟大概是20ms（1000 partion）;对于b个broker节点和复制因子为r的kafka 集群，整个kafka集群的partion数量最好不超过100<em>b</em>r个，即单个partion的leader数量不要超过100</li>
+</ul>
+<h4 id="Kafka如何实现高吞吐率"><a href="#Kafka如何实现高吞吐率" class="headerlink" title="Kafka如何实现高吞吐率"></a>Kafka如何实现高吞吐率</h4><ul>
+<li>顺序读写：kafka的消息是不断追加到文件中的，可以充分利用磁盘的顺序读写性能</li>
+<li>零拷贝：linux kernel “zero-copy”系统调用机制，跳过“用户缓冲”的拷贝，建议一个磁盘和内存的直接映射，数据不再复制到“用户态缓冲区”</li>
+<li>文件分段：kafka的队列被分为多个分区partion，每个partion又分为多个段segment，一个队列中的消息实际上是保存在N多个片段文件中</li>
+<li>批量发送：Kafka允许进行批量发送消息，先将消息缓存在内存中，然后一次请求批量发送出去</li>
+<li>数据压缩：Kafka还支持对消息集合进行压缩，Producer可以通过GZIP或Snappy格式对消息集合进行压缩</li>
+</ul>
 
       
     </div>
@@ -539,7 +581,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -561,7 +603,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -604,7 +646,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka设计目标"><span class="nav-number">1.</span> <span class="nav-text">Kafka设计目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息系统介绍"><span class="nav-number">2.</span> <span class="nav-text">消息系统介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafak组件"><span class="nav-number">3.</span> <span class="nav-text">Kafak组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息处理发送与分区存储"><span class="nav-number">4.</span> <span class="nav-text">消息处理发送与分区存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消息发送"><span class="nav-number">4.1.</span> <span class="nav-text">消息发送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息分区路由"><span class="nav-number">4.2.</span> <span class="nav-text">消息分区路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息存储"><span class="nav-number">4.3.</span> <span class="nav-text">消息存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息消费"><span class="nav-number">4.4.</span> <span class="nav-text">消息消费</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Partion的高可用副本机制"><span class="nav-number">4.5.</span> <span class="nav-text">Partion的高可用副本机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#副本分配算法"><span class="nav-number">4.5.1.</span> <span class="nav-text">副本分配算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#副本协同机制"><span class="nav-number">4.5.2.</span> <span class="nav-text">副本协同机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ISR"><span class="nav-number">4.5.3.</span> <span class="nav-text">ISR</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Broker"><span class="nav-number">4.6.</span> <span class="nav-text">Broker</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#无状态的Broker"><span class="nav-number">4.6.1.</span> <span class="nav-text">无状态的Broker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#message的交付与生命周期"><span class="nav-number">4.6.2.</span> <span class="nav-text">message的交付与生命周期</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka设计目标"><span class="nav-number">1.</span> <span class="nav-text">Kafka设计目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息系统介绍"><span class="nav-number">2.</span> <span class="nav-text">消息系统介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafak组件"><span class="nav-number">3.</span> <span class="nav-text">Kafak组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息处理发送与分区存储"><span class="nav-number">4.</span> <span class="nav-text">消息处理发送与分区存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消息发送"><span class="nav-number">4.1.</span> <span class="nav-text">消息发送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息分区路由"><span class="nav-number">4.2.</span> <span class="nav-text">消息分区路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息存储"><span class="nav-number">4.3.</span> <span class="nav-text">消息存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息消费"><span class="nav-number">4.4.</span> <span class="nav-text">消息消费</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Partion的高可用副本机制"><span class="nav-number">4.5.</span> <span class="nav-text">Partion的高可用副本机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#副本分配算法"><span class="nav-number">4.5.1.</span> <span class="nav-text">副本分配算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#副本协同机制"><span class="nav-number">4.5.2.</span> <span class="nav-text">副本协同机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ISR"><span class="nav-number">4.5.3.</span> <span class="nav-text">ISR</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Broker"><span class="nav-number">4.6.</span> <span class="nav-text">Broker</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#无状态的Broker"><span class="nav-number">4.6.1.</span> <span class="nav-text">无状态的Broker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#message的交付与生命周期"><span class="nav-number">4.6.2.</span> <span class="nav-text">message的交付与生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#适用场景"><span class="nav-number">4.6.3.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kafka缺点"><span class="nav-number">4.6.4.</span> <span class="nav-text">Kafka缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kafka幂等性实现原理（Producer）"><span class="nav-number">4.6.5.</span> <span class="nav-text">Kafka幂等性实现原理（Producer）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kafka-集群选择合适的Topic-partions-数量"><span class="nav-number">4.6.6.</span> <span class="nav-text">kafka 集群选择合适的Topic/partions 数量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kafka如何实现高吞吐率"><span class="nav-number">4.6.7.</span> <span class="nav-text">Kafka如何实现高吞吐率</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

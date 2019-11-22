@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="big data,YARN,">
+  <meta name="keywords" content="Flink,流数据,">
 
 
 
@@ -79,25 +79,28 @@
 
 
 
-<meta name="description" content="MapReduce 1.0 缺陷 存在单点故障 JobTracker“大包大揽”导致任务过重（任务多时内存开销大，上限4000节点） 容易出现内存溢出（分配资源只考虑MapReduce任务数，不考虑CPU、内存） 资源划分不合理（强制划分为slot ，包括Map slot和Reduce slot）YARN设计思路   MapReduce1.0既是一个计算框架，也是一个资源管理调度框架 到了Hado">
-<meta name="keywords" content="big data,YARN">
+<meta name="description" content="人们对某件事的正确理解往往来自基于有效论据的结论。要获得这样的结论，最有效的方法就是沿着事件发生的轨迹进行分析。  Apache Flink 是为分布式、高性能、随时可用以及准确的流处理应用程序打造的开源流处理框架。”Flink 不仅能提供同时支持高吞吐和 exactly-once 语义的实时计算，还能提供批量数据处理，这让许多人感到吃惊。鱼与熊掌并非不可兼得，Flink 用同一种技术实现了两种">
+<meta name="keywords" content="Flink,流数据">
 <meta property="og:type" content="article">
-<meta property="og:title" content="YARN">
-<meta property="og:url" content="http://sevengarden.club/2018/09/14/YARN/index.html">
+<meta property="og:title" content="Flink">
+<meta property="og:url" content="http://sevengarden.club/2019/11/22/Flink/index.html">
 <meta property="og:site_name" content="岳阳北寒">
-<meta property="og:description" content="MapReduce 1.0 缺陷 存在单点故障 JobTracker“大包大揽”导致任务过重（任务多时内存开销大，上限4000节点） 容易出现内存溢出（分配资源只考虑MapReduce任务数，不考虑CPU、内存） 资源划分不合理（强制划分为slot ，包括Map slot和Reduce slot）YARN设计思路   MapReduce1.0既是一个计算框架，也是一个资源管理调度框架 到了Hado">
+<meta property="og:description" content="人们对某件事的正确理解往往来自基于有效论据的结论。要获得这样的结论，最有效的方法就是沿着事件发生的轨迹进行分析。  Apache Flink 是为分布式、高性能、随时可用以及准确的流处理应用程序打造的开源流处理框架。”Flink 不仅能提供同时支持高吞吐和 exactly-once 语义的实时计算，还能提供批量数据处理，这让许多人感到吃惊。鱼与熊掌并非不可兼得，Flink 用同一种技术实现了两种">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.loli.net/2019/08/14/N3suO6efTaCHiRJ.png">
-<meta property="og:image" content="https://i.loli.net/2019/08/14/a3U6zutpq842PxB.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/08/14/3PfAOUQlqIabNdg.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/08/14/e4LE8oCTpHQXWDa.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/08/14/yrhHzDjPWkf64bZ.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/08/14/wzSyC8bfdBp6iMI.jpg">
-<meta property="og:updated_time" content="2019-08-20T09:22:43.396Z">
+<meta property="og:image" content="https://i.loli.net/2019/11/06/uf9aliDmhCwSMVx.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/06/R3OTbLF8BEnHZNl.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/06/qOtyN3vPW6GcXhV.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/07/Mdiyv4XONjcF8IW.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/07/OAZviY8JMDkdjcR.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/07/3cSyqhnsDiRlOXw.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/07/snbjqkEWU7LOKHe.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/07/mBKpq1tnx3IahNc.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/07/8W4mhFU6uCeHTYr.png">
+<meta property="og:updated_time" content="2019-11-22T10:21:58.005Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="YARN">
-<meta name="twitter:description" content="MapReduce 1.0 缺陷 存在单点故障 JobTracker“大包大揽”导致任务过重（任务多时内存开销大，上限4000节点） 容易出现内存溢出（分配资源只考虑MapReduce任务数，不考虑CPU、内存） 资源划分不合理（强制划分为slot ，包括Map slot和Reduce slot）YARN设计思路   MapReduce1.0既是一个计算框架，也是一个资源管理调度框架 到了Hado">
-<meta name="twitter:image" content="https://i.loli.net/2019/08/14/N3suO6efTaCHiRJ.png">
+<meta name="twitter:title" content="Flink">
+<meta name="twitter:description" content="人们对某件事的正确理解往往来自基于有效论据的结论。要获得这样的结论，最有效的方法就是沿着事件发生的轨迹进行分析。  Apache Flink 是为分布式、高性能、随时可用以及准确的流处理应用程序打造的开源流处理框架。”Flink 不仅能提供同时支持高吞吐和 exactly-once 语义的实时计算，还能提供批量数据处理，这让许多人感到吃惊。鱼与熊掌并非不可兼得，Flink 用同一种技术实现了两种">
+<meta name="twitter:image" content="https://i.loli.net/2019/11/06/uf9aliDmhCwSMVx.png">
 
 
 
@@ -127,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="http://sevengarden.club/2018/09/14/YARN/">
+  <link rel="canonical" href="http://sevengarden.club/2019/11/22/Flink/">
 
 
 
 
 
-  <title>YARN | 岳阳北寒</title>
+  <title>Flink | 岳阳北寒</title>
   
 
 
@@ -280,7 +283,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/09/14/YARN/">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/11/22/Flink/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="seven">
@@ -297,7 +300,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">YARN</h1>
+          <h1 class="post-title" itemprop="name headline">Flink</h1>
         
 
         <div class="post-meta">
@@ -310,8 +313,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-14T19:14:41+08:00">
-                2018-09-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-22T18:20:22+08:00">
+                2019-11-22
               </time>
             
 
@@ -333,8 +336,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bigdata/" itemprop="url" rel="index">
-                    <span itemprop="name">Bigdata</span>
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
                   </a>
                 </span>
 
@@ -370,92 +373,73 @@
       
 
       
-        <h2 id="MapReduce-1-0-缺陷"><a href="#MapReduce-1-0-缺陷" class="headerlink" title="MapReduce 1.0 缺陷"></a>MapReduce 1.0 缺陷</h2><ol>
-<li>存在单点故障</li>
-<li>JobTracker“大包大揽”导致任务过重（任务多时内存开销大，上限4000节点）</li>
-<li>容易出现内存溢出（分配资源只考虑MapReduce任务数，不考虑CPU、内存）</li>
-<li>资源划分不合理（强制划分为slot ，包括Map slot和Reduce slot）<br><img src="https://i.loli.net/2019/08/14/N3suO6efTaCHiRJ.png" alt="MapReduce.png"><h2 id="YARN设计思路"><a href="#YARN设计思路" class="headerlink" title="YARN设计思路"></a>YARN设计思路</h2><img src="https://i.loli.net/2019/08/14/a3U6zutpq842PxB.jpg" alt="YARN思想.jpg"></li>
+        <blockquote>
+<p>人们对某件事的正确理解往往来自基于有效论据的结论。要获得这样的结论，最有效的方法就是沿着事件发生的轨迹进行分析。</p>
+</blockquote>
+<p><em>Apache Flink 是为分布式、高性能、随时可用以及准确的流处理应用程序打造的开源流处理框架。”Flink 不仅能提供同时支持高吞吐和 exactly-once 语义的实时计算，还能提供批量数据处理，这让许多人感到吃惊。鱼与熊掌并非不可兼得，Flink 用同一种技术实现了两种功能.</em><br><img src="https://i.loli.net/2019/11/06/uf9aliDmhCwSMVx.png" alt="image.png"></p>
+<p><img src="https://i.loli.net/2019/11/06/R3OTbLF8BEnHZNl.png" alt="image.png"><br>Flink 技术栈的核心组成部分</p>
+<ul>
+<li>Flink 分别提供了面向流处理的接口（DataStream API）和面向批处理的接口（DataSet API）。因此，Flink 既可以完成流处理，也可以完成批处理。Flink 支持的拓展库涉及机器学习（FlinkML）、复杂事件处理（CEP），以及图计算（Gelly），还有分别针对流处理和批处理的 Table<br>Flink 将批处理（即处理有限的静态数据）视作一种特殊的流处理<br>流处理技术三大核心关键技术点：</li>
+<li>低延迟</li>
+<li>高吞吐</li>
+<li>Exactly once </li>
+</ul>
+<h3 id="Flink-Application"><a href="#Flink-Application" class="headerlink" title="Flink Application"></a>Flink Application</h3><ul>
+<li><strong>Streams</strong>: 流，分为有限数据流与无限数据流，unbounded stream是有始无终的数据流，即无线数据流；而bounded stream是限定大小的有始有终的数据集合，即有限数据流，二者的区别在于无限数据流的数据会随时间的推演而持续增加，计算持续进行而不存在结束状态，相对的有限数据流数据大小固定，计算最终会完成并处于结束的状态。</li>
+<li><strong>State</strong>：状态时计算过程中的数据信息，在容错恢复和Checkpoint中有重要的作用，流计算在本质上是Incremental Processing，因此需要不断查询保持状态；另外，为了确保Exactly-once语义，需要数据能够写入到状态中；而持久化存储，能够保证在整个分布式系统运行失败或挂掉的情况下做到Exactly-once，这是状态的另外一个价值。</li>
+<li><strong>Time</strong>： 分为Event time、Ingestion time、Processing time，Flink的无限数据流是一个持续的过程，时间是我们判断业务状态是否滞后，数据处理是否及时的重要依据。</li>
+<li><strong>API</strong>：API通常分为三层，有上而下可分为SQL/Table API、DataStream API、ProcessFunction三层，API的表达能力以及业务抽象能力都非常强大，但越接近SQL层，表达能力会逐步减弱，抽象能力增强，反之，ProcessFunction层API的表达能力非常强，可以进行多种灵活方便的操作，但抽象能力也相对越小</li>
+</ul>
+<p><img src="https://i.loli.net/2019/11/06/qOtyN3vPW6GcXhV.png" alt="image.png"></p>
+<h4 id="无界流和有界流"><a href="#无界流和有界流" class="headerlink" title="无界流和有界流"></a>无界流和有界流</h4><ol>
+<li>无界流有一个开始但没有定义的结束。它不会在生成时终止并提供数据。必须持续处理无界流，即必须在摄取事件后立即处理事件。无法等待所有输入数据到达，因为输入时无界的，并且在任何时间点都不会完成。处理无界数据通常要求以特定顺序（例如事件发生的顺序）摄取事件，以便能够推官结果完整性。</li>
+<li>有界流具有定义的开始和技术。可以在执行任何计算之前通过摄取所有数据来处理有界流。处理有界流不需要有序摄取，因为可以始终对有界数据集进行排序。有界流的处理也称为批处理。<br><img src="https://i.loli.net/2019/11/07/Mdiyv4XONjcF8IW.png" alt="bounded-unbounded.png"></li>
 </ol>
+<blockquote>
+<p>Flink擅长处理无界和有界数据集。精确控制时间和状态使Flink的运行时能够在无界流上运行任何类型的应用程序。有界流由算法和数据结构内部处理，这些算法和数据结构专门针对固定大小的数据集而设计，从而产生出色的性能。Flink设计为在所有常见的集群环境中运行，以内存速度和任何规模执行计算</p>
+</blockquote>
+<h4 id="利用内存中的性能"><a href="#利用内存中的性能" class="headerlink" title="利用内存中的性能"></a>利用内存中的性能</h4><ul>
+<li>有状态Flink应用程序针对本地状态访问进行优化。任务状态始终保留在内存中，或者，如果状态大小超过可用内存，则保存在访问高效的磁盘数据结构中。因此任务通过本地（通常是内存中）状态来执行所有计算，从而产生非常低的处理延迟。Flink通过定期和异步检查本地状态到持久存储来保证在出现故障时的状态一致性。</li>
+</ul>
+<p><img src="https://i.loli.net/2019/11/07/OAZviY8JMDkdjcR.png" alt="local-state.png"></p>
+<h4 id="Flink的架构"><a href="#Flink的架构" class="headerlink" title="Flink的架构"></a>Flink的架构</h4><p><img src="https://i.loli.net/2019/11/07/3cSyqhnsDiRlOXw.png" alt="1385722-20180510153610561-553418073.png"><br>Flink 可以支持本地的快速迭代，以及一些环形的迭代任务。并且Flink可以定制化内存管理。相比Spark来讲，Flink并没有将内存完全交给应用层，减少出现OOM。</p>
+<h4 id="Flink工作原理"><a href="#Flink工作原理" class="headerlink" title="Flink工作原理"></a>Flink工作原理</h4><p><img src="https://i.loli.net/2019/11/07/snbjqkEWU7LOKHe.png" alt="15934580-5f02fc45c0dad61f.png"></p>
 <ul>
-<li>MapReduce1.0既是一个计算框架，也是一个资源管理调度框架</li>
-<li>到了Hadoop2.0以后，MapReduce1.0中的资源管理调度功能，被单独分离出来形成了YARN，它是一个<strong><font color="red">纯粹的资源管理调度框架</font></strong>，而不是一个计算框架</li>
-<li>被剥离了资源管理调度功能的MapReduce 框架就变成了MapReduce2.0，它是运行在YARN之上的一个纯粹的计算框架，不再自己负责资源调度管理服务，而是由YARN为其提供资源管理调度服务<h2 id="YARN体系结构"><a href="#YARN体系结构" class="headerlink" title="YARN体系结构"></a>YARN体系结构</h2></li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/14/3PfAOUQlqIabNdg.jpg" alt="YARN体系结构.jpg"></p>
+<li><p>JobClient:</p>
 <ul>
-<li>ResourceManager<ul>
-<li>处理客户端请求</li>
-<li>启动/监控ApplicationMaster</li>
-<li>监控NodeManager</li>
-<li>资源分配与调度</li>
+<li>负责接收程序，解析和优化程序的执行计划，然后执行计划到JobManager。这里执行的程序优化是将相邻的Operator融合，形成OperationChain，Operator的融合可以减少task的数量，提高TaskManager的资源利用率。</li>
 </ul>
 </li>
-<li>ApplicationMaster<ul>
-<li>为应用程序申请资源，并分配给内部任务</li>
-<li>任务调度、监控与容错</li>
+<li><p>JobManager:</p>
+<ul>
+<li>负责申请资源，协调以及控制整个job的执行过程，具体包括，调度任务、处理checkpoint、容错等等</li>
 </ul>
 </li>
-<li>NodeManager<ul>
-<li>单个节点上的资源管理</li>
-<li>处理来自ResourceManger的命令</li>
-<li>处理来自ApplicationMaster的命令</li>
+<li><p>TaskManager:</p>
+<ul>
+<li>TaskManager运行在不同节点上的JVM进程（process），负责接收并执行JobManager发送的task，并且与JobManager通信，反馈任务状态信息，如果说JobManager是Master的话，那么TaskManager就是Worker用于执行任务。每个TaskManager像是一个容器，包含一个或多个Slot </li>
+</ul>
+</li>
+<li><p>Slot：</p>
+<ul>
+<li>lot是TaskManager资源粒度的划分，每个Slot都有自己独立的内存。所有Slot平均分配TaskManager的内存，值得注意的是，Slot仅划分内存，不涉及cpu的划分。每个Slot可以运行多个task。Slot的个数就代表了一个程序的最高并行度</li>
+</ul>
+</li>
+<li><p>Task:</p>
+<ul>
+<li></li>
 </ul>
 </li>
 </ul>
-<h3 id="ResourceManager"><a href="#ResourceManager" class="headerlink" title="ResourceManager"></a>ResourceManager</h3><ul>
-<li>ResourceManager（RM）是一个全局的资源管理器，负责整个系统的资源管理和分配，主要包括两个组件，即调度器（Scheduler）和应用程序管理器（Applications Manager）</li>
-<li>调度器接收来自ApplicationMaster的应用程序资源请求，把集群中的资源以“容器”的形式分配给提出申请的应用程序，容器的选择通常会考虑应用程序所要处理的数据的位置，进行就近选择，从而实现“计算向数据靠拢”</li>
-<li>容器（Container）作为动态资源分配单位，每个容器中都封装了一定数量的CPU、内存、磁盘等资源，从而限定每个应用程序可以使用的资源量</li>
-<li>调度器被设计成是一个可插拔的组件，YARN不仅自身提供了许多种直接可用的调度器，也允许用户根据自己的需求重新设计调度器</li>
-<li>应用程序管理器（Applications Manager）负责系统中所有应用程序的管理工作，主要包括应用程序提交、与调度器协商资源以启动ApplicationMaster、监控ApplicationMaster运行状态并在失败时重新启动等</li>
-</ul>
-<h3 id="ApplicatonMaster"><a href="#ApplicatonMaster" class="headerlink" title="ApplicatonMaster"></a>ApplicatonMaster</h3><p>ResourceManager接收用户提交的作业，按照作业的上下文信息以及从NodeManager收集来的容器状态信息，启动调度过程，为用户作业启动一个ApplicationMaster</p>
+<h4 id="Flink生态圈"><a href="#Flink生态圈" class="headerlink" title="Flink生态圈"></a>Flink生态圈</h4><h4 id="抽象层API"><a href="#抽象层API" class="headerlink" title="抽象层API"></a>抽象层API</h4><p><img src="https://i.loli.net/2019/11/07/mBKpq1tnx3IahNc.png" alt="image.png"></p>
 <ol>
-<li>当用户作业提交时，ApplicationMaster与ResourceManager协商获取资源，ResourceManager会以容器的形式为ApplicationMaster分配资源；</li>
-<li>把获得的资源进一步分配给内部的各个任务（Map任务或Reduce任务），实现资源的“二次分配”；</li>
-<li>与NodeManager保持交互通信进行应用程序的启动、运行、监控和停止，监控申请到的资源的使用情况，对所有任务的执行进度和状态进行监控，并在任务发生失败时执行失败恢复（即重新申请资源重启任务）；</li>
-<li>定时向ResourceManager发送“心跳”消息，报告资源的使用情况和应用的进度信息；</li>
-<li>当作业完成时，ApplicationMaster向ResourceManager注销容器，执行周期完成。</li>
+<li>DataSet API：对静态数据进行批处理操作，将静态数据抽象成分布式的数据集，用户可以方便地使用Flink提供的各种操作符对数据集进行处理，支持Java、Scala和Python</li>
+<li>DataStream API：对数据流进行流处理操作，将流式的数据抽象成分布式的数据流，用户可以方便地对分布式数据流进行各种操作，支持Java和Scala</li>
+<li>Table API：对结构化数据进行查询操作，将结构化数据抽象成关系表，并通过类SQL的DSL对关系表进行各种查询操作，支持Java和Scala</li>
+<li>Flink ML：Flink的机器学习库，提供了机器学习Pipelines API并实现了多种机器学习算法</li>
+<li>Gelly：Flink的图计算库，提供了图计算的相关API及多种图计算算法实现</li>
 </ol>
-<h3 id="NodeManager"><a href="#NodeManager" class="headerlink" title="NodeManager"></a>NodeManager</h3><p>NodeManager是驻留在一个YARN集群中的每个节点上的代理，主要负责：</p>
-<ul>
-<li>容器生命周期管理</li>
-<li>监控每个容器的资源（CPU、内存等）使用情况</li>
-<li>跟踪节点健康状况</li>
-<li>以“心跳”的方式与ResourceManager保持通信</li>
-<li>向ResourceManager汇报作业的资源使用情况和每个容器的运行状态</li>
-<li>接收来自ApplicationMaster的启动/停止容器的各种请求<br> 需要说明的是，NodeManager主要负责管理抽象的容器，只处理与容器相关的事情，而不具体负责每个任务（Map任务或Reduce任务）自身状态的管理，因为这些管理工作是由ApplicationMaster完成的，ApplicationMaster会通过不断与NodeManager通信来掌握各个任务的执行状态</li>
-</ul>
-<h3 id="部署方式"><a href="#部署方式" class="headerlink" title="部署方式"></a>部署方式</h3><p>在集群部署方面，YARN的各个组件是和Hadoop集群中的其他组件进行统一部署的<br><img src="https://i.loli.net/2019/08/14/e4LE8oCTpHQXWDa.jpg" alt="YARN部署.jpg"></p>
-<h2 id="YARN工作流程"><a href="#YARN工作流程" class="headerlink" title="YARN工作流程"></a>YARN工作流程</h2><p><img src="https://i.loli.net/2019/08/14/yrhHzDjPWkf64bZ.jpg" alt="YARN工作流程.jpg"></p>
-<ol>
-<li>用户编写客户端应用程序，向YARN提交应用程序，提交的内容包括ApplicationMaster程序、启动ApplicationMaster的命令、用户程序等</li>
-<li>YARN中的ResourceManager负责接收和处理来自客户端的请求，为应用程序分配一个容器，在该容器中启动一个ApplicationMaster</li>
-<li>ApplicationMaster被创建后会首先向ResourceManager注册</li>
-<li>ApplicationMaster采用轮询的方式向ResourceManager申请资源</li>
-<li>ResourceManager以“容器”的形式向提出申请的ApplicationMaster分配资源</li>
-<li>在容器中启动任务（运行环境、脚本）</li>
-<li>各个任务向ApplicationMaster汇报自己的状态和进度</li>
-<li>应用程序运行完成后，ApplicationMaster向ResourceManager的应用程序管理器注销并关闭自己</li>
-</ol>
-<h2 id="YARN框架与MapReduce1-0框架的对比分析"><a href="#YARN框架与MapReduce1-0框架的对比分析" class="headerlink" title="YARN框架与MapReduce1.0框架的对比分析"></a>YARN框架与MapReduce1.0框架的对比分析</h2><ul>
-<li>从MapReduce1.0框架发展到YARN框架，客户端并没有发生变化，其大部分调用API及接口都保持兼容，因此，原来针对Hadoop1.0开发的代码不用做大的改动，就可以直接放到Hadoop2.0平台上运行</li>
-<li>总体而言，YARN相对于MapReduce1.0来说具有以下优势：<ul>
-<li>大大减少了承担中心服务功能的ResourceManager的资源消耗</li>
-<li>ApplicationMaster来完成需要大量资源消耗的任务调度和监控</li>
-<li>多个作业对应多个ApplicationMaster，实现了监控分布化</li>
-</ul>
-</li>
-<li>MapReduce1.0既是一个计算框架，又是一个资源管理调度框架，但是，只能支持MapReduce编程模型。而YARN则是一个纯粹的资源调度管理框架，在它上面可以运行包括MapReduce在内的不同类型的计算框架，只要编程实现相应的ApplicationMaster</li>
-<li>YARN中的资源管理比MapReduce1.0更加高效<ul>
-<li>以容器为单位，而不是以slot为单位<h2 id="YARN的发展目标"><a href="#YARN的发展目标" class="headerlink" title="YARN的发展目标"></a>YARN的发展目标</h2><img src="https://i.loli.net/2019/08/14/wzSyC8bfdBp6iMI.jpg" alt="YARN上各种计算框架.jpg"></li>
-</ul>
-</li>
-<li><strong>YARN的目标就是实现“一个集群多个框架”</strong>即在一个集群上部署一个统一的资源调度管理框架YARN，在YARN之上可以部署其他各种计算框架</li>
-<li>由YARN为这些计算框架提供统一的资源调度管理服务，并且能够根据各种计算框架的负载需求，调整各自占用的资源，实现集群资源共享和资源弹性收缩</li>
-<li>可以实现一个集群上的不同应用负载混搭，有效提高了集群的利用率</li>
-<li>不同计算框架可以共享底层存储，避免了数据集跨集群移动</li>
-</ul>
+<p><img src="https://i.loli.net/2019/11/07/8W4mhFU6uCeHTYr.png" alt="image.png"></p>
 
       
     </div>
@@ -473,7 +457,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/big-data-YARN/" rel="tag"># big data,YARN</a>
+            <a href="/tags/Flink-流数据/" rel="tag"># Flink,流数据</a>
           
         </div>
       
@@ -486,8 +470,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/13/MapReduce/" rel="next" title="MapReduce">
-                <i class="fa fa-chevron-left"></i> MapReduce
+              <a href="/2019/11/22/Flume/" rel="next" title="Flume">
+                <i class="fa fa-chevron-left"></i> Flume
               </a>
             
           </div>
@@ -495,10 +479,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/23/HBase/" rel="prev" title="HBase">
-                HBase <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -640,7 +620,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-1-0-缺陷"><span class="nav-number">1.</span> <span class="nav-text">MapReduce 1.0 缺陷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN设计思路"><span class="nav-number">2.</span> <span class="nav-text">YARN设计思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN体系结构"><span class="nav-number">3.</span> <span class="nav-text">YARN体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ResourceManager"><span class="nav-number">3.1.</span> <span class="nav-text">ResourceManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ApplicatonMaster"><span class="nav-number">3.2.</span> <span class="nav-text">ApplicatonMaster</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NodeManager"><span class="nav-number">3.3.</span> <span class="nav-text">NodeManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署方式"><span class="nav-number">3.4.</span> <span class="nav-text">部署方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN工作流程"><span class="nav-number">4.</span> <span class="nav-text">YARN工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN框架与MapReduce1-0框架的对比分析"><span class="nav-number">5.</span> <span class="nav-text">YARN框架与MapReduce1.0框架的对比分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN的发展目标"><span class="nav-number">6.</span> <span class="nav-text">YARN的发展目标</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Flink-Application"><span class="nav-number">1.</span> <span class="nav-text">Flink Application</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#无界流和有界流"><span class="nav-number">1.1.</span> <span class="nav-text">无界流和有界流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#利用内存中的性能"><span class="nav-number">1.2.</span> <span class="nav-text">利用内存中的性能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Flink的架构"><span class="nav-number">1.3.</span> <span class="nav-text">Flink的架构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Flink工作原理"><span class="nav-number">1.4.</span> <span class="nav-text">Flink工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Flink生态圈"><span class="nav-number">1.5.</span> <span class="nav-text">Flink生态圈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抽象层API"><span class="nav-number">1.6.</span> <span class="nav-text">抽象层API</span></a></li></ol></li></ol></div>
             
 
           </div>

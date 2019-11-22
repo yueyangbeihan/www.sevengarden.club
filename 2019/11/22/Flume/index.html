@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="big data,YARN,">
+  <meta name="keywords" content="Flume,">
 
 
 
@@ -79,25 +79,25 @@
 
 
 
-<meta name="description" content="MapReduce 1.0 缺陷 存在单点故障 JobTracker“大包大揽”导致任务过重（任务多时内存开销大，上限4000节点） 容易出现内存溢出（分配资源只考虑MapReduce任务数，不考虑CPU、内存） 资源划分不合理（强制划分为slot ，包括Map slot和Reduce slot）YARN设计思路   MapReduce1.0既是一个计算框架，也是一个资源管理调度框架 到了Hado">
-<meta name="keywords" content="big data,YARN">
+<meta name="description" content="简介 Flume 是一种分布式，可靠且可用的服务，用于有效地收集，聚合和移动大量日志数据。具有基于流数据的简单灵活的架构、可靠的可靠性机制和许多故障转移和恢复机制，以及强大的容错性。使用简单的可扩展数据模型，允许在线分析数据。很多大数据分析都通过flume来获取数据的输入。  核心概念 Event：消息的基本单位，有header和body组成 Agent：一个独立JVM进程，负责将一段外部来源产生">
+<meta name="keywords" content="Flume">
 <meta property="og:type" content="article">
-<meta property="og:title" content="YARN">
-<meta property="og:url" content="http://sevengarden.club/2018/09/14/YARN/index.html">
+<meta property="og:title" content="Flume">
+<meta property="og:url" content="http://sevengarden.club/2019/11/22/Flume/index.html">
 <meta property="og:site_name" content="岳阳北寒">
-<meta property="og:description" content="MapReduce 1.0 缺陷 存在单点故障 JobTracker“大包大揽”导致任务过重（任务多时内存开销大，上限4000节点） 容易出现内存溢出（分配资源只考虑MapReduce任务数，不考虑CPU、内存） 资源划分不合理（强制划分为slot ，包括Map slot和Reduce slot）YARN设计思路   MapReduce1.0既是一个计算框架，也是一个资源管理调度框架 到了Hado">
+<meta property="og:description" content="简介 Flume 是一种分布式，可靠且可用的服务，用于有效地收集，聚合和移动大量日志数据。具有基于流数据的简单灵活的架构、可靠的可靠性机制和许多故障转移和恢复机制，以及强大的容错性。使用简单的可扩展数据模型，允许在线分析数据。很多大数据分析都通过flume来获取数据的输入。  核心概念 Event：消息的基本单位，有header和body组成 Agent：一个独立JVM进程，负责将一段外部来源产生">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.loli.net/2019/08/14/N3suO6efTaCHiRJ.png">
-<meta property="og:image" content="https://i.loli.net/2019/08/14/a3U6zutpq842PxB.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/08/14/3PfAOUQlqIabNdg.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/08/14/e4LE8oCTpHQXWDa.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/08/14/yrhHzDjPWkf64bZ.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/08/14/wzSyC8bfdBp6iMI.jpg">
-<meta property="og:updated_time" content="2019-08-20T09:22:43.396Z">
+<meta property="og:image" content="https://i.loli.net/2019/11/21/RtDiFsyTKCPUwjY.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/21/yf8lXGi23PeFROH.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/21/QJCsHYxNXc8FRT1.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/21/5A8yVi42QEfNLtv.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/21/UOa9vZtuGgoHWDb.png">
+<meta property="og:image" content="https://i.loli.net/2019/11/21/8HOFTYIvzj3Xxkg.png">
+<meta property="og:updated_time" content="2019-11-22T10:18:53.839Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="YARN">
-<meta name="twitter:description" content="MapReduce 1.0 缺陷 存在单点故障 JobTracker“大包大揽”导致任务过重（任务多时内存开销大，上限4000节点） 容易出现内存溢出（分配资源只考虑MapReduce任务数，不考虑CPU、内存） 资源划分不合理（强制划分为slot ，包括Map slot和Reduce slot）YARN设计思路   MapReduce1.0既是一个计算框架，也是一个资源管理调度框架 到了Hado">
-<meta name="twitter:image" content="https://i.loli.net/2019/08/14/N3suO6efTaCHiRJ.png">
+<meta name="twitter:title" content="Flume">
+<meta name="twitter:description" content="简介 Flume 是一种分布式，可靠且可用的服务，用于有效地收集，聚合和移动大量日志数据。具有基于流数据的简单灵活的架构、可靠的可靠性机制和许多故障转移和恢复机制，以及强大的容错性。使用简单的可扩展数据模型，允许在线分析数据。很多大数据分析都通过flume来获取数据的输入。  核心概念 Event：消息的基本单位，有header和body组成 Agent：一个独立JVM进程，负责将一段外部来源产生">
+<meta name="twitter:image" content="https://i.loli.net/2019/11/21/RtDiFsyTKCPUwjY.png">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://sevengarden.club/2018/09/14/YARN/">
+  <link rel="canonical" href="http://sevengarden.club/2019/11/22/Flume/">
 
 
 
 
 
-  <title>YARN | 岳阳北寒</title>
+  <title>Flume | 岳阳北寒</title>
   
 
 
@@ -280,7 +280,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2018/09/14/YARN/">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/11/22/Flume/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="seven">
@@ -297,7 +297,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">YARN</h1>
+          <h1 class="post-title" itemprop="name headline">Flume</h1>
         
 
         <div class="post-meta">
@@ -310,8 +310,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-14T19:14:41+08:00">
-                2018-09-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-22T18:17:50+08:00">
+                2019-11-22
               </time>
             
 
@@ -333,8 +333,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bigdata/" itemprop="url" rel="index">
-                    <span itemprop="name">Bigdata</span>
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
                   </a>
                 </span>
 
@@ -370,91 +370,58 @@
       
 
       
-        <h2 id="MapReduce-1-0-缺陷"><a href="#MapReduce-1-0-缺陷" class="headerlink" title="MapReduce 1.0 缺陷"></a>MapReduce 1.0 缺陷</h2><ol>
-<li>存在单点故障</li>
-<li>JobTracker“大包大揽”导致任务过重（任务多时内存开销大，上限4000节点）</li>
-<li>容易出现内存溢出（分配资源只考虑MapReduce任务数，不考虑CPU、内存）</li>
-<li>资源划分不合理（强制划分为slot ，包括Map slot和Reduce slot）<br><img src="https://i.loli.net/2019/08/14/N3suO6efTaCHiRJ.png" alt="MapReduce.png"><h2 id="YARN设计思路"><a href="#YARN设计思路" class="headerlink" title="YARN设计思路"></a>YARN设计思路</h2><img src="https://i.loli.net/2019/08/14/a3U6zutpq842PxB.jpg" alt="YARN思想.jpg"></li>
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><blockquote>
+<p>Flume 是一种分布式，可靠且可用的服务，用于有效地收集，聚合和移动大量日志数据。具有基于流数据的简单灵活的架构、可靠的可靠性机制和许多故障转移和恢复机制，以及强大的容错性。使用简单的可扩展数据模型，允许在线分析数据。很多大数据分析都通过flume来获取数据的输入。</p>
+</blockquote>
+<h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><ul>
+<li><strong>Event</strong>：消息的基本单位，有header和body组成</li>
+<li><strong>Agent</strong>：一个独立JVM进程，负责将一段外部来源产生的消息转发到另一端外部的目的地。在分布式部署中，每个节点部署一个Agent。多个Agent就组成了Flume的分布式系统</li>
+</ul>
+<h2 id="Agent（代理）"><a href="#Agent（代理）" class="headerlink" title="Agent（代理）"></a>Agent（代理）</h2><p>Flume运行的核心就是Agent。Fume以Agent为最小的独立运行单位。一个agent就是一个JVM。它是一个完整的数据收集工具，含有三个核心部件，分别是source、channel、sink。通过这些组件，Event可以从一个地方流到另一个地方，如下图所示：<br><img src="https://i.loli.net/2019/11/21/RtDiFsyTKCPUwjY.png" alt="image.png"></p>
+<p>一个Agent中source、channel、sink数量可以有多个，他们可相互组合使用，比如一个source对应多个channel，一个channel对应多个sink。</p>
+<h2 id="Source（源）"><a href="#Source（源）" class="headerlink" title="Source（源）"></a>Source（源）</h2><p>Source是数据的手机端，负责将数据捕获后进行特殊格式化，将数据封装到事件（event）里，然后将事件推入Channel中。Flume提供了很多内置的Source，支持Avro，log4j，syslog和http post(body为json格式)，可以让应用程序同已有的source直接打交道，如AvroSource，SyslogTcpSource。如果内置的Source无法满足需要，Flume还支持自定义Source</p>
+<h2 id="Channel（通道）"><a href="#Channel（通道）" class="headerlink" title="Channel（通道）"></a>Channel（通道）</h2><p>channel是连接source和sink的组件，大家可以将它看作是一个数据的缓冲区（数据队列），它可以将事件暂存在内存中也可以持久化到本地磁盘上，直到sink处理完该事件。</p>
+<p>Flume提供了多种内置channel类型，如memorychannel和Filechannel，也支持用户自定义Channel</p>
+<h2 id="Sink（接收器）"><a href="#Sink（接收器）" class="headerlink" title="Sink（接收器）"></a>Sink（接收器）</h2><p>Sink从channel中提取出事件，然后将数据发到别处，可以向文件系统、数据库、hadoop存数据，也可以是其他Flume agent的source。</p>
+<h1 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h1><ol>
+<li>多个agent顺序连接</li>
 </ol>
-<ul>
-<li>MapReduce1.0既是一个计算框架，也是一个资源管理调度框架</li>
-<li>到了Hadoop2.0以后，MapReduce1.0中的资源管理调度功能，被单独分离出来形成了YARN，它是一个<strong><font color="red">纯粹的资源管理调度框架</font></strong>，而不是一个计算框架</li>
-<li>被剥离了资源管理调度功能的MapReduce 框架就变成了MapReduce2.0，它是运行在YARN之上的一个纯粹的计算框架，不再自己负责资源调度管理服务，而是由YARN为其提供资源管理调度服务<h2 id="YARN体系结构"><a href="#YARN体系结构" class="headerlink" title="YARN体系结构"></a>YARN体系结构</h2></li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/14/3PfAOUQlqIabNdg.jpg" alt="YARN体系结构.jpg"></p>
-<ul>
-<li>ResourceManager<ul>
-<li>处理客户端请求</li>
-<li>启动/监控ApplicationMaster</li>
-<li>监控NodeManager</li>
-<li>资源分配与调度</li>
-</ul>
-</li>
-<li>ApplicationMaster<ul>
-<li>为应用程序申请资源，并分配给内部任务</li>
-<li>任务调度、监控与容错</li>
-</ul>
-</li>
-<li>NodeManager<ul>
-<li>单个节点上的资源管理</li>
-<li>处理来自ResourceManger的命令</li>
-<li>处理来自ApplicationMaster的命令</li>
-</ul>
-</li>
-</ul>
-<h3 id="ResourceManager"><a href="#ResourceManager" class="headerlink" title="ResourceManager"></a>ResourceManager</h3><ul>
-<li>ResourceManager（RM）是一个全局的资源管理器，负责整个系统的资源管理和分配，主要包括两个组件，即调度器（Scheduler）和应用程序管理器（Applications Manager）</li>
-<li>调度器接收来自ApplicationMaster的应用程序资源请求，把集群中的资源以“容器”的形式分配给提出申请的应用程序，容器的选择通常会考虑应用程序所要处理的数据的位置，进行就近选择，从而实现“计算向数据靠拢”</li>
-<li>容器（Container）作为动态资源分配单位，每个容器中都封装了一定数量的CPU、内存、磁盘等资源，从而限定每个应用程序可以使用的资源量</li>
-<li>调度器被设计成是一个可插拔的组件，YARN不仅自身提供了许多种直接可用的调度器，也允许用户根据自己的需求重新设计调度器</li>
-<li>应用程序管理器（Applications Manager）负责系统中所有应用程序的管理工作，主要包括应用程序提交、与调度器协商资源以启动ApplicationMaster、监控ApplicationMaster运行状态并在失败时重新启动等</li>
-</ul>
-<h3 id="ApplicatonMaster"><a href="#ApplicatonMaster" class="headerlink" title="ApplicatonMaster"></a>ApplicatonMaster</h3><p>ResourceManager接收用户提交的作业，按照作业的上下文信息以及从NodeManager收集来的容器状态信息，启动调度过程，为用户作业启动一个ApplicationMaster</p>
-<ol>
-<li>当用户作业提交时，ApplicationMaster与ResourceManager协商获取资源，ResourceManager会以容器的形式为ApplicationMaster分配资源；</li>
-<li>把获得的资源进一步分配给内部的各个任务（Map任务或Reduce任务），实现资源的“二次分配”；</li>
-<li>与NodeManager保持交互通信进行应用程序的启动、运行、监控和停止，监控申请到的资源的使用情况，对所有任务的执行进度和状态进行监控，并在任务发生失败时执行失败恢复（即重新申请资源重启任务）；</li>
-<li>定时向ResourceManager发送“心跳”消息，报告资源的使用情况和应用的进度信息；</li>
-<li>当作业完成时，ApplicationMaster向ResourceManager注销容器，执行周期完成。</li>
+<p><img src="https://i.loli.net/2019/11/21/yf8lXGi23PeFROH.png" alt="image.png"></p>
+<p>可以将多个agent顺序连接起来，将最初的数据源经过收集，存储在最终的存储系统中。这是最简单的情况，一般情况下，应该控制这种顺序连接的agent的数量，因为数据流经过的路径变长了，出现故障将影响整个Flow上的agent收集服务</p>
+<ol start="2">
+<li>多个agent的数据汇聚到同一个agent</li>
 </ol>
-<h3 id="NodeManager"><a href="#NodeManager" class="headerlink" title="NodeManager"></a>NodeManager</h3><p>NodeManager是驻留在一个YARN集群中的每个节点上的代理，主要负责：</p>
-<ul>
-<li>容器生命周期管理</li>
-<li>监控每个容器的资源（CPU、内存等）使用情况</li>
-<li>跟踪节点健康状况</li>
-<li>以“心跳”的方式与ResourceManager保持通信</li>
-<li>向ResourceManager汇报作业的资源使用情况和每个容器的运行状态</li>
-<li>接收来自ApplicationMaster的启动/停止容器的各种请求<br> 需要说明的是，NodeManager主要负责管理抽象的容器，只处理与容器相关的事情，而不具体负责每个任务（Map任务或Reduce任务）自身状态的管理，因为这些管理工作是由ApplicationMaster完成的，ApplicationMaster会通过不断与NodeManager通信来掌握各个任务的执行状态</li>
-</ul>
-<h3 id="部署方式"><a href="#部署方式" class="headerlink" title="部署方式"></a>部署方式</h3><p>在集群部署方面，YARN的各个组件是和Hadoop集群中的其他组件进行统一部署的<br><img src="https://i.loli.net/2019/08/14/e4LE8oCTpHQXWDa.jpg" alt="YARN部署.jpg"></p>
-<h2 id="YARN工作流程"><a href="#YARN工作流程" class="headerlink" title="YARN工作流程"></a>YARN工作流程</h2><p><img src="https://i.loli.net/2019/08/14/yrhHzDjPWkf64bZ.jpg" alt="YARN工作流程.jpg"></p>
-<ol>
-<li>用户编写客户端应用程序，向YARN提交应用程序，提交的内容包括ApplicationMaster程序、启动ApplicationMaster的命令、用户程序等</li>
-<li>YARN中的ResourceManager负责接收和处理来自客户端的请求，为应用程序分配一个容器，在该容器中启动一个ApplicationMaster</li>
-<li>ApplicationMaster被创建后会首先向ResourceManager注册</li>
-<li>ApplicationMaster采用轮询的方式向ResourceManager申请资源</li>
-<li>ResourceManager以“容器”的形式向提出申请的ApplicationMaster分配资源</li>
-<li>在容器中启动任务（运行环境、脚本）</li>
-<li>各个任务向ApplicationMaster汇报自己的状态和进度</li>
-<li>应用程序运行完成后，ApplicationMaster向ResourceManager的应用程序管理器注销并关闭自己</li>
+<p><img src="https://i.loli.net/2019/11/21/QJCsHYxNXc8FRT1.png" alt="image.png"></p>
+<p>这种情况应用的场景比较多，比如要收集web网站的用户行为日志，web网站为了可用性使用的负载集群模式，每个节点都产生用户行为日志，可以为每个节点都配置一个Agent来单独收集日志数据，然后多个Agent将数据最终汇聚到一个用来存储数据存储系统上，如HDFS</p>
+<ol start="3">
+<li>多级流</li>
 </ol>
-<h2 id="YARN框架与MapReduce1-0框架的对比分析"><a href="#YARN框架与MapReduce1-0框架的对比分析" class="headerlink" title="YARN框架与MapReduce1.0框架的对比分析"></a>YARN框架与MapReduce1.0框架的对比分析</h2><ul>
-<li>从MapReduce1.0框架发展到YARN框架，客户端并没有发生变化，其大部分调用API及接口都保持兼容，因此，原来针对Hadoop1.0开发的代码不用做大的改动，就可以直接放到Hadoop2.0平台上运行</li>
-<li>总体而言，YARN相对于MapReduce1.0来说具有以下优势：<ul>
-<li>大大减少了承担中心服务功能的ResourceManager的资源消耗</li>
-<li>ApplicationMaster来完成需要大量资源消耗的任务调度和监控</li>
-<li>多个作业对应多个ApplicationMaster，实现了监控分布化</li>
-</ul>
+<p><img src="https://i.loli.net/2019/11/21/5A8yVi42QEfNLtv.png" alt="image.png"></p>
+<p>结合在云开发中的应用来举个例子，当syslog， java， nginx、 tomcat等混合在一起的日志流开始流入一个agent后，可以agent中将混杂的日志流分开，然后给每种日志建立一个自己的传输通道。</p>
+<ol start="4">
+<li>load balance 功能</li>
+</ol>
+<p><img src="https://i.loli.net/2019/11/21/UOa9vZtuGgoHWDb.png" alt="image.png"><br> Agent1是一个路由节点，负责将channel暂存在event均衡到对应的多个sink组件上，而每个sink组件分别连接到一个独立的agent上，这样祈祷负荷分担的效果。</p>
+<h1 id="Flume拦截器、数据流以及可靠性"><a href="#Flume拦截器、数据流以及可靠性" class="headerlink" title="Flume拦截器、数据流以及可靠性"></a>Flume拦截器、数据流以及可靠性</h1><h2 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h2><p>   当我们需要对数据进行过滤时，除了在source、channel和sink进行代码修改之外，Flume为我们提供了拦截器，拦截器也是chain形式的。</p>
+<p>   拦截器的位置在source和channel之间，当我们为source指定拦截器之后，我们在拦截器中会得到event，根据需求可以对event进行保留还是抛弃，抛弃的数据不会进入channel中</p>
+<p><img src="https://i.loli.net/2019/11/21/8HOFTYIvzj3Xxkg.png" alt="image.png"></p>
+<h2 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h2><ol>
+<li><p>flume的核心是把数据收集过来，再送到目的地。为了保证输送一定成功，在送到目的地之前，会先缓存数据，待数据真正到达目的地后，删除自己缓存的数据</p>
 </li>
-<li>MapReduce1.0既是一个计算框架，又是一个资源管理调度框架，但是，只能支持MapReduce编程模型。而YARN则是一个纯粹的资源调度管理框架，在它上面可以运行包括MapReduce在内的不同类型的计算框架，只要编程实现相应的ApplicationMaster</li>
-<li>YARN中的资源管理比MapReduce1.0更加高效<ul>
-<li>以容器为单位，而不是以slot为单位<h2 id="YARN的发展目标"><a href="#YARN的发展目标" class="headerlink" title="YARN的发展目标"></a>YARN的发展目标</h2><img src="https://i.loli.net/2019/08/14/wzSyC8bfdBp6iMI.jpg" alt="YARN上各种计算框架.jpg"></li>
-</ul>
+<li><p>flume传输的数据的基本单位是event，如果是文本文件，通常是一行记录，这也是事务的基本单位。Event从Source，流向channel，再到sink；本身为一个byte数组，并可携带header信息。event代表着一个数据流的最小完整单元。</p>
+<h2 id="Flume可靠性"><a href="#Flume可靠性" class="headerlink" title="Flume可靠性"></a>Flume可靠性</h2><p>Flume 使用事务性的方式保证传送Event整个过程的可靠性。Sink必须在event被存入channel后，或者，已经被传达到下一站agent里，又或者，已经被存入外部数据目的地之后，才能把event从channel中remove 掉。这样数据流里的event无论是在一个agent还是多个agent之间流转，都能保证可靠，因为在以上的事务保证了event会被成功存储起来。比如 Flume支持在本地保存一份文件 channel 作为备份，而memory channel 将 event存在内存 queue 里，速度快，但丢失的话无法恢复。</p>
 </li>
-<li><strong>YARN的目标就是实现“一个集群多个框架”</strong>即在一个集群上部署一个统一的资源调度管理框架YARN，在YARN之上可以部署其他各种计算框架</li>
-<li>由YARN为这些计算框架提供统一的资源调度管理服务，并且能够根据各种计算框架的负载需求，调整各自占用的资源，实现集群资源共享和资源弹性收缩</li>
-<li>可以实现一个集群上的不同应用负载混搭，有效提高了集群的利用率</li>
-<li>不同计算框架可以共享底层存储，避免了数据集跨集群移动</li>
+</ol>
+<h1 id="Flume与kafka对比"><a href="#Flume与kafka对比" class="headerlink" title="Flume与kafka对比"></a>Flume与kafka对比</h1><ol>
+<li>Kafka是分布式消息中间件，自带存储，提供push和pull存取数据功能。Flume分为agent（数据采集器），collector（数据简单处理和写入），storage（存储器）三部分，每一部分都是可以定制的。比如agent采用RPC（Thrift-RPC）、text（文件）等，storage指定用hdfs做。</li>
+<li>Kafka做日志缓存应该是更合适的，但是flume的数据采集部分做的很好，可以定制很多数据源，减少开发量。比较六次那个flume+kfka模式，如果为了利用flume写hdfs的能力，也可以采用kfaka+flume方式</li>
+</ol>
+<p>采集层主要可以使用Flume，Kafka两种技术。</p>
+<p>Flume：Flume是管道流方式，提供了很多默认实现，让用户通过参数部署，及扩展API</p>
+<ul>
+<li>Kafka是一个非常通用的系统。可以有许多生产者和消费者共享多个主题topic。相比之下，flume是一个专用工具被设计旨在往HDFS，HBase发送数据。它对HDFS有特殊的优化，并且集成了Hadoop的安全特性。所以，如果数据被多个系统消费的话，使用kfaka；数据设计给HadooP使用，使用Flume</li>
+<li>Flume可以使用拦截器实时处理数据，这些对数据屏蔽或者过滤是很有用的。Kafka需要外部的流处理系统才能做到。</li>
+<li>Kafka和Flume都是可靠的系统，通过适当的配置能保证零数据丢失。然而，Flume不支持副本事件。于是，如果Flume代理的节点崩溃，即使使用了可靠的文件管道方式，也将丢失这些事件知道回复这些磁盘。如果需要高可靠的管道，使用Kafka。</li>
 </ul>
 
       
@@ -473,7 +440,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/big-data-YARN/" rel="tag"># big data,YARN</a>
+            <a href="/tags/Flume/" rel="tag"># Flume</a>
           
         </div>
       
@@ -486,8 +453,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/13/MapReduce/" rel="next" title="MapReduce">
-                <i class="fa fa-chevron-left"></i> MapReduce
+              <a href="/2019/11/15/DynamoDB-DeepDive/" rel="next" title="DynamoDB DeepDive">
+                <i class="fa fa-chevron-left"></i> DynamoDB DeepDive
               </a>
             
           </div>
@@ -496,8 +463,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/09/23/HBase/" rel="prev" title="HBase">
-                HBase <i class="fa fa-chevron-right"></i>
+              <a href="/2019/11/22/Flink/" rel="prev" title="Flink">
+                Flink <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -640,7 +607,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-1-0-缺陷"><span class="nav-number">1.</span> <span class="nav-text">MapReduce 1.0 缺陷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN设计思路"><span class="nav-number">2.</span> <span class="nav-text">YARN设计思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN体系结构"><span class="nav-number">3.</span> <span class="nav-text">YARN体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ResourceManager"><span class="nav-number">3.1.</span> <span class="nav-text">ResourceManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ApplicatonMaster"><span class="nav-number">3.2.</span> <span class="nav-text">ApplicatonMaster</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NodeManager"><span class="nav-number">3.3.</span> <span class="nav-text">NodeManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署方式"><span class="nav-number">3.4.</span> <span class="nav-text">部署方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN工作流程"><span class="nav-number">4.</span> <span class="nav-text">YARN工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN框架与MapReduce1-0框架的对比分析"><span class="nav-number">5.</span> <span class="nav-text">YARN框架与MapReduce1.0框架的对比分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YARN的发展目标"><span class="nav-number">6.</span> <span class="nav-text">YARN的发展目标</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#核心概念"><span class="nav-number">2.</span> <span class="nav-text">核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Agent（代理）"><span class="nav-number">2.1.</span> <span class="nav-text">Agent（代理）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source（源）"><span class="nav-number">2.2.</span> <span class="nav-text">Source（源）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Channel（通道）"><span class="nav-number">2.3.</span> <span class="nav-text">Channel（通道）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sink（接收器）"><span class="nav-number">2.4.</span> <span class="nav-text">Sink（接收器）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用场景"><span class="nav-number">3.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flume拦截器、数据流以及可靠性"><span class="nav-number">4.</span> <span class="nav-text">Flume拦截器、数据流以及可靠性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#拦截器"><span class="nav-number">4.1.</span> <span class="nav-text">拦截器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据流"><span class="nav-number">4.2.</span> <span class="nav-text">数据流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flume可靠性"><span class="nav-number">4.3.</span> <span class="nav-text">Flume可靠性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flume与kafka对比"><span class="nav-number">5.</span> <span class="nav-text">Flume与kafka对比</span></a></li></ol></div>
             
 
           </div>

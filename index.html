@@ -273,6 +273,410 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/11/22/Flink/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/11/22/Flink/" itemprop="url">Flink</a></h1>
+        
+
+        <div class="post-meta">
+          
+                    <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-22T18:20:22+08:00">
+                2019-11-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>人们对某件事的正确理解往往来自基于有效论据的结论。要获得这样的结论，最有效的方法就是沿着事件发生的轨迹进行分析。</p>
+</blockquote>
+<p><em>Apache Flink 是为分布式、高性能、随时可用以及准确的流处理应用程序打造的开源流处理框架。”Flink 不仅能提供同时支持高吞吐和 exactly-once 语义的实时计算，还能提供批量数据处理，这让许多人感到吃惊。鱼与熊掌并非不可兼得，Flink 用同一种技术实现了两种功能.</em><br><img src="https://i.loli.net/2019/11/06/uf9aliDmhCwSMVx.png" alt="image.png"></p>
+<p><img src="https://i.loli.net/2019/11/06/R3OTbLF8BEnHZNl.png" alt="image.png"><br>Flink 技术栈的核心组成部分</p>
+<ul>
+<li>Flink 分别提供了面向流处理的接口（DataStream API）和面向批处理的接口（DataSet API）。因此，Flink 既可以完成流处理，也可以完成批处理。Flink 支持的拓展库涉及机器学习（FlinkML）、复杂事件处理（CEP），以及图计算（Gelly），还有分别针对流处理和批处理的 Table<br>Flink 将批处理（即处理有限的静态数据）视作一种特殊的流处理<br>流处理技术三大核心关键技术点：</li>
+<li>低延迟</li>
+<li>高吞吐</li>
+<li>Exactly once </li>
+</ul>
+<h3 id="Flink-Application"><a href="#Flink-Application" class="headerlink" title="Flink Application"></a>Flink Application</h3><ul>
+<li><strong>Streams</strong>: 流，分为有限数据流与无限数据流，unbounded stream是有始无终的数据流，即无线数据流；而bounded stream是限定大小的有始有终的数据集合，即有限数据流，二者的区别在于无限数据流的数据会随时间的推演而持续增加，计算持续进行而不存在结束状态，相对的有限数据流数据大小固定，计算最终会完成并处于结束的状态。</li>
+<li><strong>State</strong>：状态时计算过程中的数据信息，在容错恢复和Checkpoint中有重要的作用，流计算在本质上是Incremental Processing，因此需要不断查询保持状态；另外，为了确保Exactly-once语义，需要数据能够写入到状态中；而持久化存储，能够保证在整个分布式系统运行失败或挂掉的情况下做到Exactly-once，这是状态的另外一个价值。</li>
+<li><strong>Time</strong>： 分为Event time、Ingestion time、Processing time，Flink的无限数据流是一个持续的过程，时间是我们判断业务状态是否滞后，数据处理是否及时的重要依据。</li>
+<li><strong>API</strong>：API通常分为三层，有上而下可分为SQL/Table API、DataStream API、ProcessFunction三层，API的表达能力以及业务抽象能力都非常强大，但越接近SQL层，表达能力会逐步减弱，抽象能力增强，反之，ProcessFunction层API的表达能力非常强，可以进行多种灵活方便的操作，但抽象能力也相对越小</li>
+</ul>
+<p><img src="https://i.loli.net/2019/11/06/qOtyN3vPW6GcXhV.png" alt="image.png"></p>
+<h4 id="无界流和有界流"><a href="#无界流和有界流" class="headerlink" title="无界流和有界流"></a>无界流和有界流</h4><ol>
+<li>无界流有一个开始但没有定义的结束。它不会在生成时终止并提供数据。必须持续处理无界流，即必须在摄取事件后立即处理事件。无法等待所有输入数据到达，因为输入时无界的，并且在任何时间点都不会完成。处理无界数据通常要求以特定顺序（例如事件发生的顺序）摄取事件，以便能够推官结果完整性。</li>
+<li>有界流具有定义的开始和技术。可以在执行任何计算之前通过摄取所有数据来处理有界流。处理有界流不需要有序摄取，因为可以始终对有界数据集进行排序。有界流的处理也称为批处理。<br><img src="https://i.loli.net/2019/11/07/Mdiyv4XONjcF8IW.png" alt="bounded-unbounded.png"></li>
+</ol>
+<blockquote>
+<p>Flink擅长处理无界和有界数据集。精确控制时间和状态使Flink的运行时能够在无界流上运行任何类型的应用程序。有界流由算法和数据结构内部处理，这些算法和数据结构专门针对固定大小的数据集而设计，从而产生出色的性能。Flink设计为在所有常见的集群环境中运行，以内存速度和任何规模执行计算</p>
+</blockquote>
+<h4 id="利用内存中的性能"><a href="#利用内存中的性能" class="headerlink" title="利用内存中的性能"></a>利用内存中的性能</h4><ul>
+<li>有状态Flink应用程序针对本地状态访问进行优化。任务状态始终保留在内存中，或者，如果状态大小超过可用内存，则保存在访问高效的磁盘数据结构中。因此任务通过本地（通常是内存中）状态来执行所有计算，从而产生非常低的处理延迟。Flink通过定期和异步检查本地状态到持久存储来保证在出现故障时的状态一致性。</li>
+</ul>
+<p><img src="https://i.loli.net/2019/11/07/OAZviY8JMDkdjcR.png" alt="local-state.png"></p>
+<h4 id="Flink的架构"><a href="#Flink的架构" class="headerlink" title="Flink的架构"></a>Flink的架构</h4><p><img src="https://i.loli.net/2019/11/07/3cSyqhnsDiRlOXw.png" alt="1385722-20180510153610561-553418073.png"><br>Flink 可以支持本地的快速迭代，以及一些环形的迭代任务。并且Flink可以定制化内存管理。相比Spark来讲，Flink并没有将内存完全交给应用层，减少出现OOM。</p>
+<h4 id="Flink工作原理"><a href="#Flink工作原理" class="headerlink" title="Flink工作原理"></a>Flink工作原理</h4><p><img src="https://i.loli.net/2019/11/07/snbjqkEWU7LOKHe.png" alt="15934580-5f02fc45c0dad61f.png"></p>
+<ul>
+<li><p>JobClient:</p>
+<ul>
+<li>负责接收程序，解析和优化程序的执行计划，然后执行计划到JobManager。这里执行的程序优化是将相邻的Operator融合，形成OperationChain，Operator的融合可以减少task的数量，提高TaskManager的资源利用率。</li>
+</ul>
+</li>
+<li><p>JobManager:</p>
+<ul>
+<li>负责申请资源，协调以及控制整个job的执行过程，具体包括，调度任务、处理checkpoint、容错等等</li>
+</ul>
+</li>
+<li><p>TaskManager:</p>
+<ul>
+<li>TaskManager运行在不同节点上的JVM进程（process），负责接收并执行JobManager发送的task，并且与JobManager通信，反馈任务状态信息，如果说JobManager是Master的话，那么TaskManager就是Worker用于执行任务。每个TaskManager像是一个容器，包含一个或多个Slot </li>
+</ul>
+</li>
+<li><p>Slot：</p>
+<ul>
+<li>lot是TaskManager资源粒度的划分，每个Slot都有自己独立的内存。所有Slot平均分配TaskManager的内存，值得注意的是，Slot仅划分内存，不涉及cpu的划分。每个Slot可以运行多个task。Slot的个数就代表了一个程序的最高并行度</li>
+</ul>
+</li>
+<li><p>Task:</p>
+<ul>
+<li></li>
+</ul>
+</li>
+</ul>
+<h4 id="Flink生态圈"><a href="#Flink生态圈" class="headerlink" title="Flink生态圈"></a>Flink生态圈</h4><h4 id="抽象层API"><a href="#抽象层API" class="headerlink" title="抽象层API"></a>抽象层API</h4><p><img src="https://i.loli.net/2019/11/07/mBKpq1tnx3IahNc.png" alt="image.png"></p>
+<ol>
+<li>DataSet API：对静态数据进行批处理操作，将静态数据抽象成分布式的数据集，用户可以方便地使用Flink提供的各种操作符对数据集进行处理，支持Java、Scala和Python</li>
+<li>DataStream API：对数据流进行流处理操作，将流式的数据抽象成分布式的数据流，用户可以方便地对分布式数据流进行各种操作，支持Java和Scala</li>
+<li>Table API：对结构化数据进行查询操作，将结构化数据抽象成关系表，并通过类SQL的DSL对关系表进行各种查询操作，支持Java和Scala</li>
+<li>Flink ML：Flink的机器学习库，提供了机器学习Pipelines API并实现了多种机器学习算法</li>
+<li>Gelly：Flink的图计算库，提供了图计算的相关API及多种图计算算法实现</li>
+</ol>
+<p><img src="https://i.loli.net/2019/11/07/8W4mhFU6uCeHTYr.png" alt="image.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/11/22/Flume/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/11/22/Flume/" itemprop="url">Flume</a></h1>
+        
+
+        <div class="post-meta">
+          
+                    <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-22T18:17:50+08:00">
+                2019-11-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><blockquote>
+<p>Flume 是一种分布式，可靠且可用的服务，用于有效地收集，聚合和移动大量日志数据。具有基于流数据的简单灵活的架构、可靠的可靠性机制和许多故障转移和恢复机制，以及强大的容错性。使用简单的可扩展数据模型，允许在线分析数据。很多大数据分析都通过flume来获取数据的输入。</p>
+</blockquote>
+<h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><ul>
+<li><strong>Event</strong>：消息的基本单位，有header和body组成</li>
+<li><strong>Agent</strong>：一个独立JVM进程，负责将一段外部来源产生的消息转发到另一端外部的目的地。在分布式部署中，每个节点部署一个Agent。多个Agent就组成了Flume的分布式系统</li>
+</ul>
+<h2 id="Agent（代理）"><a href="#Agent（代理）" class="headerlink" title="Agent（代理）"></a>Agent（代理）</h2><p>Flume运行的核心就是Agent。Fume以Agent为最小的独立运行单位。一个agent就是一个JVM。它是一个完整的数据收集工具，含有三个核心部件，分别是source、channel、sink。通过这些组件，Event可以从一个地方流到另一个地方，如下图所示：<br><img src="https://i.loli.net/2019/11/21/RtDiFsyTKCPUwjY.png" alt="image.png"></p>
+<p>一个Agent中source、channel、sink数量可以有多个，他们可相互组合使用，比如一个source对应多个channel，一个channel对应多个sink。</p>
+<h2 id="Source（源）"><a href="#Source（源）" class="headerlink" title="Source（源）"></a>Source（源）</h2><p>Source是数据的手机端，负责将数据捕获后进行特殊格式化，将数据封装到事件（event）里，然后将事件推入Channel中。Flume提供了很多内置的Source，支持Avro，log4j，syslog和http post(body为json格式)，可以让应用程序同已有的source直接打交道，如AvroSource，SyslogTcpSource。如果内置的Source无法满足需要，Flume还支持自定义Source</p>
+<h2 id="Channel（通道）"><a href="#Channel（通道）" class="headerlink" title="Channel（通道）"></a>Channel（通道）</h2><p>channel是连接source和sink的组件，大家可以将它看作是一个数据的缓冲区（数据队列），它可以将事件暂存在内存中也可以持久化到本地磁盘上，直到sink处理完该事件。</p>
+<p>Flume提供了多种内置channel类型，如memorychannel和Filechannel，也支持用户自定义Channel</p>
+<h2 id="Sink（接收器）"><a href="#Sink（接收器）" class="headerlink" title="Sink（接收器）"></a>Sink（接收器）</h2><p>Sink从channel中提取出事件，然后将数据发到别处，可以向文件系统、数据库、hadoop存数据，也可以是其他Flume agent的source。</p>
+<h1 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h1><ol>
+<li>多个agent顺序连接</li>
+</ol>
+<p><img src="https://i.loli.net/2019/11/21/yf8lXGi23PeFROH.png" alt="image.png"></p>
+<p>可以将多个agent顺序连接起来，将最初的数据源经过收集，存储在最终的存储系统中。这是最简单的情况，一般情况下，应该控制这种顺序连接的agent的数量，因为数据流经过的路径变长了，出现故障将影响整个Flow上的agent收集服务</p>
+<ol start="2">
+<li>多个agent的数据汇聚到同一个agent</li>
+</ol>
+<p><img src="https://i.loli.net/2019/11/21/QJCsHYxNXc8FRT1.png" alt="image.png"></p>
+<p>这种情况应用的场景比较多，比如要收集web网站的用户行为日志，web网站为了可用性使用的负载集群模式，每个节点都产生用户行为日志，可以为每个节点都配置一个Agent来单独收集日志数据，然后多个Agent将数据最终汇聚到一个用来存储数据存储系统上，如HDFS</p>
+<ol start="3">
+<li>多级流</li>
+</ol>
+<p><img src="https://i.loli.net/2019/11/21/5A8yVi42QEfNLtv.png" alt="image.png"></p>
+<p>结合在云开发中的应用来举个例子，当syslog， java， nginx、 tomcat等混合在一起的日志流开始流入一个agent后，可以agent中将混杂的日志流分开，然后给每种日志建立一个自己的传输通道。</p>
+<ol start="4">
+<li>load balance 功能</li>
+</ol>
+<p><img src="https://i.loli.net/2019/11/21/UOa9vZtuGgoHWDb.png" alt="image.png"><br> Agent1是一个路由节点，负责将channel暂存在event均衡到对应的多个sink组件上，而每个sink组件分别连接到一个独立的agent上，这样祈祷负荷分担的效果。</p>
+<h1 id="Flume拦截器、数据流以及可靠性"><a href="#Flume拦截器、数据流以及可靠性" class="headerlink" title="Flume拦截器、数据流以及可靠性"></a>Flume拦截器、数据流以及可靠性</h1><h2 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h2><p>   当我们需要对数据进行过滤时，除了在source、channel和sink进行代码修改之外，Flume为我们提供了拦截器，拦截器也是chain形式的。</p>
+<p>   拦截器的位置在source和channel之间，当我们为source指定拦截器之后，我们在拦截器中会得到event，根据需求可以对event进行保留还是抛弃，抛弃的数据不会进入channel中</p>
+<p><img src="https://i.loli.net/2019/11/21/8HOFTYIvzj3Xxkg.png" alt="image.png"></p>
+<h2 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h2><ol>
+<li><p>flume的核心是把数据收集过来，再送到目的地。为了保证输送一定成功，在送到目的地之前，会先缓存数据，待数据真正到达目的地后，删除自己缓存的数据</p>
+</li>
+<li><p>flume传输的数据的基本单位是event，如果是文本文件，通常是一行记录，这也是事务的基本单位。Event从Source，流向channel，再到sink；本身为一个byte数组，并可携带header信息。event代表着一个数据流的最小完整单元。</p>
+<h2 id="Flume可靠性"><a href="#Flume可靠性" class="headerlink" title="Flume可靠性"></a>Flume可靠性</h2><p>Flume 使用事务性的方式保证传送Event整个过程的可靠性。Sink必须在event被存入channel后，或者，已经被传达到下一站agent里，又或者，已经被存入外部数据目的地之后，才能把event从channel中remove 掉。这样数据流里的event无论是在一个agent还是多个agent之间流转，都能保证可靠，因为在以上的事务保证了event会被成功存储起来。比如 Flume支持在本地保存一份文件 channel 作为备份，而memory channel 将 event存在内存 queue 里，速度快，但丢失的话无法恢复。</p>
+</li>
+</ol>
+<h1 id="Flume与kafka对比"><a href="#Flume与kafka对比" class="headerlink" title="Flume与kafka对比"></a>Flume与kafka对比</h1><ol>
+<li>Kafka是分布式消息中间件，自带存储，提供push和pull存取数据功能。Flume分为agent（数据采集器），collector（数据简单处理和写入），storage（存储器）三部分，每一部分都是可以定制的。比如agent采用RPC（Thrift-RPC）、text（文件）等，storage指定用hdfs做。</li>
+<li>Kafka做日志缓存应该是更合适的，但是flume的数据采集部分做的很好，可以定制很多数据源，减少开发量。比较六次那个flume+kfka模式，如果为了利用flume写hdfs的能力，也可以采用kfaka+flume方式</li>
+</ol>
+<p>采集层主要可以使用Flume，Kafka两种技术。</p>
+<p>Flume：Flume是管道流方式，提供了很多默认实现，让用户通过参数部署，及扩展API</p>
+<ul>
+<li>Kafka是一个非常通用的系统。可以有许多生产者和消费者共享多个主题topic。相比之下，flume是一个专用工具被设计旨在往HDFS，HBase发送数据。它对HDFS有特殊的优化，并且集成了Hadoop的安全特性。所以，如果数据被多个系统消费的话，使用kfaka；数据设计给HadooP使用，使用Flume</li>
+<li>Flume可以使用拦截器实时处理数据，这些对数据屏蔽或者过滤是很有用的。Kafka需要外部的流处理系统才能做到。</li>
+<li>Kafka和Flume都是可靠的系统，通过适当的配置能保证零数据丢失。然而，Flume不支持副本事件。于是，如果Flume代理的节点崩溃，即使使用了可靠的文件管道方式，也将丢失这些事件知道回复这些磁盘。如果需要高可靠的管道，使用Kafka。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/11/15/DynamoDB-DeepDive/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -708,6 +1112,48 @@
 <blockquote>
 <p>Kafka将数据写到磁盘，实际上都会写到OS的page cache里， 而读的时候又用sendfile非常高效的将数据传输到NIC。Kafka的扩展性也非常好，只要增加broker即可。Kafka的逻辑也非常清晰，可以将不同业务逻辑的数据写进不同到topic，而topic又可以切分成若干个partition来并行处理，并且Kafka0.9后，zk只需要被broker所使用，consumer并不再需要使用zk来记录offset，大大降低zk的压力，同时也从侧面降低了scale的压力。Kafka也有比较友好的删除策略。可以直接按照max age或者max size自动删除，也可以按照key进行compact，基本上都能满足需求</p>
 </blockquote>
+<h4 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h4><ul>
+<li>日志收集 ：一个公司可以用Kafka可以收集各种服务的log，通过kafka以统一接口服务的方式开放给各种consumer，例如hadoop、HBase、Solr等</li>
+<li>消息系统：解耦生产者与消费者、缓存消息</li>
+<li>用户活动跟踪：Kafka经常被用来记录web用户或者app用户的各种活动，如浏览网页、搜索、点击等活动，这些活动信息被各个服务器发布到kafka的topic中，然后订阅者通过订阅这些topic来做实时的监控分析，或者装载到hadoop、数据仓库中做离线分析和挖掘</li>
+<li>运营指标：Kafka也经常用来记录运营数据。包括收集各种分布式应用的数据，生产各种操作的集中反馈，比如报警和报告。</li>
+<li>流式处理： 比如spark streaming和Flink</li>
+</ul>
+<h4 id="Kafka缺点"><a href="#Kafka缺点" class="headerlink" title="Kafka缺点"></a>Kafka缺点</h4><ul>
+<li>由于是批量发送，数据并非真正的实时；</li>
+<li>对于MQTT协议不支持</li>
+<li>不支持物联网传感数据直接接入</li>
+<li>仅支持同一分区内消息有序，无法实现全局消息有序</li>
+<li>监控不完善，需要安装插件</li>
+<li>依赖Zookeeper进行元数据管理</li>
+</ul>
+<h4 id="Kafka幂等性实现原理（Producer）"><a href="#Kafka幂等性实现原理（Producer）" class="headerlink" title="Kafka幂等性实现原理（Producer）"></a>Kafka幂等性实现原理（Producer）</h4><p>实现米等的关键点就是服务端可以区分请求是否重复，过滤掉重复请求。区分请求是否重复有两点：</p>
+<ul>
+<li>唯一标识：要想区分请求是否重复，请求中就得有唯一标识。例如支付请求中，订单号就是唯一标识</li>
+<li>记录下已处理过的请求标识：单有唯一标识还不够，还需要记录下那些请求是已经处理过的，这样当收到新的请求时，用新请求中的标识和处理记录进行比较，如果处理记录中有相同的标识，说明是重复交易，拒绝掉</li>
+</ul>
+<blockquote>
+<p>为了实现Producer的幂等性，kafka引入Producer ID（即PID）和Sequence Number</p>
+<ul>
+<li>PID：每个新的Producer在初始化的时候会被分配一个唯一的PID，这个PID对用户是不可见的</li>
+<li>Sequence Number（对于每个PID，该Producer发送数据的每个&lt;Topic，Partion&gt;都对应一个从0开始单调递增的Sequence Number）</li>
+</ul>
+</blockquote>
+<h4 id="kafka-集群选择合适的Topic-partions-数量"><a href="#kafka-集群选择合适的Topic-partions-数量" class="headerlink" title="kafka 集群选择合适的Topic/partions 数量"></a>kafka 集群选择合适的Topic/partions 数量</h4><ul>
+<li>单个Partion的吞吐量通常是在10MB/s</li>
+<li>越多的分区需要打开更多的文件句柄，生产集群中，每个broker打开的文件句柄数量超过30，000</li>
+<li>越多的分区可以提供更高的吞吐量，更多的分区会导致更高的不可用性</li>
+<li>通常情况下，当一个Broker有计划地停止服务时，那么controller会在服务停止之前，将该broker上的所有leader一个一个秦阿姨走。单个leader的移动时间只需要几毫秒；当broker非计划地宕机，所有的partion同时变得不可用，若有1000个partion，则恢复时间将花费5秒（灭个partion5 ms）;若宕机的broker恰好是controller节点时，新的leader节点选举过程同样需要花费时间，从zookeeper中恢复元数据时每个partion大约花费2ms，则controller恢复将会增加20秒不可用窗口</li>
+<li>通常情况下，将每个broker的partion 数量限制在2000～4000，kafka集群中partion数量限制在10，000</li>
+<li>越多的分区可能增加端到端的延迟：in-sync副本复制所花费时间是kafka端到端延迟的主要部分，端到端的延迟大概是20ms（1000 partion）;对于b个broker节点和复制因子为r的kafka 集群，整个kafka集群的partion数量最好不超过100<em>b</em>r个，即单个partion的leader数量不要超过100</li>
+</ul>
+<h4 id="Kafka如何实现高吞吐率"><a href="#Kafka如何实现高吞吐率" class="headerlink" title="Kafka如何实现高吞吐率"></a>Kafka如何实现高吞吐率</h4><ul>
+<li>顺序读写：kafka的消息是不断追加到文件中的，可以充分利用磁盘的顺序读写性能</li>
+<li>零拷贝：linux kernel “zero-copy”系统调用机制，跳过“用户缓冲”的拷贝，建议一个磁盘和内存的直接映射，数据不再复制到“用户态缓冲区”</li>
+<li>文件分段：kafka的队列被分为多个分区partion，每个partion又分为多个段segment，一个队列中的消息实际上是保存在N多个片段文件中</li>
+<li>批量发送：Kafka允许进行批量发送消息，先将消息缓存在内存中，然后一次请求批量发送出去</li>
+<li>数据压缩：Kafka还支持对消息集合进行压缩，Producer可以通过GZIP或Snappy格式对消息集合进行压缩</li>
+</ul>
 
           
         
@@ -3566,747 +4012,6 @@ nowait=False, arguments=None, argsig=&#39;BsssbF&#39;)</code></p>
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/26/札记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/26/札记/" itemprop="url">札记</a></h1>
-        
-
-        <div class="post-meta">
-          
-                    <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-26T19:23:57+08:00">
-                2019-08-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="数字化转型（金融）"><a href="#数字化转型（金融）" class="headerlink" title="数字化转型（金融）"></a>数字化转型（金融）</h2><table>
-<thead>
-<tr>
-<th align="center"></th>
-<th align="left"><strong>信息化模型</strong></th>
-<th align="left"><strong>数字化模型</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">使用模式</td>
-<td align="left">专线支持的网点、ATM、POS机等客户场景</td>
-<td align="left">互联网生态及自有APP的用户场景、无人银行</td>
-</tr>
-<tr>
-<td align="center">人员思维</td>
-<td align="left">项目经理思维，架构师思维</td>
-<td align="left">产品思维、数据思维</td>
-</tr>
-<tr>
-<td align="center">产品形态</td>
-<td align="left">以金融机构为视角的专业化产品</td>
-<td align="left">以客户体验为核心的生态化产品</td>
-</tr>
-<tr>
-<td align="center">开发模式</td>
-<td align="left">基于完整需求进行瀑布式开发</td>
-<td align="left">基于体验点进行敏捷开发</td>
-</tr>
-<tr>
-<td align="center">合作模式</td>
-<td align="left">业务部门定义产品，科技部门实现产品</td>
-<td align="left">业务部门和科技部门共同定义产品</td>
-</tr>
-<tr>
-<td align="center">团队组织</td>
-<td align="left">由项目经理、架构师、领域开发人员组成的开发中心、测试中心、数据中心</td>
-<td align="left">包含项目经理、产品经理、全栈开发组成</td>
-</tr>
-<tr>
-<td align="center">技术平台</td>
-<td align="left">自建、私有云</td>
-<td align="left">自建+ 租用 私有云+公有云</td>
-</tr>
-<tr>
-<td align="center">数据架构</td>
-<td align="left">大数据</td>
-<td align="left">数据湖</td>
-</tr>
-<tr>
-<td align="center">应用架构</td>
-<td align="left">MVC/三层</td>
-<td align="left">现代化应用</td>
-</tr>
-<tr>
-<td align="center">开发运维工具</td>
-<td align="left">开发工具/运维工具</td>
-<td align="left">DevOps、AIoPS</td>
-</tr>
-<tr>
-<td align="center">自动化程度</td>
-<td align="left">实现“人管机器”的技术自动化</td>
-<td align="left">业务自动化</td>
-</tr>
-</tbody></table>
-<h4 id="分布式存储"><a href="#分布式存储" class="headerlink" title="分布式存储"></a>分布式存储</h4><ul>
-<li>I/O路经长</li>
-<li>latency 大（网络抖动、多副本处理）</li>
-</ul>
-<p>优化时延主要方法：</p>
-<ul>
-<li>硬件升级，诸如NVME、RDMA</li>
-<li>优化I/O路径，通信框架</li>
-<li>优化每个模块的处理时间</li>
-<li>优化磁盘布局</li>
-<li>增加数据缓存层</li>
-</ul>
-<h4 id="数据仓库-vs-数据湖"><a href="#数据仓库-vs-数据湖" class="headerlink" title="数据仓库 vs 数据湖"></a>数据仓库 vs 数据湖</h4><table>
-<thead>
-<tr>
-<th align="center"></th>
-<th align="left"></th>
-<th align="left"></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">数据</td>
-<td align="left">来自食物系统、运营数据库、业务应用程序</td>
-<td align="left">IoT设备、网络、移动应用程序、社交媒体（非关系）</td>
-</tr>
-<tr>
-<td align="center">Schema</td>
-<td align="left">写入型Schema</td>
-<td align="left">写入分析时（读取型 Schema）</td>
-</tr>
-<tr>
-<td align="center">性价比</td>
-<td align="left">更快查询结果成本高</td>
-<td align="left">更快查询结果较低存储成本</td>
-</tr>
-<tr>
-<td align="center">数据质量</td>
-<td align="left">可作为重要事实依据的高度监管数据</td>
-<td align="left">任何可以或无法进行监管数据</td>
-</tr>
-<tr>
-<td align="center">用户</td>
-<td align="left">业务分析师</td>
-<td align="left">数据科学家、数据开发人员和业务分析师</td>
-</tr>
-<tr>
-<td align="center">分析</td>
-<td align="left">批处理、BI、可视化</td>
-<td align="left">机器学习、预测成本、数据发现和分析</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>数据湖概念：</p>
-</blockquote>
-<p> <em>在保障数据持久性和安全性的前提下，存储任何量级的各种数据（结构化、非结构化、半结构化），并对其运用不同的分析手段（查询、统计、挖掘），以获得数据内在价值并指导业务发展</em></p>
-<h1 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h1><ul>
-<li>InnoDB的行锁匙实现在索引上的</li>
-<li>并发控制保证数据一致性常见手段<ul>
-<li>锁（locking）</li>
-<li>数据多版本（multi versioning）</li>
-</ul>
-</li>
-<li>共享锁（share lock ）,读数据枷锁</li>
-<li>排他锁（exclusive lock），修改数据加X锁</li>
-<li>写事务未提交，读相关数据select阻塞</li>
-<li>由锁机制延伸出数据多版本</li>
-</ul>
-<p>核心原理</p>
-<ul>
-<li>写任务发生时，将数据克隆一份，以版本号区别</li>
-<li>写人物操作新克隆的数据，直至提交</li>
-<li>并发读可以继续读取旧版本数据，不至于阻塞</li>
-</ul>
-<ul>
-<li>普通锁串行，读写锁读读并行，数据多版本读写并行</li>
-<li>Redo日志保证已提交事务的ACID特性，设计思路是通过顺序写代替随机写，提高并发</li>
-<li>redo 日志保证未提交事务的ACID特性，存储在回滚段中</li>
-<li>InnoDB是基于MVCC的存储引擎，利用存储在回滚段里undo日志，即数据的旧版本提高并发 </li>
-<li>InnoDB 之所以并发高，快照读不加锁</li>
-<li>InnoDB 所有的普通Select 都是快照读</li>
-</ul>
-<p>InnoDB 存储引擎</p>
-<ol>
-<li>重做日志 redo log 用于实力故障恢复是，继续那些已经commit 但尚未完全回写到磁盘的事务</li>
-<li>回滚日志 undo log 用于在实例故障恢复时，借助undo log将尚未commit的食物，回滚到事务开始前的状态</li>
-</ol>
-<p>总结：redo log 可以保证事务的原子性和持久性，undo log可以保证事务的一致性（事务的隔离性是由锁来实现的）<br>redo和undo 都可以视作一种恢复操作，redo恢复提交事务修改的页操作，记录的内容是物理日志，记录的是页的物理修改操作；而undo回滚行记录到某个特定的版本，记录的是逻辑日志，根据每行记录进行记录。</p>
-<p>数据库索引</p>
-<ol>
-<li>B+ 树 数据结构：高度平衡的多叉树，叶子节点保存所有数据。（注意B+树的非聚集索引的叶子节点并不是直接存放的给定键值的行，而是数据行所在的页，然后数据库通过把页读入内存，再在内存中查找）</li>
-<li>B+ 树数据结构应用在数据库的索引实现中，具有高度的扇出性，一般B+树的高度都在2～4层，也就是说查找某一键值的行记录时最多只需要2～4此IO</li>
-</ol>
-<p>B+树索引可以分为聚集索引（主键索引，已主键作为key的索引）和辅助索引（非聚集索引）。</p>
-<ul>
-<li>聚集索引的叶子节点保存的是数据，即行记录；</li>
-<li>InnoDB的主键索引的排序查找和范围查找非常快；</li>
-</ul>
-<p>InnoDB的数据文件本身就是索引文件。MyISAM索引文件爱你和数据文件是分离的，索引文件仅保存数据记录的地址。而在InnoDB中，表数据文件本身就是按B+Tree组织的一个索引仅够，这棵树的叶节点data域保存了完整的数据记录。这个索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引。</p>
-<p>InnoDB的辅助索引data域存储相应记录主键的值而不是地址，InnoDB的所有辅助索引引用主键作为data域。<br>聚集索引这种实现方式使得按主键的搜索十分高效，但是辅助索引搜索需要检索两边索引：首先检索辅助索引获得主键，然后哦用主键到主索引中检索获得记录。</p>
-<p>数据库事务隔离级别</p>
-<table>
-<thead>
-<tr>
-<th align="left"></th>
-<th align="left"></th>
-<th align="left"></th>
-<th align="left"></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>隔离级别</strong></td>
-<td align="left"><strong>脏读（Dirty Read）</strong></td>
-<td align="left"><strong>不可重复读（NonRepeattable Read）</strong></td>
-<td align="left"><strong>幻读（Phantom Read）</strong></td>
-</tr>
-<tr>
-<td align="left">未提交读 （Read uncommited）</td>
-<td align="left">可能</td>
-<td align="left">可能</td>
-<td align="left">可能</td>
-</tr>
-<tr>
-<td align="left">已提交读（Read commited）</td>
-<td align="left">不可能</td>
-<td align="left">可能</td>
-<td align="left">可能</td>
-</tr>
-<tr>
-<td align="left">可重复读（Repeatable read）</td>
-<td align="left">不可能</td>
-<td align="left">不可能</td>
-<td align="left">可能</td>
-</tr>
-<tr>
-<td align="left">可串行化（Serializable）</td>
-<td align="left">不可能</td>
-<td align="left">不可能</td>
-<td align="left">不可能</td>
-</tr>
-</tbody></table>
-<ul>
-<li>未提交读（Read Uncommited）：允许脏读，也就是可能读取到其他会话中未提交事务修改的数据</li>
-<li>提交读（Read Committed）：只能读取到已经提交的数据。Oracle等多数据默认都是该级别（不重复读）</li>
-<li>可重复读（RepeatedRead）：可重复读。在同一个事务内的查询都是事务开始时刻是一致的，InnoDB默认级别。在SQL标准中，该隔离级别消除了不可重复读，但是还存在幻想读。</li>
-<li>串行读（Serializable）：完全串行化的读，每次读都需要获得表级共享锁，读写相互都会阻塞</li>
-</ul>
-<p>MySQL尽量避免使用NULL（空值）列，其使得索引、索引统计和值都比较复杂</p>
-<ul>
-<li>MySql 复制上的读/写分离<ul>
-<li>由于备库是异步的，主要的难点是如何处理备库上的脏数据</li>
-<li>常见读/写分离方法如下：<ul>
-<li>基于查询分离：将所有不能容忍脏数据的读和写查询分配到主服务器上，其他读查询分配到备库上</li>
-<li>基于脏数据分离：通过应用检查复制延迟，以确定备库数据是否太旧。</li>
-<li>基于会话分离：判断用户是否修改了数据。在会话层设置标记位，表明做了更新，就将该用户的查询在一段时间内总是指向主库。</li>
-<li>基于版本分离：跟踪对象的版本号以及或时间戳，通过从备库读取对象的版本或时间戳判断数据是否足够新</li>
-<li>基于全局版本/会话分离：应用执行写操作是，在提交事务后，执行一次show master status，然后在缓存中存储主库日志坐标，作为被修改对象以及或会话版本号。当应用连接到备库时，执行show slave status并将备库上的坐标和缓存中的版本号相比。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>Apache WEB 处理动态内容</p>
-<ul>
-<li>Apache 通常是通过prefork配置来使用mod_php、mod_perl和mod_python模块，prefork模式会为每个请求预分配进程。</li>
-<li>PHP、Perl和Python脚本是可以定制化的，每个进程使用50Mb或100MB内存</li>
-</ul>
-<p>lightttpd、nginx擅长处理静态内容，Tomcat处理动态内容</p>
-<p>AWS<br>ec2-instance-connect</p>
-<p>mssh i-06db13d2771b32cd2 -r ap-southeast-1</p>
-<p>{<br>    “Version”: “2012-10-17”,<br>    “Statement”: [<br>        {<br>            “Effect”: “Allow”,<br>            “Action”: “ec2-instance-connect:SendSSHPublicKey”,<br>            “Resource”: “arn:aws:ec2:ap-southeast-1:952133295668:instance/i-0f238d1ff9dfe1548”,<br>            “Condition”: {<br>                “StringEquals”: {<br>                    “ec2:osuser”: “ec2-user”<br>                }<br>            }<br>        },<br>        {<br>            “Effect”: “Allow”,<br>            “Action”: “ec2:DescribeInstances”,<br>            “Resource”: “*”<br>        }<br>    ]<br>}</p>
-<ul>
-<li><p>启动配置创建后不可修改，只能创建新的启动配置与最新的映像关联，然后再修改 Auto Scaling Group 与新创建的启动配置关联。替换掉的启动配置不好管理。</p>
-</li>
-<li><p>启动模板的优势在于有版本的概念。可以在上一版的基础上，替换最新制作的映像生成启动模板的新版本。不需要再更新 Auto Scaling Group 的相关属性。通过版本这个概念也可以很好的管理历史的映像。</p>
-</li>
-<li><p>当使用 https 协议访问网站时，CNAME 跳转会有 SSL 证书的问题</p>
-</li>
-<li><p>创建 CloudFront Distribution 时一定要添加 Alternate Domain Names (CNAMEs)，否则 CloudFront 会报错</p>
-<ul>
-<li>因为 CloudFront 服务的边缘站点使用的是一个资源共享的模式，所以在默认的情况下 Distribution 本身并没有独立的专属 IP 地址，而是共享同一群IP地址，因此需要通过 Host 标头去匹配请求和 Distribution 之间的关联</li>
-</ul>
-<h2 id="数据库迁移考虑因素"><a href="#数据库迁移考虑因素" class="headerlink" title="数据库迁移考虑因素"></a>数据库迁移考虑因素</h2><ul>
-<li>number  of databases and data sizes</li>
-<li>Access Patterns</li>
-<li>Data types,character sets</li>
-<li>Data transfer mechanism </li>
-<li>Connected apps and DB links </li>
-<li>Acceptable downtime </li>
-</ul>
-<h3 id="Oracle-迁移工具"><a href="#Oracle-迁移工具" class="headerlink" title="Oracle 迁移工具"></a>Oracle 迁移工具</h3><ul>
-<li>Oracle SQL Developer</li>
-<li>Oracle Data Pump</li>
-<li>Oracle Export/import Utilities</li>
-<li>Oracle SQL*Loader</li>
-<li>Oracle Materialized Views </li>
-</ul>
-</li>
-</ul>
-<h3 id="大数据选择正确的工具"><a href="#大数据选择正确的工具" class="headerlink" title="大数据选择正确的工具"></a>大数据选择正确的工具</h3><ol>
-<li><p>structure of your data</p>
-</li>
-<li><p>Latency </p>
-</li>
-<li><p>Throughput</p>
-</li>
-<li><p>Access patterns</p>
-<h4 id="微服务架构设计最佳实践"><a href="#微服务架构设计最佳实践" class="headerlink" title="微服务架构设计最佳实践"></a>微服务架构设计最佳实践</h4></li>
-</ol>
-<ul>
-<li>Create a seprate data store for each microservice</li>
-<li>Keep all code in a microservice at a similar level of maturity and stablity</li>
-<li>Do a separate build for each microservice </li>
-<li>Deploy in containers</li>
-<li>Treat servers as stateless</li>
-<li><h4 id="session-data-in-DynamoDB-or-ElasticCache"><a href="#session-data-in-DynamoDB-or-ElasticCache" class="headerlink" title="session data in DynamoDB or ElasticCache"></a>session data in DynamoDB or ElasticCache</h4></li>
-<li>Dynamodb has hourly rates for reads and writes</li>
-<li>同一AZ中，EC2与Elasticache免收费</li>
-<li>Redis支持TTL设置</li>
-</ul>
-<h3 id="MySQL事务日志（Redo-log-和Undo-log）"><a href="#MySQL事务日志（Redo-log-和Undo-log）" class="headerlink" title="MySQL事务日志（Redo log 和Undo log）"></a>MySQL事务日志（Redo log 和Undo log）</h3><blockquote>
-<p>innodb 事务包括redo log和undo log。redo log是重做日志，提供前滚操作，undo log是回滚操作，提供回滚操作。<br>undo log不是redo log的逆向过程，其实它们都算是用来恢复的日志</p>
-<ol>
-<li>redo log通常是物理日志，记录的是数据页的物理修改，而不是某一行或某几行的修改成怎样，它用来恢复提交后的物理数据页（恢复数据页，且只能恢复到最后一次提交的位置）</li>
-<li>undo用来回滚行记录到某个版本。undo log 一般是逻辑日志，根据每行记录进行记录。</li>
-</ol>
-</blockquote>
-<p>redo log不是二进制日志。虽然二进制日志记录了innodb 表的很多操作，也能实现重做的功能，但是他们之间有很大的区别。<br>1.二进制日志是在<strong>存储引擎的上层</strong>产生的，不管是设呢吗存储引擎，对数据库进行了修改都会产生二进制日志。而Redo log是innodb层产生的，只记录该存储引擎中表的修改。<strong>并且二进制日志优先于redo log被记录</strong>。</p>
-<ol start="2">
-<li>二进制日志记录操作的方法是逻辑性的语句。即便它是基于行格式的记录方式，其本质也还是逻辑的SQL设置，如该行记录的每列的值是多少。而Redo log 是在物理格式上的日志，它记录的是数据库中每个页的修改。</li>
-<li>二进制日志只在每次事务提交的时候一次性写入缓存中的日志“文件”（对于非事务表的操作，则是每次执行语句成功后就直接写入）。而redo log 实在数据准备修改前写入缓存汇总的redo log中，然后才对缓存中的数据执行修改操作；而且保证在发出事务提交指令时，先向缓冲中的redo log 写入日志，写入完成后才执行提交动作。</li>
-<li>因为二进制日志只在提交的时候一次性写入，所以二进制日志中的记录方式和提交顺序有关，且一次提交对应一次记录。而redo log 中是记录的物理页的修改，redo log文件中同一个事务可能多次记录，最后一个提交的事务记录会覆盖所有未提交的事务记录。</li>
-<li>事务日志记录的是物理页的情况，它具有幂等性，因此记录日志的方式极其简练。</li>
-</ol>
-<h4 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h4><p>redo log 包括两部分：一是内存中的日志缓冲（redo log buffer),该部分日志是易失性的；二是磁盘上的重做日志（redo log file），该部分日志是持久的。</p>
-<p>innodb 通过<strong>force log at commit</strong>机制实现事务的持久性，即在事务提交的时候，必须先将该事务的所有事物日志写入到磁盘上的redo log file和undo log file中进行持久化</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/26/AWS-Route-53/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/26/AWS-Route-53/" itemprop="url">AWS Route 53</a></h1>
-        
-
-        <div class="post-meta">
-          
-                    <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-26T19:15:38+08:00">
-                2019-08-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AWS/" itemprop="url" rel="index">
-                    <span itemprop="name">AWS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Amazon Route 53 是一种具有很高可用性和可扩展性的域名系统 (DNS) Web 服务。可以使用 Route 53 以任意组合执行三个主要功能：域注册、DNS 路由和运行状况检查。</p>
-<ol>
-<li><p>域名注册</p>
-</li>
-<li><p>将Internet路由到域名</p>
-<ul>
-<li>域名解析到正确的IP地址</li>
-<li>使用权威DNS服务器的全局网络响应DNS查询，从而减少延迟</li>
-<li>将Internet流量路由到CloudFront，Elastic Beanstalk，ELB或S3。 对这些资源进行DNS查询是免费的</li>
-</ul>
-</li>
-<li><p>检查资源的运行状况</p>
-<ul>
-<li>可以监控Web和电子邮件服务器等资源的运行状况。</li>
-<li>通过Internet向应用程序发送自动请求</li>
-<li>验证它是否可访问，可用且功能正常</li>
-<li>可以为运行状况检查配置CloudWatch警报，以便在资源不可用时发送通知。</li>
-<li>可以配置为将Internet流量路由远离不可用的资源</li>
-</ul>
-<h2 id="支持的DNS记录类型"><a href="#支持的DNS记录类型" class="headerlink" title="支持的DNS记录类型"></a>支持的DNS记录类型</h2></li>
-</ol>
-<ul>
-<li><p>A（IPv4地址记录）</p>
-</li>
-<li><p>AAAA（IPv6 地址记录）</p>
-</li>
-<li><p>CNAME（规范名称记录）</p>
-<ul>
-<li>格式与域名相同</li>
-<li>DNS协议不允许为DNS命名空间的顶级节点创建CNAME记录，也称为区域顶点（例如，区域顶点）。 DNS名称example.com注册，区域顶点是example.com，无法创建example.com的CNAME记录，但可以为<a href="http://www.example.com，newproduct.example.com等创建CNAME记录。" target="_blank" rel="noopener">www.example.com，newproduct.example.com等创建CNAME记录。</a></li>
-<li>如果为子域创建了CNAME记录，则无法为该子域创建该子域的任何其他资源记录集。如果为<a href="http://www.example.com创建了CNAME，而不是可以创建名称字段值为www.example.com的其他资源记录集" target="_blank" rel="noopener">www.example.com创建了CNAME，而不是可以创建名称字段值为www.example.com的其他资源记录集</a></li>
-</ul>
-</li>
-<li><p>CAA (认证机构授权)</p>
-</li>
-<li><p>MX (邮件交换记录)</p>
-</li>
-<li><p>NAPTR（命名授权指针记录）</p>
-</li>
-<li><p>NS（名称服务器记录）</p>
-<ul>
-<li>NS记录标识托管区域的名称服务器。 NS记录的值是名称服务器的域名。</li>
-</ul>
-</li>
-<li><p>PTR（指针记录）</p>
-</li>
-<li><p>SOA（起始授权记录）</p>
-</li>
-<li><p>SPF（发件人策略框架）</p>
-</li>
-<li><p>SRV（服务定位器）</p>
-</li>
-<li><p>TXT（文本记录）</p>
-</li>
-<li><p>Amazon Route 53 还提供别名记录，这些记录是 Amazon Route 53 专用的 DNS 扩展。</p>
-</li>
-</ul>
-<h2 id="Alias-记录类型"><a href="#Alias-记录类型" class="headerlink" title="Alias 记录类型"></a>Alias 记录类型</h2><ul>
-<li>Route　53支持别名资源记录集，可以将查询路由到CloudFront分配，Elastic Beanstalk，ELB，配置为静态网站的S3存储桶或其他Route 53资源记录集</li>
-<li>别名记录不是DNS RFC的标准，是Route 53的扩展功能</li>
-<li>别名记录类似于CNAME记录，但可以为根域或顶点域、子域创建别名记录，而cname只能用于记录子域</li>
-<li>Route 53自动识别别名记录资源所引用的资源记录的变化，如对于指向ELB的指导年，若负载均衡的IP发生变化，则Route 53将自动在DNS的回应中反映这些变化，而不对包含资源记录集的托管区域进行任何更改</li>
-<li>若alias记录集指向CloudFront、ELB或S3，则无法设置TTL；Route 53使用cloudfront、LB或者S3的TTL</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>NAME 记录</th>
-<th>别名记录</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>CNAME 记录可以将 DNS 查询重定向到任何 DNS 记录。例如，可以创建一条 CNAME 记录，该记录将查询从 acme.example.com 重定向到 zenith.example.com 或 acme.example.org。不需要使用 Route 53 作为您要将查询重定向到的域的 DNS 服务。</td>
-<td>别名记录只能将查询重定向到选定的 AWS 资源，例如：Amazon S3 存储桶 ;CloudFront 分配;其中创建别名记录的 Route 53 托管区域中的其他记录;例如，可以创建一个名为 acme.example.com 的别名记录，该记录将查询重定向到 Amazon S3 存储桶（也称为 acme.example.com.）。还可以创建一个 acme.example.com 别名记录，该记录将查询重定向到 example.com 托管区域中名为 zenith.example.com 的记录。</td>
-</tr>
-<tr>
-<td>不能创建与托管区域（区域 APEX）同名的 CNAME 记录。对于域名 (example.com) 的托管区域和子域 (zenith.example.com) 的托管区域都是如此。</td>
-<td>在大多数配置中，您可以创建一个与托管区域（区域 APEX）同名的别名记录。一个例外情况是，当您要将来自区域 APEX（如 example.com）的查询重定向到具有类型 CNAME（如 zenith.example.com）的同一托管区域中的记录时。别名记录必须与您要将流量路由到的目标记录具有相同的类型，而为顶级域名创建 CNAME 记录的做法不受支持，即使对于别名记录也是如此。</td>
-</tr>
-<tr>
-<td>Route 53 收取 CNAME 查询费用。</td>
-<td>对于 AWS 资源的别名查询，Route 53 不收费。有关更多信息，请参阅 Amazon Route 53 定价。</td>
-</tr>
-<tr>
-<td>无论记录类型如何，CNAME 记录都会重定向对记录名称（如 A 或 AAAA）的 DNS 查询。</td>
-<td>仅当别名记录的名称（如 acme.example.com）和别名记录的类型（如 A 或 AAAA）与 DNS 查询中的名称和类型匹配时，Route 53 才响应 DNS 查询。</td>
-</tr>
-<tr>
-<td>CNAME 记录在响应 dig 或 nslookup 查询时显示为 CNAME 记录。</td>
-<td>别名记录显示为您在创建记录时指定的记录类型，例如 A 或 AAAA。别名属性仅在 Route 53 控制台中或在响应以编程方式发出的请求时可见，例如 AWS CLI list-resource-record-sets 命令。</td>
-</tr>
-</tbody></table>
-<h2 id="托管区域"><a href="#托管区域" class="headerlink" title="托管区域"></a>托管区域</h2><ul>
-<li>托管区域是一个记录容器，记录中包含的信息说明您希望如何路由特定域（如 example.com）及其子域（acme.example.com、zenith.example.com）的流量。</li>
-<li>管区域与相应域具有相同的名称。</li>
-<li>有两种类型的托管区域：<ul>
-<li>公有托管区域 包含指定了如何路由 Internet 流量的记录。</li>
-<li>私有托管区域 包含指定了如何在 Amazon VPC 中路由流量的记录。</li>
-</ul>
-</li>
-<li>在托管区域中创建记录<ul>
-<li>记录定义了为每个域名或子域名路由路由的位置。</li>
-<li>托管区域中每条记录的名称必须以托管区域的名称结尾。</li>
-</ul>
-</li>
-</ul>
-<h2 id="Route-53-Split-view-Split-horizon-DNS"><a href="#Route-53-Split-view-Split-horizon-DNS" class="headerlink" title="Route 53 Split-view(Split-horizon) DNS"></a>Route 53 Split-view(Split-horizon) DNS</h2><ul>
-<li>允许公开使用的相同域名访问网站的内部版本</li>
-<li>使用Route 53 Spilt-view 为DNS维护具有相同域名的私有和公共托管区域</li>
-<li>确保在VPC上启用DNS解析和DNS主机名</li>
-<li>DNS查询将根据请求的来源回答答案。 在VPC内，答案将来自私有托管区域，而公共查询将从公共托管区域返回答案。</li>
-</ul>
-<h1 id="DNS-路由策略"><a href="#DNS-路由策略" class="headerlink" title="DNS 路由策略"></a>DNS 路由策略</h1><h2 id="简单路由策略"><a href="#简单路由策略" class="headerlink" title="简单路由策略"></a>简单路由策略</h2><ul>
-<li>简单路由策略是一种简单的循环策略，可以在有单个资源为域执行功能时应用。如为网站提供内容的服务器</li>
-<li>AWS Route 53基于资源记录集中的值来响应DNS查询。 如A记录中的IP地址</li>
-</ul>
-<h2 id="加权轮询（WRR）"><a href="#加权轮询（WRR）" class="headerlink" title="加权轮询（WRR）"></a>加权轮询（WRR）</h2><ul>
-<li>加权路由策略使路由53能够以指定的比例（权重）将流量路由到不同的资源，例如，75％的一个服务器和25％的另一个服务器</li>
-<li>可以为权重指定0到255之间的任何数字</li>
-<li>当存在多个执行相同功能的资源（例如，服务于相同站点的web服务器）时，可以应用加权路由策略</li>
-<li>加权资源记录集允许您将多个资源与单个DNS名称相关联</li>
-<li>常见用例包括<ul>
-<li>负载均衡</li>
-<li>A / B测试和试用新版软件</li>
-</ul>
-</li>
-<li>创建一组加权资源记录集，可以创建具有相同DNS名称和类型组合的两个或更多资源记录集，并且为每个资源记录集分配唯一标识符和相对权重</li>
-<li>处理DNS查询时，Route 53搜索具有指定名称和类型的资源记录集或一组资源记录集</li>
-<li>Route 53从组中选择一个。选择任何一个资源记录集的概率取决于其权重作为该组中所有资源记录集的总权重的比例，例如，假设<a href="http://www.example.com具有三个权重为1的资源记录集（20％）" target="_blank" rel="noopener">www.example.com具有三个权重为1的资源记录集（20％）</a> ），1（20％）和3（60％）（总和= 5）。平均而言，Route 53在五分之一的时间中选择前两个资源记录集中的每一个，并且返回三分之三的时间的第三资源记录集。</li>
-</ul>
-<h2 id="基于延迟的路由（LBR）"><a href="#基于延迟的路由（LBR）" class="headerlink" title="基于延迟的路由（LBR）"></a>基于延迟的路由（LBR）</h2><ul>
-<li>基于延迟的路由策略使Route 53能够根据哪个数据中心为用户提供最低的网络延迟来响应DNS查询</li>
-<li>当有多个资源执行相同的功能时，可以使用基于延迟的路由策略，并且Route 53需要配置为使用提供最快响应和最低延迟的资源来响应DNS查询</li>
-<li>可以为托管应用程序的每个区域中的EC2资源创建延迟资源记录集。当Route 53收到对应域的查询时，它会选择为EC2区域设置的延迟资源记录，为用户提供最低延迟。然后，Route 53以与该资源记录集相关联的值进行响应，例如，您能在爱尔兰和东京的EC2数据中心中具有example.com的Web服务器。当用户从新加坡浏览example.com时，Route 53将从用户位置获取具有最低延迟的数据中心（东京）</li>
-<li><strong>由于网络连接和路由的变化，Internet上主机之间的延迟可能会随着时间的推移而发生变化。基于延迟的路由基于在一段时间内执行的等待时间测量，并且测量结果反映了这些变化。</strong>如果新加坡用户到爱尔兰的延迟有所改善，用户可以路由到爱尔兰</li>
-<li>基于延迟的路由不能保证来自相同地理位置的用户出于任何合规性原因将从同一位置提供服务</li>
-<li>可以使用Route 53支持的除NS或SOA之外的任何记录类型来创建延迟资源记录集</li>
-</ul>
-<h2 id="故障转移策略（Failover）"><a href="#故障转移策略（Failover）" class="headerlink" title="故障转移策略（Failover）"></a>故障转移策略（Failover）</h2><ul>
-<li>故障转移路由策略允许主动 - 被动故障转移配置，其中一个资源在可用时占用所有流量，而另一个资源在第一个资源不可用时占用所有流量。</li>
-<li>Route 53运行状况检查代理将监视应用程序的每个位置/端点以确定可用性。</li>
-<li>故障转移路由策略仅适用于公共托管区域</li>
-</ul>
-<h2 id="地理位置路由策略（Geo-DNS）"><a href="#地理位置路由策略（Geo-DNS）" class="headerlink" title="地理位置路由策略（Geo DNS）"></a>地理位置路由策略（Geo DNS）</h2><ul>
-<li>地理位置路由策略使路由53能够根据用户的地理位置（即DNS查询源自的位置）响应DNS查询</li>
-<li>常见用例包括<ul>
-<li>内容的本地化和以用户语言呈现部分或全部网站</li>
-<li>限制内容的分发仅限于您拥有发行权的位置。</li>
-<li>以可预测，易于管理的方式平衡端点之间的负载，以便每个用户位置始终路由到同一端点。</li>
-</ul>
-</li>
-<li>地理位置路由策略允许按洲，国家或州（仅在美国）指定地理位置</li>
-<li>地理定位记录集，如果创建的话，用于例如重叠的地理区域。非洲大陆，然后是同一大洲的国家，优先考虑最小的地理区域，这允许将一个大陆的一些查询路由到一个资源，并查询该大陆上的选定国家的不同资源</li>
-<li>地理定位的工作原理是将IP地址映射到位置，这些位置可能未映射到确切的地理位置</li>
-<li>可以创建默认资源记录集来处理这些查询，也可以创建没有创建显式记录集的查询</li>
-<li>如果未创建默认资源记录集，则Route 53对来自这些位置的查询返回“无应答”响应</li>
-<li>无法创建指定相同地理位置的两个地理位置资源记录集</li>
-<li>Route 53支持EDNS0的edns-client-subnet扩展（EDNS0为DNS协议添加了几个可选扩展。）以提高地理定位路由的准确性</li>
-</ul>
-<h1 id="AWS-Route-53-Resolver"><a href="#AWS-Route-53-Resolver" class="headerlink" title="AWS Route 53 Resolver"></a>AWS Route 53 Resolver</h1><h2 id="解析VPC和本地网络之间的DNS查询"><a href="#解析VPC和本地网络之间的DNS查询" class="headerlink" title="解析VPC和本地网络之间的DNS查询"></a>解析VPC和本地网络之间的DNS查询</h2><ul>
-<li>Route 53 Resolver在VPC内提供自动DNS解析</li>
-<li>默认情况下，Resolver会回答VPC域名的DNS查询，例如EC2实例或ELB负载均衡器的域名</li>
-<li>Resolver对所有其他域名的公共名称服务器执行递归查找</li>
-<li>但是，本地实例无法解析Route 53 DNS条目，而Route 53无法解析本地DNS条目</li>
-<li>可以通过Direct Connect或VPN连接配置AWS VPC与本地网络之间的DNS解析</li>
-<li>Route 53 Resolver是区域性的</li>
-<li>要使用入站或出站转发，请在VPC中创建解析器端点</li>
-<li>作为端点定义的一部分，指定要将入站DNS查询转发到的IP地址或要从其发出的出站查询的IP地址。 对于指定的每个IP地址，Resolver会自动创建VPC弹性网络接口</li>
-</ul>
-<h2 id="将-DNS-查询从网络上的解析程序转发到-Route-53-解析程序"><a href="#将-DNS-查询从网络上的解析程序转发到-Route-53-解析程序" class="headerlink" title="将 DNS 查询从网络上的解析程序转发到 Route 53 解析程序"></a>将 DNS 查询从网络上的解析程序转发到 Route 53 解析程序</h2><p><img src="https://i.loli.net/2019/08/26/7PEZxyOBLbNWR3h.png" alt="Resolver-inbound-endpoint.png"></p>
-<ul>
-<li>本地网络上的DNS解析器可以将DNS查询转发到指定VPC中的解析器。</li>
-<li>这使DNS解析器能够轻松解析AWS资源的域名，例如EC2实例或Route 53私有托管区域中的记录。</li>
-</ul>
-<h2 id="将查询从-VPC-有条件地转发到您网络上的解析程序"><a href="#将查询从-VPC-有条件地转发到您网络上的解析程序" class="headerlink" title="将查询从 VPC 有条件地转发到您网络上的解析程序"></a>将查询从 VPC 有条件地转发到您网络上的解析程序</h2><p><img src="https://i.loli.net/2019/08/26/UPLo5bKJQHVxmIw.png" alt="Resolver-outbound-endpoint.png"></p>
-<ul>
-<li>配置解析程序，将它从 VPC中EC2实例收到的查询转发到您网络上的 DNS 解析程序</li>
-<li>要转发选定的查询，可以创建解析程序规则，指定要转发的 DNS 查询的域名（例如 example.com），以及希望将查询转发到网络上的 DNS 解析程序的 IP 地址</li>
-<li>如果查询与多个规则匹配（example.com、acme.example.com），解析程序会选择匹配最具体的规则 (acme.example.com) 并将查询转发到该规则中指定的IP地址</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -4357,7 +4062,7 @@ nowait=False, arguments=None, argsig=&#39;BsssbF&#39;)</code></p>
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -4379,7 +4084,7 @@ nowait=False, arguments=None, argsig=&#39;BsssbF&#39;)</code></p>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
