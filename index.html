@@ -273,6 +273,311 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/12/15/Kubernetes网络模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/15/Kubernetes网络模型/" itemprop="url">Kubernetes网络模型</a></h1>
+        
+
+        <div class="post-meta">
+          
+                    <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-15T15:48:39+08:00">
+                2019-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Kubnernets-基本网络模型"><a href="#Kubnernets-基本网络模型" class="headerlink" title="Kubnernets 基本网络模型"></a>Kubnernets 基本网络模型</h2><h3 id="准入条件"><a href="#准入条件" class="headerlink" title="准入条件"></a>准入条件</h3><ol>
+<li>任意两个pod之间其实是可以直接通信的，无需经过显式使用NAT来接收数据和地址转换</li>
+<li>node与pod之间是可以直接通信的，无需使用明显的地址转换</li>
+<li>pod看自己的IP跟别人看见它所用的IP是一样的，中间不能经过转换<h3 id="为外部提供服务"><a href="#为外部提供服务" class="headerlink" title="为外部提供服务"></a>为外部提供服务</h3></li>
+</ol>
+<ul>
+<li>外部世界和service之间是怎么通信的？</li>
+<li>service如何与后端的pod通讯</li>
+<li>pod和pod之间调用是怎么做到通信的</li>
+<li>pod 内部容器与容器之间通信</li>
+</ul>
+<blockquote>
+<p>容器网络复杂性在于它是寄生在Host网络之上。从这个角度讲，可以把容器网络方案大体分为Underlay和Overlay 两大派别</p>
+</blockquote>
+<ul>
+<li>Underlay的标准是它与Host网络是同层的，从外在可见的一个特征就是它是不是使用了Host网络同样的网段、输入输出基础设备、容器的IP地址是不是需要与Host网络取得协同</li>
+<li>Overlay不一样的地方在于它并不需要从Host网络的IPM的管理组件去申请IP，一般来说，它只需要跟Host网络不冲突，这个IP可以自由分配的</li>
+</ul>
+<p><strong>协议栈层级</strong></p>
+<ul>
+<li>二层 （桥接，ARP+MAC larning ），广播问题</li>
+<li>三层（纯路由转发）：<ul>
+<li>一般基于BGP，自主学习机房的路由状况。最大的优点就是IP穿透性，只要基于这个IP网络，那此网络就可以穿越。</li>
+<li>规模优势，具有良好的扩展性</li>
+<li>实际部署中，企业的网络受控，BGP不能随便使用的</li>
+</ul>
+</li>
+<li>二层+三层（节点内部二层转发，跨节点三层转发）<ul>
+<li>解决纯二层规模问题，又能解决三层各种限制问题，特别是云化场景下VPC的三层转发能力</li>
+<li>比较适合Kubernetes对于Pod网络假设，Pod会漂移，IP会改变，不变的是service和ingress</li>
+<li>运维角度讲，节点内部就是一个子网，大家习惯利用传统的云化场景，每一个独立可见的应用有一个独立的IP，且不会改变，那么二层加三层就无法做到</li>
+</ul>
+</li>
+</ul>
+<p><strong>穿越形态</strong></p>
+<ul>
+<li>Overlay （隧道穿越底层基础设施）<ul>
+<li>云化场景常见,受控VPC网络</li>
+</ul>
+</li>
+<li>Underlay (直接穿越底层基础设施)<ul>
+<li>适合可控的网络场景，无论是裸机还是虚拟机，整个网络比啊可以直接穿越过去</li>
+</ul>
+</li>
+</ul>
+<p><strong>隔离方式</strong></p>
+<ul>
+<li>FLAT：扁平网络，无隔离</li>
+<li>VLAN：机房内使用，租户数量受限</li>
+<li>VXLAN/GRE：基于IP穿越方式，租户规模足够大</li>
+</ul>
+<h3 id="Calico"><a href="#Calico" class="headerlink" title="Calico"></a>Calico</h3><p>  基于BGP的三层Underlay。它的IP 隧道是当网络受控时的一种妥协的三层Overlay且支持network policy </p>
+<blockquote>
+<p>calico 可以创建并管理一个3层平面网络，为每个工作负载分配一个完全可路由的IP地址。工作负载可以在没有IP封装或网络地址转换的情况下进行通信，以实现裸机性能，简化故障排除和提供更好的互操作性。在需要使用overlay网络的环境中，提供IP-in-ip隧道技术，或者其他overlay 网络配合使用</p>
+</blockquote>
+<ul>
+<li>BGP（三层underlay）</li>
+<li>ipip（三层Overlay）</li>
+<li>Network Policy<ul>
+<li>IPIP是一种将各node的路由之间做一个tunnel，再把两个网络连接起来的模式。启用IPIP模式时，calico将在各node上创建一个名为“tunl0”的虚拟网络接口<br><img src="https://i.loli.net/2019/12/11/7PZkIVqs36cRJjt.png" alt="image.png"></li>
+<li>BGP模式则直接使用物理机作为虚拟路由器（vRouter），不再创建额外的tunnel </li>
+</ul>
+</li>
+</ul>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><ul>
+<li>Calico创建和管理一个扁平的三层网络（不需要overlay），每个容器会分配一个可路由的IP。由于通信时不需要解包和封包，网络性能损耗小，易于排查，易于水平扩展。</li>
+<li>小规模部署可以通过BGP client直接互联，大规模下可以通过指定的BGP Route Reflector来完成，这样保证所有的数据流量都是通过IP路由的方式完成互联</li>
+<li>Calico基于iptables还提供了丰富而灵活的网络policy ，保证通过各个节点上的ACL提供给哦你workload的多租户隔离、安全组以及其他可达性限制功能</li>
+</ul>
+<h4 id="Calico架构"><a href="#Calico架构" class="headerlink" title="Calico架构"></a>Calico架构</h4><p><img src="https://i.loli.net/2019/12/11/X7fZLcSKyiYzOQq.png" alt="image.png"></p>
+<p>calico 利用linux内核原声的路由和iptables防火墙功能。进出各个容器、虚拟机和物理主机的所有流量都会在路由到目标之前便利这些内核规则</p>
+<ul>
+<li>Felix：主要的Calico代理agent,运行每台计算机上管理endpoints资源</li>
+<li>calicoctl:允许从命令行界面配置实现高级策略和网络</li>
+<li>orchestrator plugins:提供与各种流行的云计算编排工具的紧密集成和同步支持</li>
+<li>key/calue store:存储calico的策略配置和网络状态信息，目前主要使用etcd 或k8s api</li>
+<li>calico/node:在每个主机上运行，从key/value 存储中读取相关的策略和网络配置信息，并在linux 内核中实现它</li>
+<li>dikastes/envoy :可选的kubernetes sidecars,可通过相互TLS身份认证保护工作负载间通信，并增加应用层控制策略</li>
+</ul>
+<h4 id="基本模式"><a href="#基本模式" class="headerlink" title="基本模式"></a>基本模式</h4><ul>
+<li>calico 本质上利用了网卡的代理ARP功能</li>
+<li>calico通过一个巧妙的方法将worknode的所有流量引导一个特殊的网关169.254.1.1，从而引流到主机calixxx网络设备上，最终将二三层流量全部转换成三层流量来转发</li>
+<li>在主机上通过开启代理ARP功能来实现ARP应答，使得ARP广播被抑制在主机上，抑制了广播风暴，也不会有ARP表膨胀的问题</li>
+</ul>
+<h3 id="Contic"><a href="#Contic" class="headerlink" title="Contic"></a>Contic</h3><p>  功能非常齐全，二层桥接，基于VLAN网络；三层路由，基于BGP网络；同时支持Overlay，通过Vxaln应对一些受控网络环境，提供ACI支持网络策略</p>
+<ul>
+<li>L2 Bridged（二层Underlay，基于VLAN）</li>
+<li>L3 Routed（三层Underlay，基于BGP）</li>
+<li>Overlay（二层Overlay/三层Overlay，基于VXLAN）</li>
+<li>ACI（网络策略）</li>
+</ul>
+<h3 id="Flannel"><a href="#Flannel" class="headerlink" title="Flannel"></a>Flannel</h3><p>   <em>host-gw模式，节点内部子网，节点之间通过路由指过去。但是这种方式存在限制，当它直接指引过去，要求所有节点在同一个二层里，不能穿越不同子网。当不能穿越子网时，通过VxLAN方式解决，帮助报文在二层网络上穿越。比如VPC router，Flannel完成与不同公有云厂商的VPC router对接。</em><br>   <em>在安装node节点的时候，节点上的进程按照flannel-&gt;docker-&gt;kubelet-&gt;kube-proxy的顺序启动的</em></p>
+<ul>
+<li><p>host gw（二层+三层Underlay）</p>
+</li>
+<li><p>VXLAN（二层+三层Overlay）</p>
+</li>
+<li><p>Alicloud VPCvRouter/AWSVPCrouter （二层+三层Underlay）</p>
+<p><em>Flannel 通过给每天宿主机分配一个子网的方式为容器提供虚拟网络，其基于linux TUN/TAP，使用UDP封装的IP包创建Overlay网络，并借助etcd维护网络的分配情况</em></p>
+</li>
+</ul>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p> 控制平面上host本地的flannel负责从远端的ETCD集群同步本地和其他host上的subnet信息，并为POD分配IP地址。数据平面Flannel通过Flannel通过Backend（比如UDP封装）来实现L3 OverLay，即可以选择一般的TUN设备又可以选择VxLAN设备<br> <img src="https://i.loli.net/2019/12/10/NU1WGE7tzxrb2SM.png" alt="image.png"></p>
+<p> 除了UDP，Flannel还支持其他很多Backend</p>
+<ul>
+<li>udp:使用用户态udp封装，性能有较大损失</li>
+<li>vxlan:vxlan封装，需要配置VNI，port和GBP</li>
+<li>host-gw：直接路由的方式，将容器网络的路由信息直接更新到主机的路由表中，仅适用于二层直接可达的网络</li>
+<li>aws-vpc：使用 Amazon VPC route table 创建路由，适用于AWS上运行的容器</li>
+<li>gce：使用Google Compute Engine Network创建路由，所有instance需要开启IP forwarding，适用于GCE上运行的容器</li>
+<li>ali-vpc：使用阿里云VPC route table 创建路由，适用于阿里云上运行的容器</li>
+</ul>
+<p>Flannel通过在每一个节点上启动一个叫Flanneld的进程，负责每一个节点上的子网划分，并将相关的配置信息如各个节点的子网网段、外部IP等保存在etcd中，而具体的网络包转发给具体的Backend来实现</p>
+<p>目前比较成熟的Backend有VxLAN、host-gw 以及UDP三种方式。Vxlan是目前官方推荐的一种backend实现方式，host-gw一般用于对网络性能要求高的场景，但需要基础架构本身的支持，UDP则一般用于Debug和一些比较老的不支持Vxlan的linux内核</p>
+<h4 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h4><ul>
+<li><p>当采用UDP模式时，flanneld进程在启动时会通过/dev/net/tun的方式生成一个TUN设备，TUN设备可以简单理解为linux当中提供的一种内核网络与用户空间（应用程序）通信的一种机制，即应用可以通过直接读写tun设备的方式手法RAW IP包。<br><img src="https://i.loli.net/2019/12/11/kpTQSUbo7vxFh2z.png" alt="image.png"></p>
+</li>
+<li><p>flanneld在整个过程中主要负责两个工作</p>
+<ul>
+<li>UDP封包解包</li>
+<li>节点上的路由表动态更新</li>
+</ul>
+</li>
+<li><p>从上面虚线部分就可以看到container A和container B虽然在物理网络上并没有直接相连，但在逻辑上就好像是处于同一个三层网络当中，这种基于底下的物理网络设备通过Flannel等软件定义网络技术实现的网络我们称之为Overlay网络</p>
+</li>
+<li><p>网络数据包先是通过tun设备从内核当中复制到用户态的应用，然后再有用户态的应用复制到内核，仅一次的网络传输就进行了两次用户态和内核态的切换，效率是不高的。</p>
+</li>
+<li><p>当flanneld启动时将创建VTEP设备（默认为flannel.1，若已经创建则跳过），并将VTEP设备的相关信息上报到etcd当中，而当在Flannel网络中有新的节点发现时，各个节点上的flanneld将依次执行以下流程</p>
+<ol>
+<li>在节点当中创建一条该节点所属网段的路由表，主要是能让Pod当中的流量路由到flannel.1接口。</li>
+<li>在节点当中添加一条该节点的IP以及VTEP设备的静态ARP缓存。</li>
+<li>在节点当中添加一条该节点的转发表</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/12/11/DszrXUA2ejoP3kC.png" alt="image.png"></p>
+<p>此时容器跨节点网络通信实现流程为：</p>
+<ol>
+<li>同UDP Backend模式，容器A当中的IP包通过容器A内的路由表被发送到cni0</li>
+<li>到达cni0当中的IP包通过匹配host A当中的路由表发现通往10.244.2.194的IP包应该交给flannel.1接口</li>
+<li>flannel.1作为一个VTEP设备，收到报文后将按照VTEP的配置进行封包，首先通过etcd得知10.244.2.194属于节点B，并得到节点B的IP，通过节点A当中的转发表得到节点B对应的VTEP的MAC，根据flannel.1设备创建时的设置的参数（VNI、local IP、Port）进行VXLAN封包</li>
+<li>通过host A跟host B之间的网络连接，VXLAN包到达host B的eth1接口</li>
+<li>通过端口8472，VXLAN包被转发给VTEP设备flannel.1进行解包</li>
+<li>解封装后的IP包匹配host B当中的路由表（10.244.2.0），内核将IP包转发给cni0</li>
+<li>cni0将IP包转发给连接在cni0上的容器B</li>
+</ol>
+<h4 id="host-gw"><a href="#host-gw" class="headerlink" title="host-gw"></a>host-gw</h4><p><img src="https://i.loli.net/2019/12/11/Z2Dl63Je1bfkYFp.png" alt="image.png"></p>
+<ol>
+<li>UDP、VXLAN模式一致，通过容器A的路由表IP包到达cni0</li>
+<li>到达cni0的IP包匹配到host A当中的路由规则（10.244.2.0），并且网关为172.16.130.164，即host B，所以内核将IP包发送给host B（172.16.130.164）</li>
+<li>IP包通过物理网络到达host B的eth1</li>
+<li>到达host B eth1的IP包匹配到host B当中的路由表（10.244.2.0），IP包被转发给cni0</li>
+<li>cni0将IP包转发给连接在cni0上的容器B</li>
+</ol>
+<ul>
+<li>host-gw模式其中一个局限性就是，由于是通过节点上的路由表来实现各个节点之间的跨节点网络通信，那么就得保证两个节点是可以直接路由过去的。按照内核当中的路由规则，网关必须在跟主机当中至少一个IP处于同一网段，故造成的结果就是采用host-gw这种Backend方式时则集群中所有的节点必须处于同一个网络当中，这对于集群规模比较大时需要对节点进行网段划分的话会存在一定的局限性。另外一个则是随着集群当中节点规模的增大，flanneld需要维护主机上成千上万条路由表的动态更新也是一个不小的压力</li>
+</ul>
+<h4 id="VXLAN"><a href="#VXLAN" class="headerlink" title="VXLAN"></a>VXLAN</h4><ul>
+<li>当采用Vxlan模式是，flanneld在启动时会通过Netlink机制与linux 内核通信，建立一个VTEP设备flannel.1(命名规则为flannel.[]VNI),VNI默认为1，类似于交换机种当中的一个网口</li>
+</ul>
+<h3 id="Openshift-SDN"><a href="#Openshift-SDN" class="headerlink" title="Openshift SDN"></a>Openshift SDN</h3><p>   基于VXLAN的二层+三层Overlay方案，同时支持network policy,数据平面基于OVS流表实现</p>
+<ul>
+<li>OVS-subnet(二层+三层Overlay，基于Vxlan)</li>
+<li>ovs-multitenant (二层+三层Overlay，基于Vxlan)</li>
+<li>ovs-networkpolicy</li>
+</ul>
+<h3 id="Kubnet-VPC自定义路由"><a href="#Kubnet-VPC自定义路由" class="headerlink" title="Kubnet + VPC自定义路由"></a>Kubnet + VPC自定义路由</h3><p>它会利用公有云平台本身自带的 VPC vRouter，配合 Kubernetes 自带的节点子网方式，用路由方式去完成整个容器网络的转发</p>
+<ul>
+<li>AWS VPC/Azure VPC/GCE VPC（二层+三层Underlay），需关闭源IP，目的IP检测</li>
+</ul>
+<h4 id="云化VPC场景存在的问题"><a href="#云化VPC场景存在的问题" class="headerlink" title="云化VPC场景存在的问题"></a>云化VPC场景存在的问题</h4><ol>
+<li>需要两套网络策略，一套是VPC层的安全组等；另一套是kubernetes的network policy。管理成本较高</li>
+<li>在BGP场景下，BGP Underlay即使能使用但无法跨越多AZ。跨越AZ一般意味着跨子网，跨子网意味着跨路由，但是VPC的vRouter一般不支持BGP。BGP underlay可以用，但也仅限于单AZ</li>
+</ol>
+<h4 id="VPC自定义路由的场景下的问题"><a href="#VPC自定义路由的场景下的问题" class="headerlink" title="VPC自定义路由的场景下的问题"></a>VPC自定义路由的场景下的问题</h4><ol>
+<li>节点规模受限于路由表数量，一般厂商都会在100一下，AWS是50，阿里默认48</li>
+<li>多次网络跳转，性能略有下降，节点层跳一次，在VPC里也要跳一次，使之性能有所影响</li>
+</ol>
+<h4 id="Overlay场景存在的问题"><a href="#Overlay场景存在的问题" class="headerlink" title="Overlay场景存在的问题"></a>Overlay场景存在的问题</h4><ol>
+<li>两层Overlay开销问题</li>
+<li>对于PPS敏感性业务，受影响较大</li>
+</ol>
+<h3 id="基于VPC深度集成的容器网络"><a href="#基于VPC深度集成的容器网络" class="headerlink" title="基于VPC深度集成的容器网络"></a>基于VPC深度集成的容器网络</h3><p> 基于VPC这种深度集成的容器网络，把VPC的能力上移到容器网络这一层，用VPC的能力去做转发和控制。如AWS EKS的VPC CNI插件，Azure AKS的VNET CNI插件。</p>
+<ul>
+<li>Kubernetes设计了Pod-Deployment-Service 经典三层服务访问机制</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/11/22/Flink/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3172,846 +3477,6 @@ nowait=False, arguments=None, argsig=&#39;BsssbF&#39;)</code></p>
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/08/28/AWS-Elastic-LoadBalancer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="seven">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="岳阳北寒">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/28/AWS-Elastic-LoadBalancer/" itemprop="url">AWS Elastic LoadBalancer</a></h1>
-        
-
-        <div class="post-meta">
-          
-                    <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-28T21:08:05+08:00">
-                2019-08-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AWS/" itemprop="url" rel="index">
-                    <span itemprop="name">AWS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>Elastic Load Balancing 在多个目标（如 Amazon EC2 实例、容器、IP 地址和 Lambda 函数）之间自动分配传入的应用程序流量</li>
-<li>ELB作为客户侧访问的单一入口</li>
-<li>ELB通过允许在一个或多个可用区域中添加或删除多个EC2实例来帮助透明并提高应用程序可用性，而不会中断业务流量</li>
-<li>ELB的优势<ul>
-<li>自身设计是一个高度容错和自动监控的分布式系统</li>
-<li>简化管理、维护和扩展负载均衡的复杂性</li>
-<li>可以是抵御网络攻击的第一道防线</li>
-<li>可以卸载加密和解密（SSL终止）的工作，以便于EX2实例专注于自身负载</li>
-<li>与Auto Scaling集成，可确保有足够的后端容量，以满足不同的流量压力</li>
-<li>非单点故障</li>
-</ul>
-</li>
-<li>默认情况下，Elastic Load Balancer将每个请求独立地路由到具有最小负载的已注册实例。</li>
-<li>如果EC2实例失败，ELB会自动将流量重新路由到剩余正在运行的健康EC2实例。 如果还原失败的EC2实例，Elastic Load Balancing将恢复该实例的流量。</li>
-<li>负载均衡器仅适用于区域内的AZ</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/28/bieqrjDdSkMzvo6.png" alt="screen-shot-2016-04-05-at-7-54-34-am.png"></p>
-<h1 id="AWS-ELB-Application-Load-Balancer"><a href="#AWS-ELB-Application-Load-Balancer" class="headerlink" title="AWS ELB Application Load Balancer"></a>AWS ELB Application Load Balancer</h1><blockquote>
-<p>Application Load Balancer 运行于请求级别（第 7 层），可根据请求的内容将流量路由至 EC2 实例、容器、IP 地址和 Lambda 函数等目标。Application Load Balancer 最适合 HTTP 和 HTTPS 流量的高级负载均衡，面向交付包括微服务和基于容器的应用程序在内的现代应用程序架构，提供高级请求路由功能。Application Load Balancer 通过确保始终使用最新的 SSL/TLS 密码和协议，简化并提高应用程序的安全性。</p>
-</blockquote>
-<p><img src="https://i.loli.net/2019/08/28/S57BoUwFTL2Rpcn.png" alt="img2.png"></p>
-<h2 id="Application-Load-Balancer-Benefits"><a href="#Application-Load-Balancer-Benefits" class="headerlink" title="Application Load Balancer Benefits"></a>Application Load Balancer Benefits</h2><ul>
-<li>支持基于路径的路由，可以根据请求中的URL将侦听器规则配置为转发请求。</li>
-<li>通过使用多个端口注册实例，支持将请求路由到单个EC2实例上的多个服务。</li>
-<li>支持容器化应用程序。 EC2容器服务（ECS）可以在计划任务时选择未使用的端口，并使用此端口向目标组注册任务，从而有效地使用群集。</li>
-<li>支持独立监控每项服务的运行状况，因为在目标组级别定义了运行状况检查，并在目标组级别报告了许多CloudWatch指标。 通过将目标组附加到Auto Scaling组，可以根据需求动态扩展每个服务。</li>
-</ul>
-<h2 id="Application-Load-Balancer-Features"><a href="#Application-Load-Balancer-Features" class="headerlink" title="Application Load Balancer Features"></a>Application Load Balancer Features</h2><ul>
-<li>支持使用HTTP和HTTPS协议对应用程序进行负载平衡</li>
-<li>支持HTTP/2，本机启用。支持HTTP/2的客户端可以通过TLS连接</li>
-<li>支持WebSockets和Secure WebSockets</li>
-<li>默认情况下，支持请求追踪</li>
-<li>支持使用负载均衡器生成的cookie的粘滞会话（会话关联），将来自同一客户端的请求路由到同一目标</li>
-<li>支持SSL终止，在将请求发送到后端目标之前解密ALB上的请求</li>
-<li>支持第7层特​​定功能，如X-Forwarded-For标头，以帮助确定实际的客户端IP，端口和协议</li>
-<li>随着请求容量自动伸缩调整其负载大小</li>
-<li>支持跨AZ部署，提高高可用性和传入流量分布</li>
-<li>与ACM集成以提供SSL / TLS证书并将其绑定到负载均衡器，从而使整个SSL卸载过程变得非常容易</li>
-<li>支持IPv6,面向internet的负载均衡</li>
-<li>支持请求追踪，自定义标识符“X-Amzn-Trace-Id”HTTP头标注在所有请求上，以帮助跟踪各种服务的请求流</li>
-<li>支持安全组来控制允许进出负载均衡器的流量</li>
-<li>提供访问日志，记录发送到负载均衡器的所有请求，并将日志存储在S3中，以便以压缩格式进行后续分析</li>
-<li>支持连接空闲超时 -  ALB为每个请求维护两个连接，一个连接客户端（前端），另一个连接目标实例（后端）。如果在空闲超时时间过去之前没有发送或接收数据，则ALB关闭前端连接</li>
-<li>支持使用循环算法的慢启动模式，允许添加新目标但不会用大量请求占用新目标</li>
-<li>与CloudWatch集成以提供请求计数，错误计数，错误类型和请求延迟等指标</li>
-<li>与AWS WAF集成，这是一种Web应用程序防火墙，允许通过允许基于IP地址，HTTP标头和自定义URI字符串的规则配置来保护Web应用程序免受攻击</li>
-<li>与CloudTrail集成以接收在AWS账户上进行的ALB API调用的历史记录</li>
-</ul>
-<h2 id="Application-Load-Balancer-Listeners"><a href="#Application-Load-Balancer-Listeners" class="headerlink" title="Application Load Balancer Listeners"></a>Application Load Balancer Listeners</h2><ul>
-<li>侦听器是使用配置的协议和端口检查连接请求的进程</li>
-<li>支持HTTP和HTTPS协议，端口好范围1-65535</li>
-<li>ALB支持HTTPS侦听器的SSL终止，这有助于卸载加密和解密工作，以便目标可以专注于其主要工作。</li>
-<li>HTTPS侦听器在侦听器上仅支持一个SSL服务器证书。</li>
-<li>具有HTTP和HTTPS侦听器的WebSockets（安全WebSockets）</li>
-<li>支持HTTP/2和HTTPS侦听器<ul>
-<li>一个HTTP/2连接可以并发128个请求</li>
-<li>ALB将这些请求转换为单独的HTTP / 1.1请求，并使用循环路由算法将它们分布到目标组中的健康目标上。</li>
-<li>HTTP / 2更有效地使用前端连接，从而减少客户端与负载均衡器之间的连接。</li>
-<li>不支持HTTP / 2的服务器推送功能</li>
-</ul>
-</li>
-<li>侦听器都有一个默认规则，可以自定义其他规则</li>
-<li>每个规则都包含优先级，动作，可选主机条件和可选路径条件<ul>
-<li>优先级——按优先级顺序评估规则，从最低值到最高值。 默认规则具有最低优先级</li>
-<li>动作——每个规则操作都有一个类型和一个目标组。 目前，唯一支持的类型是forward，它将请求转发给目标组。 可以随时更改规则的目标组。</li>
-<li>条件——有两种类型的规则条件：主机和路径。 当满足规则的条件时，则采取其行动</li>
-</ul>
-</li>
-<li>主机条件或基于主机的路由<ul>
-<li>主机条件可用于定义根据主机头中的主机名将请求转发到不同目标组的规则</li>
-<li>这使得能够使用单个ALB支持多个域，例如， orders.example.com，images.example.com，registration.example.com</li>
-<li>每个主机条件都有一个主机名。</li>
-</ul>
-</li>
-<li>路径条件或基于路径的路由<ul>
-<li>路径条件可用于定义根据请求中的URL将请求转发到不同目标组的规则 </li>
-<li>每个路径条件具有一个路径模式，例如， example.com/orders,example.com/images,example.com/registration</li>
-<li>如果请求中的URL与侦听器规则中的路径模式完全匹配，则使用该规则路由请求。</li>
-</ul>
-</li>
-</ul>
-<h2 id="相比CLB的优势"><a href="#相比CLB的优势" class="headerlink" title="相比CLB的优势"></a>相比CLB的优势</h2><ul>
-<li>支持基于路径的路由，其中​​可以配置规则以使侦听器基于URL转发请求</li>
-<li>支持基于主机的路由，其中​​可以为侦听器配置规则，以根据HTTP标头中的主机字段转发请求。</li>
-<li>支持将请求路由到单个EC2实例上的多个应用程序。可以使用多个端口向同一目标组注册每个实例或IP地址</li>
-<li>支持按IP地址注册目标，包括负载均衡器的VPC外部目标。</li>
-<li>使用动态端口映射为ECS支持容器化应用程序</li>
-<li>支持独立监控每项服务的运行状况，因为在目标组级别定义了运行状况检查和许多CloudWatch指标</li>
-<li>将目标组附加到Auto Scaling组可以根据需求动态扩展每个服务</li>
-<li>访问日志包含其他信息并以压缩格式存储</li>
-<li>提高负载均衡器性能</li>
-</ul>
-<h1 id="AWS-ELB-Network-Load-Balancer"><a href="#AWS-ELB-Network-Load-Balancer" class="headerlink" title="AWS ELB Network Load Balancer"></a>AWS ELB Network Load Balancer</h1><ul>
-<li>网络负载均衡器运行于连接级别（第 4 层），可根据 IP 协议数据将连接路由至Amazon VPC内的不同目标（Amazon EC2 实例、微服务和容器）</li>
-<li>网络负载均衡器最适合 TCP 和 UDP 流量的负载均衡，能够在保持超低延迟的同时每秒处理数百万个请求</li>
-<li>网络负载均衡器还经过了优化，能够处理突发的和不稳定的流量模式，同时在每个可用区使用单个静态 IP 地址</li>
-<li>集成了其他常见的 AWS 服务，例如 Auto Scaling、Amazon EC2 Container Service (ECS)、Amazon CloudFormation 和 Amazon AWS Certificate Manager (ACM)</li>
-</ul>
-<h2 id="Network-Load-Balancer-Features"><a href="#Network-Load-Balancer-Features" class="headerlink" title="Network Load Balancer Features"></a>Network Load Balancer Features</h2><h3 id="基于连接的负载均衡"><a href="#基于连接的负载均衡" class="headerlink" title="基于连接的负载均衡"></a>基于连接的负载均衡</h3><ul>
-<li>可以对 TCP 和 UDP 流量执行负载均衡，将连接路由到不同的目标 – Amazon EC2 实例、微服务和容器。</li>
-</ul>
-<h3 id="高可用性"><a href="#高可用性" class="headerlink" title="高可用性"></a>高可用性</h3><ul>
-<li>网络负载均衡器具有高可用性。</li>
-<li>它接受来自客户端的传入流量，并在同一可用区内的目标之间分配此流量。</li>
-<li>负载均衡器还监控其已注册目标的运行状况，并确保它仅将流量路由到正常运行的目标。</li>
-<li>当负载均衡器检测到无法正常运行的目标时，它会停止将流量路由到该目标，并将流量重新路由到剩余的正常运行的目标。如果一个可用区中的所有目标全都无法正常运行，但已在另一个可用区中设置了目标，则网络负载均衡器将自动进行故障转移以将流量路由到其他可用区中正常运行的目标。</li>
-</ul>
-<h3 id="高吞吐量"><a href="#高吞吐量" class="headerlink" title="高吞吐量"></a>高吞吐量</h3><ul>
-<li>网络负载均衡器旨在处理不断增长的流量，并可以对每秒数百万个请求进行负载均衡。它还可以处理突发的不稳定流量模式。</li>
-</ul>
-<h3 id="低延迟"><a href="#低延迟" class="headerlink" title="低延迟"></a>低延迟</h3><ul>
-<li>网络负载均衡器为延迟敏感的应用程序提供极低的延迟。</li>
-</ul>
-<h3 id="保留源-IP-地址"><a href="#保留源-IP-地址" class="headerlink" title="保留源 IP 地址"></a>保留源 IP 地址</h3><ul>
-<li>网络负载均衡器保留客户端源 IP，允许后端查看客户端的 IP 地址。然后，应用程序可以将其用于进一步处理。</li>
-</ul>
-<h3 id="静态-IP-支持"><a href="#静态-IP-支持" class="headerlink" title="静态 IP 支持"></a>静态 IP 支持</h3><ul>
-<li>网络负载均衡器自动提供每个可用区（子网）的静态 IP，应用程序可将其用作负载均衡器的前端 IP。</li>
-</ul>
-<h3 id="弹性-IP-支持"><a href="#弹性-IP-支持" class="headerlink" title="弹性 IP 支持"></a>弹性 IP 支持</h3><ul>
-<li>网络负载均衡器还允许为每个可用区（子网）分配弹性 IP，从而提供自己的固定 IP。</li>
-</ul>
-<h3 id="TLS-卸载"><a href="#TLS-卸载" class="headerlink" title="TLS 卸载"></a>TLS 卸载</h3><ul>
-<li>网络负载均衡器支持在客户端和负载均衡器之间终止 TLS。</li>
-<li>除了为在完成客户端与负载均衡器之间的 TLS 握手时首选的密码和协议提供灵活性的预定义安全策略外，网络负载均衡器还提供通过 AWS Identity and Access Management (IAM) 和 AWS Certificate Manager 管理 SSL 证书的功能。</li>
-<li>在网络负载均衡器上终止 TLS 后，源 IP 地址将继续保留在的后端应用程序中。</li>
-</ul>
-<h3 id="运行状况检查"><a href="#运行状况检查" class="headerlink" title="运行状况检查"></a>运行状况检查</h3><ul>
-<li>网络负载均衡器支持网络和应用程序目标运行状况检查。</li>
-<li>网络级健康检查<ul>
-<li>基于底层目标（实例或容器）对正常流量的总体响应。</li>
-<li>如果目标很慢或无法响应新的连接请求，则标记为不可用</li>
-</ul>
-</li>
-<li>应用程序级健康检查<ul>
-<li>通过定期探测给定目标上的特定 URL，它可以集成实际应用程序的运行状况</li>
-</ul>
-</li>
-</ul>
-<h3 id="DNS-故障转移"><a href="#DNS-故障转移" class="headerlink" title="DNS 故障转移"></a>DNS 故障转移</h3><ul>
-<li>如果没有向网络负载均衡器注册的正常运行的目标，或者给定区域中的网络负载均衡器节点无法正常运行，则 Amazon Route 53 会将流量定向到其他可用区中的负载均衡器节点。</li>
-</ul>
-<h3 id="与-Amazon-Route-53-集成"><a href="#与-Amazon-Route-53-集成" class="headerlink" title="与 Amazon Route 53 集成"></a>与 Amazon Route 53 集成</h3><ul>
-<li>如果的网络负载均衡器无法响应，则与 Route 53 的集成将从服务中删除不可用的负载均衡器 IP 地址，并将流量定向到另一个区域中的备用网络负载均衡器。</li>
-</ul>
-<h3 id="与-AWS-服务集成"><a href="#与-AWS-服务集成" class="headerlink" title="与 AWS 服务集成"></a>与 AWS 服务集成</h3><ul>
-<li>网络负载均衡器已与其他 AWS 服务集成，例如 Auto Scaling、Elastic Container Service (ECS)、CloudFormation、Elastic BeanStalk、CloudWatch、Config、CloudTrail、CodeDeploy 和 AWS Certificate Manager (ACM)。</li>
-</ul>
-<h3 id="长时间运行的-TCP-连接"><a href="#长时间运行的-TCP-连接" class="headerlink" title="长时间运行的 TCP 连接"></a>长时间运行的 TCP 连接</h3><p>网络负载均衡器支持长时间运行的 TCP 连接，这是 WebSocket 类型的应用程序的理想选择。</p>
-<h3 id="集中-API-支持"><a href="#集中-API-支持" class="headerlink" title="集中 API 支持"></a>集中 API 支持</h3><ul>
-<li>网络负载均衡器使用与 Application Load Balancer 相同的 API。这将使能够在同一 Amazon EC2 实例上的多个端口之间使用目标组、运行状况检查和负载均衡，以支持容器化应用程序。</li>
-</ul>
-<h3 id="可靠的监控和审核"><a href="#可靠的监控和审核" class="headerlink" title="可靠的监控和审核"></a>可靠的监控和审核</h3><ul>
-<li>Amazon CloudWatch 报告网络负载均衡器指标。CloudWatch 提供诸如活动流计数、正常运行的主机计数、新流计数、已处理的字节等指标。网络负载均衡器还与 AWS CloudTrail 集成。CloudTrail 跟踪对网络负载均衡器的 API 调用。</li>
-</ul>
-<h3 id="增强的日志记录"><a href="#增强的日志记录" class="headerlink" title="增强的日志记录"></a>增强的日志记录</h3><ul>
-<li>可以使用流日志功能记录发送到负载均衡器的所有请求。</li>
-<li>流日志捕获有关进出 VPC 中网络接口的 IP 流量的信息。流日志数据使用 Amazon CloudWatch Logs 进行存储。</li>
-<li>在的网络负载均衡器上添加 TLS 侦听器后，可以选择启用“访问日志”功能，这些访问日志将发送到选择的 S3 存储桶中。“访问日志”会捕获有关侦听器接收的每个 TLS 连接的信息，可从中了解成功和失败的 TLS 握手情况。</li>
-</ul>
-<h3 id="区域隔离"><a href="#区域隔离" class="headerlink" title="区域隔离"></a>区域隔离</h3><ul>
-<li>网络负载均衡器专为单个区域中的应用程序架构而设计。</li>
-<li>如果可用区中的某些内容失败，我们将自动故障转移到其他正常运行的可用区。</li>
-<li>虽然我们建议客户在多个可用区中配置负载均衡器和目标以实现高可用性，但可以在单个可用区中启用网络负载均衡器，以支持需要区域隔离的架构。</li>
-</ul>
-<h3 id="使用IP地址作为目标进行负载平衡"><a href="#使用IP地址作为目标进行负载平衡" class="headerlink" title="使用IP地址作为目标进行负载平衡"></a>使用IP地址作为目标进行负载平衡</h3><ul>
-<li>允许使用应用程序后端的IP地址作为目标，对AWS或本地托管的任何应用程序进行负载平衡。</li>
-<li>允许负载平衡到托管在任何IP地址和实例上任何接口上的应用程序后端。</li>
-<li>跨AWS和本地资源实现负载均衡的能力有助于迁移到云，突发到云或故障转移到云</li>
-<li>托管在本地位置的应用程序可用作Direct Connect连接和EC2-Classic（使用ClassicLink）的目标。</li>
-</ul>
-<h2 id="相比CLB的优势-1"><a href="#相比CLB的优势-1" class="headerlink" title="相比CLB的优势"></a>相比CLB的优势</h2><ul>
-<li>能够处理不稳定的工作负载并扩展到每秒数百万个请求，而无需预热</li>
-<li>支持负载均衡器的静态IP /弹性IP地址</li>
-<li>支持按IP地址注册目标，包括负载均衡器的VPC（内部部署）之外的目标。</li>
-<li>支持将请求路由到单个EC2实例上的多个应用程序。 可以使用多个端口向同一目标组注册单个实例或IP地址。</li>
-<li>支持容器化应用程序。 使用动态端口映射，ECS可以在计划任务时选择未使用的端口，并使用此端口向目标组注册任务。</li>
-<li>支持独立监控每项服务的运行状况，因为在目标组级别定义了运行状况检查，并在目标组级别报告了许多CloudWatch指标。 将目标组附加到Auto Scaling组可以根据需求动态扩展每个服务</li>
-</ul>
-<h1 id="ELB-主要功能"><a href="#ELB-主要功能" class="headerlink" title="ELB 主要功能"></a>ELB 主要功能</h1><h2 id="Scaling-ELB"><a href="#Scaling-ELB" class="headerlink" title="Scaling ELB"></a>Scaling ELB</h2><ul>
-<li>每个ELB都分配并配置了默认容量</li>
-<li>ELB Controller 存储了所有配置信息，还监视负载均衡器并管理用于处理客户端请求的容量</li>
-<li>随着流量配置文件的更改，控制器服务会扩展负载平衡器以处理更多请求，并在所有AZ中进行相同的扩展</li>
-<li>ELB通过利用更大的资源（向上扩展 - 具有更高性能特征的资源）或更多独立资源（向外扩展）来增加其容量</li>
-<li>AWS本身处理ELB容量的扩展，并且此扩展与ELB将其请求路由到的EC2实例的扩展不同，这由Auto Scaling处理</li>
-<li>Elastic Load Balancing扩展所需的时间范围为1到7分钟，具体取决于流量配置文件中的更改</li>
-</ul>
-<h2 id="预热-ELB"><a href="#预热-ELB" class="headerlink" title="预热 ELB"></a>预热 ELB</h2><ul>
-<li>ELB最适合逐渐增加流量</li>
-<li>AWS能够自动扩展并处理绝大多使用场景</li>
-<li>但是，在某些情况下，如果预计存在流量峰值或无法将负载测试配置为逐渐增加流量，建议联系AWS支持以使负载均衡器“预热”</li>
-<li>AWS将通过将负载均衡器配置为具有基于预期流量的适当容量级别来帮助预热ELB</li>
-<li>AWS需要有关开始日期，结束日期和每秒预期请求率的信息以及请求/响应的总大小</li>
-</ul>
-<h2 id="DNS-解析"><a href="#DNS-解析" class="headerlink" title="DNS 解析"></a>DNS 解析</h2><ul>
-<li>ELB根据流量配置文件自动缩放</li>
-<li>缩放时，Elastic Load Balancing服务将更新负载均衡器的域名系统（DNS）记录，以便新资源在DNS中注册其各自的IP地址。</li>
-<li>创建的DNS记录包括60秒的生存时间（TTL）设置</li>
-<li>默认情况下，当客户端执行DNS解析时，ELB将返回多个IP地址，并在每个DNS解析请求上随机排序记录。</li>
-<li>建议客户端至少每60秒重新查找DNS，以利用增加的容量</li>
-</ul>
-<h2 id="负载均衡类型"><a href="#负载均衡类型" class="headerlink" title="负载均衡类型"></a>负载均衡类型</h2><ul>
-<li>面向internet（具有公共IP地址）<ul>
-<li>面向Internet的负载均衡器通过Internet从客户端接收请求，并将这些请求分发到使用负载均衡器注册的EC2实例</li>
-</ul>
-</li>
-<li>内部负载均衡（只有私有IP地址）<ul>
-<li>将流量路由到私有子网中的EC2实例</li>
-</ul>
-</li>
-</ul>
-<h2 id="可用区-子网"><a href="#可用区-子网" class="headerlink" title="可用区/子网"></a>可用区/子网</h2><ul>
-<li>Elastic Load Balancing允许添加子网，并在子网所在的每个可用区中创建负载均衡器节点</li>
-<li>ELB至少连接一个子网</li>
-<li>每个AZ只能有一个子网连接到ELB。 连接已附加AZ的子网将替换现有子网</li>
-<li>每个子网必须具有至少具有/ 27位掩码的CIDR块，并且至少具有8个空闲IP地址，ELB使用这些IP地址与后端实例建立连接</li>
-<li>对于高可用性，建议为每个AZ附加一个子网，至少两个AZ，即使实例位于一个子网中</li>
-<li>子网可以与ELB连接或分离，它将启动或停止向子网中的实例发送请求</li>
-</ul>
-<h2 id="安全组和NACL"><a href="#安全组和NACL" class="headerlink" title="安全组和NACL"></a>安全组和NACL</h2><ul>
-<li>安全组和NACL应允许来自客户端的负载均衡器侦听器端口上的入站流量用于Internet ELB或VPC CIDR用于内部ELB</li>
-<li>安全组和NACL应允许实例侦听器端口和运行状况检查端口上的后端实例的出站流量</li>
-<li>此外，nacl应该允许在临时端口上响应</li>
-<li>所有EC2实例都应该允许来自ELB的传入流量</li>
-</ul>
-<h2 id="SSL协商配置"><a href="#SSL协商配置" class="headerlink" title="SSL协商配置"></a>SSL协商配置</h2><ul>
-<li>对于HTTPS负载平衡器，Elastic Load Balancing使用安全套接字层（SSL）协商配置（称为安全策略）来协商客户端和负载均衡器之间的SSL连接。<br>安全策略是SSL协议，SSL密码和服务器顺序首选项选项的组合</li>
-<li>Elastic Load Balancing支持以下版本的SSL协议TLS 1.2，TLS 1.1，TLS 1.0，SSL 3.0，SSL 2.0（现已弃用）<br>SSL协议使用多个SSL密码来加密Internet上的数据。</li>
-<li>Elastic Load Balancing支持Server Order Preference选项，用于协商客户端和负载均衡器之间的连接。<br>在SSL连接协商过程中，这允许负载均衡器控制并选择其列表中位于客户端密码列表中的第一个密码，而不是检查客户端列表中的第一个密码与服务器列表匹配的默认行为。</li>
-<li>Elastic Load Balancer允许使用预定义的安全策略或为特定需求创建自定义安全策略。如果未指定，则ELB选择最新的预定义安全策略。</li>
-</ul>
-<h2 id="健康检查"><a href="#健康检查" class="headerlink" title="健康检查"></a>健康检查</h2><ul>
-<li>负载均衡对所有已注册的实例执行运行状况检查，无论实例处于健康状态还是不健康状态</li>
-<li>负载均衡器执行运行状况检查以发现EC2实例的可用性，负载均衡器定期发送ping，尝试连接或向健康状况发送请求以检查EC2实例。</li>
-<li>运行状况检查是健康实例状态的InService和不健康实例的OutOfService</li>
-<li>负载均衡器每隔几秒向Ping协议、Ping端口和Ping路径上的每个注册实例发送一个请求。它等待实例在响应超时期间内响应。如果健康检查超过连续失败响应的不健康阈值，负载平衡器将该实例退出服务。当健康检查超过连续成功响应的健康阈值时，负载平衡器将实例重新投入服务。</li>
-<li>负载均衡器仅向健康的EC2实例发送请求，并停止将请求路由到不健康的实例</li>
-</ul>
-<h2 id="侦听器"><a href="#侦听器" class="headerlink" title="侦听器"></a>侦听器</h2><ul>
-<li>侦听器是检查来自客户端的连接请求的进程</li>
-<li>侦听器配置有用于前端（客户端到负载平衡器）连接的协议和端口，以及用于后端（负载平衡器到后端实例）连接的协议和端口</li>
-<li>监听器支持HTTP，HTTPS，SSL，TCP协议</li>
-<li>HTTPS或SSL连接需要X.509证书，负载均衡器使用证书终止连接，然后在将请求发送到后端实例之前解密来自客户端的请求。<br>如果要使用SSL，但不想终止负载均衡器上的连接，请使用TCP进行从客户端到负载均衡器的连接，使用SSL协议进行从负载均衡器到后端应用程序的连接，并在处理请求的后端实例上部署证书。</li>
-<li>如果为后端使用HTTPS / SSL连接，则可以在后端实例上启用身份验证。此身份验证可用于确保后端实例仅接受加密通信，并确保后端实例具有正确的证书。</li>
-<li>ELB HTTPS侦听器不支持客户端SSL证书</li>
-</ul>
-<h2 id="空闲连接超时"><a href="#空闲连接超时" class="headerlink" title="空闲连接超时"></a>空闲连接超时</h2><ul>
-<li>对于客户端通过负载均衡器发出的每个请求，它为每个客户端请求维护两个连接，一个与客户端的连接，另一个连接到后端实例。</li>
-<li>对于每个连接，负载均衡器管理在指定时间段内没有数据通过连接发送时触发的空闲超时。 如果未发送或接收数据，则在空闲超时时间（默认为60秒）过后，它将关闭连接</li>
-<li>对于冗长的操作（例如文件上载），应调整连接的空闲超时设置，以确保冗长的操作有时间完成</li>
-</ul>
-<h2 id="X-Forwarded标头和代理协议支持"><a href="#X-Forwarded标头和代理协议支持" class="headerlink" title="X-Forwarded标头和代理协议支持"></a>X-Forwarded标头和代理协议支持</h2><ul>
-<li>由于Elastic Load Balancer拦截客户端和后端服务器之间的流量，后端服务器不知道客户端和负载均衡器之间使用的IP地址，协议和端口。<br>ELB提供X-Forwarded标头支持，以帮助后端服务器在使用HTTP协议时跟踪相同的内容</li>
-<li>X-Forwarded-For请求标头，用于在使用HTTP或HTTPS负载均衡器时帮助后端服务器识别客户端的IP地址</li>
-<li>X-Forwarded-Proto请求标头，用于帮助后端服务器识别客户端用于连接服务器的协议（HTTP/S）</li>
-<li>X-Forwarded-Port请求标头，用于帮助后端服务器识别HTTP或HTTPS负载均衡器用于连接客户端的端口</li>
-<li>ELB提供代理协议支持，以帮助后端服务器在使用非HTTP协议或使用HTTPS时不跟踪负载平衡器上的SSL连接。</li>
-<li>代理协议是一种Internet协议，用于从请求连接的源传送连接到请求连接的目标的连接信息。</li>
-<li>Elastic Load Balancing使用代理协议版本1，它使用可读的头格式，其中包含源IP地址，目标IP地址和端口号等连接信息</li>
-<li>如果ELB已经在启用了代理协议的代理服务器后面，则在ELB上启用代理协议将添加两次头</li>
-</ul>
-<h2 id="块区域负载均衡"><a href="#块区域负载均衡" class="headerlink" title="块区域负载均衡"></a>块区域负载均衡</h2><ul>
-<li>默认情况下，负载均衡器会在其启用的可用区域内均匀分配传入请求，例如 如果AZ-a有5个实例且AZ-b有2个实例，则每个AZ的负载仍将分配50％</li>
-<li>启用跨区域负载平衡允许ELB在所有后端实例上均匀分配传入请求，而不管AZ包含多少个实例</li>
-<li>跨区域负载平衡器减少了在每个可用区中维护相同数量的后端实例的需要，并提高了应用程序处理一个或多个后端实例丢失的能力</li>
-<li>建议在每个可用区中保持大致相等数量的实例，以获得更高的容错能力</li>
-</ul>
-<h2 id="连接耗尽"><a href="#连接耗尽" class="headerlink" title="连接耗尽"></a>连接耗尽</h2><ul>
-<li>默认情况下，如果注册的带有ELB的EC2实例已取消注册或变得不健康，则负载均衡器会立即关闭连接</li>
-<li>连接耗尽可以帮助负载均衡器在保持现有连接打开的同时完成正在进行的请求，并防止任何新请求被发送到取消注册或不健康的实例</li>
-<li>连接耗尽有助于执行维护，例如部署软件升级或替换后端实例，而不会影响客户体验</li>
-<li>连接耗尽允许指定最大时间（介于1到3,600秒之间，默认为300秒），以便在将实例报告为取消注册之前保持连接处于活动状态。最大超时限制不适用于与不健康实例的连接</li>
-<li>如果实例是Auto Scaling组的一部分并且已为负载均衡器启用了连接耗尽，则Auto Scaling会在由于扩展事件或运行状况而终止实例之前等待正在进行的请求完成，或等待最大超时到期检查更换</li>
-</ul>
-<h2 id="粘性会话"><a href="#粘性会话" class="headerlink" title="粘性会话"></a>粘性会话</h2><ul>
-<li>ELB可以配置为使用粘性会话功能（也称为会话关联），使其能够将用户的会话绑定到实例，并确保将所有请求发送到同一实例</li>
-<li>粘性保持一段时间，可以通过应用程序的会话cookie（如果存在）或通过名为AWSELB的cookie（通过Elastic Load balancer创建）来控制</li>
-<li>默认情况下，禁用ELB的粘性会话</li>
-</ul>
-<h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><ul>
-<li>HTTP / HTTPS负载均衡器。</li>
-<li>SSL流量应该在ELB上终止。 ELB通过使用HTTP cookie在HTTP / HTTPS侦听器上执行会话粘性。 如果SSL流量未在ELB上终止并在后端实例上终止，则ELB无法查看HTTP标头，因此无法设置或读取任何来回传递的HTTP标头。</li>
-<li>每个可用区中至少有一个健康实例。</li>
-</ul>
-<h3 id="基于持续时间的粘性会话"><a href="#基于持续时间的粘性会话" class="headerlink" title="基于持续时间的粘性会话"></a>基于持续时间的粘性会话</h3><ul>
-<li>基于持续时间的会话粘性由ELB维护，使用创建的特殊cookie来跟踪每个请求到每个侦听器的实例。</li>
-<li>当负载均衡器收到请求时，它首先检查请求中是否存在此cookie。 如果是，则将请求发送到cookie中指定的实例。</li>
-<li>如果没有cookie，ELB会根据现有的负载平衡算法选择一个实例，并在响应中插入一个cookie，用于绑定来自同一用户的后续请求。</li>
-<li>粘性策略配置定义了cookie过期，它确定了每个cookie的有效期。 Cookie会在有效期到期后自动更新。</li>
-</ul>
-<h3 id="应用程序控制粘性会话"><a href="#应用程序控制粘性会话" class="headerlink" title="应用程序控制粘性会话"></a>应用程序控制粘性会话</h3><ul>
-<li>负载均衡器仅使用特殊cookie将会话与处理初始请求的实例相关联，但遵循策略配置中指定的应用程序cookie的生命周期。</li>
-<li>如果应用程序响应包含新的应用程序cookie，则负载均衡器仅插入新的粘性cookie。 负载均衡器粘性cookie不会随每个请求更新。</li>
-<li>如果明确删除或过期应用程序cookie，则在发出新的应用程序cookie之前，会话将停止粘滞。</li>
-<li>如果实例失败或变得不健康，负载均衡器会停止将路由请求发送到该实例，而是根据现有的负载均衡算法选择新的健康实例。 负载均衡器将会话视为现在“卡住”到新的正常实例，并继续将请求路由到该实例，即使失败的实例返回。</li>
-</ul>
-<h2 id="路由算法"><a href="#路由算法" class="headerlink" title="路由算法"></a>路由算法</h2><ul>
-<li><strong><font color="red">对于 Application Load Balancer，用于接收请求的负载均衡器节点会按照优先级顺序评估侦听器规则以确定应用哪个规则，然后使用轮询路由算法从目标组中选择一个目标以实施规则操作。每个目标组的路由都是单独进行的，即使某个目标已在多个目标组中注册。</font></strong></li>
-<li><strong><font color="red">对于 Network Load Balancer，用于接收连接的负载均衡器节点会根据协议、源 IP 地址、源端口、目标 IP 地址、目标端口和 TCP 序列号，使用流式哈希算法从目标组中为默认规则选择一个目标。来自客户端的 TCP 连接具有不同的源端口和序列号，可以路由到不同的目标。每个单独的 TCP 连接在连接的有效期内路由到单个目标。</font></strong></li>
-<li><font color="red"><strong>对于 Classic Load Balancer，接受请求的负载均衡器节点将利用不同算法来选择已注册的实例。它对 TCP 侦听器使用轮询路由算法，对 HTTP 和 HTTPS 侦听器使用最少未完成请求路由算法。<br></strong></font></li>
-</ul>
-<h2 id="ALB-vs-NLB-vs-CLB"><a href="#ALB-vs-NLB-vs-CLB" class="headerlink" title="ALB vs NLB vs CLB"></a>ALB vs NLB vs CLB</h2><table>
-<thead>
-<tr>
-<th align="left"><strong>功能</strong></th>
-<th align="center"><strong>Application Load Balancer</strong></th>
-<th align="center"><strong>Network Load Balancer</strong></th>
-<th align="center"><strong>Classic Load Balancer</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">协议</td>
-<td align="center">HTTP、HTTPS</td>
-<td align="center">TCP、UDP、TLS</td>
-<td align="center">TCP、SSL/TLS、HTTP、HTTPS</td>
-</tr>
-<tr>
-<td align="left">平台</td>
-<td align="center">VPC</td>
-<td align="center">VPC</td>
-<td align="center">EC2-Classic、VPC</td>
-</tr>
-<tr>
-<td align="left">运行状况检查</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-</tr>
-<tr>
-<td align="left">CloudWatch 指标</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-</tr>
-<tr>
-<td align="left">日志记录</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-</tr>
-<tr>
-<td align="left">区域故障转移</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-</tr>
-<tr>
-<td align="left">Connection Draining（注销延迟）</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-</tr>
-<tr>
-<td align="left">负载均衡到同一实例上的多个端口</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">IP 地址即目标</td>
-<td align="center">✔</td>
-<td align="center">✔（TCP、TLS）</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">负载均衡器删除保护</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">可配置的空闲连接超时</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center">✔</td>
-</tr>
-<tr>
-<td align="left">跨区负载均衡</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-</tr>
-<tr>
-<td align="left">粘性会话</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center">✔</td>
-</tr>
-<tr>
-<td align="left">静态 IP</td>
-<td align="center"></td>
-<td align="center">✔</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">弹性 IP 地址</td>
-<td align="center"></td>
-<td align="center">✔</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">保留源 IP 地址</td>
-<td align="center"></td>
-<td align="center">✔</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">基于资源的 IAM 权限</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-</tr>
-<tr>
-<td align="left">基于标签的 IAM 权限</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">慢启动</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">WebSocket</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">PrivateLink 支持</td>
-<td align="center"></td>
-<td align="center">✔（TCP、TLS）</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">基于源 IP 地址 CIDR 的路由</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">第 7 层</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">基于路径的路由</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">基于主机的路由</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">本机 HTTP/2</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">重定向</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">固定响应</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">Lambda 函数即目标</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">基于 HTTP 标头的路由</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">基于 HTTP 方法的路由</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">基于查询字符串参数的路由</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">安全性</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">SSL 卸载</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-</tr>
-<tr>
-<td align="left">服务器名称指示 (SNI)</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">后端服务器加密</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-<td align="center">✔</td>
-</tr>
-<tr>
-<td align="left">用户身份验证</td>
-<td align="center">✔</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">自定义安全策略</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">✔</td>
-</tr>
-</tbody></table>
-<h1 id="AutoScaling-amp-ELB"><a href="#AutoScaling-amp-ELB" class="headerlink" title="AutoScaling &amp; ELB"></a>AutoScaling &amp; ELB</h1><ul>
-<li>Auto Scaling动态添加和删除EC2实例，而Elastic Load Balancing通过优化路由流量来管理传入请求，这样就不会有任何一个实例超负荷运行</li>
-<li>AUto Scaling有助于在用户需求增加时自动增加EC2实例的数量，并在需求下降时减少EC2实例的数量</li>
-<li>ELB服务有助于在所有正在运行的EC2实例之间自动分配传入的Web流量</li>
-<li>ELB使用负载平衡器来监控流量并处理来自Internet的请求</li>
-<li>使用ELB和Auto Scaling<ul>
-<li>可以轻松地在动态变化的EC2实例中路由流量</li>
-<li>负载均衡器充当Auto Scaling组中实例的所有传入流量的单一连接点<br><img src="https://i.loli.net/2019/08/28/47J6cRxMrObEjwY.png" alt="Screen-Shot-2016-06-07-at-4.13.10-PM.png"></li>
-</ul>
-</li>
-</ul>
-<h2 id="Attaching-Detaching-ELB-with-Auto-Scaling-Group"><a href="#Attaching-Detaching-ELB-with-Auto-Scaling-Group" class="headerlink" title="Attaching/Detaching ELB with Auto Scaling Group"></a>Attaching/Detaching ELB with Auto Scaling Group</h2><ul>
-<li>Auto Scaling与Elastic Load Balancing集成，可以将一个或多个负载均衡器连接到现有的Auto Scaling组。</li>
-<li>ELB使用其IP地址注册EC2实例，并将请求路由到实例的主接口（eth0）的主IP地址。</li>
-<li>连接ELB后，它会自动在组中注册实例，并在实例之间分配传入流量</li>
-<li>分离ELB时，它会在取消注册组中的实例时进入“删除”状态。</li>
-<li>如果启用了连接耗尽，ELB将在取消注册实例之前等待正在进行的请求完成。</li>
-<li>从ELB注销实例后，实例仍在运行</li>
-<li>Auto Scaling会在启动时向ELB添加实例，但这可以暂停。 在暂停期间启动的实例在恢复后不会添加到负载均衡器，并且必须手动注册。</li>
-</ul>
-<h2 id="High-Availability-amp-Redundancy"><a href="#High-Availability-amp-Redundancy" class="headerlink" title="High Availability &amp; Redundancy"></a>High Availability &amp; Redundancy</h2><ul>
-<li>Auto Scaling可以跨越同一区域内的多个AZ</li>
-<li>当一个AZ变得不健康或不可用时，Auto Scaling会在未受影响的AZ中启动新实例</li>
-<li>当不健康的AZ恢复时，Auto Scaling会在所有健康的AZ中重新分配流量</li>
-<li>可以设置Elastic Load balancer以在区域内的单个AZ或多个AZ中跨EC2实例分发传入请求</li>
-<li>建议通过跨区域内多个AZ的Auto Scaling组使用Auto Scaling和ELB，然后设置ELB以在这些AZ之间分配传入流量，来利用地理冗余的安全性和可靠性。</li>
-<li>在为ELB启用的所有AZ中，传入流量均衡负载到AZ中</li>
-</ul>
-<h2 id="Health-Checks"><a href="#Health-Checks" class="headerlink" title="Health Checks"></a>Health Checks</h2><ul>
-<li>Auto Scaling组通过定期检查EC2实例状态检查的结果来确定每个实例的运行状况</li>
-<li>如果实例未通过EC2实例状态检查，Auto Scaling会将实例标记为运行状况不佳并替换实例</li>
-<li>ELB还对在其上注册的EC2实例执行健康检查，例如 ping和健康检查页面提供应用程序</li>
-<li>如果ELB运行状况检查失败，则默认情况下，Auto Scaling不会替换实例</li>
-<li>应使用实例的ELB运行状况检查来确保流量仅路由到正常运行的实例</li>
-<li>向Auto Scaling组注册负载均衡器后，除了EC2实例状态检查之外，还可以将其配置为使用ELB运行状况检查的结果来确定Auto Scaling组中EC2实例的运行状况。</li>
-</ul>
-<h2 id="Monitoring"><a href="#Monitoring" class="headerlink" title="Monitoring"></a>Monitoring</h2><ul>
-<li>Elastic Load Balancing将有关负载均衡器和EC2实例的数据发送到Amazon CloudWatch。 CloudWatch收集有关资源性能的数据，并将其显示为指标。</li>
-<li>在使用Auto Scaling组注册一个或多个负载均衡器后，可以将Auto Scaling组配置为使用ELB指标（例如请求延迟或请求计数）自动扩展应用程序</li>
-</ul>
-<h1 id="AWS-ELB-Monitoring"><a href="#AWS-ELB-Monitoring" class="headerlink" title="AWS ELB Monitoring"></a>AWS ELB Monitoring</h1><h2 id="Cloud-Watch-Metrics"><a href="#Cloud-Watch-Metrics" class="headerlink" title="Cloud Watch Metrics"></a>Cloud Watch Metrics</h2><ul>
-<li>Elastic Load Balancing向Amazon CloudWatch发布有关负载均衡器和后端实例的数据采集信息</li>
-<li>仅当请求流经负载均衡器时，Elastic Load Balancing才会将指标报告给CloudWatch。 如果有请求流经负载均衡器，Elastic Load Balancing将以60秒的间隔测量并发送其指标。 如果没有请求流经负载均衡器或没有指标数据，则不会报告该指标。</li>
-</ul>
-<p>监控指标包含如下</p>
-<ul>
-<li>HealthyHostCount，UnHealthyHostCount<ul>
-<li>使用负载均衡器注册的健康和不健康实例的数量</li>
-<li>统计数据是平均值，最小值和最大值</li>
-</ul>
-</li>
-<li>RequestCount<ul>
-<li>在指定的时间间隔内（1或5分钟）完成的请求数或连接数</li>
-<li>统计数据是总和</li>
-</ul>
-</li>
-<li>latency<ul>
-<li>请求离开负载均衡器之后经过的时间（以秒为单位），直到收到响应的标头</li>
-<li>统计数据是平均值</li>
-</ul>
-</li>
-<li>SurgeQueueLength<ul>
-<li>待处理路由的请求总数</li>
-<li>如果请求无法与正常实例建立连接以便路由请求，则负载均衡器会对请求进行排队</li>
-<li>队列的最大大小为1,024。队列已满时，将拒绝其他请求。</li>
-<li>统计信息是max，因为它表示排队请求的峰值</li>
-</ul>
-</li>
-<li>SpilloverCount<ul>
-<li>由于浪涌队列已满而被拒绝的请求总数。理想情况下应为0</li>
-<li>统计数据是总和</li>
-</ul>
-</li>
-<li>HTTPCode_ELB_4XX，HTTPCode_ELB_5XX<ul>
-<li>负载均衡器生成的客户端和服务器错误代码</li>
-<li>统计数据是总和</li>
-</ul>
-</li>
-<li>HTTPCode_Backend_2XX，HTTPCode_Backend_3XX，HTTPCode_Backend_4XX，HTTPCode_Backend_5XX<ul>
-<li>已注册实例生成的HTTP响应代码数</li>
-<li>统计数据是总和</li>
-</ul>
-</li>
-</ul>
-<h2 id="ELB-访问日志"><a href="#ELB-访问日志" class="headerlink" title="ELB 访问日志"></a>ELB 访问日志</h2><ul>
-<li>Elastic Load Balancing提供访问日志，可捕获有关发送到负载均衡器的所有请求的详细信息</li>
-<li>每个日志都包含诸如接收请求的时间，客户端的IP地址，延迟，请求路径和服务器响应之类的信息。<br>Elastic Load Balancing捕获日志并将其存储在Amazon S3存储桶中</li>
-<li>默认情况下禁用访问日志记录，无需任何额外费用即可启用。 只需支付S3存储费用</li>
-</ul>
-<h2 id="Cloud-Trail-日志"><a href="#Cloud-Trail-日志" class="headerlink" title="Cloud Trail 日志"></a>Cloud Trail 日志</h2><ul>
-<li>AWS CloudTrail可用于捕获由AWS账户或代表AWS账户制作的Elastic Load Balancing API的所有调用，并且可以直接使用Elastic Load Balancing API，也可以通过AWS管理控制台或AWS CLI间接调用</li>
-<li>CloudTrail将信息作为日志文件存储在指定的Amazon S3存储桶中。</li>
-<li>CloudTrail收集的日志可用于监控负载均衡器的活动，并确定进行的API调用，使用的源IP地址，拨打电话的人员，拨打电话的时间等等。</li>
-</ul>
-<h1 id="Classic-Load-Balancer-vs-Application-Load-Balancer"><a href="#Classic-Load-Balancer-vs-Application-Load-Balancer" class="headerlink" title="Classic Load Balancer vs Application Load Balancer"></a>Classic Load Balancer vs Application Load Balancer</h1><h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
-<li>CLB是跨多个EC2实例的流量的简单负载平衡的理想选择，</li>
-<li>ALB是微服务或基于容器的体系结构的理想选择，在这种体系结构中，需要将流量路由到多个服务或在同一EC2实例上的多个端口之间进行负载平衡。</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/28/oiZSxfG1CDlRYVb.png" alt="AWS-ELB-Classic-Load-Balancer-vs-Application-Load-Balancer.png"></p>
-<h2 id="支持协议"><a href="#支持协议" class="headerlink" title="支持协议"></a>支持协议</h2><ul>
-<li>CLB在第4层运行，支持HTTP，HTTPS，TCP，SSL，而Application Load Balancer在第7层运行，支持HTTP，HTTPS，HTTP / 2，WebSockets</li>
-<li>如果需要第4层功能，则应使用CLB</li>
-</ul>
-<h2 id="支持的平台"><a href="#支持的平台" class="headerlink" title="支持的平台"></a>支持的平台</h2><ul>
-<li>CLB 支持EC2-Classic和EC2-VPC，而ALB仅支持EC2-VPC</li>
-</ul>
-<h2 id="Stick-Sessions（Cookies）"><a href="#Stick-Sessions（Cookies）" class="headerlink" title="Stick Sessions（Cookies）"></a>Stick Sessions（Cookies）</h2><ul>
-<li>Stick Sessions（粘性会话）使负载均衡器能够将用户的会话绑定到特定实例，从而确保会话期间来自用户的所有请求都发送到同一个实例</li>
-<li>Classic和Application Load Balancer都支持粘性会话以保持会话亲和性</li>
-</ul>
-<h2 id="空闲连接超时-1"><a href="#空闲连接超时-1" class="headerlink" title="空闲连接超时"></a>空闲连接超时</h2><ul>
-<li>空闲连接超时有助于指定一个时间段，如果在空闲超时时间过去之前没有数据发送或接收，ELB将使用该时间段来关闭连接</li>
-<li>Classic和Application Load Balancer都支持空闲连接超时</li>
-</ul>
-<h2 id="连接耗尽-1"><a href="#连接耗尽-1" class="headerlink" title="连接耗尽"></a>连接耗尽</h2><ul>
-<li>连接耗尽使负载均衡器能够完成对取消注册或不健康的实例的正在进行的请求</li>
-<li>Classic和Application Load Balancer都支持连接耗尽</li>
-</ul>
-<h2 id="SSL终止"><a href="#SSL终止" class="headerlink" title="SSL终止"></a>SSL终止</h2><ul>
-<li>CLB和ALB都支持SSL终端，以便在将客户端发送到目标之前对其进行解密，从而减轻负载。 必须在负载均衡器上安装SSL证书。</li>
-</ul>
-<h2 id="后端服务器身份验证"><a href="#后端服务器身份验证" class="headerlink" title="后端服务器身份验证"></a>后端服务器身份验证</h2><ul>
-<li>后端服务器身份验证允许对实例进行身份验证。 仅当实例提供给负载均衡器的公钥与负载均衡器的身份验证策略中的公钥匹配时，负载均衡器才与实例通信。</li>
-<li>CLB器支持，而应用程序负载均衡器不支持后端服务器身份验证 </li>
-</ul>
-<h2 id="跨区域负载平衡"><a href="#跨区域负载平衡" class="headerlink" title="跨区域负载平衡"></a>跨区域负载平衡</h2><ul>
-<li>跨区域负载平衡有助于在其启用的AZ中的所有实例之间均匀分配传入请求。 默认情况下，Load Balancer将在其启用的AZ上均匀分布请求，而不管其承载的实例如何。</li>
-<li>Classic和Application Load Balancer都支持跨区域负载平衡，但是对于Classic，需要启用它，而对于ALB，它始终启用</li>
-</ul>
-<h2 id="健康检查-1"><a href="#健康检查-1" class="headerlink" title="健康检查"></a>健康检查</h2><ul>
-<li>Classic和Application Load Balancer都支持运行状况检查，以确定实例是健康的还是不健康的<br>ALB提供运行状况检查改进，允许配置200-399的详细错误代码</li>
-</ul>
-<h2 id="CloudWatch指标"><a href="#CloudWatch指标" class="headerlink" title="CloudWatch指标"></a>CloudWatch指标</h2><ul>
-<li>Classic和Application Load Balancer都与CloudWatch集成以提供指标，ALB提供额外的指标</li>
-</ul>
-<h2 id="访问日志"><a href="#访问日志" class="headerlink" title="访问日志"></a>访问日志</h2><ul>
-<li>访问日志捕获有关发送到负载均衡器的请求的详细信息。 每个日志都包含诸如接收请求的时间，客户端的IP地址，延迟，请求路径和服务器响应之类的信息</li>
-<li>Classic和Application Load Balancer都提供访问日志，ALB提供其他属性</li>
-</ul>
-<h2 id="基于主机的路由和基于路径的路由"><a href="#基于主机的路由和基于路径的路由" class="headerlink" title="基于主机的路由和基于路径的路由"></a>基于主机的路由和基于路径的路由</h2><ul>
-<li>基于主机的路由使用主机条件来定义根据主机头中的主机名将请求转发到不同目标组的规则。 这使ALB能够使用单个负载均衡器支持多个域。</li>
-<li>基于路径的路由使用路径条件来定义基于请求中的URL将请求转发到不同目标组的规则。 每个路径条件都有一个路径模式。 如果请求中的URL与侦听器规则中的路径模式完全匹配，则使用该规则路由请求。<br>只有ALB支持基于主机和路径的路由。</li>
-</ul>
-<h2 id="动态端口"><a href="#动态端口" class="headerlink" title="动态端口"></a>动态端口</h2><ul>
-<li>只有ALB支持使用ECS进行动态端口映射，这允许两个服务容器在动态端口上的单个服务器上运行，ALB自动检测并重新配置自身。</li>
-</ul>
-<h2 id="删除保护"><a href="#删除保护" class="headerlink" title="删除保护"></a>删除保护</h2><ul>
-<li>只有ALB支持删除保护，如果启用了删除保护，则无法删除负载均衡器</li>
-</ul>
-<h2 id="请求跟踪"><a href="#请求跟踪" class="headerlink" title="请求跟踪"></a>请求跟踪</h2><ul>
-<li>只有ALB支持请求跟踪来跟踪从客户端到目标或其他服务的HTTP请求。</li>
-</ul>
-<h2 id="VPC中的IPv6"><a href="#VPC中的IPv6" class="headerlink" title="VPC中的IPv6"></a>VPC中的IPv6</h2><ul>
-<li>只有ALB在VPC中支持IPv6</li>
-</ul>
-<h2 id="AWS-WAF"><a href="#AWS-WAF" class="headerlink" title="AWS WAF"></a>AWS WAF</h2><ul>
-<li>只有ALB支持AWS WAF，可以直接在VPC中的ALB（内部和外部）上使用，以保护网站和Web服务</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -4062,7 +3527,7 @@ nowait=False, arguments=None, argsig=&#39;BsssbF&#39;)</code></p>
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -4084,7 +3549,7 @@ nowait=False, arguments=None, argsig=&#39;BsssbF&#39;)</code></p>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

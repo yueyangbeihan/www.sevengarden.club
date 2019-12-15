@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="k8s,网络,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Kubnernets 基本网络模型准入条件 任意两个pod之间其实是可以直接通信的，无需经过显式使用NAT来接收数据和地址转换 node与pod之间是可以直接通信的，无需使用明显的地址转换 pod看自己的IP跟别人看见它所用的IP是一样的，中间不能经过转换为外部提供服务   外部世界和service之间是怎么通信的？ service如何与后端的pod通讯 pod和pod之间调用是怎么做到通信的 p">
+<meta name="keywords" content="k8s,网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes网络模型">
+<meta property="og:url" content="http://sevengarden.club/2019/12/15/Kubernetes网络模型/index.html">
+<meta property="og:site_name" content="岳阳北寒">
+<meta property="og:description" content="Kubnernets 基本网络模型准入条件 任意两个pod之间其实是可以直接通信的，无需经过显式使用NAT来接收数据和地址转换 node与pod之间是可以直接通信的，无需使用明显的地址转换 pod看自己的IP跟别人看见它所用的IP是一样的，中间不能经过转换为外部提供服务   外部世界和service之间是怎么通信的？ service如何与后端的pod通讯 pod和pod之间调用是怎么做到通信的 p">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/7PZkIVqs36cRJjt.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/X7fZLcSKyiYzOQq.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/10/NU1WGE7tzxrb2SM.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/kpTQSUbo7vxFh2z.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/DszrXUA2ejoP3kC.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/11/Z2Dl63Je1bfkYFp.png">
+<meta property="og:updated_time" content="2019-12-15T07:49:44.625Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kubernetes网络模型">
+<meta name="twitter:description" content="Kubnernets 基本网络模型准入条件 任意两个pod之间其实是可以直接通信的，无需经过显式使用NAT来接收数据和地址转换 node与pod之间是可以直接通信的，无需使用明显的地址转换 pod看自己的IP跟别人看见它所用的IP是一样的，中间不能经过转换为外部提供服务   外部世界和service之间是怎么通信的？ service如何与后端的pod通讯 pod和pod之间调用是怎么做到通信的 p">
+<meta name="twitter:image" content="https://i.loli.net/2019/12/11/7PZkIVqs36cRJjt.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://sevengarden.club/2019/12/15/Kubernetes网络模型/">
+
+
+
+
+
+  <title>Kubernetes网络模型 | 岳阳北寒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">岳阳北寒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">要有最朴素的生活和最遥远的梦想，即使明日天寒地冻，路远马亡.......</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-somrthing">
+          <a href="/有料" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            somrthing
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://sevengarden.club/2019/12/15/Kubernetes网络模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seven">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="岳阳北寒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kubernetes网络模型</h1>
+        
+
+        <div class="post-meta">
+          
+                    <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-15T15:48:39+08:00">
+                2019-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Kubnernets-基本网络模型"><a href="#Kubnernets-基本网络模型" class="headerlink" title="Kubnernets 基本网络模型"></a>Kubnernets 基本网络模型</h2><h3 id="准入条件"><a href="#准入条件" class="headerlink" title="准入条件"></a>准入条件</h3><ol>
+<li>任意两个pod之间其实是可以直接通信的，无需经过显式使用NAT来接收数据和地址转换</li>
+<li>node与pod之间是可以直接通信的，无需使用明显的地址转换</li>
+<li>pod看自己的IP跟别人看见它所用的IP是一样的，中间不能经过转换<h3 id="为外部提供服务"><a href="#为外部提供服务" class="headerlink" title="为外部提供服务"></a>为外部提供服务</h3></li>
+</ol>
+<ul>
+<li>外部世界和service之间是怎么通信的？</li>
+<li>service如何与后端的pod通讯</li>
+<li>pod和pod之间调用是怎么做到通信的</li>
+<li>pod 内部容器与容器之间通信</li>
+</ul>
+<blockquote>
+<p>容器网络复杂性在于它是寄生在Host网络之上。从这个角度讲，可以把容器网络方案大体分为Underlay和Overlay 两大派别</p>
+</blockquote>
+<ul>
+<li>Underlay的标准是它与Host网络是同层的，从外在可见的一个特征就是它是不是使用了Host网络同样的网段、输入输出基础设备、容器的IP地址是不是需要与Host网络取得协同</li>
+<li>Overlay不一样的地方在于它并不需要从Host网络的IPM的管理组件去申请IP，一般来说，它只需要跟Host网络不冲突，这个IP可以自由分配的</li>
+</ul>
+<p><strong>协议栈层级</strong></p>
+<ul>
+<li>二层 （桥接，ARP+MAC larning ），广播问题</li>
+<li>三层（纯路由转发）：<ul>
+<li>一般基于BGP，自主学习机房的路由状况。最大的优点就是IP穿透性，只要基于这个IP网络，那此网络就可以穿越。</li>
+<li>规模优势，具有良好的扩展性</li>
+<li>实际部署中，企业的网络受控，BGP不能随便使用的</li>
+</ul>
+</li>
+<li>二层+三层（节点内部二层转发，跨节点三层转发）<ul>
+<li>解决纯二层规模问题，又能解决三层各种限制问题，特别是云化场景下VPC的三层转发能力</li>
+<li>比较适合Kubernetes对于Pod网络假设，Pod会漂移，IP会改变，不变的是service和ingress</li>
+<li>运维角度讲，节点内部就是一个子网，大家习惯利用传统的云化场景，每一个独立可见的应用有一个独立的IP，且不会改变，那么二层加三层就无法做到</li>
+</ul>
+</li>
+</ul>
+<p><strong>穿越形态</strong></p>
+<ul>
+<li>Overlay （隧道穿越底层基础设施）<ul>
+<li>云化场景常见,受控VPC网络</li>
+</ul>
+</li>
+<li>Underlay (直接穿越底层基础设施)<ul>
+<li>适合可控的网络场景，无论是裸机还是虚拟机，整个网络比啊可以直接穿越过去</li>
+</ul>
+</li>
+</ul>
+<p><strong>隔离方式</strong></p>
+<ul>
+<li>FLAT：扁平网络，无隔离</li>
+<li>VLAN：机房内使用，租户数量受限</li>
+<li>VXLAN/GRE：基于IP穿越方式，租户规模足够大</li>
+</ul>
+<h3 id="Calico"><a href="#Calico" class="headerlink" title="Calico"></a>Calico</h3><p>  基于BGP的三层Underlay。它的IP 隧道是当网络受控时的一种妥协的三层Overlay且支持network policy </p>
+<blockquote>
+<p>calico 可以创建并管理一个3层平面网络，为每个工作负载分配一个完全可路由的IP地址。工作负载可以在没有IP封装或网络地址转换的情况下进行通信，以实现裸机性能，简化故障排除和提供更好的互操作性。在需要使用overlay网络的环境中，提供IP-in-ip隧道技术，或者其他overlay 网络配合使用</p>
+</blockquote>
+<ul>
+<li>BGP（三层underlay）</li>
+<li>ipip（三层Overlay）</li>
+<li>Network Policy<ul>
+<li>IPIP是一种将各node的路由之间做一个tunnel，再把两个网络连接起来的模式。启用IPIP模式时，calico将在各node上创建一个名为“tunl0”的虚拟网络接口<br><img src="https://i.loli.net/2019/12/11/7PZkIVqs36cRJjt.png" alt="image.png"></li>
+<li>BGP模式则直接使用物理机作为虚拟路由器（vRouter），不再创建额外的tunnel </li>
+</ul>
+</li>
+</ul>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><ul>
+<li>Calico创建和管理一个扁平的三层网络（不需要overlay），每个容器会分配一个可路由的IP。由于通信时不需要解包和封包，网络性能损耗小，易于排查，易于水平扩展。</li>
+<li>小规模部署可以通过BGP client直接互联，大规模下可以通过指定的BGP Route Reflector来完成，这样保证所有的数据流量都是通过IP路由的方式完成互联</li>
+<li>Calico基于iptables还提供了丰富而灵活的网络policy ，保证通过各个节点上的ACL提供给哦你workload的多租户隔离、安全组以及其他可达性限制功能</li>
+</ul>
+<h4 id="Calico架构"><a href="#Calico架构" class="headerlink" title="Calico架构"></a>Calico架构</h4><p><img src="https://i.loli.net/2019/12/11/X7fZLcSKyiYzOQq.png" alt="image.png"></p>
+<p>calico 利用linux内核原声的路由和iptables防火墙功能。进出各个容器、虚拟机和物理主机的所有流量都会在路由到目标之前便利这些内核规则</p>
+<ul>
+<li>Felix：主要的Calico代理agent,运行每台计算机上管理endpoints资源</li>
+<li>calicoctl:允许从命令行界面配置实现高级策略和网络</li>
+<li>orchestrator plugins:提供与各种流行的云计算编排工具的紧密集成和同步支持</li>
+<li>key/calue store:存储calico的策略配置和网络状态信息，目前主要使用etcd 或k8s api</li>
+<li>calico/node:在每个主机上运行，从key/value 存储中读取相关的策略和网络配置信息，并在linux 内核中实现它</li>
+<li>dikastes/envoy :可选的kubernetes sidecars,可通过相互TLS身份认证保护工作负载间通信，并增加应用层控制策略</li>
+</ul>
+<h4 id="基本模式"><a href="#基本模式" class="headerlink" title="基本模式"></a>基本模式</h4><ul>
+<li>calico 本质上利用了网卡的代理ARP功能</li>
+<li>calico通过一个巧妙的方法将worknode的所有流量引导一个特殊的网关169.254.1.1，从而引流到主机calixxx网络设备上，最终将二三层流量全部转换成三层流量来转发</li>
+<li>在主机上通过开启代理ARP功能来实现ARP应答，使得ARP广播被抑制在主机上，抑制了广播风暴，也不会有ARP表膨胀的问题</li>
+</ul>
+<h3 id="Contic"><a href="#Contic" class="headerlink" title="Contic"></a>Contic</h3><p>  功能非常齐全，二层桥接，基于VLAN网络；三层路由，基于BGP网络；同时支持Overlay，通过Vxaln应对一些受控网络环境，提供ACI支持网络策略</p>
+<ul>
+<li>L2 Bridged（二层Underlay，基于VLAN）</li>
+<li>L3 Routed（三层Underlay，基于BGP）</li>
+<li>Overlay（二层Overlay/三层Overlay，基于VXLAN）</li>
+<li>ACI（网络策略）</li>
+</ul>
+<h3 id="Flannel"><a href="#Flannel" class="headerlink" title="Flannel"></a>Flannel</h3><p>   <em>host-gw模式，节点内部子网，节点之间通过路由指过去。但是这种方式存在限制，当它直接指引过去，要求所有节点在同一个二层里，不能穿越不同子网。当不能穿越子网时，通过VxLAN方式解决，帮助报文在二层网络上穿越。比如VPC router，Flannel完成与不同公有云厂商的VPC router对接。</em><br>   <em>在安装node节点的时候，节点上的进程按照flannel-&gt;docker-&gt;kubelet-&gt;kube-proxy的顺序启动的</em></p>
+<ul>
+<li><p>host gw（二层+三层Underlay）</p>
+</li>
+<li><p>VXLAN（二层+三层Overlay）</p>
+</li>
+<li><p>Alicloud VPCvRouter/AWSVPCrouter （二层+三层Underlay）</p>
+<p><em>Flannel 通过给每天宿主机分配一个子网的方式为容器提供虚拟网络，其基于linux TUN/TAP，使用UDP封装的IP包创建Overlay网络，并借助etcd维护网络的分配情况</em></p>
+</li>
+</ul>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p> 控制平面上host本地的flannel负责从远端的ETCD集群同步本地和其他host上的subnet信息，并为POD分配IP地址。数据平面Flannel通过Flannel通过Backend（比如UDP封装）来实现L3 OverLay，即可以选择一般的TUN设备又可以选择VxLAN设备<br> <img src="https://i.loli.net/2019/12/10/NU1WGE7tzxrb2SM.png" alt="image.png"></p>
+<p> 除了UDP，Flannel还支持其他很多Backend</p>
+<ul>
+<li>udp:使用用户态udp封装，性能有较大损失</li>
+<li>vxlan:vxlan封装，需要配置VNI，port和GBP</li>
+<li>host-gw：直接路由的方式，将容器网络的路由信息直接更新到主机的路由表中，仅适用于二层直接可达的网络</li>
+<li>aws-vpc：使用 Amazon VPC route table 创建路由，适用于AWS上运行的容器</li>
+<li>gce：使用Google Compute Engine Network创建路由，所有instance需要开启IP forwarding，适用于GCE上运行的容器</li>
+<li>ali-vpc：使用阿里云VPC route table 创建路由，适用于阿里云上运行的容器</li>
+</ul>
+<p>Flannel通过在每一个节点上启动一个叫Flanneld的进程，负责每一个节点上的子网划分，并将相关的配置信息如各个节点的子网网段、外部IP等保存在etcd中，而具体的网络包转发给具体的Backend来实现</p>
+<p>目前比较成熟的Backend有VxLAN、host-gw 以及UDP三种方式。Vxlan是目前官方推荐的一种backend实现方式，host-gw一般用于对网络性能要求高的场景，但需要基础架构本身的支持，UDP则一般用于Debug和一些比较老的不支持Vxlan的linux内核</p>
+<h4 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h4><ul>
+<li><p>当采用UDP模式时，flanneld进程在启动时会通过/dev/net/tun的方式生成一个TUN设备，TUN设备可以简单理解为linux当中提供的一种内核网络与用户空间（应用程序）通信的一种机制，即应用可以通过直接读写tun设备的方式手法RAW IP包。<br><img src="https://i.loli.net/2019/12/11/kpTQSUbo7vxFh2z.png" alt="image.png"></p>
+</li>
+<li><p>flanneld在整个过程中主要负责两个工作</p>
+<ul>
+<li>UDP封包解包</li>
+<li>节点上的路由表动态更新</li>
+</ul>
+</li>
+<li><p>从上面虚线部分就可以看到container A和container B虽然在物理网络上并没有直接相连，但在逻辑上就好像是处于同一个三层网络当中，这种基于底下的物理网络设备通过Flannel等软件定义网络技术实现的网络我们称之为Overlay网络</p>
+</li>
+<li><p>网络数据包先是通过tun设备从内核当中复制到用户态的应用，然后再有用户态的应用复制到内核，仅一次的网络传输就进行了两次用户态和内核态的切换，效率是不高的。</p>
+</li>
+<li><p>当flanneld启动时将创建VTEP设备（默认为flannel.1，若已经创建则跳过），并将VTEP设备的相关信息上报到etcd当中，而当在Flannel网络中有新的节点发现时，各个节点上的flanneld将依次执行以下流程</p>
+<ol>
+<li>在节点当中创建一条该节点所属网段的路由表，主要是能让Pod当中的流量路由到flannel.1接口。</li>
+<li>在节点当中添加一条该节点的IP以及VTEP设备的静态ARP缓存。</li>
+<li>在节点当中添加一条该节点的转发表</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/12/11/DszrXUA2ejoP3kC.png" alt="image.png"></p>
+<p>此时容器跨节点网络通信实现流程为：</p>
+<ol>
+<li>同UDP Backend模式，容器A当中的IP包通过容器A内的路由表被发送到cni0</li>
+<li>到达cni0当中的IP包通过匹配host A当中的路由表发现通往10.244.2.194的IP包应该交给flannel.1接口</li>
+<li>flannel.1作为一个VTEP设备，收到报文后将按照VTEP的配置进行封包，首先通过etcd得知10.244.2.194属于节点B，并得到节点B的IP，通过节点A当中的转发表得到节点B对应的VTEP的MAC，根据flannel.1设备创建时的设置的参数（VNI、local IP、Port）进行VXLAN封包</li>
+<li>通过host A跟host B之间的网络连接，VXLAN包到达host B的eth1接口</li>
+<li>通过端口8472，VXLAN包被转发给VTEP设备flannel.1进行解包</li>
+<li>解封装后的IP包匹配host B当中的路由表（10.244.2.0），内核将IP包转发给cni0</li>
+<li>cni0将IP包转发给连接在cni0上的容器B</li>
+</ol>
+<h4 id="host-gw"><a href="#host-gw" class="headerlink" title="host-gw"></a>host-gw</h4><p><img src="https://i.loli.net/2019/12/11/Z2Dl63Je1bfkYFp.png" alt="image.png"></p>
+<ol>
+<li>UDP、VXLAN模式一致，通过容器A的路由表IP包到达cni0</li>
+<li>到达cni0的IP包匹配到host A当中的路由规则（10.244.2.0），并且网关为172.16.130.164，即host B，所以内核将IP包发送给host B（172.16.130.164）</li>
+<li>IP包通过物理网络到达host B的eth1</li>
+<li>到达host B eth1的IP包匹配到host B当中的路由表（10.244.2.0），IP包被转发给cni0</li>
+<li>cni0将IP包转发给连接在cni0上的容器B</li>
+</ol>
+<ul>
+<li>host-gw模式其中一个局限性就是，由于是通过节点上的路由表来实现各个节点之间的跨节点网络通信，那么就得保证两个节点是可以直接路由过去的。按照内核当中的路由规则，网关必须在跟主机当中至少一个IP处于同一网段，故造成的结果就是采用host-gw这种Backend方式时则集群中所有的节点必须处于同一个网络当中，这对于集群规模比较大时需要对节点进行网段划分的话会存在一定的局限性。另外一个则是随着集群当中节点规模的增大，flanneld需要维护主机上成千上万条路由表的动态更新也是一个不小的压力</li>
+</ul>
+<h4 id="VXLAN"><a href="#VXLAN" class="headerlink" title="VXLAN"></a>VXLAN</h4><ul>
+<li>当采用Vxlan模式是，flanneld在启动时会通过Netlink机制与linux 内核通信，建立一个VTEP设备flannel.1(命名规则为flannel.[]VNI),VNI默认为1，类似于交换机种当中的一个网口</li>
+</ul>
+<h3 id="Openshift-SDN"><a href="#Openshift-SDN" class="headerlink" title="Openshift SDN"></a>Openshift SDN</h3><p>   基于VXLAN的二层+三层Overlay方案，同时支持network policy,数据平面基于OVS流表实现</p>
+<ul>
+<li>OVS-subnet(二层+三层Overlay，基于Vxlan)</li>
+<li>ovs-multitenant (二层+三层Overlay，基于Vxlan)</li>
+<li>ovs-networkpolicy</li>
+</ul>
+<h3 id="Kubnet-VPC自定义路由"><a href="#Kubnet-VPC自定义路由" class="headerlink" title="Kubnet + VPC自定义路由"></a>Kubnet + VPC自定义路由</h3><p>它会利用公有云平台本身自带的 VPC vRouter，配合 Kubernetes 自带的节点子网方式，用路由方式去完成整个容器网络的转发</p>
+<ul>
+<li>AWS VPC/Azure VPC/GCE VPC（二层+三层Underlay），需关闭源IP，目的IP检测</li>
+</ul>
+<h4 id="云化VPC场景存在的问题"><a href="#云化VPC场景存在的问题" class="headerlink" title="云化VPC场景存在的问题"></a>云化VPC场景存在的问题</h4><ol>
+<li>需要两套网络策略，一套是VPC层的安全组等；另一套是kubernetes的network policy。管理成本较高</li>
+<li>在BGP场景下，BGP Underlay即使能使用但无法跨越多AZ。跨越AZ一般意味着跨子网，跨子网意味着跨路由，但是VPC的vRouter一般不支持BGP。BGP underlay可以用，但也仅限于单AZ</li>
+</ol>
+<h4 id="VPC自定义路由的场景下的问题"><a href="#VPC自定义路由的场景下的问题" class="headerlink" title="VPC自定义路由的场景下的问题"></a>VPC自定义路由的场景下的问题</h4><ol>
+<li>节点规模受限于路由表数量，一般厂商都会在100一下，AWS是50，阿里默认48</li>
+<li>多次网络跳转，性能略有下降，节点层跳一次，在VPC里也要跳一次，使之性能有所影响</li>
+</ol>
+<h4 id="Overlay场景存在的问题"><a href="#Overlay场景存在的问题" class="headerlink" title="Overlay场景存在的问题"></a>Overlay场景存在的问题</h4><ol>
+<li>两层Overlay开销问题</li>
+<li>对于PPS敏感性业务，受影响较大</li>
+</ol>
+<h3 id="基于VPC深度集成的容器网络"><a href="#基于VPC深度集成的容器网络" class="headerlink" title="基于VPC深度集成的容器网络"></a>基于VPC深度集成的容器网络</h3><p> 基于VPC这种深度集成的容器网络，把VPC的能力上移到容器网络这一层，用VPC的能力去做转发和控制。如AWS EKS的VPC CNI插件，Azure AKS的VNET CNI插件。</p>
+<ul>
+<li>Kubernetes设计了Pod-Deployment-Service 经典三层服务访问机制</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/k8s-网络/" rel="tag"># k8s,网络</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/22/Flink/" rel="next" title="Flink">
+                <i class="fa fa-chevron-left"></i> Flink
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">seven</p>
+              <p class="site-description motion-element" itemprop="description">seven 的精神家园，学习笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="1988xuegang@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kubnernets-基本网络模型"><span class="nav-number">1.</span> <span class="nav-text">Kubnernets 基本网络模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准入条件"><span class="nav-number">1.1.</span> <span class="nav-text">准入条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为外部提供服务"><span class="nav-number">1.2.</span> <span class="nav-text">为外部提供服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Calico"><span class="nav-number">1.3.</span> <span class="nav-text">Calico</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念"><span class="nav-number">1.3.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Calico架构"><span class="nav-number">1.3.2.</span> <span class="nav-text">Calico架构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本模式"><span class="nav-number">1.3.3.</span> <span class="nav-text">基本模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Contic"><span class="nav-number">1.4.</span> <span class="nav-text">Contic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flannel"><span class="nav-number">1.5.</span> <span class="nav-text">Flannel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原理"><span class="nav-number">1.5.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UDP"><span class="nav-number">1.5.2.</span> <span class="nav-text">UDP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#host-gw"><span class="nav-number">1.5.3.</span> <span class="nav-text">host-gw</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VXLAN"><span class="nav-number">1.5.4.</span> <span class="nav-text">VXLAN</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Openshift-SDN"><span class="nav-number">1.6.</span> <span class="nav-text">Openshift SDN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kubnet-VPC自定义路由"><span class="nav-number">1.7.</span> <span class="nav-text">Kubnet + VPC自定义路由</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#云化VPC场景存在的问题"><span class="nav-number">1.7.1.</span> <span class="nav-text">云化VPC场景存在的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VPC自定义路由的场景下的问题"><span class="nav-number">1.7.2.</span> <span class="nav-text">VPC自定义路由的场景下的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Overlay场景存在的问题"><span class="nav-number">1.7.3.</span> <span class="nav-text">Overlay场景存在的问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于VPC深度集成的容器网络"><span class="nav-number">1.8.</span> <span class="nav-text">基于VPC深度集成的容器网络</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seven</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+<!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count"></span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/21/2018 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
