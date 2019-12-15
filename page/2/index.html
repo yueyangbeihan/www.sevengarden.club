@@ -644,6 +644,23 @@
 </ol>
 <h4 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h4><p>redo log 包括两部分：一是内存中的日志缓冲（redo log buffer),该部分日志是易失性的；二是磁盘上的重做日志（redo log file），该部分日志是持久的。</p>
 <p>innodb 通过<strong>force log at commit</strong>机制实现事务的持久性，即在事务提交的时候，必须先将该事务的所有事物日志写入到磁盘上的redo log file和undo log file中进行持久化</p>
+<h3 id="在mysql的ninnodb中，由两种B-树索引，一种称之为聚族索引，一种称之为二级索引"><a href="#在mysql的ninnodb中，由两种B-树索引，一种称之为聚族索引，一种称之为二级索引" class="headerlink" title="在mysql的ninnodb中，由两种B+树索引，一种称之为聚族索引，一种称之为二级索引"></a>在mysql的ninnodb中，由两种B+树索引，一种称之为聚族索引，一种称之为二级索引</h3><p>  聚族索引的叶子节点就是数据节点，往往是主键作为聚族索引，二级索引的叶子节点存放的是KEY字段加主键值。因为饿通过二级索引访问数据，要访问两次索引。（即回表）</p>
+<p>  <img src="https://i.loli.net/2019/12/04/h7yMgoIvpVPbUxS.png" alt="image.png"></p>
+<p>  还有一种索引的形式成为组合索引，或者复合索引，可以在多个列上建立索引。</p>
+<p><img src="https://i.loli.net/2019/12/04/T6DRlkP8iKCJFzr.png" alt="image.png"><br>  这种索引的排宿规则为，先比较第一列，，在第一列相等的情况下，比较第二列，以此类推</p>
+<blockquote>
+<p>索引的代价就是写的效率降低</p>
+</blockquote>
+<ul>
+<li><p>为什么要使用自增主键：因为字符串主键和随机主键使得数据随机插入，效率比较差，主键应该少更新，避免B+树和频繁合并和分裂</p>
+<h3 id="查询优化的方法论"><a href="#查询优化的方法论" class="headerlink" title="查询优化的方法论"></a>查询优化的方法论</h3></li>
+<li><p>MySQL数据库提供了慢SQL日志功能，通过参数slow_query_log,获取执行时间超过一定阀值的SQL语录列表</p>
+</li>
+<li><p>没有使用索引的SQL语句，可以通过long_queries_not_using_indexs参数开启</p>
+</li>
+<li><p>找到问题语句，接下来就是通过explainSQL，获取SQL的执行计划，是否通过索引扫描记录，可以通过创建索引优化执行效率。是否扫描记录数果果，是否持锁时间爱你过长，是否存在锁冲突，返回记录是否较多。</p>
+</li>
+</ul>
 
           
         
